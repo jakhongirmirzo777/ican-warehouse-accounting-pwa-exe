@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  ican:
+    build: ./
+    container_name: ican_c
+    ports:
+      - '4000:4000'
+    stdin_open: true
+    tty: true

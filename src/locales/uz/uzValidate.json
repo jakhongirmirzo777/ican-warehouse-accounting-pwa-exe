@@ -1,0 +1,14 @@
+{
+  "code": "uz",
+  "messages": {
+    "min": "Ushbu '{field}' maydoni kamida {params} belgidan iborat bo'lishi lozim",
+    "length": "Ushbu '{field}' maydoni {params} belgidan iborat bo'lishi lozim",
+    "max": "{field} {max} ta belgidan oshmasligi kerak",
+    "required": "Ushbu '{field}' maydoni yozish uchun talab qilinadi",
+    "email": "Ushbu '{field}' maydoni email bo'lishi kerak",
+    "phone": "{field} xato kiritildi",
+    "inn": "{field} noto‘g‘ri",
+    "pnfl": "{field} noto‘g‘ri",
+    "confirmed": "Parol mos kelmadi"
+  }
+}

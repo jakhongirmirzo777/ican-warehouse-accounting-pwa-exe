@@ -1,0 +1,46 @@
+$font-main: "Qanelas", sans-serif;
+$header-height: 64px;
+$sidebar-height: calc(100vh - 80px);
+$sidebar-width: 244px;
+$sidebar-mini-width: 56px;
+$bg-color: #EFF7FF;
+
+$font-weights: (
+                ("extra-bold", 800),
+                ("bold", 700),
+                ("semi-bold", 600),
+                ("medium", 500),
+                ("regular", 400)
+);
+
+$colors: (
+        "dark-blue": #263054,
+        "darker-blue": "#18275D",
+        "blue": #284056,
+        "light-blue": #323948,
+        "thin-blue": rgba(24, 39, 93, 0.24),
+        "green": #28B446,
+        "light-green": #17BDC0,
+        "cloud": #DFE6EE,
+        "light-cloud": #F5F5F5,
+        "gray": #868EAA,
+        "dark-gray": #D9D9E5,
+        "light-gray": #F5F8FB,
+        "dark-red": #F94E4F,
+        "light-red": #FF2090,
+        "yellow": #E6A812,
+        "white": #fff,
+        "black": #000
+);
+
+$offset-laptop: 1439px;
+$offset-tablet: 999px;
+$offset-mobile: 767px;
+
+$grid-widths: (320px, 768px, 1000px, 1440px);
+
+:root {
+  @each $name, $color in $colors {
+    --#{'color-' + $name}: #{$color};
+  }
+}

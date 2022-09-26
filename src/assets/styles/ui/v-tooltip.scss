@@ -1,0 +1,103 @@
+.v-tooltip {
+  &__container {
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+  }
+
+  &__box {
+    display: inline-block;
+    justify-content: center;
+  }
+
+  &__label {
+    --scale: 0;
+    --arrow-size: 8px;
+    position: absolute;
+    background-color: var(--bgColor);
+    color: #FFFFFF;
+    padding: 6px 10px;
+    border-radius: 5px;
+    width: max-content;
+    max-width: 250px;
+    word-break: break-all;
+    text-align: center;
+
+    &--top {
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100%) scale(var(--scale));
+      transform-origin: bottom center;
+      transition: 0.2s transform;
+
+      &::before {
+        content: '';
+        border: var(--arrow-size) solid transparent;
+        border-top-color: var(--bgColor);
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    &--bottom {
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%) scale(var(--scale));
+      transform-origin: top center;
+      transition: 0.2s transform;
+
+      &::before {
+        content: '';
+        border: var(--arrow-size) solid transparent;
+        border-bottom-color: var(--bgColor);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    &--left {
+      top: 50%;
+      right: var(--tooltipContentWidth);
+      transform: translateY(-50%) scale(var(--scale));
+      transform-origin: bottom center;
+      transition: 0.2s transform;
+
+      &::before {
+        content: '';
+        border: var(--arrow-size) solid transparent;
+        border-left-color: var(--bgColor);
+        position: absolute;
+        top: 50%;
+        right: -16px;
+        transform: translateY(-50%);
+      }
+    }
+
+    &--right {
+      top: 50%;
+      left: var(--tooltipContentWidth);
+      transform: translateY(-50%) scale(var(--scale));
+      transform-origin: bottom center;
+      transition: 0.2s transform;
+
+      &::before {
+        content: '';
+        border: var(--arrow-size) solid transparent;
+        border-right-color: var(--bgColor);
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  &__box:hover + &__label--top, &__box:hover + &__label--bottom, &__box:hover + &__label--left, &__box:hover + &__label--right {
+    --scale: 1;
+  }
+}
+

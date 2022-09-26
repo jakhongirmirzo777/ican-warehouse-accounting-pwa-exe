@@ -1,0 +1,19 @@
+$font: (
+                ("ExtraBold", 800),
+                ("Bold", 700),
+                ("SemiBold", 600),
+                ("Medium", 500),
+                ("Regular", 400)
+);
+
+@each $name, $weight in $font {
+  $url: "../fonts/Qanelas/Qanelas-" + $name;
+  @font-face {
+    font-family: "Qanelas";
+    src: url($url + ".woff") format("woff"),
+    url($url + ".ttf") format("truetype");
+    font-style: normal;
+    font-weight: $weight;
+    font-display: swap;
+  }
+}

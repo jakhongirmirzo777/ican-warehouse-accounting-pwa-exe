@@ -1,0 +1,129 @@
+@import "vars";
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: map-get($colors, "gray");
+  font-family: $font-main;
+  font-weight: 500;
+  background: $bg-color;
+}
+
+*, *:after, *:before {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.03em;
+}
+
+*:focus {
+  outline: none;
+}
+
+a.router-link-exact-active {
+  color: #42b983;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+#modal {
+  position: relative;
+  z-index: 2;
+}
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    margin: 0;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+.mb-auto {
+  margin-bottom: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.no-pointer {
+  pointer-events: none;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: .5;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+  user-select: none;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.block-hover:hover {
+  color: #284056;
+}
+
+@each $name, $weight in $font-weights {
+  .font-weight-#{$name} {
+    font-family: $font-main;
+    font-weight: $weight;
+  }
+}
+
+@each $name, $color in $colors {
+  .color-#{$name} {
+    color: $color;
+  }
+}
+
+@each $name, $color in $colors {
+  .theme-#{$name} {
+    background-color: $color;
+  }
+}

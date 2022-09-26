@@ -1,0 +1,76 @@
+{
+  "monthsShort": {
+    "0": "YANV.",
+    "1": "FEVR.",
+    "2": "MART.",
+    "3": "APR.",
+    "4": "MAY.",
+    "5": "IYUN.",
+    "6": "IYUL.",
+    "7": "AVG.",
+    "8": "SENT.",
+    "9": "OKT.",
+    "10": "NOY.",
+    "11": "DEK."
+  },
+  "months": {
+    "0": "yanvar",
+    "1": "fevral",
+    "2": "mart",
+    "3": "aprel",
+    "4": "may",
+    "5": "iyun",
+    "6": "iyul",
+    "7": "avgust",
+    "8": "sentabr",
+    "9": "oktabr",
+    "10": "noyabr",
+    "11": "dekabr"
+  },
+  "monthsFirstUpper": {
+    "0": "Yanvar",
+    "1": "Fevral",
+    "2": "Mart",
+    "3": "Aprel",
+    "4": "May",
+    "5": "Iyun",
+    "6": "Iyul",
+    "7": "Avgust",
+    "8": "Sentabr",
+    "9": "Oktabr",
+    "10": "Noyabr",
+    "11": "Dekabr"
+  },
+  "monthsUpper": {
+    "0": "YANVAR",
+    "1": "FEVRAL",
+    "2": "MART",
+    "3": "APREL",
+    "4": "MAY",
+    "5": "IYUN",
+    "6": "IYUL",
+    "7": "AVGUST",
+    "8": "SENTABR",
+    "9": "OKTABR",
+    "10": "NOYABR",
+    "11": "DEKABR"
+  },
+  "weeksShort": {
+    "0": "Y",
+    "1": "D",
+    "2": "S",
+    "3": "CH",
+    "4": "P",
+    "5": "J",
+    "6": "SH"
+  },
+  "weeks": {
+    "0": "yak",
+    "1": "du",
+    "2": "se",
+    "3": "chor",
+    "4": "pa",
+    "5": "juma",
+    "6": "shan"
+  }
+}

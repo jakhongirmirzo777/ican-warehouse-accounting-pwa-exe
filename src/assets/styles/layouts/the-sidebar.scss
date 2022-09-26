@@ -1,0 +1,257 @@
+@import "../globals/vars";
+
+$active-bg: #324071;
+
+@mixin menuStyle {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #AFCBEF;
+  z-index: 2;
+}
+
+@mixin activeBefore {
+  &:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 50%;
+    height: 26px;
+    transform: translateY(-50%);
+    border-right: 3px solid #17BDC0;
+  }
+  &:before {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    width: 100%;
+    background: $active-bg;
+    height: 100%;
+  }
+}
+
+
+.sidebar {
+  display: flex;
+  align-items: center;
+
+  &__list {
+    width: $sidebar-width;
+    background: var(--color-dark-blue);
+    border-radius: 0 12px 12px 0;
+    height: $sidebar-height;
+    overflow: hidden;
+    overflow-y: auto;
+    transition: .2s all;
+    position: relative;
+    z-index: 1001;
+
+    &--mini {
+      width: $sidebar-mini-width;
+    }
+
+    //&:hover {
+    //  width: $sidebar-width;
+    //}
+    //&:hover ~ .sidebar__list__block__children--yes-is-open {
+    //  display: block !important;
+    //}
+    //&:hover .sidebar__list__item__hover {
+    //  display: block !important;
+    //}
+    &__item__hover {
+      transition: .3s all;
+      min-width: 120px;
+      text-overflow: ellipsis;
+    }
+
+    &__item {
+      display: flex;
+      padding: 0 36px 0 14px;
+      height: 54px;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+
+      &__wrapper {
+        position: relative;
+      }
+
+      &:hover {
+        background: $active-bg;
+      }
+
+      &__icon {
+        text-align: left;
+        margin-right: 18px;
+        position: relative;
+        z-index: 2;
+        min-width: unset !important;
+      }
+
+      &__link {
+        @include menuStyle;
+
+        &--active {
+          @include activeBefore;
+
+          span, a {
+            min-width: 120px;
+            text-overflow: ellipsis;
+            white-space: nowrap !important;
+            color: white !important;
+          }
+        }
+
+        &__text {
+          position: relative;
+          z-index: 2;
+        }
+      }
+
+      &__name {
+        @include menuStyle
+      }
+
+      &__open-icon {
+        position: absolute;
+        right: 15px;
+        transition: .3s all;
+
+        &--is-open {
+          transform: rotate(-180deg);
+        }
+      }
+
+      &--is-open {
+        background: $active-bg;
+
+        a, span {
+          color: white !important;
+        }
+      }
+
+      &__children {
+      }
+    }
+
+    &__block {
+      display: block;
+
+      &__children {
+        @include menuStyle;
+        //overflow: hidden;
+        overflow-y: auto;
+        position: relative;
+        height: 0;
+        //opacity: 0;
+        //z-index: -1;
+        transition: .2s all;
+        min-width: 120px;
+
+        &--yes-is-open {
+          display: block !important;
+        }
+
+        &--is-open {
+          opacity: 1;
+          z-index: 1;
+          //height: 100%;
+        }
+
+        &__link {
+          transition: .3s all;
+          padding: 12px 18px;
+          display: flex;
+          align-items: center;
+
+          &__text {
+            position: relative;
+            z-index: 2;
+          }
+
+          img {
+            position: relative;
+            z-index: 2;
+          }
+
+          &:hover {
+            background: $active-bg;
+          }
+
+          &--active {
+            @include activeBefore;
+            position: relative;
+
+            a, span {
+              display: inline-block;
+              min-width: 120px;
+              color: white;
+              background: $active-bg;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__main {
+    padding: 0 16px 16px;
+    width: calc(100% - $sidebar-width);
+    height: $sidebar-height;
+    overflow: hidden;
+    overflow-y: scroll;
+
+    &--mini {
+      width: calc(100% - $sidebar-mini-width) !important;
+    }
+  }
+}
+
+
+@media screen and (max-width: 1265px) {
+  .sidebar {
+    &__list {
+      transform: translateX(-244px);
+      position: fixed;
+      height: calc(100vh - 5px);
+      top: 5px;
+
+      &--mini {
+        width: $sidebar-width !important;
+        transform: translateX(0);
+      }
+
+      &__item__hover {
+        display: block !important;
+      }
+
+      &__item {
+        &__open-icon {
+          display: block !important;
+        }
+      }
+    }
+
+    &__main {
+      width: 100%;
+
+      &--mini {
+        width: 100% !important;
+      }
+    }
+
+    &__shadow {
+      &--active {
+        z-index: 999;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, .4);
+      }
+    }
+  }
+}
