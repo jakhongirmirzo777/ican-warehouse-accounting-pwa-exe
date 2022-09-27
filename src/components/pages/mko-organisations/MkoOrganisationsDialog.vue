@@ -151,7 +151,6 @@
           type="button"
           color="primary"
           width="160px"
-          :loading="loading"
           radius="12px"
           @click="changePasswordDialog = true"
         >
