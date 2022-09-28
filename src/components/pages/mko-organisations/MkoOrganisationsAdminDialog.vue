@@ -5,7 +5,7 @@
     :model-value="modelValue"
     @update:modelValue="(val) => $emit('update:modelValue', val)"
   >
-    <Form @submit="onSubmit">
+    <Form ref="formObjMko" @submit="onSubmit">
       <VRow>
         <VCol md="4">
           <VSelect
@@ -363,6 +363,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'submit'])
 
+const formObjMko = ref<any>(null)
 const formObj = ref<any>(null)
 const loading = ref(false)
 const changePasswordDialog = ref(false)
@@ -377,16 +378,17 @@ const parents = ref([])
 const tariffs = ref([])
 
 watch(
-  () => props.id,
+  () => props.modelValue,
   (val) => {
-    if (val) {
-      useFetchOrganisation()
-    } else {
+    if (!val) {
       formData.value = { ...FORM_DATA }
       phones.value = {
         phone: '',
         phones: [],
       }
+      formObjMko.value?.resetForm()
+    } else if (val && props.id) {
+      useFetchOrganisation()
     }
   }
 )

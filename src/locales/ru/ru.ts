@@ -124,6 +124,7 @@ export default {
   bank: 'Банк',
   tariff: 'Тариф',
   contractFile: 'Контракт файл',
+  changeStatus: 'Изменить статус',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

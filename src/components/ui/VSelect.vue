@@ -135,9 +135,16 @@ const props = defineProps({
   },
 })
 
-const value = ref() as any
+const value = ref<any>(null)
 const isFocused = ref(false)
 const emits = defineEmits(['update:modelValue'])
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    value.value = val
+  }
+)
 
 onMounted(() => {
   if (props.modelValue || props.modelValue === 0) {

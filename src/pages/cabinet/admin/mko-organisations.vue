@@ -70,12 +70,30 @@
         </div>
       </template>
       <template #item.status="{ item }">
-        <VStatus
-          :color="MKO_STATUSES_COLORED[item.status].color"
-          :theme="MKO_STATUSES_COLORED[item.status].theme"
-        >
-          {{ t(MKO_STATUSES[item.status]) }}
-        </VStatus>
+        <div class="d-flex align-center">
+          <VStatus
+            min-width="100px"
+            :color="MKO_STATUSES_COLORED[item.status].color"
+            :theme="MKO_STATUSES_COLORED[item.status].theme"
+          >
+            {{ t(MKO_STATUSES[item.status]) }}
+          </VStatus>
+          <ElPopconfirm
+            hide-icon
+            :title="t('changeStatus')"
+            cancel-button-type="primary"
+            confirm-button-type="danger"
+            :confirm-button-text="t('yes')"
+            :cancel-button-text="t('no')"
+            @confirm="useChangeStatus(item.id)"
+          >
+            <template #reference>
+              <VBtn class="ml-2" small text>
+                <VIcon size="16" icon="pencil" />
+              </VBtn>
+            </template>
+          </ElPopconfirm>
+        </div>
       </template>
     </VTable>
     <VPagination
@@ -114,10 +132,12 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VStatus from '@/components/ui/VStatus.vue'
 import MkoOrganisationsAdminDialog from '@/components/pages/mko-organisations/MkoOrganisationsAdminDialog.vue'
+import { ElPopconfirm } from 'element-plus'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  changeStatus,
   fetchOrganisations,
   deleteOrganisation,
 } from '@/services/cabinet/MkoOrganisationsAdminService'
@@ -213,6 +233,15 @@ const items = ref<MkoOrganisation[]>([])
 const editValue = ref<{ id: number | null }>({
   id: null,
 })
+
+const useChangeStatus = async (id: number) => {
+  try {
+    await changeStatus(id)
+    await useFetchOrganisations()
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
 
 const useFetchOrganisations = async () => {
   try {
