@@ -19,15 +19,11 @@
           class="v-input__prepend"
           :class="{
             has__prepend:
-              $slots?.prepend ||
-              type === 'password' ||
-              type === 'email' ||
-              type === 'phone',
+              $slots?.prepend || type === 'password' || type === 'email',
           }"
           @click.stop="onPrependClick"
         >
           <slot name="prepend">
-            <span style="font-size: 14px" v-if="type === 'phone'">998</span>
             <VIcon
               v-if="type === 'email'"
               icon="at"
@@ -50,10 +46,7 @@
           class="v-input__element"
           :class="{
             has__prepend:
-              $slots?.prepend ||
-              type === 'password' ||
-              type === 'email' ||
-              type === 'phone',
+              $slots?.prepend || type === 'password' || type === 'email',
             has__append:
               $slots?.append ||
               type === 'password' ||
@@ -76,10 +69,7 @@
             error: errors && errors[0],
             has__value: !!modelValue,
             has__prepend:
-              $slots?.prepend ||
-              type === 'password' ||
-              type === 'email' ||
-              type === 'phone',
+              $slots?.prepend || type === 'password' || type === 'email',
           }"
           @click="focusInput"
         >
@@ -242,8 +232,6 @@ const focusInput = () => {
 const onInput = (e: EventWithTarget) => {
   if (props.type === 'money')
     emit('update:modelValue', $moneyFormatWithComma(e?.target?.value))
-  else if (props.type === 'phone')
-    emit('update:modelValue', '998' + e?.target?.value)
   else emit('update:modelValue', e?.target?.value || '')
 }
 
@@ -262,7 +250,6 @@ const onPrependClick = () => {
 const handledValue = computed(() => {
   const copyModelValue = props.modelValue
   if (props.type === 'money') return $moneyFormatWithComma(copyModelValue)
-  if (props.type === 'phone') return copyModelValue?.replace(/^998/gi, '')
   return copyModelValue
 })
 
@@ -289,7 +276,7 @@ const containerStyles = computed(() => {
 })
 
 const mask = computed(() => {
-  if (props.type === 'phone') return '(##)###-##-##'
+  if (props.type === 'phone') return '998(##)###-##-##'
   if (props.pattern) return props.pattern
   if (props.only === 'number')
     return {

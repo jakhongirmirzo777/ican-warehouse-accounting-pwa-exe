@@ -11,7 +11,7 @@
           width="100%"
           @click="
             () => {
-              isUpdate = false
+              editValue.id = null
               dialog = true
             }
           "
@@ -60,7 +60,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
-          @edit="editOrganisation(item)"
+          @edit="editOrganisation(item.id)"
           @delete="handleDelete(item.id)"
         />
       </template>
@@ -88,8 +88,13 @@
   </VCard>
   <MkoOrganisationsAdminDialog
     v-model="dialog"
-    :data="editValue"
-    @submit="useFetchOrganisations"
+    :id="editValue.id"
+    @submit="
+      () => {
+        editValue.id = null
+        useFetchOrganisations()
+      }
+    "
   />
 </template>
 
@@ -126,10 +131,7 @@ import {
   MKO_STATUSES,
 } from '@/utils/constants'
 import { $isPageExists } from '@/utils/pure-functions'
-import type {
-  MkoOrganisationEditValues,
-  MkoOrganisation,
-} from '@/types/cabinet/MkoOrganisationsAdminTypes'
+import type { MkoOrganisation } from '@/types/cabinet/MkoOrganisationsAdminTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -207,19 +209,9 @@ const headers = [
 ]
 
 const dialog = ref(false)
-const isUpdate = ref(false)
 const items = ref<MkoOrganisation[]>([])
-const editValue = ref<MkoOrganisationEditValues>({
+const editValue = ref<{ id: number | null }>({
   id: null,
-  address: null,
-  company_name: null,
-  created_at: null,
-  director: null,
-  inn: null,
-  mfo: null,
-  name: null,
-  phones: [],
-  status: null,
 })
 
 const useFetchOrganisations = async () => {
@@ -282,9 +274,8 @@ const useFetchData = async () => {
   }
 }
 
-const editOrganisation = (item: MkoOrganisationEditValues) => {
-  editValue.value = item
-  isUpdate.value = true
+const editOrganisation = (id: number) => {
+  editValue.value.id = id
   dialog.value = true
 }
 

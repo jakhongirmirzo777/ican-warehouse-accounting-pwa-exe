@@ -37,6 +37,15 @@ export const fetchOrganisations = async (
   }
 }
 
+export const fetchOrganisation = async (id: number) => {
+  try {
+    const data = await http.get(`/admin/organisations/${id}`)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const createOrganisation = async (formData: FormData) => {
   try {
     const data = await http.post('/admin/organisations', formData)

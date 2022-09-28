@@ -123,6 +123,7 @@ export default {
   startDate: 'Дата начала',
   bank: 'Банк',
   tariff: 'Тариф',
+  contractFile: 'Контракт файл',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

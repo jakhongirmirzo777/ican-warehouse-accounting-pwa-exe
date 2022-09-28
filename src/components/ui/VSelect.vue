@@ -154,7 +154,17 @@ onMounted(() => {
 })
 
 onUpdated(() => {
-  value.value = props.modelValue
+  if (props.modelValue || props.modelValue === 0) {
+    value.value = props.modelValue
+    if (Array.isArray(props.modelValue) && props.modelValue.length) {
+      isFocused.value = true
+    } else if (
+      !Array.isArray(props.modelValue) &&
+      (props.modelValue || props.modelValue === 0)
+    ) {
+      isFocused.value = true
+    }
+  }
 })
 
 const changeValue = (event: Event) => {

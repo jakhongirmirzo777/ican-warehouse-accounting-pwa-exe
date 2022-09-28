@@ -10,10 +10,10 @@
         <VCol md="4">
           <VSelect
             autocomplete
+            clearable
             vid="parent_id"
             :label="t('parentName')"
             :items="parents"
-            rules="required"
             v-model="formData.parent_id"
           />
         </VCol>
@@ -33,17 +33,17 @@
             v-model="formData.name"
           />
         </VCol>
-        <!--        <VCol md="4">-->
-        <!--          <VSelect-->
-        <!--            autocomplete-->
-        <!--            vid="tariff_id"-->
-        <!--            :label="t('tariff')"-->
-        <!--            :items="tariffs"-->
-        <!--            rules="required"-->
-        <!--            v-model="formData.tariff_id"-->
-        <!--          />-->
-        <!--        </VCol>-->
         <VCol md="4">
+          <VSelect
+            autocomplete
+            vid="tariff_id"
+            :label="t('tariff')"
+            :items="tariffs"
+            rules="required"
+            v-model="formData.tariff_id"
+          />
+        </VCol>
+        <VCol v-if="!formData.id" md="4">
           <VInput
             vid="username"
             :label="t('username')"
@@ -51,8 +51,9 @@
             v-model="formData.username"
           />
         </VCol>
-        <VCol md="4">
+        <VCol v-if="!formData.id" md="4">
           <VInput
+            type="password"
             vid="password"
             :label="t('password')"
             rules="required|min:6|max:255"
@@ -62,8 +63,9 @@
         <VCol md="4">
           <VDatepicker
             vid="start_date"
+            format="YYYY-MM-DD hh:mm:ss"
+            value-format="YYYY-MM-DD hh:mm:ss"
             :label="t('startDate')"
-            rules="required"
             v-model="formData.start_date"
           />
         </VCol>
@@ -103,6 +105,7 @@
         </VCol>
         <VCol md="4">
           <VInput
+            clearable
             vid="inn"
             :label="t('tin')"
             pattern="#########"
@@ -112,6 +115,7 @@
         </VCol>
         <VCol md="4">
           <VInput
+            clearable
             vid="mfo"
             :label="t('mfo')"
             pattern="#####"
@@ -133,19 +137,17 @@
         </VCol>
         <VCol md="4">
           <VInput
-            clearable
             vid="contract"
             :label="t('contract')"
-            rules="required"
+            rules="required|max:255"
             v-model="formData.contract"
           />
         </VCol>
         <VCol md="4">
           <VFile
             clearable
-            vid="file"
-            :label="t('contract')"
-            rules="required"
+            vid="contract_file"
+            :label="t('contractFile')"
             v-model="formData.contract_file"
           />
         </VCol>
@@ -153,8 +155,8 @@
           <VSwitch
             color="primary"
             :label="t('systemCourse')"
-            true-value="1"
-            false-value="0"
+            :true-value="1"
+            :false-value="0"
             v-model="formData.system_course"
           />
         </VCol>
@@ -225,9 +227,10 @@
           :loading="loading"
           radius="12px"
         >
-          {{ t('edit') }}
+          {{ formData.id ? t('edit') : t('add') }}
         </VBtn>
         <VBtn
+          v-if="formData.id"
           type="button"
           color="primary"
           width="160px"
@@ -244,6 +247,7 @@
       <VRow>
         <VCol>
           <VInput
+            type="password"
             vid="password"
             :label="t('password')"
             rules="required"
@@ -252,6 +256,7 @@
         </VCol>
         <VCol>
           <VInput
+            type="password"
             vid="confirm_password"
             :label="t('confirmPassword')"
             rules="required"
@@ -300,8 +305,10 @@ import VIcon from '@/components/ui/VIcon.vue'
 
 import { ref, watch } from 'vue'
 import {
+  createOrganisation,
   fetchTariffs,
   fetchOrganisationsParents,
+  fetchOrganisation,
   editOrganisation,
   changePassword,
 } from '@/services/cabinet/MkoOrganisationsAdminService'
@@ -316,6 +323,7 @@ const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
 const FORM_DATA = {
+  id: null,
   parent_id: null,
   tariff_id: null,
   name: null,
@@ -333,7 +341,7 @@ const FORM_DATA = {
   account: null,
   contract: null,
   phones: [],
-  contract_file: 'https://www.africau.edu/images/default/sample.pdf',
+  contract_file: null,
   logo: null,
 }
 
@@ -347,26 +355,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  data: {
-    type: Object,
-    default: () => ({}),
+  id: {
+    type: Number,
+    required: true,
   },
 })
-
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (val) {
-      formData.value = $getValuesByKey(FORM_DATA, props.data)
-      formData.value.logo = props.data.logo_url
-      phones.value.phone = $clearNonDigits(props.data.phones[0]) || ''
-      phones.value.phones =
-        props.data.phones?.length > 1
-          ? props.data.phones.slice(1).map((p: string) => $clearNonDigits(p))
-          : []
-    }
-  }
-)
 
 const emits = defineEmits(['update:modelValue', 'submit'])
 
@@ -384,6 +377,21 @@ const parents = ref([])
 const tariffs = ref([])
 
 watch(
+  () => props.id,
+  (val) => {
+    if (val) {
+      useFetchOrganisation()
+    } else {
+      formData.value = { ...FORM_DATA }
+      phones.value = {
+        phone: '',
+        phones: [],
+      }
+    }
+  }
+)
+
+watch(
   () => changePasswordDialog.value,
   (val) => {
     if (!val) {
@@ -392,6 +400,25 @@ watch(
     }
   }
 )
+
+const useFetchOrganisation = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchOrganisation(props.id)
+    formData.value = $getValuesByKey(FORM_DATA, data)
+    formData.value.system_course = data.system_course ? 1 : 0
+    formData.value.logo = data.logo_url
+    formData.value.contract_file = data.contract_file_url
+    phones.value.phone = $clearNonDigits(data.phones[0]) || ''
+    phones.value.phones =
+      data.phones?.length > 1
+        ? data.phones.slice(1).map((p: string) => $clearNonDigits(p))
+        : []
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
 
 const useFetchOrganisationsParents = async () => {
   try {
@@ -428,7 +455,7 @@ const onChangePassword = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loadingChangePassword.value = true
-    await changePassword({ id: props.data.id, ...formDataPassword.value })
+    await changePassword(formData.value.id, formDataPassword.value)
     changePasswordDialog.value = false
   } catch (err) {
     $setFormErrors(err)
@@ -453,10 +480,22 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     )
     const handledFormData = new FormData()
     await Object.entries(formData.value).forEach(([key, val]) => {
-      if (val && key !== 'logo' && key !== 'phones') {
+      if (
+        val &&
+        key !== 'logo' &&
+        key !== 'contract_file' &&
+        key !== 'system_course' &&
+        key !== 'phones'
+      ) {
+        handledFormData.append(key, val)
+      }
+      if (key === 'system_course') {
         handledFormData.append(key, val)
       }
       if (val && key === 'logo' && typeof val === 'object') {
+        handledFormData.append(key, val)
+      }
+      if (val && key === 'contract_file' && typeof val === 'object') {
         handledFormData.append(key, val)
       }
       if (val && key === 'phones') {
@@ -465,8 +504,12 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
         })
       }
     })
-    await handledFormData.append('_method', 'PUT')
-    await editOrganisation(props.data.id, handledFormData)
+    if (formData.value.id) {
+      await handledFormData.append('_method', 'PUT')
+      await editOrganisation(formData.value.id, handledFormData)
+    } else {
+      await createOrganisation(handledFormData)
+    }
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {
