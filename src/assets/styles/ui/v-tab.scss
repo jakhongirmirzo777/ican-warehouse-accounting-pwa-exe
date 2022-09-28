@@ -28,12 +28,12 @@
   }
 
   @each $name, $value in (
-          gray: var(--color-gray),
-          default: var(--color-light-green),
-          green: var(--color-green),
-          danger: var(--color-dark-red),
-          light-red: var(--color-light-red),
-          warning: var(--color-yellow),
+          "gray": var(--color-gray),
+          "default": var(--color-light-green),
+          "green": var(--color-green),
+          "danger": var(--color-dark-red),
+          "light-red": var(--color-light-red),
+          "warning": var(--color-yellow),
   ) {
     &__active--#{$name} {
       color: $value;

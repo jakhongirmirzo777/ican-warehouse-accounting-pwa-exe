@@ -4,12 +4,12 @@
   position: relative;
   margin: 5px;
   @each $name, $value in (
-          gray: var(--color-gray),
-          primary: var(--color-light-green),
-          default: var(--color-green),
-          danger: var(--color-dark-red),
-          light-red: var(--color-light-red),
-          warning: var(--color-yellow),
+          "gray": var(--color-gray),
+          "primary": var(--color-light-green),
+          "default": var(--color-green),
+          "danger": var(--color-dark-red),
+          "light-red": var(--color-light-red),
+          "warning": var(--color-yellow),
   ) {
     &__input {
       &:checked ~ .v-switch--theme__indicator-#{$name} {
