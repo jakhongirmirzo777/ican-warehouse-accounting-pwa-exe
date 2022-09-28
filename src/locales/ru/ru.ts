@@ -125,6 +125,7 @@ export default {
   tariff: 'Тариф',
   contractFile: 'Контракт файл',
   changeStatus: 'Изменить статус',
+  addOrganizations: 'Добавление организации',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

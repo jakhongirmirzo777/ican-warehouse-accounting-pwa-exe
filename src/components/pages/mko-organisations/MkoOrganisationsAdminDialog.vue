@@ -1,7 +1,7 @@
 <template>
   <VModal
     width="966px"
-    :title="t('editOrganizations')"
+    :title="formData.id ? t('editOrganizations') : t('addOrganizations')"
     :model-value="modelValue"
     @update:modelValue="(val) => $emit('update:modelValue', val)"
   >

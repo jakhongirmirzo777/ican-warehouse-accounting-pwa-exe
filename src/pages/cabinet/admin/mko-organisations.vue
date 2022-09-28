@@ -4,7 +4,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol xl="1" md="3">
         <VBtn
           class="mb-20"
           color="primary"
@@ -16,14 +16,14 @@
             }
           "
         >
-          <VIcon class="mr-14" size="20" icon="circle-plus" />
+          <VIcon class="mr-8" size="20" icon="circle-plus" />
           {{ t('add') }}
         </VBtn>
       </VCol>
-      <VCol md="2">
+      <VCol xl="2" md="3">
         <VInput clearable :label="t('search')" v-model="options.search" />
       </VCol>
-      <VCol md="2">
+      <VCol xl="2" md="3">
         <VSelect
           localize
           clearable
@@ -34,10 +34,7 @@
           item-value="value"
         />
       </VCol>
-      <VCol md="2">
-        <VInput clearable :label="t('name')" v-model="options.name" />
-      </VCol>
-      <VCol md="2">
+      <VCol xl="2" md="3">
         <VInput
           only="number"
           clearable
@@ -45,14 +42,17 @@
           v-model="options.inn"
         />
       </VCol>
-      <VCol md="2">
+      <VCol xl="2" md="4">
+        <VInput clearable :label="t('name')" v-model="options.name" />
+      </VCol>
+      <VCol xl="2" md="4">
         <VInput
           clearable
           :label="t('companyName')"
           v-model="options.company_name"
         />
       </VCol>
-      <VCol md="2">
+      <VCol xl="1" md="4">
         <VFilterActions @filter="filterData" @clear="clearFilter" />
       </VCol>
     </VRow>
@@ -65,8 +65,10 @@
         />
       </template>
       <template #item.phones="{ item }">
-        <div v-for="(phone, i) in item.phones" :key="`phone-${i}`">
-          {{ $phoneFormat(phone) }}
+        <div>
+          <div v-for="(phone, i) in item.phones" :key="`phone-${i}`">
+            {{ $phoneFormat(phone) }}
+          </div>
         </div>
       </template>
       <template #item.status="{ item }">
