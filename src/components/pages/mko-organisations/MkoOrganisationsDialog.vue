@@ -73,8 +73,8 @@
           <VSwitch
             color="primary"
             :label="t('systemCourse')"
-            true-value="1"
-            false-value="0"
+            :true-value="1"
+            :false-value="0"
             v-model="formData.system_course"
           />
         </VCol>
@@ -164,6 +164,7 @@
       <VRow>
         <VCol>
           <VInput
+            type="password"
             vid="password"
             :label="t('password')"
             rules="required"
@@ -172,6 +173,7 @@
         </VCol>
         <VCol>
           <VInput
+            type="password"
             vid="confirm_password"
             :label="t('confirmPassword')"
             rules="required"
@@ -265,6 +267,7 @@ watch(
   (val) => {
     if (val) {
       formData.value = $getValuesByKey(FORM_DATA, props.data)
+      formData.value.system_course = props.data.system_course ? 1 : 0
       formData.value.logo = props.data.logo_url
       phones.value.phone = $clearNonDigits(props.data.phones[0]) || ''
       phones.value.phones =
@@ -327,7 +330,15 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     )
     const handledFormData = new FormData()
     await Object.entries(formData.value).forEach(([key, val]) => {
-      if (val && key !== 'logo' && key !== 'phones') {
+      if (
+        val &&
+        key !== 'logo' &&
+        key !== 'system_course' &&
+        key !== 'phones'
+      ) {
+        handledFormData.append(key, val)
+      }
+      if (key === 'system_course') {
         handledFormData.append(key, val)
       }
       if (val && key === 'logo' && typeof val === 'object') {
