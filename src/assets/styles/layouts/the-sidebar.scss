@@ -51,6 +51,13 @@ $active-bg: #324071;
       width: $sidebar-mini-width;
     }
 
+    &__header {
+      height: 72px;
+      display: none;
+      align-items: center;
+      padding: 0 20px;
+    }
+
     //&:hover {
     //  width: $sidebar-width;
     //}
@@ -215,8 +222,8 @@ $active-bg: #324071;
     &__list {
       transform: translateX(-244px);
       position: fixed;
-      height: calc(100vh - 5px);
-      top: 5px;
+      height: 100vh;
+      top: 0;
 
       &--mini {
         width: $sidebar-width !important;
@@ -251,6 +258,22 @@ $active-bg: #324071;
         left: 0;
         top: 0;
         background: rgba(0, 0, 0, .4);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .sidebar {
+    &__list {
+      width: 100% !important;
+      transform: translateX(-100%);
+      border-radius: unset !important;
+      &--mini {
+        transform: translateX(0);
+      }
+      &__header {
+        display: flex !important;
       }
     }
   }

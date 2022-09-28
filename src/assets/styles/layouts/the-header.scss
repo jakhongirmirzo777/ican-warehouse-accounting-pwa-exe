@@ -39,38 +39,40 @@
         font-weight: 600;
         font-size: 12px;
         color: #143D5B;
+        &__light {
+          color: var(--color-white) !important;
+        }
       }
       &__sub-title {
         font-size: 12px;
         line-height: 16px;
         color: #667A88;
+        &__light {
+          color: var(--color-white) !important;
+        }
       }
     }
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 765px) {
   .header {
+    justify-content: space-between;
     &__search {
       display: none;
     }
-  }
-}
-@media screen and (max-width: 550px) {
-  .header {
     &__setting {
       &-icons {
-        display: none;
+        &__setting {
+          display: none;
+        }
       }
     }
-  }
-}
-@media screen and (max-width: 420px) {
-  .header {
-    &__profile {
-      &-menu {
-        display: none;
-      }
+    &__profile-dropdown {
+      display: none;
+    }
+    &__spacer {
+      display: none;
     }
   }
 }
