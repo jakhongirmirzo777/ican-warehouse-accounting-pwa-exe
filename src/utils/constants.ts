@@ -20,12 +20,17 @@ export const NOTIFICATION_TYPES: Record<
 
 export const MKO_STATUSES = {
   '10': 'active',
+  '0': 'notActive',
 }
 
 export const MKO_STATUSES_COLORED = {
   '10': {
     theme: 'rgba(40, 180, 70, 0.24)',
     color: '#28B446',
+  },
+  '0': {
+    theme: 'rgba(255,32,144,0.24)',
+    color: '#FF2090',
   },
 }
 

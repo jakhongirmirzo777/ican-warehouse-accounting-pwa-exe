@@ -117,6 +117,12 @@ export default {
   editPlaces: 'Редактирование Места',
   activate: 'Активировать',
   doNotActivate: 'Не активировать',
+  clientControlling: 'Управление клиентами',
+  contract: 'Контракт',
+  username: 'Имя пользователя',
+  startDate: 'Дата начала',
+  bank: 'Банк',
+  tariff: 'Тариф',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

@@ -183,6 +183,13 @@ const menus = computed(() => {
         path: 'locations',
       },
       {
+        name: t('clientControlling'),
+        icon: 'clients',
+        children: [
+          { name: t('organisations'), path: 'mko-organisations-admin' },
+        ],
+      },
+      {
         name: t('reference'),
         icon: 'info-square',
         children: [

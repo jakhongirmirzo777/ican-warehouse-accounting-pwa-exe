@@ -158,6 +158,14 @@ const rawRoutes = [
         },
       },
       {
+        path: 'mko-organisations-admin',
+        name: 'mko-organisations-admin',
+        component: () => import('@/pages/cabinet/admin/mko-organisations.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
