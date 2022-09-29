@@ -220,14 +220,13 @@ $active-bg: #324071;
 @media screen and (max-width: 1265px) {
   .sidebar {
     &__list {
-      transform: translateX(-244px);
       position: fixed;
       height: 100vh;
       top: 0;
 
       &--mini {
         width: $sidebar-width !important;
-        transform: translateX(0);
+        transform: translateX(-244px);
       }
 
       &__item__hover {
@@ -267,10 +266,9 @@ $active-bg: #324071;
   .sidebar {
     &__list {
       width: 100% !important;
-      transform: translateX(-100%);
       border-radius: unset !important;
       &--mini {
-        transform: translateX(0);
+        transform: translateX(-100%);
       }
       &__header {
         display: flex !important;

@@ -87,7 +87,7 @@
     </div>
     <span
       @click="$emit('toggleMini')"
-      :class="[{ 'sidebar__shadow--active': isMini }, 'sidebar__shadow']"
+      :class="[{ 'sidebar__shadow--active': !isMini }, 'sidebar__shadow']"
     />
   </div>
 </template>

@@ -61,4 +61,4 @@ export const PRICE_CHANGE_INDEXED = Object.entries(PRICE_CHANGE).reduce(
   []
 )
 
-export const MINI_MENU_MEDIA_WIDTH = 1265
+export const MINI_MENU_MEDIA_WIDTH = 750
