@@ -302,6 +302,8 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VUpload from '@/components/ui/VUpload.vue'
 import VSwitch from '@/components/ui/VSwitch.vue'
 import VIcon from '@/components/ui/VIcon.vue'
+import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VFile from '@/components/ui/VFile.vue'
 
 import { ref, watch } from 'vue'
 import {
@@ -317,8 +319,6 @@ import { PRICE_CHANGE_INDEXED } from '@/utils/constants'
 import { $getValuesByKey, $clearNonDigits } from '@/utils/pure-functions'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
-import VDatepicker from '@/components/ui/VDatepicker.vue'
-import VFile from '@/components/ui/VFile.vue'
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
