@@ -20,8 +20,10 @@
         />
       </template>
       <template #item.phones="{ item }">
-        <div v-for="(phone, i) in item.phones" :key="i">
-          {{ $phoneFormat(phone) }}
+        <div>
+          <div v-for="(phone, i) in item.phones" :key="i">
+            {{ $phoneFormat(phone) }}
+          </div>
         </div>
       </template>
       <template #item.system_course="{ item }">

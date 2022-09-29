@@ -6,7 +6,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { $clearExtension } from '@/utils/pure-functions'
 
 const props = defineProps({
   color: {
@@ -17,9 +16,9 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  width: {
+  minWidth: {
     type: String,
-    default: '64px',
+    default: '',
   },
 })
 
@@ -27,7 +26,7 @@ const styles = computed(() => {
   const allStyles: Record<string, string> = {}
   if (props.color) allStyles['color'] = props.color
   if (props.theme) allStyles['background-color'] = props.theme
-  if (props.width) allStyles['width'] = $clearExtension(props.width)
+  if (props.minWidth) allStyles['min-width'] = props.minWidth
   return allStyles
 })
 </script>

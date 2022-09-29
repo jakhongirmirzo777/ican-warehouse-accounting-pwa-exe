@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { ElDatePicker, ElConfigProvider } from 'element-plus'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUpdated, ref, watch } from 'vue'
 import VTransition from '@/components/ui/VTransition.vue'
 import lang from '@//locales/date-locale/locale'
 
@@ -88,6 +88,10 @@ watch(props, (val) => {
 })
 
 onMounted(() => {
+  if (props.modelValue) isOpen.value = true
+})
+
+onUpdated(() => {
   if (props.modelValue) isOpen.value = true
 })
 

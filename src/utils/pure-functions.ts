@@ -40,6 +40,16 @@ export const $clearExtension = (val: string, ext = 'px') => {
   else return `${val}${ext}`
 }
 
+export const $downloadFile = (url: string, fileName = 'file') => {
+  const a = document.createElement('a')
+  document.body.appendChild(a)
+  a.style.display = 'none'
+  a.href = url
+  a.download = fileName
+  a.click()
+  a.remove()
+}
+
 export const $downloadBlobFile = (blob: Blob, fileName = 'file') => {
   const a = document.createElement('a')
   document.body.appendChild(a)
