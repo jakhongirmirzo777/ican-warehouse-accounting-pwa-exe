@@ -1,0 +1,15 @@
+.profile-menu {
+  &__user-block {
+    display: flex;
+    &__info {
+      margin-left: 14px;
+      &__title {
+        &__light {
+          color: var(--color-white);
+        }
+      }
+      &__sub-title {
+      }
+    }
+  }
+}

@@ -1,6 +1,17 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__list" :class="[{ 'sidebar__list--mini': isMini }]">
+      <div class="sidebar__list__header">
+        <VIcon
+          icon="x-mark"
+          size="30"
+          color="#AFCBEF"
+          class="mr-20"
+          @click="$emit('toggleMini')"
+        />
+        <ProfileDropdown class="sidebar__list__profile-dropdown" theme />
+      </div>
+      <VLine />
       <div
         v-for="(list, i) in listFrom"
         :key="`list-${i}`"
@@ -76,7 +87,7 @@
     </div>
     <span
       @click="$emit('toggleMini')"
-      :class="[{ 'sidebar__shadow--active': isMini }, 'sidebar__shadow']"
+      :class="[{ 'sidebar__shadow--active': !isMini }, 'sidebar__shadow']"
     />
   </div>
 </template>
@@ -84,6 +95,8 @@
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
+import VLine from '@/components/ui/VLine.vue'
+import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
 
 import { computed, onMounted, ref, watch } from 'vue'
 import type { ListTypes } from '@/types/components/ListTypes'

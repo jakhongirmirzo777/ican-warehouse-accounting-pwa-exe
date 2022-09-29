@@ -20,8 +20,7 @@ const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {
   windowWidth.value = window.innerWidth
-  const isStorage = localStorage.getItem(IS_MINI_KEY) === 'true'
-  isMini.value = windowWidth.value > 1265 && isStorage
+  isMini.value = localStorage.getItem(IS_MINI_KEY) === 'true'
 })
 const toggleMini = () => {
   isMini.value = !isMini.value
