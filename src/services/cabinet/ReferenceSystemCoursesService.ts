@@ -5,6 +5,7 @@ import type {
   ReferenceSystemCoursesFormTypes,
   ReferenceSystemCoursesPageOptionsType,
 } from '@/types/cabinet/ReferenceSystemCoursesTypes'
+import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCoursesTypes'
 const BASE_URL_ADDITIONAL = 'admin'
 
 export const fetchReferenceSystemCourses = async (
@@ -16,6 +17,17 @@ export const fetchReferenceSystemCourses = async (
     >(`${BASE_URL_ADDITIONAL}/system-courses`, {
       params,
     })
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const getCurrencyList = async () => {
+  try {
+    const { data } = await http.get<{ data: Array<CurrencyKeyList> }>(
+      `${BASE_URL_ADDITIONAL}/currencies/list`
+    )
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

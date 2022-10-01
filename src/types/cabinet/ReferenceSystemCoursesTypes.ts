@@ -2,6 +2,7 @@ export interface ReferenceSystemCoursesFormTypes {
   amount: string
   id?: number
   currency_id?: number
+  _method?: string
 }
 
 export interface ReferencePartySystemCoursesDataItemType {
@@ -9,7 +10,7 @@ export interface ReferencePartySystemCoursesDataItemType {
   name: string
   amount?: string
   type: string
-  index: number
+  index?: number
 }
 
 export interface ReferenceSystemCoursesPageOptionsType {

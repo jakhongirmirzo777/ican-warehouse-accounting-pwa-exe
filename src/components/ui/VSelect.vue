@@ -35,6 +35,7 @@
         size="large"
         :clearable="clearable"
         v-bind="field"
+        :loading="loading"
       >
         <el-option
           v-for="(item, i) in items"
@@ -113,7 +114,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  bodyLoading: {
+  loading: {
     type: Boolean,
     default: false,
   },
