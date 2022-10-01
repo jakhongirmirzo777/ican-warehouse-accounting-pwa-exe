@@ -54,7 +54,6 @@
             item-value="id"
             rules="required|max:255"
             vid="key"
-            :loading="coursesListLoading"
             v-model="form.key"
           />
         </VCol>
@@ -125,8 +124,6 @@ const currencyKeyList = ref<Array<CurrencyKeyList>>([])
 
 const loading = ref(false)
 
-const coursesListLoading = ref(false)
-
 const formRef = ref()
 
 watch(dialog, (val) => {
@@ -160,14 +157,11 @@ const submit = async (_: never, actions: ActionInterface) => {
 }
 
 const fetchCurrencyList = async () => {
-  coursesListLoading.value = true
   try {
     const { data } = await getCurrencyList()
     currencyKeyList.value = data
   } catch (err) {
     $setResponseErrors(err)
-  } finally {
-    coursesListLoading.value = false
   }
 }
 
