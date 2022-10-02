@@ -151,25 +151,36 @@ const closeAndAddIsOpen = () => {
 }
 
 const childToggleMenu = (list: ListTypes, refs: any) => {
-  let blockHeight = 0
   if (!list.isOpen) {
     listFrom.value.forEach((p: ListTypes) => {
       p.isOpen = false
     })
   }
+  if (props.isMini && props.windowWidth > MINI_MENU_MEDIA_WIDTH) {
+    emits('toggleMini')
+    closeAndAddIsOpen()
+  }
   if (oldRef.value && oldRef.value.length) {
     oldRef.value[0].style.height = 0
   }
+  if (props.isMini) {
+    setTimeout(() => {
+      afterOpenMenu(refs, list)
+    }, 200)
+  } else {
+    afterOpenMenu(refs, list)
+  }
+  oldRef.value = refs
+}
+
+const afterOpenMenu = (refs: any, list: ListTypes) => {
+  let blockHeight = 0
   if (refs && refs[0].children && Object.keys(refs[0].children).length) {
     Object.keys(refs[0].children).forEach((p: any) => {
       if (refs[0].children[p]) {
         blockHeight += refs[0].children[p].clientHeight
       }
     })
-  }
-  if (props.isMini && props.windowWidth > MINI_MENU_MEDIA_WIDTH) {
-    emits('toggleMini')
-    closeAndAddIsOpen()
   }
   if (list.children && list.children.length) {
     list.isOpen = !list.isOpen
@@ -179,7 +190,6 @@ const childToggleMenu = (list: ListTypes, refs: any) => {
       refs[0].style.height = 0
     }
   }
-  oldRef.value = refs
 }
 
 const menus = computed(() => {
@@ -206,7 +216,8 @@ const menus = computed(() => {
         name: t('reference'),
         icon: 'info-square',
         children: [
-          { name: t('currencies'), path: 'reference-system-courses' },
+          { name: t('currencies'), path: 'reference-courses' },
+          { name: t('systemCourse'), path: 'reference-system-courses' },
           { name: t('units'), path: 'reference-units' },
         ],
       },

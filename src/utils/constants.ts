@@ -66,4 +66,17 @@ export const PRICE_CHANGE_INDEXED = Object.entries(PRICE_CHANGE).reduce(
   []
 )
 
+export const LOCATIONS_STATUSES = {
+  0: {
+    title: 'notActive',
+    color: 'danger',
+    confirmTitle: 'activate',
+  },
+  10: {
+    title: 'active',
+    color: 'success',
+    confirmTitle: 'doNotActivate',
+  },
+}
+
 export const MINI_MENU_MEDIA_WIDTH = 750

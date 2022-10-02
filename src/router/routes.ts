@@ -166,6 +166,14 @@ const rawRoutes = [
         },
       },
       {
+        path: 'reference-courses',
+        name: 'reference-courses',
+        component: () => import('@/pages/cabinet/admin/courses.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),

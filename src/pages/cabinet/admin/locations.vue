@@ -21,15 +21,12 @@
         </template>
         <template #item.status="{ item }">
           <div class="d-flex align-center">
-            <VBtn v-if="item.status === 10" color="success" text>{{
-              $t('active')
-            }}</VBtn>
-            <VBtn v-if="item.status === 0" color="danger" text>{{
-              $t('notActive')
+            <VBtn :color="LOCATIONS_STATUSES[item.status].color" text>{{
+              $t(LOCATIONS_STATUSES[item.status].title)
             }}</VBtn>
             <ElPopconfirm
               hide-icon
-              :title="title(item.status)"
+              :title="$t(LOCATIONS_STATUSES[item.status].confirmTitle)"
               cancel-button-type="primary"
               confirm-button-type="danger"
               :confirm-button-text="t('yes')"
@@ -69,6 +66,7 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VRow from '@/components/ui/VRow.vue'
 import { ElPopconfirm } from 'element-plus'
+import { LOCATIONS_STATUSES } from '@/utils/constants'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
@@ -110,11 +108,6 @@ const pageOptions = ref<{
   total: 0,
   perPage: 0,
 })
-
-const title = (val: number) => {
-  if (val === 10) return t('doNotActivate')
-  if (val === 0) return t('activate')
-}
 
 const fetchData = async () => {
   try {

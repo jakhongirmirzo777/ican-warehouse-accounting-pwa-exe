@@ -1,30 +1,60 @@
 <template>
   <VModal
-    :title="form.id ? t('editSystemCourse') : t('addSystemCourse')"
+    :title="form.id ? t('addCurrencies') : t('editCurrencies')"
     v-model="dialog"
-    width="448"
+    width="718"
   >
     <Form @submit="submit" ref="formRef">
       <VRow>
-        <VCol>
+        <VCol cols="12" md="6">
           <VInput
-            :label="$t('amount')"
+            :label="$t('name_uz')"
             rules="required|max:255"
-            vid="amount"
-            type="money"
-            v-model="form.amount"
+            vid="name_uz"
+            v-model="form.name_uz"
           />
         </VCol>
-        <VCol>
-          <VSelect
-            :label="$t('currencies')"
+        <VCol cols="12" md="6">
+          <VInput
+            :label="$t('name_ru')"
             rules="required|max:255"
-            vid="currency_id"
-            type="money"
-            :items="currencyList"
+            vid="name_ru"
+            v-model="form.name_ru"
+          />
+        </VCol>
+        <VCol cols="12" md="6">
+          <VInput
+            :label="$t('name_oz')"
+            rules="required|max:255"
+            vid="name_en"
+            v-model="form.name_oz"
+          />
+        </VCol>
+        <VCol cols="12" md="6">
+          <VInput
+            :label="$t('url')"
+            rules="required|max:255"
+            vid="url"
+            v-model="form.url"
+          />
+        </VCol>
+        <VCol cols="12" md="6">
+          <VInput
+            :label="$t('symbol')"
+            rules="required|max:255"
+            vid="symbol"
+            v-model="form.symbol"
+          />
+        </VCol>
+        <VCol cols="12" md="6">
+          <VSelect
+            :label="$t('counterparties')"
+            :items="currencyKeyList"
             item-text="name"
             item-value="id"
-            v-model="form.currency_id"
+            rules="required|max:255"
+            vid="key"
+            v-model="form.key"
           />
         </VCol>
       </VRow>
@@ -55,47 +85,44 @@ import VSelect from '@/components/ui/VSelect.vue'
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import {
+  createEditCourses,
+  getCurrencyList,
+} from '@/services/cabinet/ReferenceCoursesServise'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import {
-  createEditReferenceSystemCourses,
-  getCurrencyList,
-} from '@/services/cabinet/ReferenceSystemCoursesService'
-import type { ReferenceSystemCoursesFormTypes } from '@/types/cabinet/ReferenceSystemCoursesTypes'
-import { $clearNonDigits } from '@/utils/pure-functions'
+import type { ReferenceCoursesFormTypes } from '@/types/cabinet/ReferenceCoursesTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCoursesTypes'
-
-interface ValueType<T> {
-  value: T
-}
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
 const FORM_DATA = {
-  amount: '',
+  name_uz: '',
+  name_ru: '',
+  name_oz: '',
+  key: '',
+  url: '',
+  symbol: '',
 }
 
 defineProps({
   positionList: Array,
-  counterpartyList: Array,
 })
 
 const emits = defineEmits(['fetch-data'])
 
 const dialog = ref(false)
 
-const form: ValueType<ReferenceSystemCoursesFormTypes> = ref({
+const form = ref<ReferenceCoursesFormTypes>({
   ...FORM_DATA,
 })
 
+const currencyKeyList = ref<Array<CurrencyKeyList>>([])
+
 const loading = ref(false)
-
-const coursesListLoading = ref(false)
-
-const currencyList = ref<Array<CurrencyKeyList>>([])
 
 const formRef = ref()
 
@@ -106,11 +133,9 @@ watch(dialog, (val) => {
   }
 })
 
-const openDialog = (item: ReferenceSystemCoursesFormTypes) => {
+const openDialog = (item: ReferenceCoursesFormTypes) => {
   if (item && item.id) {
-    form.value.currency_id = item.currency_id
-    form.value.amount = item.amount
-    form.value.id = item.id
+    form.value = { ...item }
   }
   dialog.value = true
 }
@@ -119,8 +144,7 @@ const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
-    form.value.amount = $clearNonDigits(form.value.amount)
-    await createEditReferenceSystemCourses(form.value)
+    await createEditCourses(form.value)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false
@@ -133,14 +157,11 @@ const submit = async (_: never, actions: ActionInterface) => {
 }
 
 const fetchCurrencyList = async () => {
-  coursesListLoading.value = true
   try {
     const { data } = await getCurrencyList()
-    currencyList.value = data
+    currencyKeyList.value = data
   } catch (err) {
     $setResponseErrors(err)
-  } finally {
-    coursesListLoading.value = false
   }
 }
 
