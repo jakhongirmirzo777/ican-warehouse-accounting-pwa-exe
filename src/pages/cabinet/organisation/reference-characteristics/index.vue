@@ -10,7 +10,7 @@
           color="primary"
           to="/cabinet/reference-characteristics-item"
         >
-          <VIcon class="mr-14" size="20" icon="circle-plus" />
+          <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ t('add') }}
         </VBtn>
       </VCol>

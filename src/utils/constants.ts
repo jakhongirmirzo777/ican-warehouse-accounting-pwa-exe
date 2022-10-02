@@ -79,4 +79,91 @@ export const LOCATIONS_STATUSES = {
   },
 }
 
+export const TRANSACTION_TYPES = {
+  debit: 'debit',
+  credit: 'credit',
+  other: 'other',
+}
+
+export const TRANSACTION_TYPES_INDEXED = Object.entries(
+  TRANSACTION_TYPES
+).reduce((acc: Array<Record<string, string | number>>, [key, val]) => {
+  return [
+    ...acc,
+    {
+      text: val,
+      value: key,
+    },
+  ]
+}, [])
+
+export const PAYMENT_TYPES = {
+  myuzcard: 'myuzcard',
+  cash: 'cash',
+  terminal: 'terminal',
+  bank: 'bankAccount',
+  card: 'card',
+  system: 'system',
+  discount: 'discount',
+}
+
+export const PAYMENT_TYPES_INDEXED = Object.entries(PAYMENT_TYPES).reduce(
+  (acc: Array<Record<string, string | number>>, [key, val]) => {
+    return [
+      ...acc,
+      {
+        text: val,
+        value: key,
+      },
+    ]
+  },
+  []
+)
+
+export const PAYMENT_STATUSES = {
+  '10': 'success',
+  '0': 'error',
+  '5': 'pending',
+  '3': 'canceled',
+}
+
+export const PAYMENT_STATUSES_VALUE = {
+  SUCCESS: 10,
+  ERROR: 0,
+  PENDING: 5,
+  CANCELED: 3,
+}
+
+export const PAYMENT_STATUSES_COLORED = {
+  '10': {
+    theme: 'rgba(40, 180, 70, 0.24)',
+    color: '#28B446',
+  },
+  '0': {
+    theme: 'rgba(255,32,144,0.24)',
+    color: '#FF2090',
+  },
+  '5': {
+    theme: 'rgba(23,189,192,0.24)',
+    color: '#17BDC0',
+  },
+  '3': {
+    theme: 'rgba(230,168,18,0.24)',
+    color: '#E6A812',
+  },
+}
+
+export const PAYMENT_STATUSES_INDEXED = Object.entries(PAYMENT_STATUSES).reduce(
+  (acc: Array<Record<string, string | number>>, [key, val]) => {
+    return [
+      ...acc,
+      {
+        text: val,
+        value: +key,
+      },
+    ]
+  },
+  []
+)
+
 export const MINI_MENU_MEDIA_WIDTH = 750
