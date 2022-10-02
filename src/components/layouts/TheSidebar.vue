@@ -312,14 +312,11 @@ const menus = computed(() => {
           { name: t('departments'), path: 'workers-controlling-departments' },
         ],
       },
-      // {
-      //   name: 'Настройки',
-      //   icon: 'setting-icon',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //   ],
-      // },
+      {
+        name: t('setting'),
+        icon: 'setting-icon',
+        children: [{ name: t('bonusTariff'), path: 'tariffs-bonuses' }],
+      },
     ]
   }
   return [
