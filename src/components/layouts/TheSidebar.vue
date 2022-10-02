@@ -221,6 +221,11 @@ const menus = computed(() => {
           { name: t('units'), path: 'reference-units' },
         ],
       },
+      {
+        name: t('setting'),
+        icon: 'setting-icon',
+        children: [{ name: t('tariff'), path: 'tariffs' }],
+      },
     ]
   }
   if (user.value?.type === 'organisation') {
