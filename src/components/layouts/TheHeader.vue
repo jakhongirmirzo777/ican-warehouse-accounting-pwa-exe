@@ -14,7 +14,7 @@
       </VInput>
     </div>
     <VSpacer class="header__spacer"></VSpacer>
-    <div class="header__setting-icons">
+    <div class="header__setting-icons mr-10">
       <VIcon
         class="mr-3 header__setting-icons__setting"
         size="100%"

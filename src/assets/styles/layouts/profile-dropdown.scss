@@ -1,14 +1,25 @@
 .profile-menu {
   &__user-block {
     display: flex;
+
     &__info {
       margin-left: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
       &__title {
+        color: #143D5B;
+        font-weight: 600;
+        font-size: 12px;
+
         &__light {
           color: var(--color-white);
         }
       }
+
       &__sub-title {
+        font-size: 12px;
       }
     }
   }

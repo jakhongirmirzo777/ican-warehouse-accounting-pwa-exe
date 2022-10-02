@@ -6,7 +6,7 @@
           icon="x-mark"
           size="30"
           color="#AFCBEF"
-          class="mr-20"
+          class="mr-20 cursor-pointer"
           @click="$emit('toggleMini')"
         />
         <ProfileDropdown class="sidebar__list__profile-dropdown" theme />
