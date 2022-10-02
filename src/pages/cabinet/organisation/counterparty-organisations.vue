@@ -7,7 +7,7 @@
       <VRow>
         <VCol md="1">
           <VBtn class="mb-20" color="primary" width="100%" @click="openDialog">
-            <VIcon class="mr-14" size="20" icon="circle-plus" />
+            <VIcon class="mr-10" size="20" icon="circle-plus" />
             {{ $t('add') }}
           </VBtn>
         </VCol>

@@ -101,7 +101,7 @@ import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { ListTypes } from '@/types/components/ListTypes'
 import { useRoute } from 'vue-router'
-import { MINI_MENU_MEDIA_WIDTH } from '@/utils/constants'
+import { MINI_MENU_MEDIA_WIDTH, ROLES } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
 
@@ -183,7 +183,7 @@ const childToggleMenu = (list: ListTypes, refs: any) => {
 }
 
 const menus = computed(() => {
-  if (user.value?.type === 'superAdmin') {
+  if (user.value?.type === ROLES.SUPER_ADMIN) {
     return [
       {
         name: t('main'),
@@ -200,6 +200,7 @@ const menus = computed(() => {
         icon: 'clients',
         children: [
           { name: t('organisations'), path: 'mko-organisations-admin' },
+          { name: t('payments'), path: 'payments' },
         ],
       },
       {
@@ -212,7 +213,7 @@ const menus = computed(() => {
       },
     ]
   }
-  if (user.value?.type === 'organisation') {
+  if (user.value?.type === ROLES.ORGANISATION) {
     return [
       {
         name: t('main'),
