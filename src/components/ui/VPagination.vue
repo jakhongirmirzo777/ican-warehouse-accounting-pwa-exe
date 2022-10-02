@@ -15,7 +15,12 @@
     </div>
     <div class="v-pagination__box">
       <form @submit.prevent="onPageClick(goPage)" class="v-pagination__go">
-        <input class="v-pagination__go__input" type="number" v-model="goPage" />
+        <input
+          class="v-pagination__go__input"
+          type="number"
+          min="1"
+          v-model="goPage"
+        />
         <button class="v-pagination__go__button" type="submit">
           <VIcon color="#868EAA" size="16" icon="arrow-right" />
         </button>
@@ -97,7 +102,11 @@ const pageRange = computed(() => {
 })
 
 const onPageClick = (page: number) => {
-  emit('update:modelValue', page)
+  if (page > 0) {
+    emit('update:modelValue', page)
+  } else {
+    goPage.value = 1
+  }
 }
 
 const onPrevClick = () => {
