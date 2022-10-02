@@ -166,6 +166,14 @@ const rawRoutes = [
         },
       },
       {
+        path: 'tariffs',
+        name: 'tariffs',
+        component: () => import('@/pages/cabinet/admin/admin-tariff.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
