@@ -4,8 +4,8 @@ import type {
   ReferencePartySystemCoursesDataItemType,
   ReferenceSystemCoursesFormTypes,
   ReferenceSystemCoursesPageOptionsType,
-} from '@/types/cabinet/ReferenceSystemCoursesTypes'
-import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCoursesTypes'
+} from '@/types/cabinet/ReferenceCoursesTypes'
+import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 const BASE_URL_ADDITIONAL = 'admin'
 
 export const fetchReferenceSystemCourses = async (

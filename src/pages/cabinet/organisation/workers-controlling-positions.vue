@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('positions') }}
   </VText>
@@ -65,6 +66,7 @@ import VLine from '@/components/ui/VLine.vue'
 import VTable from '@/components/ui/VTable.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import WorkersControllingPositionsDialog from '@/components/pages/workers-controlling-positions/WorkersControllingPositionsDialog.vue'
 
 import { ref } from 'vue'
@@ -85,6 +87,15 @@ const { $successMessage } = useNotificationService()
 const { t } = useI18n()
 const queries = getQuery(['name', 'page'])
 clearQuery(['name', 'page'])
+
+const breadcrumbs = [
+  {
+    name: t('workersControlling'),
+  },
+  {
+    name: t('positions'),
+  },
+]
 
 const options = ref<{
   page: number

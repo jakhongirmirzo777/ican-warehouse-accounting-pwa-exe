@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('organisations') }}
   </VText>
@@ -133,6 +134,7 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VStatus from '@/components/ui/VStatus.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import MkoOrganisationsAdminDialog from '@/components/pages/mko-organisations/MkoOrganisationsAdminDialog.vue'
 import { ElPopconfirm } from 'element-plus'
 
@@ -162,6 +164,15 @@ const { $successMessage } = useNotificationService()
 const { t } = useI18n()
 const queries = getQuery(['search', 'status', 'name', 'inn', 'company_name'])
 clearQuery(['search', 'status', 'name', 'inn', 'company_name'])
+
+const breadcrumbs = [
+  {
+    name: t('clientControlling'),
+  },
+  {
+    name: t('organisations'),
+  },
+]
 
 const options = ref<{
   page: number

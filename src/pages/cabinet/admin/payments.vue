@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('payments') }}
   </VText>
@@ -125,6 +126,7 @@ import {
   PAYMENT_STATUSES_COLORED,
   PAYMENT_STATUSES_VALUE,
 } from '@/utils/constants'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -138,6 +140,15 @@ const queries = getQuery([
   'payment_type',
 ])
 clearQuery(['from', 'to', 'status', 'organisation_id', 'payment_type'])
+
+const breadcrumbs = [
+  {
+    name: t('clientControlling'),
+  },
+  {
+    name: t('payments'),
+  },
+]
 
 const options = ref<{
   from: null | string

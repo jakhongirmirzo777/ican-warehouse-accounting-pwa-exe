@@ -217,8 +217,8 @@ const menus = computed(() => {
         name: t('reference'),
         icon: 'info-square',
         children: [
-          { name: t('currencies'), path: 'reference-courses' },
-          { name: t('systemCourse'), path: 'reference-system-courses' },
+          { name: t('currencies'), path: 'reference-currencies' },
+          { name: t('systemCourse'), path: 'reference-courses' },
           { name: t('units'), path: 'reference-units' },
         ],
       },

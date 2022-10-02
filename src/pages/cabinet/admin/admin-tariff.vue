@@ -1,35 +1,34 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('tariff') }}
-    </VText>
-    <VCard>
-      <VRow>
-        <VCol md="2">
-          <VBtn color="primary" class="" @click="openDialog">
-            <VIcon class="mr-14" size="20" icon="circle-plus" />
-            {{ $t('add') }}
-          </VBtn>
-        </VCol>
-      </VRow>
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            :actions="{ view: false, edit: true, delete: false }"
-          />
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <AdminTariffDialog ref="dialogRef" @fetchData="fetchData" />
-  </div>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('tariff') }}
+  </VText>
+  <VCard>
+    <VRow>
+      <VCol md="2">
+        <VBtn color="primary" class="" @click="openDialog">
+          <VIcon class="mr-14" size="20" icon="circle-plus" />
+          {{ $t('add') }}
+        </VBtn>
+      </VCol>
+    </VRow>
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions
+          @edit="openDialog(item)"
+          :actions="{ view: false, edit: true, delete: false }"
+        />
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
+    />
+  </VCard>
+  <AdminTariffDialog ref="dialogRef" @fetchData="fetchData" />
 </template>
 
 <script setup lang="ts">
@@ -42,6 +41,7 @@ import VRow from '@/components/ui/VRow.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import AdminTariffDialog from '@/components/pages/admin-tariff/AdminTariffDialog.vue'
 
 import { ref } from 'vue'
@@ -65,6 +65,15 @@ const { t } = useI18n()
 const dialogRef = ref()
 const queries = getQuery(['page'])
 clearQuery(['page'])
+
+const breadcrumbs = [
+  {
+    name: t('setting'),
+  },
+  {
+    name: t('tariff'),
+  },
+]
 
 const params = ref<TariffPageOptionsType>({
   page: +queries.page || 1,

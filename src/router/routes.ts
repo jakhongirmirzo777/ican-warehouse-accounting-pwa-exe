@@ -149,10 +149,9 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reference-system-courses',
-        name: 'reference-system-courses',
-        component: () =>
-          import('@/pages/cabinet/admin/reference-system-courses.vue'),
+        path: 'reference-courses',
+        name: 'reference-courses',
+        component: () => import('@/pages/cabinet/admin/reference-courses.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
         },
@@ -166,9 +165,10 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reference-courses',
-        name: 'reference-courses',
-        component: () => import('@/pages/cabinet/admin/courses.vue'),
+        path: 'reference-currencies',
+        name: 'reference-currencies',
+        component: () =>
+          import('@/pages/cabinet/admin/reference-currencies.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
         },

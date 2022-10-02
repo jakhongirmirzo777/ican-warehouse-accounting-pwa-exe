@@ -61,10 +61,10 @@ import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import {
   createEditReferenceSystemCourses,
   getCurrencyList,
-} from '@/services/cabinet/ReferenceSystemCoursesService'
-import type { ReferenceSystemCoursesFormTypes } from '@/types/cabinet/ReferenceSystemCoursesTypes'
+} from '@/services/cabinet/ReferenceCoursesService'
+import type { ReferenceSystemCoursesFormTypes } from '@/types/cabinet/ReferenceCoursesTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
-import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCoursesTypes'
+import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 
 interface ValueType<T> {
   value: T

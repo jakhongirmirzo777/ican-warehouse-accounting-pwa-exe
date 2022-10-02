@@ -1,32 +1,18 @@
-import type { ReferencePartySystemCoursesDataItemType } from '@/types/cabinet/ReferenceSystemCoursesTypes'
-
-export interface ReferenceCoursesFormTypes {
-  name_uz: string
-  name_ru: string
-  name_oz: string
-  key: string
-  url: string
+export interface ReferenceSystemCoursesFormTypes {
+  amount: string
   id?: number
-  symbol: string
+  currency_id?: number
   _method?: string
 }
 
-export interface ReferencePartyCoursesDataItemType {
+export interface ReferencePartySystemCoursesDataItemType {
   id: number
-  name_uz: string
-  name_ru: string
-  name_en: string
-  key: string
-  url: string
-  index: number
-  system_courses: Array<ReferencePartySystemCoursesDataItemType>
-}
-
-export interface ReferenceCoursesPageOptionsType {
-  page?: number
-}
-
-export interface CurrencyKeyList {
   name: string
-  id: number
+  amount?: string
+  type: string
+  index?: number
+}
+
+export interface ReferenceSystemCoursesPageOptionsType {
+  page?: number
 }

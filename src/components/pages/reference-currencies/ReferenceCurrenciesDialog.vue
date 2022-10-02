@@ -88,12 +88,12 @@ import { useI18n } from 'vue-i18n'
 import {
   createEditCourses,
   getCurrencyList,
-} from '@/services/cabinet/ReferenceCoursesServise'
+} from '@/services/cabinet/ReferenceCurrenciesServise'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import type { ReferenceCoursesFormTypes } from '@/types/cabinet/ReferenceCoursesTypes'
-import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCoursesTypes'
+import type { ReferenceCoursesFormTypes } from '@/types/cabinet/ReferenceCurrenciesTypes'
+import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()

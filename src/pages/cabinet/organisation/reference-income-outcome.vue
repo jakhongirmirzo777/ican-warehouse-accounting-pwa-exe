@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('incomeAndOutcome') }}
   </VText>
@@ -92,6 +93,7 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VPagination from '@/components/ui/VPagination.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import ReferenceIncomeDialog from '@/components/pages/reference-income-outcome/ReferenceIncomeDialog.vue'
 import ReferenceOutcomeDialog from '@/components/pages/reference-income-outcome/ReferenceOutcomeDialog.vue'
 
@@ -124,6 +126,15 @@ const editValue = ref<{ id: number | null; name: string | null }>({
   id: null,
   name: null,
 })
+
+const breadcrumbs = [
+  {
+    name: t('reference'),
+  },
+  {
+    name: t('incomeAndOutcome'),
+  },
+]
 
 const headers = [
   {

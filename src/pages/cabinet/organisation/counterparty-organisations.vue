@@ -1,68 +1,62 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('organisations') }}
-    </VText>
-    <VCard>
-      <VRow>
-        <VCol md="1">
-          <VBtn class="mb-20" color="primary" width="100%" @click="openDialog">
-            <VIcon class="mr-10" size="20" icon="circle-plus" />
-            {{ $t('add') }}
-          </VBtn>
-        </VCol>
-        <VCol md="4" class="d-flex">
-          <VInput :label="$t('search')" v-model="params.search" clearable />
-        </VCol>
-        <VCol md="2">
-          <VFilterActions @filter="startFilter" @clear="clearFilter" />
-        </VCol>
-      </VRow>
-      <VTable :headers="headers" :items="items">
-        <template v-slot:[`item.phones`]="{ item }">
-          <div v-if="item.phones && item.phones.length">
-            <div v-for="(phone, i) in item.phones" :key="`phone-${i}`">
-              <span>{{ $phoneFormat(phone) }}</span>
-            </div>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('organisations') }}
+  </VText>
+  <VCard>
+    <VRow>
+      <VCol md="1">
+        <VBtn class="mb-20" color="primary" width="100%" @click="openDialog">
+          <VIcon class="mr-10" size="20" icon="circle-plus" />
+          {{ $t('add') }}
+        </VBtn>
+      </VCol>
+      <VCol md="4" class="d-flex">
+        <VInput :label="$t('search')" v-model="params.search" clearable />
+      </VCol>
+      <VCol md="2">
+        <VFilterActions @filter="startFilter" @clear="clearFilter" />
+      </VCol>
+    </VRow>
+    <VTable :headers="headers" :items="items">
+      <template v-slot:[`item.phones`]="{ item }">
+        <div v-if="item.phones && item.phones.length">
+          <div v-for="(phone, i) in item.phones" :key="`phone-${i}`">
+            <span>{{ $phoneFormat(phone) }}</span>
           </div>
-          <div v-else>-</div>
-        </template>
-        <template v-slot:[`item.counterparty_accounts`]="{ item }">
+        </div>
+        <div v-else>-</div>
+      </template>
+      <template v-slot:[`item.counterparty_accounts`]="{ item }">
+        <div
+          v-if="item.counterparty_accounts && item.counterparty_accounts.length"
+        >
           <div
-            v-if="
-              item.counterparty_accounts && item.counterparty_accounts.length
-            "
+            v-for="(counterparty_account, i) in item.counterparty_accounts"
+            :key="`counterparty_accounts-${i}`"
           >
-            <div
-              v-for="(counterparty_account, i) in item.counterparty_accounts"
-              :key="`counterparty_accounts-${i}`"
-            >
-              <span>{{ counterparty_account.account }}</span>
-              <span v-if="item.counterparty_accounts.length - 1 !== i">,</span>
-            </div>
+            <span>{{ counterparty_account.account }}</span>
+            <span v-if="item.counterparty_accounts.length - 1 !== i">,</span>
           </div>
-          <template v-else> - </template>
-        </template>
-        <template v-slot:[`item.actions`]="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            @delete="deleteItem(item.id)"
-          />
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <CounterpartyOrganisationsDialog
-      @fetchData="fetchData"
-      ref="organizationDialogRef"
+        </div>
+        <template v-else> - </template>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
     />
-  </div>
+  </VCard>
+  <CounterpartyOrganisationsDialog
+    @fetchData="fetchData"
+    ref="organizationDialogRef"
+  />
 </template>
 
 <style scoped></style>
@@ -79,6 +73,7 @@ import CounterpartyOrganisationsDialog from '@/components/pages/counterparty-org
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
@@ -102,6 +97,15 @@ const { t } = useI18n()
 const organizationDialogRef = ref()
 const queries = getQuery(['page', 'search'])
 clearQuery(['page', 'search'])
+
+const breadcrumbs = [
+  {
+    name: t('counterparties'),
+  },
+  {
+    name: t('organisations'),
+  },
+]
 
 const params = ref<{
   search: string

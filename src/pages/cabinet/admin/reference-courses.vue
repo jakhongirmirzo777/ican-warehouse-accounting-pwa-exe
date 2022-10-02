@@ -1,36 +1,32 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('systemCourse') }}
-    </VText>
-    <VCard>
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            :actions="{ view: false, edit: true, delete: false }"
-          />
-        </template>
-        <template #item.name="{ item }">
-          <span v-if="item.currency && item.currency[`name_${$i18n.locale}`]">{{
-            item.currency[`name_${$i18n.locale}`]
-          }}</span>
-          <span v-else>-</span>
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <ReferenceSystemCoursesDialog
-      ref="organizationDialogRef"
-      @fetchData="fetchData"
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('systemCourse') }}
+  </VText>
+  <VCard>
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions
+          @edit="openDialog(item)"
+          :actions="{ view: false, edit: true, delete: false }"
+        />
+      </template>
+      <template #item.name="{ item }">
+        <span v-if="item.currency && item.currency[`name_${$i18n.locale}`]">{{
+          item.currency[`name_${$i18n.locale}`]
+        }}</span>
+        <span v-else>-</span>
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
     />
-  </div>
+  </VCard>
+  <ReferenceCoursesDialog ref="organizationDialogRef" @fetchData="fetchData" />
 </template>
 
 <script setup lang="ts">
@@ -39,10 +35,11 @@ import VTable from '@/components/ui/VTable.vue'
 import VCard from '@/components/ui/VCard.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
-import ReferenceSystemCoursesDialog from '@/components/pages/reference-system-courses/ReferenceSystemCoursesDialog.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import ReferenceCoursesDialog from '@/components/pages/reference-courses/ReferenceCoursesDialog.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchReferenceSystemCourses } from '@/services/cabinet/ReferenceSystemCoursesService'
+import { fetchReferenceSystemCourses } from '@/services/cabinet/ReferenceCoursesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -50,7 +47,7 @@ import type {
   ReferenceSystemCoursesFormTypes,
   ReferencePartySystemCoursesDataItemType,
   ReferenceSystemCoursesPageOptionsType,
-} from '@/types/cabinet/ReferenceSystemCoursesTypes'
+} from '@/types/cabinet/ReferenceCoursesTypes'
 import type { ItemsValue } from '@/types/globals/FetchDataTypes'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -61,6 +58,15 @@ const { t } = useI18n()
 const organizationDialogRef = ref()
 const queries = getQuery(['page'])
 clearQuery(['page'])
+
+const breadcrumbs = [
+  {
+    name: t('reference'),
+  },
+  {
+    name: t('systemCourse'),
+  },
+]
 
 const params = ref<ReferenceSystemCoursesPageOptionsType>({
   page: +queries.page || 1,

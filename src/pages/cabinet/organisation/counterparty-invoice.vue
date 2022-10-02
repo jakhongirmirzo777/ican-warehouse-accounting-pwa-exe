@@ -1,101 +1,93 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('invoices') }}
-    </VText>
-    <VCard>
-      <VRow>
-        <VCol md="11" dense>
-          <VRow>
-            <VCol md="1">
-              <VBtn color="primary" class="" @click="openDialog">
-                <VIcon class="mr-10" size="20" icon="circle-plus" />
-                {{ $t('add') }}
-              </VBtn>
-            </VCol>
-            <VCol md="2">
-              <VInput :label="$t('search')" v-model="params.search" clearable />
-            </VCol>
-            <VCol md="2">
-              <VDatepicker
-                :label="$t('date')"
-                v-model="params.date"
-                clearable
-              />
-            </VCol>
-            <VCol md="2">
-              <VSelect
-                :items="counterpartyList"
-                item-text="company_name"
-                item-value="id"
-                :label="$t('counterparties')"
-                v-model="params.counterparty_id"
-                clearable
-              />
-            </VCol>
-            <VCol md="2">
-              <VSelect
-                :items="positionList"
-                item-value="value"
-                item-text="text"
-                :label="$t('position')"
-                v-model="params.position"
-                clearable
-              />
-            </VCol>
-            <VCol md="2">
-              <VSelect
-                :items="typeList"
-                item-value="value"
-                item-text="text"
-                :label="$t('type')"
-                v-model="params.type"
-                clearable
-              />
-            </VCol>
-          </VRow>
-        </VCol>
-        <VCol md="1">
-          <VFilterActions @filter="startFilter" @clear="clearFilter" />
-        </VCol>
-      </VRow>
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            @delete="deleteItem(item.id)"
-          />
-        </template>
-        <template #item.counterparty="{ item }">
-          <span v-if="item.counterparty">{{
-            item.counterparty.company_name
-          }}</span>
-          <span v-else>-</span>
-        </template>
-        <template #item.position="{ item }">
-          <span v-if="item.position">{{ POSITION[item.position] }}</span>
-          <span v-else>-</span>
-        </template>
-        <template #item.type="{ item }">
-          <span v-if="item.type">{{ TYPE[item.type] }}</span>
-          <span v-else>-</span>
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <CounterpartyInvoiceDialog
-      ref="organizationDialogRef"
-      :positionList="positionList"
-      :counterpartyList="counterpartyList"
-      @fetchData="fetchData"
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('invoices') }}
+  </VText>
+  <VCard>
+    <VRow>
+      <VCol md="11" dense>
+        <VRow>
+          <VCol md="1">
+            <VBtn color="primary" class="" @click="openDialog">
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ $t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol md="2">
+            <VInput :label="$t('search')" v-model="params.search" clearable />
+          </VCol>
+          <VCol md="2">
+            <VDatepicker :label="$t('date')" v-model="params.date" clearable />
+          </VCol>
+          <VCol md="2">
+            <VSelect
+              :items="counterpartyList"
+              item-text="company_name"
+              item-value="id"
+              :label="$t('counterparties')"
+              v-model="params.counterparty_id"
+              clearable
+            />
+          </VCol>
+          <VCol md="2">
+            <VSelect
+              :items="positionList"
+              item-value="value"
+              item-text="text"
+              :label="$t('position')"
+              v-model="params.position"
+              clearable
+            />
+          </VCol>
+          <VCol md="2">
+            <VSelect
+              :items="typeList"
+              item-value="value"
+              item-text="text"
+              :label="$t('type')"
+              v-model="params.type"
+              clearable
+            />
+          </VCol>
+        </VRow>
+      </VCol>
+      <VCol md="1">
+        <VFilterActions @filter="startFilter" @clear="clearFilter" />
+      </VCol>
+    </VRow>
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+      </template>
+      <template #item.counterparty="{ item }">
+        <span v-if="item.counterparty">{{
+          item.counterparty.company_name
+        }}</span>
+        <span v-else>-</span>
+      </template>
+      <template #item.position="{ item }">
+        <span v-if="item.position">{{ POSITION[item.position] }}</span>
+        <span v-else>-</span>
+      </template>
+      <template #item.type="{ item }">
+        <span v-if="item.type">{{ TYPE[item.type] }}</span>
+        <span v-else>-</span>
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
     />
-  </div>
+  </VCard>
+  <CounterpartyInvoiceDialog
+    ref="organizationDialogRef"
+    :positionList="positionList"
+    :counterpartyList="counterpartyList"
+    @fetchData="fetchData"
+  />
 </template>
 
 <script setup lang="ts">
@@ -110,6 +102,7 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -153,6 +146,15 @@ const queries = getQuery([
   'type',
 ])
 clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
+
+const breadcrumbs = [
+  {
+    name: t('counterparties'),
+  },
+  {
+    name: t('invoices'),
+  },
+]
 
 const params = ref<InvoicePageOptionsType>({
   search: queries.search || '',

@@ -1,42 +1,41 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('units') }}
-    </VText>
-    <VCard>
-      <VRow>
-        <VCol md="1">
-          <VBtn color="primary" class="" @click="openDialog">
-            <VIcon class="mr-10" size="20" icon="circle-plus" />
-            {{ $t('add') }}
-          </VBtn>
-        </VCol>
-        <VCol md="3">
-          <VInput :label="$t('search')" v-model="params.search" clearable />
-        </VCol>
-        <VCol md="1">
-          <VFilterActions @filter="startFilter" @clear="clearFilter" />
-        </VCol>
-      </VRow>
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            @delete="deleteItem(item.id)"
-            :actions="{ view: false, edit: true, delete: false }"
-          />
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <ReferenceUnitsDialog ref="organizationDialogRef" @fetchData="fetchData" />
-  </div>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('units') }}
+  </VText>
+  <VCard>
+    <VRow>
+      <VCol md="1">
+        <VBtn color="primary" class="" @click="openDialog">
+          <VIcon class="mr-10" size="20" icon="circle-plus" />
+          {{ $t('add') }}
+        </VBtn>
+      </VCol>
+      <VCol md="3">
+        <VInput :label="$t('search')" v-model="params.search" clearable />
+      </VCol>
+      <VCol md="1">
+        <VFilterActions @filter="startFilter" @clear="clearFilter" />
+      </VCol>
+    </VRow>
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions
+          @edit="openDialog(item)"
+          @delete="deleteItem(item.id)"
+          :actions="{ view: false, edit: true, delete: false }"
+        />
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
+    />
+  </VCard>
+  <ReferenceUnitsDialog ref="organizationDialogRef" @fetchData="fetchData" />
 </template>
 
 <script setup lang="ts">
@@ -51,6 +50,7 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import ReferenceUnitsDialog from '@/components/pages/reference-units/ReferenceUnitsDialog.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -86,6 +86,15 @@ const queries = getQuery([
   'type',
 ])
 clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
+
+const breadcrumbs = [
+  {
+    name: t('reference'),
+  },
+  {
+    name: t('units'),
+  },
+]
 
 const params = ref<UnitsPageOptionsType>({
   search: queries.search || '',

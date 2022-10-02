@@ -1,46 +1,45 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('currencies') }}
-    </VText>
-    <VCard>
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            :actions="{ view: false, edit: true, delete: false }"
-            @edit="openDialog(item)"
-            @delete="deleteItem(item.id)"
-          />
-        </template>
-        <template #item.counterparty="{ item }">
-          <span v-if="item.counterparty">{{
-            item.counterparty.company_name
-          }}</span>
-          <span v-else>-</span>
-        </template>
-        <template #item.position="{ item }">
-          <span v-if="item.position">{{ POSITION[item.position] }}</span>
-          <span v-else>-</span>
-        </template>
-        <template #item.type="{ item }">
-          <span v-if="item.type">{{ TYPE[item.type] }}</span>
-          <span v-else>-</span>
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <CoursesDialog
-      ref="organizationDialogRef"
-      :positionList="positionList"
-      @fetchData="fetchData"
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('currencies') }}
+  </VText>
+  <VCard>
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions
+          :actions="{ view: false, edit: true, delete: false }"
+          @edit="openDialog(item)"
+          @delete="deleteItem(item.id)"
+        />
+      </template>
+      <template #item.counterparty="{ item }">
+        <span v-if="item.counterparty">{{
+          item.counterparty.company_name
+        }}</span>
+        <span v-else>-</span>
+      </template>
+      <template #item.position="{ item }">
+        <span v-if="item.position">{{ POSITION[item.position] }}</span>
+        <span v-else>-</span>
+      </template>
+      <template #item.type="{ item }">
+        <span v-if="item.type">{{ TYPE[item.type] }}</span>
+        <span v-else>-</span>
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
     />
-  </div>
+  </VCard>
+  <ReferenceCurrenciesDialog
+    ref="organizationDialogRef"
+    :positionList="positionList"
+    @fetchData="fetchData"
+  />
 </template>
 
 <script setup lang="ts">
@@ -49,13 +48,14 @@ import VTable from '@/components/ui/VTable.vue'
 import VCard from '@/components/ui/VCard.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
-import CoursesDialog from '@/components/pages/reference-courses/CoursesDialog.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import ReferenceCurrenciesDialog from '@/components/pages/reference-currencies/ReferenceCurrenciesDialog.vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchCourses,
   deleteCourses,
-} from '@/services/cabinet/ReferenceCoursesServise'
+} from '@/services/cabinet/ReferenceCurrenciesServise'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -65,7 +65,7 @@ import type {
   ReferencePartyCoursesDataItemType,
   ReferenceCoursesPageOptionsType,
   ReferenceCoursesFormTypes,
-} from '@/types/cabinet/ReferenceCoursesTypes'
+} from '@/types/cabinet/ReferenceCurrenciesTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -77,6 +77,15 @@ const { t } = useI18n()
 const organizationDialogRef = ref()
 const queries = getQuery(['page', 'search'])
 clearQuery(['page', 'search'])
+
+const breadcrumbs = [
+  {
+    name: t('reference'),
+  },
+  {
+    name: t('currencies'),
+  },
+]
 
 const params = ref<ReferenceCoursesPageOptionsType>({
   page: +queries.page || 1,

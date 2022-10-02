@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('organisations') }}
   </VText>
@@ -65,6 +66,7 @@ import VTable from '@/components/ui/VTable.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VStatus from '@/components/ui/VStatus.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import MkoOrganisationsDialog from '@/components/pages/mko-organisations/MkoOrganisationsDialog.vue'
 
 import { ref } from 'vue'
@@ -85,6 +87,15 @@ const { getQuery, addQuery, clearQuery } = useQuery()
 const { t } = useI18n()
 const queries = getQuery(['search', 'status', 'page'])
 clearQuery(['search', 'status', 'page'])
+
+const breadcrumbs = [
+  {
+    name: t('organisationsAndWarehouse'),
+  },
+  {
+    name: t('organisations'),
+  },
+]
 
 const options = ref<{
   page: number

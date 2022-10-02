@@ -4,7 +4,7 @@ import type {
   ReferenceCoursesFormTypes,
   ReferenceCoursesPageOptionsType,
   ReferencePartyCoursesDataItemType,
-} from '@/types/cabinet/ReferenceCoursesTypes'
+} from '@/types/cabinet/ReferenceCurrenciesTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'admin'
 

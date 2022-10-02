@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('characteristics') }}
   </VText>
@@ -74,6 +75,7 @@ import VLine from '@/components/ui/VLine.vue'
 import VTable from '@/components/ui/VTable.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 
 import type {
   CategoryParentsInterface,
@@ -99,6 +101,15 @@ const { getQuery, addQuery, clearQuery } = useQuery()
 const { t } = useI18n()
 const queries = getQuery(['search', 'category_ids', 'page'])
 clearQuery(['search', 'category_ids', 'page'])
+
+const breadcrumbs = [
+  {
+    name: t('reference'),
+  },
+  {
+    name: t('characteristics'),
+  },
+]
 
 const headers = [
   {

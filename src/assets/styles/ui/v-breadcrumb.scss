@@ -1,6 +1,7 @@
 .v-breadcrumb {
   display: flex;
   align-items: center;
+
   &__items {
     font-weight: 400;
     font-size: 12px;
@@ -8,6 +9,7 @@
     display: flex;
     align-items: center;
   }
+
   &__active {
     color: var(--color-darker-blue);
   }

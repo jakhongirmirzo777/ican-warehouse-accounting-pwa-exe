@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('productName') }}
   </VText>
@@ -76,6 +77,7 @@ import VTable from '@/components/ui/VTable.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 
 import { ref } from 'vue'
@@ -101,6 +103,15 @@ const { $successMessage } = useNotificationService()
 const { t } = useI18n()
 const queries = getQuery(['search', 'category_id', 'page'])
 clearQuery(['search', 'category_id', 'page'])
+
+const breadcrumbs = [
+  {
+    name: t('reference'),
+  },
+  {
+    name: t('productName'),
+  },
+]
 
 const options = ref<{
   page: number
