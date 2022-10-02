@@ -133,6 +133,15 @@ const rawRoutes = [
         },
       },
       {
+        path: 'contracts',
+        name: 'contracts',
+        component: () =>
+          import('@/pages/cabinet/organisation/counterparty-contract.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'reference-units',
         name: 'reference-units',
         component: () => import('@/pages/cabinet/admin/reference-units.vue'),

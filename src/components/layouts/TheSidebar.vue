@@ -292,6 +292,7 @@ const menus = computed(() => {
         icon: 'work',
         children: [
           { name: t('organisations'), path: 'counterparty-organisations' },
+          { name: t('agreements'), path: 'contracts' },
           { name: t('invoices'), path: 'counterparty-invoice' },
           // { name: 'Ввод остатков', path: 'credits-admin' },
         ],
