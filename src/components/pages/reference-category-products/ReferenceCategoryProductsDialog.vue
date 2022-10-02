@@ -6,20 +6,26 @@
     @update:modelValue="(val) => $emit('update:modelValue', val)"
   >
     <Form @submit="onSubmit" ref="formObj">
-      <VInput
-        vid="name"
-        :label="t('name')"
-        rules="required|max:255"
-        v-model="formData.name"
-      />
-      <VSelect
-        vid="parent_id"
-        clearable
-        autocomplete
-        :label="t('parentCategory')"
-        :items="parents"
-        v-model="formData.parent_id"
-      />
+      <VRow>
+        <VCol>
+          <VInput
+            vid="name"
+            :label="t('name')"
+            rules="required|max:255"
+            v-model="formData.name"
+          />
+        </VCol>
+        <VCol>
+          <VSelect
+            vid="parent_id"
+            clearable
+            autocomplete
+            :label="t('parentCategory')"
+            :items="parents"
+            v-model="formData.parent_id"
+          />
+        </VCol>
+      </VRow>
       <VLine class="mb-24" />
       <div class="d-flex justify-end align-center">
         <VBtn
@@ -53,6 +59,8 @@ import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VSelect from '@/components/ui/VSelect.vue'
+import VRow from '@/components/ui/VRow.vue'
+import VCol from '@/components/ui/VCol.vue'
 
 import { ref, watch } from 'vue'
 import {
