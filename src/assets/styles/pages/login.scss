@@ -1,0 +1,88 @@
+@import "../globals/vars";
+
+.login {
+  &__wrapper {
+    height: 100vh;
+    width: 100%;
+    background-image: url('@/assets/images/login-background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__box {
+    background-color: var(--color-white);
+    max-width: 432px;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 0 16px;
+
+    &--top {
+      padding: 54px 56px 24px;
+    }
+
+    &--bottom {
+      padding: 38px;
+      background-color: $bg-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      a {
+        color: var(--color-blue);
+        font-weight: 700;
+        font-size: 24px;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__logo {
+    height: 34px;
+    width: 154px;
+  }
+}
+
+@media screen and (max-width: $offset-mobile) {
+  .login {
+    &__wrapper {
+      background-image: none;
+      background-color: var(--color-white);
+    }
+
+    &__logo {
+      height: 30px;
+      width: 150px;
+    }
+
+    &__box {
+      box-shadow: 3px 10px 30px rgba(15, 23, 77, 0.1);
+
+      &--top {
+        padding: 24px;
+      }
+
+      &--bottom {
+        background-color: var(--color-white);
+        padding: 24px;
+
+        p {
+          font-size: 14px;
+          margin-bottom: 10px;
+        }
+
+        a {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}

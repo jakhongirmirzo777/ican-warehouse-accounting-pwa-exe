@@ -90,7 +90,7 @@ export default {
   parentName: 'Родитель',
   mfo: 'МФО',
   changePriceType: 'Изменение цены при добавление новых',
-  systemCourse: 'Куср валюты',
+  systemCourse: 'Курс валюты',
   editSystemCourse: 'Редактирование куср валюты',
   editOrganizations: 'Редактирование организации',
   available: 'Есть',
@@ -134,6 +134,8 @@ export default {
   setting: 'Настройки',
   maxStores: 'Максимальное количество магазинов',
   passivePeriod: 'Пассивный период',
+  login: 'Войти',
+  supportService: 'Служба поддержки',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
