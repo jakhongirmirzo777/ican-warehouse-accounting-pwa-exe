@@ -5,7 +5,7 @@ import type {
   SettingBonusPageOptionsType,
   SettingBonusDataItemType,
 } from '@/types/cabinet/SettingBonusTariffTypes'
-const BASE_URL_ADDITIONAL = 'organization'
+const BASE_URL_ADDITIONAL = 'organisation'
 
 export const fetchSettingBonuses = async (
   params: SettingBonusPageOptionsType
@@ -40,7 +40,7 @@ export const createEditSettingBonuses = async (form: SettingBonusFormTypes) => {
     if (form.id) {
       form._method = 'PUT'
       data = await http.post(`${BASE_URL_ADDITIONAL}/bonuses/${form.id}`, form)
-    } else data = await http.post(`${BASE_URL_ADDITIONAL}/units`, form)
+    } else data = await http.post(`${BASE_URL_ADDITIONAL}/bonuses`, form)
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

@@ -7,6 +7,7 @@ import {
   size,
   length,
   confirmed,
+  max_value,
 } from '@vee-validate/rules'
 import { $translate } from '@/plugins/i18n'
 
@@ -17,6 +18,7 @@ defineRule('max', max)
 defineRule('size', size)
 defineRule('confirmed', confirmed)
 defineRule('length', length)
+defineRule('max_value', max_value)
 defineRule('phone', (value: string) => {
   return value.length >= 13
 })
@@ -35,6 +37,7 @@ configure({
       field,
       params: params[0],
       max: params[0],
+      max_value: params[0],
     })
   },
 })

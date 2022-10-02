@@ -26,7 +26,7 @@
         <VCol md="6">
           <VInput
             :label="$t('percentSell')"
-            rules="required"
+            rules="required|max_value:100"
             type="number"
             vid="percent_sell"
             v-model="form.percent_sell"
@@ -36,7 +36,7 @@
           <VInput
             :label="$t('amountTo')"
             rules="required"
-            type="number"
+            type="money"
             vid="amount_to"
             v-model="form.amount_to"
           />
@@ -44,8 +44,9 @@
         <VCol md="6">
           <VInput
             :label="$t('percentSellLeg')"
-            rules="required"
+            rules="required|max_value:100"
             type="number"
+            max="100"
             vid="percent_sell_leg"
             v-model="form.percent_sell_leg"
           />
@@ -54,7 +55,7 @@
         <VCol md="6">
           <VInput
             :label="$t('percentCredit')"
-            rules="required"
+            rules="required|max_value:100"
             type="number"
             vid="percent_credit"
             v-model="form.percent_credit"
@@ -92,6 +93,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { createEditSettingBonuses } from '@/services/cabinet/SettingBonusTariffService'
 import type { SettingBonusFormTypes } from '@/types/cabinet/SettingBonusTariffTypes'
+import { $clearNonDigits } from '@/utils/pure-functions'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
@@ -140,6 +142,8 @@ const openDialog = (item: SettingBonusFormTypes) => {
 const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
+    form.value.amount_from = $clearNonDigits(form.value.amount_from)
+    form.value.amount_to = $clearNonDigits(form.value.amount_to)
     loading.value = true
     await createEditSettingBonuses(form.value)
     emits('fetch-data')

@@ -9,6 +9,7 @@
     "phone": "{field} xato kiritildi",
     "inn": "{field} noto‘g‘ri",
     "pnfl": "{field} noto‘g‘ri",
-    "confirmed": "Parol mos kelmadi"
+    "confirmed": "Parol mos kelmadi",
+    "max_value": "Поле поля должно быть {max_value} или меньше"
   }
 }
