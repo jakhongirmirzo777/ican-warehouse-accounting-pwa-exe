@@ -137,6 +137,8 @@ export default {
   passivePeriod: 'Пассивный период',
   login: 'Войти',
   supportService: 'Служба поддержки',
+  notFound: 'Не найден',
+  goMainPage: 'Перейти на главную страницу',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

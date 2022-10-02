@@ -1,0 +1,33 @@
+@import "../globals/vars";
+
+.not-found {
+  &__wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 150px;
+  }
+
+  &__subtitle {
+    font-size: 90px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: $offset-mobile){
+  .not-found {
+    &__title {
+      font-size: 100px;
+    }
+
+    &__subtitle {
+      font-size: 50px;
+    }
+  }
+}
