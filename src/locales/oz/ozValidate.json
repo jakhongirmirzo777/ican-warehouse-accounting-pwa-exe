@@ -10,6 +10,6 @@
     "inn": "{field} нотўгри",
     "pnfl": "{field} нотўгри",
     "confirmed": "Парол мос келмади",
-    "max_value": "Поле поля должно быть {max_value} или меньше"
+    "max_value": "{field} майдони {max_value} ёки ундан кам бўлиши керак"
   }
 }

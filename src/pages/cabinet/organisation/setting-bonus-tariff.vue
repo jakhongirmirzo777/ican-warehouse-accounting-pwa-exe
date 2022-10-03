@@ -75,7 +75,7 @@ const { $successMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
 
 const items = ref<SettingBonusDataItemType[]>([])
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const organizationDialogRef = ref()
 const queries = getQuery([
   'page',
