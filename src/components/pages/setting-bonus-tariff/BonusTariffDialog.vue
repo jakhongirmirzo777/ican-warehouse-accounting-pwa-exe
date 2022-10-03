@@ -1,6 +1,6 @@
 <template>
   <VModal
-    :title="form.id ? $t('editTariff') : $t('addTariff')"
+    :title="form.id ? t('editBonusTariff') : t('addBonusTariff')"
     v-model="dialog"
     width="718"
   >
@@ -16,29 +16,49 @@
         </VCol>
         <VCol md="6">
           <VInput
-            :label="$t('maxStores')"
+            :label="$t('amountFrom')"
             rules="required"
-            type="number"
-            vid="max_stores"
-            v-model="form.max_stores"
-          />
-        </VCol>
-        <VCol md="6">
-          <VInput
-            :label="$t('passivePeriod')"
-            rules="required"
-            vid="passive_period"
-            type="number"
-            v-model="form.passive_period"
-          />
-        </VCol>
-        <VCol md="6">
-          <VInput
-            :label="$t('amount')"
-            rules="required"
-            vid="amount"
             type="money"
-            v-model="form.amount"
+            vid="amount_from"
+            v-model="form.amount_from"
+          />
+        </VCol>
+        <VCol md="6">
+          <VInput
+            :label="$t('percentSell')"
+            rules="required|max_value:100"
+            type="number"
+            vid="percent_sell"
+            v-model="form.percent_sell"
+          />
+        </VCol>
+        <VCol md="6">
+          <VInput
+            :label="$t('amountTo')"
+            rules="required"
+            type="money"
+            vid="amount_to"
+            v-model="form.amount_to"
+          />
+        </VCol>
+        <VCol md="6">
+          <VInput
+            :label="$t('percentSellLeg')"
+            rules="required|max_value:100"
+            type="number"
+            max="100"
+            vid="percent_sell_leg"
+            v-model="form.percent_sell_leg"
+          />
+        </VCol>
+        <VCol md="6"></VCol>
+        <VCol md="6">
+          <VInput
+            :label="$t('percentCredit')"
+            rules="required|max_value:100"
+            type="number"
+            vid="percent_credit"
+            v-model="form.percent_credit"
           />
         </VCol>
       </VRow>
@@ -71,8 +91,8 @@ import { useI18n } from 'vue-i18n'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import { createEditTariffs } from '@/services/cabinet/AdminTariffsService'
-import type { TariffFormTypes } from '@/types/cabinet/AdminTariffTypes'
+import { createEditSettingBonuses } from '@/services/cabinet/SettingBonusTariffService'
+import type { SettingBonusFormTypes } from '@/types/cabinet/SettingBonusTariffTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
 
 const { $successMessage } = useNotificationService()
@@ -81,16 +101,23 @@ const { t } = useI18n()
 
 const FORM_DATA = {
   name: '',
-  max_stores: '',
-  passive_period: '',
-  amount: '',
+  amount_from: '',
+  amount_to: '',
+  percent_sell: '',
+  percent_sell_leg: '',
+  percent_credit: '',
 }
+
+defineProps({
+  positionList: Array,
+  counterpartyList: Array,
+})
 
 const emits = defineEmits(['fetch-data'])
 
 const dialog = ref(false)
 
-const form = ref<TariffFormTypes>({
+const form = ref<SettingBonusFormTypes>({
   ...FORM_DATA,
 })
 
@@ -105,7 +132,7 @@ watch(dialog, (val) => {
   }
 })
 
-const openDialog = (item: TariffFormTypes) => {
+const openDialog = (item: SettingBonusFormTypes) => {
   if (item && item.id) {
     form.value = { ...item }
   }
@@ -115,12 +142,10 @@ const openDialog = (item: TariffFormTypes) => {
 const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
-    if (!Number.isInteger(form.value.amount))
-      form.value.amount = $clearNonDigits(form.value.amount)
-    if (!Number.isInteger(form.value.passive_period))
-      form.value.passive_period = $clearNonDigits(form.value.passive_period)
+    form.value.amount_from = $clearNonDigits(form.value.amount_from)
+    form.value.amount_to = $clearNonDigits(form.value.amount_to)
     loading.value = true
-    await createEditTariffs(form.value)
+    await createEditSettingBonuses(form.value)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false

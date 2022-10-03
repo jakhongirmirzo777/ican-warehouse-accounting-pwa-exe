@@ -199,6 +199,15 @@ const rawRoutes = [
         },
       },
       {
+        path: 'tariffs-bonuses',
+        name: 'tariffs-bonuses',
+        component: () =>
+          import('@/pages/cabinet/organisation/setting-bonus-tariff.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),

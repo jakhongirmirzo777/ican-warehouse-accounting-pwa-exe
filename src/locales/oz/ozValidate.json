@@ -9,6 +9,7 @@
     "phone": "{field} хато киритилди",
     "inn": "{field} нотўгри",
     "pnfl": "{field} нотўгри",
-    "confirmed": "Парол мос келмади"
+    "confirmed": "Парол мос келмади",
+    "max_value": "{field} майдони {max_value} ёки ундан кам бўлиши керак"
   }
 }
