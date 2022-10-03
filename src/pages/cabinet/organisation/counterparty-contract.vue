@@ -1,5 +1,6 @@
 <template>
   <div>
+    <VBreadcrumb class="mb-18" :list="breadcrumbs" />
     <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
       {{ t('agreements') }}
     </VText>
@@ -119,6 +120,7 @@ import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import ContractDialog from '@/components/pages/counterparty-contract/ContractDialog.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -193,6 +195,15 @@ const positionList = ref([
   { value: 'buyer', text: t('buyer') },
   { value: 'seller', text: t('seller') },
 ])
+
+const breadcrumbs = [
+  {
+    name: t('counterparties'),
+  },
+  {
+    name: t('agreements'),
+  },
+]
 
 const typeList = ref([{ value: 'legal', text: t('legal') }])
 

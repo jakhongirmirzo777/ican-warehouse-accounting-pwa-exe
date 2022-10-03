@@ -74,7 +74,7 @@
           />
         </VCol>
         <VCol cols="12">
-          <VInput
+          <VArea
             :label="$t('comment')"
             rules="required"
             vid="comment"
@@ -116,6 +116,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { CounterpartyContractFormTypes } from '@/types/cabinet/CounterpertyContractTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
+import VArea from "@/components/ui/VArea.vue";
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
