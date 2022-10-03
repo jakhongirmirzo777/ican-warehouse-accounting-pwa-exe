@@ -41,3 +41,12 @@ export const changePassword = async (
     return Promise.reject(err)
   }
 }
+
+export const fetchOrganisationsList = async () => {
+  try {
+    const data = await http.get('/organisation/organisation/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}

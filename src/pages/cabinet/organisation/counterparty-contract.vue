@@ -142,7 +142,7 @@ import type {
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
-import { fetchOrganisationsParents } from '@/services/cabinet/MkoOrganisationsAdminService'
+import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
 
 interface ValueType<T> {
   value: T
@@ -276,7 +276,9 @@ const getCounterPartyList = async () => {
 
 const getOrganisationsList = async () => {
   try {
-    const { data: { data } } = await fetchOrganisationsParents()
+    const {
+      data: { data },
+    } = await fetchOrganisationsList()
     organisationsList.value = data
   } catch (err) {
     $setResponseErrors(err)
