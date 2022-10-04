@@ -179,6 +179,7 @@ export default {
   saleAvailable: 'Доступна продажа?',
   addWarehouse: 'Добавление склада',
   editWarehouse: 'Редактирование склада',
+  returnBack: 'Вернуться назад',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
