@@ -5,13 +5,14 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="2">
-        <VBtn color="primary" class="" @click="openDialog">
-          <VIcon class="mr-14" size="20" icon="circle-plus" />
+      <VCol md="1">
+        <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
+          <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
         </VBtn>
       </VCol>
     </VRow>
+    <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
@@ -42,6 +43,7 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import VLine from '@/components/ui/VLine.vue'
 import AdminTariffDialog from '@/components/pages/admin-tariff/AdminTariffDialog.vue'
 
 import { ref } from 'vue'

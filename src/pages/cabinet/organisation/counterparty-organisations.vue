@@ -18,6 +18,7 @@
         <VFilterActions @filter="startFilter" @clear="clearFilter" />
       </VCol>
     </VRow>
+    <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template v-slot:[`item.phones`]="{ item }">
         <div v-if="item.phones && item.phones.length">
@@ -74,6 +75,8 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import VLine from '@/components/ui/VLine.vue'
+
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {

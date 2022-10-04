@@ -5,56 +5,53 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="11" dense>
-        <VRow>
-          <VCol md="1">
-            <VBtn color="primary" class="" @click="openDialog">
-              <VIcon class="mr-10" size="20" icon="circle-plus" />
-              {{ $t('add') }}
-            </VBtn>
-          </VCol>
-          <VCol md="2">
-            <VInput :label="$t('search')" v-model="params.search" clearable />
-          </VCol>
-          <VCol md="2">
-            <VDatepicker :label="$t('date')" v-model="params.date" clearable />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              :items="counterpartyList"
-              item-text="company_name"
-              item-value="id"
-              :label="$t('counterparties')"
-              v-model="params.counterparty_id"
-              clearable
-            />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              :items="positionList"
-              item-value="value"
-              item-text="text"
-              :label="$t('position')"
-              v-model="params.position"
-              clearable
-            />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              :items="typeList"
-              item-value="value"
-              item-text="text"
-              :label="$t('type')"
-              v-model="params.type"
-              clearable
-            />
-          </VCol>
-        </VRow>
+      <VCol xl="1" md="3">
+        <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
+          <VIcon class="mr-10" size="20" icon="circle-plus" />
+          {{ $t('add') }}
+        </VBtn>
       </VCol>
-      <VCol md="1">
+      <VCol xl="2" md="3">
+        <VInput :label="$t('search')" v-model="params.search" clearable />
+      </VCol>
+      <VCol xl="2" md="3">
+        <VDatepicker :label="$t('date')" v-model="params.date" clearable />
+      </VCol>
+      <VCol xl="2" md="3">
+        <VSelect
+          :items="counterpartyList"
+          item-text="company_name"
+          item-value="id"
+          :label="$t('counterparties')"
+          v-model="params.counterparty_id"
+          clearable
+        />
+      </VCol>
+      <VCol xl="2" md="3">
+        <VSelect
+          :items="positionList"
+          item-value="value"
+          item-text="text"
+          :label="$t('position')"
+          v-model="params.position"
+          clearable
+        />
+      </VCol>
+      <VCol xl="2" md="3">
+        <VSelect
+          :items="typeList"
+          item-value="value"
+          item-text="text"
+          :label="$t('type')"
+          v-model="params.type"
+          clearable
+        />
+      </VCol>
+      <VCol xl="1" md="3">
         <VFilterActions @filter="startFilter" @clear="clearFilter" />
       </VCol>
     </VRow>
+    <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
@@ -104,6 +101,10 @@ import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
+import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VSelect from '@/components/ui/VSelect.vue'
+import VLine from '@/components/ui/VLine.vue'
+
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
@@ -121,8 +122,6 @@ import type {
   CounterpartyInvoiceFormTypes,
   InvoicePageOptionsType,
 } from '@/types/cabinet/CounterpartyInvoiceTypes'
-import VDatepicker from '@/components/ui/VDatepicker.vue'
-import VSelect from '@/components/ui/VSelect.vue'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
 
 interface ValueType<T> {

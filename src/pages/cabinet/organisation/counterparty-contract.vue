@@ -9,7 +9,12 @@
         <VCol md="11" dense>
           <VRow>
             <VCol md="1">
-              <VBtn color="primary" class="" @click="openDialog">
+              <VBtn
+                width="100%"
+                color="primary"
+                class="mb-20"
+                @click="openDialog"
+              >
                 <VIcon class="mr-10" size="20" icon="circle-plus" />
                 {{ $t('add') }}
               </VBtn>
@@ -67,6 +72,7 @@
           <VFilterActions @filter="startFilter" @clear="clearFilter" />
         </VCol>
       </VRow>
+      <VLine class="mb-20" />
       <VTable :headers="headers" :items="items">
         <template #item.actions="{ item }">
           <VTableActions
@@ -121,6 +127,9 @@ import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import CounterpartyContractDialog from '@/components/pages/counterparty-contract/CounterpartyContractDialog.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VSelect from '@/components/ui/VSelect.vue'
+import VLine from '@/components/ui/VLine.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -139,8 +148,6 @@ import type {
   CounterpartyContractDataItemType,
   ContractPageOptionsType,
 } from '@/types/cabinet/CounterpertyContractTypes'
-import VDatepicker from '@/components/ui/VDatepicker.vue'
-import VSelect from '@/components/ui/VSelect.vue'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
 import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
 

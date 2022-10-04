@@ -6,7 +6,7 @@
       min-width="40px"
       outlined
       color="danger"
-      class="mr-md-8 mb-20 mb-md-0 justify-center align-center"
+      class="mr-md-8 mb-30 mb-md-0 justify-center align-center"
       @click="$emit('clear')"
     >
       <VIcon color="#F94E4F" size="24" icon="x-mark" />

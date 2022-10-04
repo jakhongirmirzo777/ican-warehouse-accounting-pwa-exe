@@ -7,6 +7,7 @@
     <VRow>
       <VCol md="1">
         <VBtn
+          width="100%"
           class="mb-20"
           color="primary"
           to="/cabinet/reference-characteristics-item"

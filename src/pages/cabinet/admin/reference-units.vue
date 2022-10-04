@@ -6,7 +6,7 @@
   <VCard>
     <VRow>
       <VCol md="1">
-        <VBtn color="primary" class="" @click="openDialog">
+        <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
         </VBtn>
@@ -18,6 +18,7 @@
         <VFilterActions @filter="startFilter" @clear="clearFilter" />
       </VCol>
     </VRow>
+    <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
@@ -51,7 +52,9 @@ import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import VLine from '@/components/ui/VLine.vue'
 import ReferenceUnitsDialog from '@/components/pages/reference-units/ReferenceUnitsDialog.vue'
+
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
