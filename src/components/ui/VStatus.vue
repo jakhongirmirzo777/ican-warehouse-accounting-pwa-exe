@@ -10,11 +10,11 @@ import { computed } from 'vue'
 const props = defineProps({
   color: {
     type: String,
-    required: true,
+    default: '#868EAA',
   },
   theme: {
     type: String,
-    required: true,
+    default: 'rgba(134, 142, 170, 0.24)',
   },
   minWidth: {
     type: String,

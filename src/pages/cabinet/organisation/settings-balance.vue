@@ -53,13 +53,12 @@
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.status="{ item }">
-        <!--        <VStatus-->
-        <!--          :color="PAYMENT_STATUSES_COLORED[item.status].color"-->
-        <!--          :theme="PAYMENT_STATUSES_COLORED[item.status].theme"-->
-        <!--        >-->
-        <!--          {{ item.status_text }}-->
-        <!--        </VStatus>-->
-        {{ item.status_text }}
+        <VStatus
+          :color="PAYMENT_STATUSES_COLORED[item.status]?.color"
+          :theme="PAYMENT_STATUSES_COLORED[item.status]?.theme"
+        >
+          {{ item.status_text }}
+        </VStatus>
       </template>
       <template #item.amount="{ item }">
         {{ $moneyFormat(item.amount) }}
@@ -85,7 +84,7 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VTable from '@/components/ui/VTable.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-// import VStatus from '@/components/ui/VStatus.vue'
+import VStatus from '@/components/ui/VStatus.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
@@ -97,7 +96,7 @@ import { fetchBalance } from '@/services/cabinet/SettingsBalanceService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import {
-  // PAYMENT_STATUSES_COLORED,
+  PAYMENT_STATUSES_COLORED,
   PAYMENT_STATUSES_INDEXED,
 } from '@/utils/constants'
 import { useQuery } from '@/composables/router-query'
