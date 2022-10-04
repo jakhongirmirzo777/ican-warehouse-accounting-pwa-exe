@@ -260,7 +260,10 @@ const menus = computed(() => {
       {
         name: t('organisationsAndWarehouse'),
         icon: 'home',
-        children: [{ name: t('organisations'), path: 'mko-organisations' }],
+        children: [
+          { name: t('organisations'), path: 'mko-organisations' },
+          { name: t('warehouses'), path: 'warehouses' },
+        ],
       },
       // {
       //   name: 'Финансовый учет',

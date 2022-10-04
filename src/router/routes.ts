@@ -142,6 +142,14 @@ const rawRoutes = [
         },
       },
       {
+        path: 'warehouses',
+        name: 'warehouses',
+        component: () => import('@/pages/cabinet/organisation/warehouses.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'reference-units',
         name: 'reference-units',
         component: () => import('@/pages/cabinet/admin/reference-units.vue'),

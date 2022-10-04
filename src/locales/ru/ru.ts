@@ -175,6 +175,10 @@ export default {
   percentSell: 'Прямая продажа (%)',
   percentSellLeg: 'Продажа юр.лицу (%)',
   percentCredit: 'Продажа в кредит (%)',
+  warehouses: 'Склады',
+  saleAvailable: 'Доступна продажа?',
+  addWarehouse: 'Добавление склада',
+  editWarehouse: 'Редактирование склада',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
