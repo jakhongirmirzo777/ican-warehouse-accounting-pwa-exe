@@ -1,4 +1,5 @@
 <template>
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('bonusTariff') }}
   </VText>
@@ -48,6 +49,7 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
+import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import SettingsBonusTariffsDialog from '@/components/pages/settings-bonus-tariffs/SettingsBonusTariffsDialog.vue'
 
 import { ref } from 'vue'
@@ -84,6 +86,15 @@ const queries = getQuery([
   'type',
 ])
 clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
+
+const breadcrumbs = [
+  {
+    name: t('setting'),
+  },
+  {
+    name: t('bonusTariff'),
+  },
+]
 
 const params = ref<SettingBonusPageOptionsType>({
   search: queries.search || '',
