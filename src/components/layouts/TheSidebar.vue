@@ -320,7 +320,10 @@ const menus = computed(() => {
       {
         name: t('setting'),
         icon: 'setting-icon',
-        children: [{ name: t('bonusTariff'), path: 'settings-bonus-tariffs' }],
+        children: [
+          { name: t('bonusTariff'), path: 'settings-bonus-tariffs' },
+          { name: t('balance'), path: 'settings-balance' },
+        ],
       },
     ]
   }

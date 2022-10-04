@@ -69,8 +69,8 @@
       </template>
       <template #item.status="{ item }">
         <VStatus
-          :color="PAYMENT_STATUSES_COLORED[item.status].color"
-          :theme="PAYMENT_STATUSES_COLORED[item.status].theme"
+          :color="PAYMENT_STATUSES_COLORED[item.status]?.color"
+          :theme="PAYMENT_STATUSES_COLORED[item.status]?.theme"
         >
           {{ item.status_text }}
         </VStatus>

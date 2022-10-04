@@ -216,6 +216,15 @@ const rawRoutes = [
         },
       },
       {
+        path: 'settings-balance',
+        name: 'settings-balance',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-balance.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
