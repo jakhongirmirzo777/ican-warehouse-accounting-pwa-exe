@@ -6,6 +6,25 @@
   text-align: left;
   font-size: 12px;
 
+  &.dark {
+    .v-table__body--row {
+      background-color: var(--color-dark-blue);
+    }
+
+    .v-table__th {
+      color: var(--color-white);
+    }
+
+    .v-table__td {
+      color: var(--color-white);
+    }
+
+    .v-table__body--row:not(:last-child) .v-table__td{
+      border-bottom: 1px solid var(--color-white);
+      border-radius: 0;
+    }
+  }
+
   &__container {
     width: 100%;
     overflow: auto;

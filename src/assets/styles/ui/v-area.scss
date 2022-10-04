@@ -24,3 +24,12 @@
     margin-top: 3px;
   }
 }
+
+.v-area__input.dark {
+  background-color: var(--color-dark-blue);
+  color: var(--color-white);
+
+  &::placeholder {
+    color: var(--color-white);
+  }
+}

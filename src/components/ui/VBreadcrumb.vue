@@ -1,5 +1,5 @@
 <template>
-  <div class="v-breadcrumb">
+  <div class="v-breadcrumb" :class="{ dark: theme === THEME.DARK }">
     <!--    :is="i !== list.length - 1 ? 'router-link' : 'span'"-->
     <!--    :to="item.path"-->
     <component
@@ -16,7 +16,7 @@
         v-if="i !== list.length - 1"
         icon="chevron-right"
         size="10"
-        color="#868EAA"
+        :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
         class="mx-10"
       />
     </component>
@@ -25,6 +25,10 @@
 
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
+
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 defineProps({
   list: {

@@ -1,5 +1,8 @@
 <template>
-  <label :aria-label="label" :class="['v-switch', { disabled: disabled }]">
+  <label
+    :aria-label="label"
+    :class="['v-switch', { disabled: disabled, dark: theme === THEME.DARK }]"
+  >
     <input
       :checked="isChecked"
       type="checkbox"
@@ -12,8 +15,11 @@
 </template>
 
 <script lang="ts" setup>
+import { useThemeService } from '@/plugins/theme-service'
 import { computed } from 'vue'
 import type { PropType } from 'vue'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   label: { type: String, required: true },

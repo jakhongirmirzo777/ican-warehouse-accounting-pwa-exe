@@ -7,7 +7,10 @@
     :rules="rules"
     v-slot="{ errors }"
   >
-    <div class="v-upload__wrapper" :class="{ 'hide-details': hideDetails }">
+    <div
+      class="v-upload__wrapper"
+      :class="{ 'hide-details': hideDetails, dark: theme === THEME.DARK }"
+    >
       <div class="v-upload__logo">{{ label }}</div>
       <div class="v-upload__container">
         <div
@@ -50,7 +53,11 @@
 
 <script lang="ts" setup>
 import VTransition from '@/components/ui/VTransition.vue'
+
+import { useThemeService } from '@/plugins/theme-service'
 import { computed, ref } from 'vue'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   modelValue: {},

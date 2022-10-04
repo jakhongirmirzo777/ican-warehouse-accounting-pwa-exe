@@ -1,13 +1,20 @@
 <template>
-  <component class="v-text" :is="tag" :style="styles">
+  <component
+    class="v-text"
+    :class="{ dark: theme === THEME.DARK }"
+    :is="tag"
+    :style="styles"
+  >
     <slot />
   </component>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useThemeService } from '@/plugins/theme-service'
 
 const DARK_COLOR = '#0E1E56'
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   tag: {

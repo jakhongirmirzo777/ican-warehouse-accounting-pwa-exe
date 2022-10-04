@@ -1,7 +1,7 @@
 <template>
   <VLoading v-if="loading" type="linear" />
   <div v-else v-bind="$attrs" class="v-table__container">
-    <table class="v-table">
+    <table class="v-table" :class="{ dark: theme === THEME.DARK }">
       <thead class="v-table__head">
         <slot name="head.prepend" />
         <tr class="v-table__head--row">
@@ -50,9 +50,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue'
 import VLoading from '@/components/ui/VLoading.vue'
+
+import type { PropType } from 'vue'
 import { $clearExtension } from '@/utils/pure-functions'
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 interface HeadersInterface {
   text: string

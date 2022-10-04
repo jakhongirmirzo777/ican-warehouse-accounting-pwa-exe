@@ -1,10 +1,16 @@
 <template>
-  <div class="login__wrapper">
+  <div class="login__wrapper" :class="{ dark: theme === THEME.DARK }">
     <div class="login__box">
       <div class="login__box--top">
         <Form @submit="onSubmit">
           <div class="d-flex justify-center mb-30">
-            <VImg class="login__logo" static src="logo.png" />
+            <VImg
+              v-if="theme === THEME.LIGHT"
+              class="login__logo"
+              static
+              src="logo.png"
+            />
+            <VImg v-else class="login__logo" static src="logo-dark.png" />
           </div>
           <VRow>
             <VCol>
@@ -15,7 +21,11 @@
                 v-model="formData.username"
               >
                 <template #prepend>
-                  <VIcon icon="user" color="#868EAA" size="16" />
+                  <VIcon
+                    icon="user"
+                    :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
+                    size="16"
+                  />
                 </template>
               </VInput>
             </VCol>
@@ -61,11 +71,13 @@ import VImg from '@/components/ui/VImg.vue'
 
 import { reactive, ref } from 'vue'
 import type { LoginFormDataInterface } from '@/types/auth/LoginTypes'
+import { useThemeService } from '@/plugins/theme-service'
 import { useUserService } from '@/plugins/user-service'
 import { useTokenService } from '@/plugins/token-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 
+const { theme, THEME } = useThemeService()
 const loading = ref(false)
 const userService = useUserService()
 const tokenService = useTokenService()

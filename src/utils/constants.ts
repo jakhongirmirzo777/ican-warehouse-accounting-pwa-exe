@@ -2,6 +2,13 @@ export const TOKEN_KEY = 'Authorization'
 export const EXPIRE_KEY = 'Expire'
 export const APP_LANG_KEY = 'Lang'
 export const NOTIFICATION_DEFAULT_DELAY = 2000
+export const MINI_MENU_MEDIA_WIDTH = 750
+
+export const THEME = {
+  key: 'Theme',
+  LIGHT: 'light',
+  DARK: 'dark',
+}
 
 export const ROLES = {
   SUPER_ADMIN: 'superAdmin',
@@ -165,5 +172,3 @@ export const PAYMENT_STATUSES_INDEXED = Object.entries(PAYMENT_STATUSES).reduce(
   },
   []
 )
-
-export const MINI_MENU_MEDIA_WIDTH = 750

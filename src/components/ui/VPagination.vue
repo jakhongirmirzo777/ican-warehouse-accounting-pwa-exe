@@ -1,5 +1,5 @@
 <template>
-  <div class="v-pagination">
+  <div class="v-pagination" :class="{ dark: theme === THEME.DARK }">
     <div class="v-pagination__cta">
       <span class="v-pagination__text">{{
         t('totalPages', { length: total })
@@ -56,8 +56,12 @@
 
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
+
 import { computed, ref } from 'vue'
+import { useThemeService } from '@/plugins/theme-service'
 import { useI18n } from 'vue-i18n'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   total: {

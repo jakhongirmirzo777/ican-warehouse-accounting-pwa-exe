@@ -8,7 +8,10 @@
     :rules="rules"
     v-slot="{ handleChange, handleBlur, errors }"
   >
-    <div class="v-file__wrapper" :class="{ 'hide-details': hideDetails }">
+    <div
+      class="v-file__wrapper"
+      :class="{ 'hide-details': hideDetails, dark: theme === THEME.DARK }"
+    >
       <div
         class="v-file__element"
         @click="onClick"
@@ -17,7 +20,7 @@
       >
         <VIcon
           class="v-file__icon"
-          color="#868EAA"
+          :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
           icon="paperclip"
           size="20"
         />
@@ -36,7 +39,7 @@
           class="v-file__clear cursor-pointer"
           :class="{ hovered: isHovered }"
           icon="circle-x-mark"
-          color="#868EAA"
+          :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
           size="16"
           @click.stop="$emit('update:modelValue', null)"
         />
@@ -61,7 +64,7 @@
       @blur="handleBlur"
     />
   </Field>
-  <div v-else class="v-file__download">
+  <div v-else class="v-file__download" :class="{ dark: theme === THEME.DARK }">
     <VIcon
       class="mr-15 cursor-pointer"
       icon="x-mark"
@@ -83,10 +86,13 @@
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
 import VTransition from '@/components/ui/VTransition.vue'
+
+import { useThemeService } from '@/plugins/theme-service'
 import { useErrorActions } from '@/composables/set-errors'
 import { $downloadFile } from '@/utils/pure-functions'
 import { ref, watchEffect } from 'vue'
 
+const { theme, THEME } = useThemeService()
 const { $setResponseErrors } = useErrorActions()
 
 const props = defineProps({

@@ -12,7 +12,7 @@
   &__label {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-60%);
     left: 35px;
     transition: .3s all;
     font-size: 16px;
@@ -70,4 +70,11 @@
 
 .v-datepicker .el-input__wrapper:hover {
   box-shadow: 0 0 0 1px var(--color-dark-gray) inset;
+}
+
+.v-datepicker.dark {
+  .v-datepicker__label {
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+  }
 }

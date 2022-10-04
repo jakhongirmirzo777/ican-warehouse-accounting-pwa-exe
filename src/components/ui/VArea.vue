@@ -10,6 +10,7 @@
     <textarea
       :placeholder="label"
       class="v-area__input"
+      :class="{ dark: theme === THEME.DARK }"
       v-bind="field"
       :rows="rows"
       :value="modelValue"
@@ -25,6 +26,10 @@
 
 <script lang="ts" setup>
 import VTransition from '@/components/ui/VTransition.vue'
+
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 defineProps({
   modelValue: {

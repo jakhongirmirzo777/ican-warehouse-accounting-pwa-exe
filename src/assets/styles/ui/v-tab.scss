@@ -9,11 +9,24 @@
 
 // VTab
 
+.v-tabs.dark {
+  .v-tab {
+    color: var(--color-white);
+    background-color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+  }
+}
+
+.v-tab-items.dark {
+  background-color: var(--color-dark-blue);
+  border-color: var(--color-dark-blue);
+}
+
 .v-tab {
   padding: 14px 24px;
   min-width: 110px;
   position: relative;
-  background: white;
+  background: var(--color-white);
   z-index: 3;
   margin-right: 5px;
   cursor: pointer;
@@ -23,6 +36,7 @@
   line-height: 19px;
   color: var(--color-gray);
   border: 1px solid #E3E3F1;
+
   &--active {
     border-bottom: unset;
   }
@@ -36,7 +50,7 @@
           "warning": var(--color-yellow),
   ) {
     &__active--#{$name} {
-      color: $value;
+      color: $value !important;
     }
   }
 
@@ -53,7 +67,7 @@
 // VTabItems
 
 .v-tab-items {
-  background: white;
+  background: var(--color-white);
   margin-top: -1px;
   padding: 16px;
   border: 1px solid #E3E3F1;
@@ -67,7 +81,8 @@
 
 // VTabItem
 
-.v-tab-item {}
+.v-tab-item {
+}
 
 @media screen and (max-width: 1700px) {
   .v-tab {
@@ -81,15 +96,19 @@
   position: absolute;
   transition: all 0.2s ease;
 }
+
 .tab-enter-from {
   left: -100%;
 }
+
 .tab-enter-to {
   left: 0;
 }
+
 .tab-leave-from {
   transform: scale(1);
 }
+
 .tab-leave-to {
   left: 100%;
 }

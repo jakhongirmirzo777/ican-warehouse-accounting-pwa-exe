@@ -1,5 +1,5 @@
 <template>
-  <div class="v-tabs">
+  <div class="v-tabs" :class="{ dark: theme === THEME.DARK }">
     <slot />
   </div>
 </template>
@@ -7,6 +7,9 @@
 <script lang="ts" setup>
 import { computed, provide, ref } from 'vue'
 import type { PropType } from 'vue'
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   modelValue: { type: [String, Number] },

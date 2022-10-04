@@ -27,7 +27,7 @@
 
     &--bottom {
       padding: 38px;
-      background-color: $bg-color;
+      background-color: $bg-color-light;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -48,6 +48,26 @@
   &__logo {
     height: 34px;
     width: 154px;
+  }
+}
+
+.login__wrapper.dark {
+  .login__box {
+    border: 1px solid var(--color-white);
+  }
+
+  .login__box--top {
+    background-color: var(--color-dark-blue);
+  }
+
+  .login__box--bottom {
+    background-color: var(--color-dark-blue);
+    border-top: 1px solid var(--color-white);
+    color: var(--color-white);
+
+    a {
+      color: var(--color-white);
+    }
   }
 }
 

@@ -25,7 +25,7 @@
       }
 
       &--error {
-        color: #f56c6c;
+        color: var(--color-dark-red);
       }
     }
   }
@@ -57,4 +57,26 @@
 
 .el-select .el-input__wrapper.is-focus {
   box-shadow: 0 0 0 1px var(--color-light-green) inset !important;
+}
+
+
+.v-select__v-select-block.dark {
+  .el-input__inner {
+
+    color: var(--color-white);
+  }
+
+  .el-input__wrapper {
+    background-color: var(--color-dark-blue);
+  }
+
+  .v-select__v-select-block__label {
+    color: var(--color-white);
+    background-color: var(--color-dark-blue);
+  }
+
+  .el-tag {
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
+  }
 }

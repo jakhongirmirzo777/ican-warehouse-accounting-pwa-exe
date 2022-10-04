@@ -20,6 +20,10 @@
 
       &__sub-title {
         font-size: 12px;
+
+        &__light {
+          color: var(--color-white);
+        }
       }
     }
   }

@@ -8,7 +8,10 @@
     v-slot="{ errors, field }"
     class="v-select"
   >
-    <label class="v-select__v-select-block w-100">
+    <label
+      class="v-select__v-select-block w-100"
+      :class="{ dark: theme === THEME.DARK }"
+    >
       <span
         v-if="label"
         :class="[
@@ -64,9 +67,11 @@ import { ElSelect, ElOption } from 'element-plus'
 import VTransition from '@/components/ui/VTransition.vue'
 import 'element-plus/dist/index.css'
 
+import { useThemeService } from '@/plugins/theme-service'
 import { onMounted, onUpdated, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+const { theme, THEME } = useThemeService()
 const { t } = useI18n()
 
 const props = defineProps({

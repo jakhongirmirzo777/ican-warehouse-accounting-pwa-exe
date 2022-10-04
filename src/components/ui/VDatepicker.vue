@@ -10,7 +10,10 @@
     <div
       :class="[
         'v-datepicker',
-        { 'v-datepicker--error-message': errors && errors.length },
+        {
+          'v-datepicker--error-message': errors && errors.length,
+          dark: theme === THEME.DARK,
+        },
       ]"
     >
       <ElConfigProvider :locale="el">
@@ -21,6 +24,7 @@
           v-bind="field"
           @update:modelValue="$emit('update:modelValue', $event)"
           @focus="open"
+          @blur="isOpen = false"
           :model-value="modelValue"
           :clearable="clearable"
           :format="format"
@@ -30,12 +34,12 @@
       <span
         :class="[
           'v-datepicker__label',
-          { 'v-datepicker__label-up': isOpen },
+          { 'v-datepicker__label-up': isOpen || modelValue },
           { 'v-datepicker__label-up__error': errors && errors[0] },
         ]"
       >
-        {{ label }}</span
-      >
+        {{ label }}
+      </span>
     </div>
     <div
       class="d-flex justify-start"
@@ -55,12 +59,15 @@
 </template>
 
 <script setup lang="ts">
-import { ElDatePicker, ElConfigProvider } from 'element-plus'
-import { onMounted, onUpdated, ref, watch } from 'vue'
 import VTransition from '@/components/ui/VTransition.vue'
+import { ElDatePicker, ElConfigProvider } from 'element-plus'
+
+import { useThemeService } from '@/plugins/theme-service'
+import { onMounted, onUpdated, ref, watch } from 'vue'
 import lang from '@//locales/date-locale/locale'
 
 const { el } = lang()
+const { theme, THEME } = useThemeService()
 
 defineEmits(['update:modelValue'])
 const props = defineProps({

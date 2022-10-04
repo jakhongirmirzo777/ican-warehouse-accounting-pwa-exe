@@ -11,7 +11,6 @@
         />
         <ProfileDropdown class="sidebar__list__profile-dropdown" theme />
       </div>
-      <VLine />
       <div
         v-for="(list, i) in listFrom"
         :key="`list-${i}`"
@@ -95,7 +94,6 @@
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import VLine from '@/components/ui/VLine.vue'
 import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
 
 import { computed, onMounted, ref, watch } from 'vue'

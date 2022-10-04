@@ -144,3 +144,19 @@
     right: 0;
   }
 }
+
+.v-input__container.dark {
+  .v-input__element {
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+  }
+
+  .v-input__label {
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+  }
+
+  .v-input__counter {
+    color: var(--color-white);
+  }
+}

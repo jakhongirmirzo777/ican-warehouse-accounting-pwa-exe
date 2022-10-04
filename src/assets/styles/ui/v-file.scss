@@ -97,3 +97,20 @@
     align-items: center;
   }
 }
+
+.v-file__wrapper.dark {
+  .v-file__label {
+    color: var(--color-white);
+    background-color: var(--color-dark-blue);
+  }
+
+  .v-file__value {
+    color: var(--color-white);
+  }
+}
+
+.v-file__download.dark {
+  .v-file__download__label {
+    color: var(--color-white);
+  }
+}

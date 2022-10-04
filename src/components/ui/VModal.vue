@@ -1,6 +1,9 @@
 <template>
   <Teleport to="#modal">
-    <div class="v-modal__container" :class="{ hide: hide }">
+    <div
+      class="v-modal__container"
+      :class="{ hide: hide, dark: theme === THEME.DARK }"
+    >
       <VTransition>
         <div
           v-if="modelValue"
@@ -24,11 +27,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import { $clearExtension } from '@/utils/pure-functions'
 import VTransition from '@/components/ui/VTransition.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
+
+import { useThemeService } from '@/plugins/theme-service'
+import { computed, ref, watch } from 'vue'
+import { $clearExtension } from '@/utils/pure-functions'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   modelValue: {

@@ -10,7 +10,7 @@ body {
   color: map-get($colors, "gray");
   font-family: $font-main;
   font-weight: 500;
-  background: $bg-color;
+  background: $bg-color-light;
 }
 
 *, *:after, *:before {

@@ -5,6 +5,11 @@
   border-radius: 12px;
   padding: 16px;
 
+  &.dark {
+    background-color: var(--color-dark-blue) !important;
+    border: none;
+  }
+
   &__title {
     font-size: 18px;
     font-weight: 700;

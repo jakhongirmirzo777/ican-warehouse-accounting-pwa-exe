@@ -6,7 +6,9 @@
         <div class="profile-menu__user-block__info">
           <h4
             class="profile-menu__user-block__info__title"
-            :class="{ 'profile-menu__user-block__info__title__light': theme }"
+            :class="{
+              'profile-menu__user-block__info__title__light': theme,
+            }"
           >
             {{ user?.type?.toUpperCase() }}
           </h4>
@@ -41,6 +43,7 @@ import VImg from '@/components/ui/VImg.vue'
 import { ref } from 'vue'
 import { useUserService } from '@/plugins/user-service'
 import { useI18n } from 'vue-i18n'
+
 const { logoutUser, user } = useUserService()
 const { t } = useI18n()
 
@@ -60,5 +63,5 @@ const onMenuClick = (fn: () => unknown) => {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/layouts/profile-dropdown.scss';
+@import '../../assets/styles/layouts/profile-dropdown.scss';
 </style>

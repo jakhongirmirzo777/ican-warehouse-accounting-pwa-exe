@@ -1,11 +1,14 @@
 <template>
-  <div class="v-tab-items">
+  <div class="v-tab-items" :class="{ dark: theme === THEME.DARK }">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, provide, ref } from 'vue'
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   modelValue: {},

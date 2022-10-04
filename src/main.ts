@@ -11,6 +11,7 @@ import { useUserService } from '@/plugins/user-service'
 import { useErrorActions } from '@/composables/set-errors'
 import '@/plugins/vee-validate'
 import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/assets/styles/index.scss'
 
 const { $setResponseErrors } = useErrorActions()

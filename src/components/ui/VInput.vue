@@ -10,6 +10,7 @@
     <div
       v-bind="$attrs"
       class="v-input__container"
+      :class="{ dark: theme === THEME.DARK }"
       :style="containerStyles"
       @mouseover="isHovered = true"
       @mouseleave="isHovered = false"
@@ -27,13 +28,13 @@
             <VIcon
               v-if="type === 'email'"
               icon="at"
-              color="#868EAA"
+              :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
               size="16"
             />
             <VIcon
               v-if="type === 'password'"
               icon="lock"
-              color="#868EAA"
+              :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
               size="16"
             />
           </slot>
@@ -92,7 +93,7 @@
             v-show="clearable && modelValue && isHovered"
             class="cursor-pointer"
             icon="circle-x-mark"
-            color="#868EAA"
+            :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
             size="16"
             @click.stop="$emit('update:modelValue', null)"
           />
@@ -102,14 +103,14 @@
                 v-show="!isVisiblePassword"
                 class="cursor-pointer"
                 icon="eye"
-                color="#868EAA"
+                :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
                 size="16"
               />
               <VIcon
                 v-show="isVisiblePassword"
                 class="cursor-pointer"
                 icon="eye-slash"
-                color="#868EAA"
+                :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
                 size="16"
               />
             </template>
@@ -132,12 +133,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
 import VTransition from '@/components/ui/VTransition.vue'
 import VIcon from '@/components/ui/VIcon.vue'
+
+import { computed, ref } from 'vue'
 import { $moneyFormatWithComma } from '@/utils/pure-functions'
+import { useThemeService } from '@/plugins/theme-service'
 import type { PropType } from 'vue'
 import type { EventWithTarget } from '@/types/globals/EventTypes'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   type: {

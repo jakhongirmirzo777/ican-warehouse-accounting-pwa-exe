@@ -13,4 +13,8 @@
   &__active {
     color: var(--color-darker-blue);
   }
+
+  &.dark &__items, &.dark &__active,{
+    color: var(--color-white);
+  }
 }

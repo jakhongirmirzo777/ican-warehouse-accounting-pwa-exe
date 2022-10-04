@@ -53,6 +53,17 @@
   }
 }
 
+.v-modal__container.dark {
+  .v-modal__body {
+    box-shadow: 0 11px 15px -7px rgb(0 0 0 / 20%), 0 24px 38px 3px rgb(0 0 0 / 14%), 0 9px 46px 8px rgb(0 0 0 / 12%);
+    background-color: var(--color-dark-blue);
+  }
+
+  .v-modal__title {
+    color: var(--color-white);
+  }
+}
+
 .bounce-enter-active {
   animation: bounce-in 0.3s;
 }

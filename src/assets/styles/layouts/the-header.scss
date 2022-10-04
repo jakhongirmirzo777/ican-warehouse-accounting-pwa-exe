@@ -7,26 +7,36 @@
   display: flex;
   align-items: center;
   padding: 0 16px;
+
+  &.dark {
+    background-color: var(--color-dark-blue)
+  }
+
   &__list-icon {
     cursor: pointer;
     margin-right: 32px;
     position: relative;
     z-index: 2;
   }
+
   &__logo {
     margin-right: 63px;
   }
+
   &__search {
     width: 263px;
     display: flex;
     align-items: center;
   }
+
   &__setting-icons {
 
   }
+
   &__user-block {
     display: flex;
     align-items: center;
+
     &__img {
       width: 40px;
       height: 40px;
@@ -34,19 +44,23 @@
       margin-right: 11px;
       margin-left: 37px;
     }
+
     &__info {
       &__title {
         font-weight: 600;
         font-size: 12px;
         color: #143D5B;
+
         &__light {
           color: var(--color-white) !important;
         }
       }
+
       &__sub-title {
         font-size: 12px;
         line-height: 16px;
         color: #667A88;
+
         &__light {
           color: var(--color-white) !important;
         }
@@ -58,9 +72,11 @@
 @media screen and (max-width: 765px) {
   .header {
     justify-content: space-between;
+
     &__search {
       display: none;
     }
+
     &__setting {
       &-icons {
         &__setting {
@@ -68,9 +84,11 @@
         }
       }
     }
+
     &__profile-dropdown {
       display: none;
     }
+
     &__spacer {
       display: none;
     }

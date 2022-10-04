@@ -72,3 +72,22 @@
     display: none;
   }
 }
+
+.v-upload__wrapper.dark {
+  .v-upload__logo {
+    color: var(--color-white);
+  }
+
+  .v-upload__previewer.has__image {
+    background-color: var(--color-white);
+  }
+
+  .v-upload__previewer {
+    border-color: var(--color-white);
+    background-color: var(--color-dark-blue);
+  }
+
+  .text {
+    color: var(--color-white);
+  }
+}
