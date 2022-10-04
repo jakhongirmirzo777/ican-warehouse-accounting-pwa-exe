@@ -1,6 +1,17 @@
 <template>
   <div class="d-flex align-center flex-column flex-md-row">
     <VBtn
+      v-if="collapse"
+      style="display: flex"
+      :width="size === 'sm' ? '100%' : '40px'"
+      min-width="40px"
+      outlined
+      class="mr-md-8 mb-30 mb-md-0 justify-center align-center"
+      @click="$emit('collapse')"
+    >
+      <VIcon color="#868EAA" size="24" icon="chevron_bottom" />
+    </VBtn>
+    <VBtn
       style="display: flex"
       :width="size === 'sm' ? '100%' : '40px'"
       min-width="40px"
@@ -28,7 +39,13 @@
 import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import { useResizeWindow } from '@/composables/resize-window'
-const { size } = useResizeWindow()
 
-defineEmits(['clear', 'filter'])
+const { size } = useResizeWindow()
+defineProps({
+  collapse: {
+    type: Boolean,
+    default: false,
+  },
+})
+defineEmits(['clear', 'filter', 'collapse'])
 </script>

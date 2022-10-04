@@ -5,8 +5,8 @@
       {{ t('agreements') }}
     </VText>
     <VCard>
-      <VRow>
-        <VCol md="11" dense>
+      <VFilterCollapse>
+        <template #top="{ toggle }">
           <VRow>
             <VCol md="1">
               <VBtn
@@ -19,17 +19,17 @@
                 {{ $t('add') }}
               </VBtn>
             </VCol>
-            <VCol md="2">
+            <VCol md="3">
               <VInput :label="$t('search')" v-model="params.search" clearable />
             </VCol>
-            <VCol md="2">
+            <VCol md="3">
               <VDatepicker
                 :label="$t('startDate')"
                 v-model="params.start_date"
                 clearable
               />
             </VCol>
-            <VCol md="2">
+            <VCol md="3">
               <VDatepicker
                 :label="$t('finishDate')"
                 v-model="params.finish_date"
@@ -37,6 +37,18 @@
               />
             </VCol>
             <VCol md="2">
+              <VFilterActions
+                collapse
+                @collapse="toggle"
+                @filter="startFilter"
+                @clear="clearFilter"
+              />
+            </VCol>
+          </VRow>
+        </template>
+        <template #bottom>
+          <VRow>
+            <VCol md="3">
               <VSelect
                 :items="counterpartyList"
                 item-text="company_name"
@@ -46,7 +58,7 @@
                 clearable
               />
             </VCol>
-            <VCol md="2">
+            <VCol md="3">
               <VSelect
                 :items="positionList"
                 item-value="value"
@@ -56,7 +68,7 @@
                 clearable
               />
             </VCol>
-            <VCol md="2">
+            <VCol md="3">
               <VSelect
                 :items="typeList"
                 item-value="value"
@@ -67,11 +79,8 @@
               />
             </VCol>
           </VRow>
-        </VCol>
-        <VCol md="1">
-          <VFilterActions @filter="startFilter" @clear="clearFilter" />
-        </VCol>
-      </VRow>
+        </template>
+      </VFilterCollapse>
       <VLine class="mb-20" />
       <VTable :headers="headers" :items="items">
         <template #item.actions="{ item }">
@@ -150,6 +159,7 @@ import type {
 } from '@/types/cabinet/CounterpertyContractTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
 import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 interface ValueType<T> {
   value: T
