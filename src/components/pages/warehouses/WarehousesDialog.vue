@@ -1,13 +1,13 @@
 <template>
   <VModal
-    width="400px"
+    width="700px"
     :title="!isUpdate ? t('addWarehouse') : t('editWarehouse')"
     :model-value="modelValue"
     @update:modelValue="(val) => $emit('update:modelValue', val)"
   >
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
-        <VCol>
+        <VCol md="6">
           <VInput
             vid="name"
             :label="t('name')"
@@ -15,7 +15,7 @@
             v-model="formData.name"
           />
         </VCol>
-        <VCol>
+        <VCol md="6">
           <VSelect
             vid="organisation_id"
             autocomplete
@@ -25,7 +25,7 @@
             v-model="formData.organisation_id"
           />
         </VCol>
-        <VCol>
+        <VCol md="6">
           <VInput
             vid="address"
             :label="t('address')"
@@ -33,7 +33,7 @@
             v-model="formData.address"
           />
         </VCol>
-        <VCol>
+        <VCol md="6">
           <VInput
             vid="director"
             :label="t('director')"
@@ -41,7 +41,7 @@
             v-model="formData.director"
           />
         </VCol>
-        <VCol>
+        <VCol md="6">
           <VInput
             vid="phone"
             type="phone"

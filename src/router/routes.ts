@@ -207,10 +207,10 @@ const rawRoutes = [
         },
       },
       {
-        path: 'tariffs-bonuses',
-        name: 'tariffs-bonuses',
+        path: 'settings-bonus-tariffs',
+        name: 'settings-bonus-tariffs',
         component: () =>
-          import('@/pages/cabinet/organisation/setting-bonus-tariff.vue'),
+          import('@/pages/cabinet/organisation/settings-bonus-tariffs.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },

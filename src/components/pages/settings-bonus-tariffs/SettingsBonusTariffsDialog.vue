@@ -91,7 +91,7 @@ import { useI18n } from 'vue-i18n'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import { createEditSettingBonuses } from '@/services/cabinet/SettingBonusTariffService'
+import { createEditSettingBonuses } from '@/services/cabinet/SettingsBonusTariffsService'
 import type { SettingBonusFormTypes } from '@/types/cabinet/SettingBonusTariffTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
 

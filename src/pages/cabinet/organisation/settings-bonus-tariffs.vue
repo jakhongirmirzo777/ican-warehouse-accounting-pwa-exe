@@ -1,41 +1,39 @@
 <template>
-  <div>
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('bonusTariff') }}
-    </VText>
-    <VCard>
-      <VRow>
-        <VCol md="2" xl="1">
-          <VBtn color="primary" class="" @click="openDialog">
-            <VIcon class="mr-14" size="20" icon="circle-plus" />
-            {{ $t('add') }}
-          </VBtn>
-        </VCol>
-        <VCol md="4">
-          <VInput :label="$t('search')" v-model="params.search" clearable />
-        </VCol>
-        <VCol md="1">
-          <VFilterActions @filter="startFilter" @clear="clearFilter" />
-        </VCol>
-      </VRow>
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            @delete="deleteItem(item.id)"
-          />
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <BonusTariffDialog ref="organizationDialogRef" @fetchData="fetchData" />
-  </div>
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('bonusTariff') }}
+  </VText>
+  <VCard>
+    <VRow>
+      <VCol md="2" xl="1">
+        <VBtn color="primary" class="" @click="openDialog">
+          <VIcon class="mr-14" size="20" icon="circle-plus" />
+          {{ $t('add') }}
+        </VBtn>
+      </VCol>
+      <VCol md="4">
+        <VInput :label="$t('search')" v-model="params.search" clearable />
+      </VCol>
+      <VCol md="1">
+        <VFilterActions @filter="startFilter" @clear="clearFilter" />
+      </VCol>
+    </VRow>
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
+    />
+  </VCard>
+  <SettingsBonusTariffsDialog
+    ref="organizationDialogRef"
+    @fetchData="fetchData"
+  />
 </template>
 
 <script setup lang="ts">
@@ -50,14 +48,14 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
-import BonusTariffDialog from '@/components/pages/setting-bonus-tariff/BonusTariffDialog.vue'
+import SettingsBonusTariffsDialog from '@/components/pages/settings-bonus-tariffs/SettingsBonusTariffsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchSettingBonuses,
   deleteSettingBonuses,
-} from '@/services/cabinet/SettingBonusTariffService'
+} from '@/services/cabinet/SettingsBonusTariffsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
