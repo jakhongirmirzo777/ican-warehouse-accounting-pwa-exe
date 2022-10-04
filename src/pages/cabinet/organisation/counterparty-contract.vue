@@ -97,7 +97,7 @@
         @update:modelValue="changePage"
       />
     </VCard>
-    <ContractDialog
+    <CounterpartyContractDialog
       ref="organizationDialogRef"
       :positionList="positionList"
       :counterpartyList="counterpartyList"
@@ -119,7 +119,7 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
-import ContractDialog from '@/components/pages/counterparty-contract/ContractDialog.vue'
+import CounterpartyContractDialog from '@/components/pages/counterparty-contract/CounterpartyContractDialog.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 
 import { ref } from 'vue'
