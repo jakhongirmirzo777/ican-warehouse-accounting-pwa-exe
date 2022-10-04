@@ -14,7 +14,12 @@
     <div class="header__search">
       <VInput :label="$t('search')" hide-details v-model="search">
         <template #prepend>
-          <VIcon icon="search" size="16" />
+          <VIcon v-show="theme === THEME.LIGHT" icon="search" size="16" />
+          <VIcon
+            v-show="theme === THEME.DARK"
+            icon="search-small-white"
+            size="16"
+          />
         </template>
       </VInput>
     </div>
