@@ -6,12 +6,16 @@
     @update:modelValue="(val) => $emit('update:modelValue', val)"
   >
     <Form @submit="onSubmit" ref="formObj">
-      <VInput
-        vid="name"
-        :label="t('name')"
-        rules="required|max:255"
-        v-model="formData.name"
-      />
+      <VRow>
+        <VCol>
+          <VInput
+            vid="name"
+            :label="t('name')"
+            rules="required|max:255"
+            v-model="formData.name"
+          />
+        </VCol>
+      </VRow>
       <VLine class="mb-24" />
       <div class="d-flex justify-end align-center">
         <VBtn
@@ -44,6 +48,8 @@ import VModal from '@/components/ui/VModal.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
+import VRow from '@/components/ui/VRow.vue'
+import VCol from '@/components/ui/VCol.vue'
 
 import { ref, watch } from 'vue'
 import {

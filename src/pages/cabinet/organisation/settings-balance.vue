@@ -12,14 +12,6 @@
         </VText>
       </VCard>
     </VCol>
-    <VCol md="3">
-      <VCard>
-        <VText class="mb-10" tag="p" size="14px">{{ t('paidUntil') }}:</VText>
-        <VText color="#18275D" tag="h4" weight="600" size="16px">
-          15 июнь 2022 года (Hali tayyormas)
-        </VText>
-      </VCard>
-    </VCol>
   </VRow>
   <VCard>
     <VRow>
