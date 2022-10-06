@@ -100,7 +100,7 @@ import VCol from '@/components/ui/VCol.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 
 import { ref, watch } from 'vue'
-import { createUser, editUser } from '@/services/cabinet/UsersAdminService'
+import { createUser, editUser } from '@/services/cabinet/UsersService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'

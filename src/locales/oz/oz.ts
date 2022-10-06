@@ -194,6 +194,12 @@ export default {
   addUser: 'Добавление пользователя',
   editUser: 'Редактирование пользователя',
   fio: 'Ф.И.О',
+  block: 'Заблокировать',
+  unblock: 'Разблокировать',
+  addEmployee: 'Добавление сотрудника',
+  editEmployee: 'Редактирование сотрудника',
+  department: 'Отдел',
+  positionAtWork: 'Должность',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

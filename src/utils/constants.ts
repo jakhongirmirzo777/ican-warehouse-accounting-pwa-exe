@@ -178,6 +178,11 @@ export const USER_STATUS = {
   '0': 'notActive',
 }
 
+export const USER_STATUS_VALUE = {
+  ACTIVE: 10,
+  UN_ACTIVE: 0,
+}
+
 export const USER_STATUS_COLORED = {
   '10': {
     theme: 'rgba(40, 180, 70, 0.24)',

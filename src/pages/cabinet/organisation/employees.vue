@@ -1,11 +1,11 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('users') }}
+    {{ t('employees') }}
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol xl="1" md="3">
         <VBtn
           class="mb-20"
           color="primary"
@@ -21,10 +21,10 @@
           {{ t('add') }}
         </VBtn>
       </VCol>
-      <VCol md="3">
+      <VCol xl="2" md="3">
         <VInput clearable :label="t('search')" v-model="options.search" />
       </VCol>
-      <VCol md="3">
+      <VCol xl="2" md="3">
         <VSelect
           clearable
           localize
@@ -35,7 +35,23 @@
           v-model="options.status"
         />
       </VCol>
-      <VCol md="2">
+      <VCol xl="2" md="3">
+        <VSelect
+          clearable
+          :label="t('departments')"
+          :items="departments"
+          v-model="options.department_id"
+        />
+      </VCol>
+      <VCol xl="2" md="3">
+        <VSelect
+          clearable
+          :label="t('positions')"
+          :items="positions"
+          v-model="options.position_id"
+        />
+      </VCol>
+      <VCol xl="2" md="3">
         <VFilterActions @filter="filterData" @clear="clearFilter" />
       </VCol>
     </VRow>
@@ -78,7 +94,7 @@
             </span>
           </VBtn>
           <VTableActions
-            @edit="editUser(item)"
+            @edit="editEmployee(item)"
             @delete="handleDelete(item.id)"
           />
         </div>
@@ -92,11 +108,13 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <UsersDialog
+  <EmployeesDialog
     v-model="dialog"
     :data="editValue"
+    :departments="departments"
+    :positions="positions"
     :is-update="isUpdate"
-    @submit="useFetchUsers"
+    @submit="useFetchEmployees"
   />
 </template>
 
@@ -116,15 +134,17 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VStatus from '@/components/ui/VStatus.vue'
-import UsersDialog from '@/components/pages/users/UsersDialog.vue'
+import EmployeesDialog from '@/components/pages/employees/EmployeesDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  fetchUsers,
-  deleteUser,
+  fetchDepartments,
+  fetchPositions,
+  fetchEmployees,
+  deleteEmployee,
   toggleStatus,
-} from '@/services/cabinet/UsersService'
+} from '@/services/cabinet/EmployeesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -142,15 +162,21 @@ const { $showLoading, $clearLoading } = useLoadingService()
 const { getQuery, addQuery, clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['search', 'status', 'page'])
-clearQuery(['search', 'status', 'page'])
+const queries = getQuery([
+  'search',
+  'status',
+  'department_id',
+  'position_id',
+  'page',
+])
+clearQuery(['search', 'status', 'department_id', 'position_id', 'page'])
 
 const breadcrumbs = [
   {
-    name: t('employees'),
+    name: t('workersControlling'),
   },
   {
-    name: t('users'),
+    name: t('employees'),
   },
 ]
 
@@ -161,13 +187,17 @@ const options = ref<{
   total: null | number
   search: null | string
   status: null | number
+  department_id: null | number
+  position_id: null | number
 }>({
   page: +queries.page || 1,
   lastPage: null,
   perPage: null,
   total: null,
-  status: $parseQueryStatus(queries.status),
   search: queries.search || null,
+  status: $parseQueryStatus(queries.status),
+  department_id: +queries.department_id || null,
+  position_id: +queries.position_id || null,
 })
 
 const headers = [
@@ -183,6 +213,14 @@ const headers = [
   {
     text: t('username'),
     value: 'username',
+  },
+  {
+    text: t('department'),
+    value: 'department_name',
+  },
+  {
+    text: t('positionAtWork'),
+    value: 'position_name',
   },
   {
     text: t('phone'),
@@ -202,27 +240,29 @@ const headers = [
 const dialog = ref(false)
 const isUpdate = ref(false)
 const items = ref([])
+const departments = ref([])
+const positions = ref([])
 const editValue = ref<{
   id: number | null
   full_name: string | null
   phone: string | null
   status: number | null
+  department_id: number | null
+  position_id: number | null
 }>({
   id: null,
   full_name: null,
   phone: null,
   status: null,
+  department_id: null,
+  position_id: null,
 })
 
-const useFetchUsers = async () => {
+const useFetchEmployees = async () => {
   try {
     const {
       data: { data, links },
-    } = await fetchUsers(
-      options.value.page,
-      options.value.search,
-      options.value.status
-    )
+    } = await fetchEmployees(options.value)
     const { from, last_page, total, per_page } = links
     options.value.lastPage = last_page
     options.value.total = total
@@ -236,10 +276,32 @@ const useFetchUsers = async () => {
   }
 }
 
+const useFetchDepartments = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchDepartments()
+    departments.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+const useFetchPositions = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchPositions()
+    positions.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 const handleDelete = async (id: number) => {
   try {
     $showLoading()
-    await deleteUser(id)
+    await deleteEmployee(id)
     if (
       options.value &&
       options.value.total &&
@@ -251,7 +313,7 @@ const handleDelete = async (id: number) => {
         page: 1,
       })
     }
-    await useFetchUsers()
+    await useFetchEmployees()
     $successMessage(t('notifications.deletedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
@@ -263,7 +325,9 @@ const handleDelete = async (id: number) => {
 const useFetchData = async () => {
   try {
     $showLoading()
-    await useFetchUsers()
+    await useFetchDepartments()
+    await useFetchPositions()
+    await useFetchEmployees()
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -275,7 +339,7 @@ const useToggleStatus = async (id: number) => {
   try {
     $showLoading()
     await toggleStatus(id)
-    await useFetchUsers()
+    await useFetchEmployees()
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -283,11 +347,13 @@ const useToggleStatus = async (id: number) => {
   }
 }
 
-const editUser = (item: {
+const editEmployee = (item: {
   id: number
   full_name: string
   phone: string
   status: number
+  department_id: number
+  position_id: number
 }) => {
   editValue.value = item
   isUpdate.value = true
@@ -298,11 +364,13 @@ const filterData = async () => {
   try {
     $showLoading()
     options.value.page = 1
-    await useFetchUsers()
+    await useFetchEmployees()
     await addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
+      department_id: options.value.department_id,
+      position_id: options.value.position_id,
     })
   } catch (err) {
     $setResponseErrors(err)
@@ -315,13 +383,17 @@ const clearFilter = async () => {
   try {
     $showLoading()
     options.value.page = 1
-    options.value.status = null
     options.value.search = null
-    await useFetchUsers()
+    options.value.status = null
+    options.value.department_id = null
+    options.value.position_id = null
+    await useFetchEmployees()
     await addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
+      department_id: options.value.department_id,
+      position_id: options.value.position_id,
     })
   } catch (err) {
     $setResponseErrors(err)
@@ -333,7 +405,7 @@ const clearFilter = async () => {
 const paginate = async () => {
   try {
     $showLoading()
-    await useFetchUsers()
+    await useFetchEmployees()
     await addQuery({
       page: options.value.page,
     })
@@ -343,6 +415,5 @@ const paginate = async () => {
     $clearLoading()
   }
 }
-
 useFetchData()
 </script>

@@ -168,6 +168,14 @@ const rawRoutes = [
         },
       },
       {
+        path: 'employees',
+        name: 'employees',
+        component: () => import('@/pages/cabinet/organisation/employees.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
@@ -233,8 +241,8 @@ const rawRoutes = [
         },
       },
       {
-        path: 'users-admin',
-        name: 'users-admin',
+        path: 'users',
+        name: 'users',
         component: () => import('@/pages/cabinet/admin/users.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],

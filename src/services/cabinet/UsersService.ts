@@ -48,3 +48,12 @@ export const deleteUser = async (id: number) => {
     return Promise.reject(err)
   }
 }
+
+export const toggleStatus = async (id: number) => {
+  try {
+    const data = await http.post(`/admin/employee/${id}`)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
