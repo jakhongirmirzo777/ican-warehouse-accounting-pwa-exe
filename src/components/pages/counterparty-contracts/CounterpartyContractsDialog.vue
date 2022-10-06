@@ -26,17 +26,6 @@
           />
         </VCol>
         <VCol cols="12" md="6">
-          <VSelect
-            :label="$t('organisations')"
-            :items="organisationsList"
-            item-text="name"
-            item-value="id"
-            rules="required|max:255"
-            vid="organisation_id"
-            v-model="form.organisation_id"
-          />
-        </VCol>
-        <VCol cols="12" md="6">
           <VDatepicker
             :label="$t('dateConclusion')"
             rules="required"
@@ -110,11 +99,11 @@ import VDatepicker from '@/components/ui/VDatepicker.vue'
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { createEditContract } from '@/services/cabinet/CounterpartyContractServices'
+import { createEditContract } from '@/services/cabinet/CounterpartyContractsServices'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import type { CounterpartyContractFormTypes } from '@/types/cabinet/CounterpertyContractTypes'
+import type { CounterpartyContractFormTypes } from '@/types/cabinet/CounterpertyContractsTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import VArea from '@/components/ui/VArea.vue'
 
@@ -123,7 +112,6 @@ const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
 const FORM_DATA = {
-  organisation_id: '',
   counterparty_id: '',
   number: '',
   amount: '',
@@ -136,7 +124,6 @@ const FORM_DATA = {
 defineProps({
   positionList: Array,
   counterpartyList: Array,
-  organisationsList: Array,
 })
 
 const emits = defineEmits(['fetch-data'])
@@ -158,7 +145,7 @@ watch(dialog, (val) => {
 
 const openDialog = (item: CounterpartyContractFormTypes) => {
   if (item && item.id) {
-    form.value = item
+    form.value = { ...item }
   }
   dialog.value = true
 }

@@ -15,16 +15,6 @@
             v-model="formData.name"
           />
         </VCol>
-        <VCol>
-          <VSelect
-            vid="organisation_id"
-            autocomplete
-            rules="required"
-            :label="t('organisation')"
-            :items="organisations"
-            v-model="formData.organisation_id"
-          />
-        </VCol>
       </VRow>
       <VLine class="mb-24" />
       <div class="d-flex justify-end align-center">
@@ -58,7 +48,6 @@ import VModal from '@/components/ui/VModal.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
-import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 
@@ -77,7 +66,6 @@ const { t } = useI18n()
 const FORM_DATA = {
   id: null,
   name: null,
-  organisation_id: null,
 }
 
 const props = defineProps({
@@ -92,10 +80,6 @@ const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
-  },
-  organisations: {
-    type: Array,
-    default: () => [],
   },
 })
 
@@ -114,7 +98,6 @@ watch(
     } else if (val && props.isUpdate) {
       formData.value.id = props.data.id || null
       formData.value.name = props.data.name || null
-      formData.value.organisation_id = props.data.organisation_id || null
     }
   }
 )

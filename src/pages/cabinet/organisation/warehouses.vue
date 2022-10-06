@@ -64,7 +64,6 @@
   <WarehousesDialog
     v-model="dialog"
     :data="editValue"
-    :organisations="organisations"
     :is-update="isUpdate"
     @submit="useFetchWarehouses"
   />

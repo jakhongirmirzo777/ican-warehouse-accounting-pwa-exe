@@ -3,7 +3,7 @@ import type {
   CounterpartyContractDataItemType,
   CounterpartyContractFormTypes,
   ContractPageOptionsType,
-} from '@/types/cabinet/CounterpertyContractTypes'
+} from '@/types/cabinet/CounterpertyContractsTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 

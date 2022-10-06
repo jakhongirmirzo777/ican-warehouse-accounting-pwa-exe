@@ -1,125 +1,119 @@
 <template>
-  <div>
-    <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('agreements') }}
-    </VText>
-    <VCard>
-      <VFilterCollapse>
-        <template #top="{ toggle }">
-          <VRow>
-            <VCol md="1">
-              <VBtn
-                width="100%"
-                color="primary"
-                class="mb-20"
-                @click="openDialog"
-              >
-                <VIcon class="mr-10" size="20" icon="circle-plus" />
-                {{ $t('add') }}
-              </VBtn>
-            </VCol>
-            <VCol md="3">
-              <VInput :label="$t('search')" v-model="params.search" clearable />
-            </VCol>
-            <VCol md="3">
-              <VDatepicker
-                :label="$t('startDate')"
-                v-model="params.start_date"
-                clearable
-              />
-            </VCol>
-            <VCol md="3">
-              <VDatepicker
-                :label="$t('finishDate')"
-                v-model="params.finish_date"
-                clearable
-              />
-            </VCol>
-            <VCol md="2">
-              <VFilterActions
-                collapse
-                @collapse="toggle"
-                @filter="startFilter"
-                @clear="clearFilter"
-              />
-            </VCol>
-          </VRow>
-        </template>
-        <template #bottom>
-          <VRow>
-            <VCol md="3">
-              <VSelect
-                :items="counterpartyList"
-                item-text="company_name"
-                item-value="id"
-                :label="$t('counterparties')"
-                v-model="params.counterparty_id"
-                clearable
-              />
-            </VCol>
-            <VCol md="3">
-              <VSelect
-                :items="positionList"
-                item-value="value"
-                item-text="text"
-                :label="$t('position')"
-                v-model="params.position"
-                clearable
-              />
-            </VCol>
-            <VCol md="3">
-              <VSelect
-                :items="typeList"
-                item-value="value"
-                item-text="text"
-                :label="$t('type')"
-                v-model="params.type"
-                clearable
-              />
-            </VCol>
-          </VRow>
-        </template>
-      </VFilterCollapse>
-      <VLine class="mb-20" />
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item }">
-          <VTableActions
-            @edit="openDialog(item)"
-            @delete="deleteItem(item.id)"
-          />
-        </template>
-        <template #item.counterparty="{ item }">
-          <span v-if="item.counterparty">{{
-            item.counterparty.company_name
-          }}</span>
-          <span v-else>-</span>
-        </template>
-        <template #item.position="{ item }">
-          <span v-if="item.position">{{ POSITION[item.position] }}</span>
-          <span v-else>-</span>
-        </template>
-        <template #item.type="{ item }">
-          <span v-if="item.type">{{ TYPE[item.type] }}</span>
-          <span v-else>-</span>
-        </template>
-      </VTable>
-      <VPagination
-        v-if="pageOptions.lastPage > 1"
-        v-model="params.page"
-        :pages="pageOptions.lastPage"
-        :total="pageOptions.total"
-        @update:modelValue="changePage"
-      />
-    </VCard>
-    <CounterpartyContractDialog
-      ref="organizationDialogRef"
-      :positionList="positionList"
-      :counterpartyList="counterpartyList"
-      :organisationsList="organisationsList"
-      @fetchData="fetchData"
+  <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+    {{ t('agreements') }}
+  </VText>
+  <VCard>
+    <VFilterCollapse>
+      <template #top="{ toggle }">
+        <VRow>
+          <VCol md="1">
+            <VBtn
+              width="100%"
+              color="primary"
+              class="mb-20"
+              @click="openDialog"
+            >
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ $t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol md="3">
+            <VInput :label="$t('search')" v-model="params.search" clearable />
+          </VCol>
+          <VCol md="3">
+            <VDatepicker
+              :label="$t('startDate')"
+              v-model="params.start_date"
+              clearable
+            />
+          </VCol>
+          <VCol md="3">
+            <VDatepicker
+              :label="$t('finishDate')"
+              v-model="params.finish_date"
+              clearable
+            />
+          </VCol>
+          <VCol md="2">
+            <VFilterActions
+              collapse
+              @collapse="toggle"
+              @filter="startFilter"
+              @clear="clearFilter"
+            />
+          </VCol>
+        </VRow>
+      </template>
+      <template #bottom>
+        <VRow>
+          <VCol md="3">
+            <VSelect
+              :items="counterpartyList"
+              item-text="company_name"
+              item-value="id"
+              :label="$t('counterparties')"
+              v-model="params.counterparty_id"
+              clearable
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :items="positionList"
+              item-value="value"
+              item-text="text"
+              :label="$t('position')"
+              v-model="params.position"
+              clearable
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :items="typeList"
+              item-value="value"
+              item-text="text"
+              :label="$t('type')"
+              v-model="params.type"
+              clearable
+            />
+          </VCol>
+        </VRow>
+      </template>
+    </VFilterCollapse>
+    <VLine class="mb-20" />
+    <VTable :headers="headers" :items="items">
+      <template #item.actions="{ item }">
+        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+      </template>
+      <template #item.counterparty="{ item }">
+        <span v-if="item.counterparty">{{
+          item.counterparty.company_name
+        }}</span>
+        <span v-else>-</span>
+      </template>
+      <template #item.position="{ item }">
+        <span v-if="item.position">{{ POSITION[item.position] }}</span>
+        <span v-else>-</span>
+      </template>
+      <template #item.type="{ item }">
+        <span v-if="item.type">{{ TYPE[item.type] }}</span>
+        <span v-else>-</span>
+      </template>
+    </VTable>
+    <VPagination
+      v-if="pageOptions.lastPage > 1"
+      v-model="params.page"
+      :pages="pageOptions.lastPage"
+      :total="pageOptions.total"
+      @update:modelValue="changePage"
     />
-  </div>
+  </VCard>
+  <CounterpartyContractsDialog
+    ref="organizationDialogRef"
+    :positionList="positionList"
+    :counterpartyList="counterpartyList"
+    @fetchData="fetchData"
+  />
 </template>
 
 <script setup lang="ts">
@@ -134,18 +128,19 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
-import CounterpartyContractDialog from '@/components/pages/counterparty-contract/CounterpartyContractDialog.vue'
+import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchContract,
   deleteContract,
-} from '@/services/cabinet/CounterpartyContractServices'
+} from '@/services/cabinet/CounterpartyContractsServices'
 import { getCounterpartyList } from '@/services/cabinet/CounterpartyInvoiceService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
@@ -156,10 +151,8 @@ import type {
   CounterpartyContractFormTypes,
   CounterpartyContractDataItemType,
   ContractPageOptionsType,
-} from '@/types/cabinet/CounterpertyContractTypes'
+} from '@/types/cabinet/CounterpertyContractsTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
-import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
-import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 interface ValueType<T> {
   value: T
@@ -234,8 +227,6 @@ const TYPE = {
 
 const counterpartyList: ValueType<Array<OrganizationListType>> = ref([])
 
-const organisationsList = ref([])
-
 const startFilter = async () => {
   params.value.page = 1
   $showLoading()
@@ -291,22 +282,10 @@ const getCounterPartyList = async () => {
   }
 }
 
-const getOrganisationsList = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchOrganisationsList()
-    organisationsList.value = data
-  } catch (err) {
-    $setResponseErrors(err)
-  }
-}
-
 const useFetchData = async () => {
   $showLoading()
   await fetchData()
   await getCounterPartyList()
-  await getOrganisationsList()
   $clearLoading()
 }
 

@@ -1,6 +1,5 @@
 export interface CounterpartyContractFormTypes {
   id?: number
-  organisation_id: number | string
   counterparty_id: number | string
   number: number | string
   amount: number | string

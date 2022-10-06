@@ -136,7 +136,7 @@ const rawRoutes = [
         path: 'contracts',
         name: 'contracts',
         component: () =>
-          import('@/pages/cabinet/organisation/counterparty-contract.vue'),
+          import('@/pages/cabinet/organisation/counterparty-contracts.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
