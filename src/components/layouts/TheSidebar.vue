@@ -223,7 +223,7 @@ const menus = computed(() => {
       {
         name: t('setting'),
         icon: 'setting-icon',
-        children: [{ name: t('tariff'), path: 'tariffs' }],
+        children: [{ name: t('tariffs'), path: 'tariffs' }],
       },
     ]
   }

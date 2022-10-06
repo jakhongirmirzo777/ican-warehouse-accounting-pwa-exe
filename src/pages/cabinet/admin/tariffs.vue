@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('tariff') }}
+    {{ t('tariffs') }}
   </VText>
   <VCard>
     <VRow>
@@ -73,7 +73,7 @@ const breadcrumbs = [
     name: t('setting'),
   },
   {
-    name: t('tariff'),
+    name: t('tariffs'),
   },
 ]
 

@@ -129,8 +129,8 @@ export default {
   dateCompletion: 'Дата завершения',
   bank: 'Банк',
   tariff: 'Тариф',
-  addTariff: 'Добавление Тариф',
-  editTariff: 'Редактирование Тариф',
+  addTariff: 'Добавление Тарифа',
+  editTariff: 'Редактирование Тарифа',
   contractFile: 'Контракт файл',
   changeStatus: 'Изменить статус',
   addOrganizations: 'Добавление организации',
@@ -188,6 +188,7 @@ export default {
   confirm: 'Подтверждать',
   smsCode: 'СМС код',
   paidUntil: 'Оплачено до',
+  tariffs: 'Тарифы',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
