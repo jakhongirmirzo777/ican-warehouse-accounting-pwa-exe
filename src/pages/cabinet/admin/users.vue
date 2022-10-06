@@ -41,6 +41,17 @@
     </VRow>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
+      <template #item.phone="{ item }">
+        {{ $phoneFormat(item.phone) }}
+      </template>
+      <template #item.status="{ item }">
+        <VStatus
+          :color="USER_STATUS_COLORED[item.status].color"
+          :theme="USER_STATUS_COLORED[item.status].theme"
+        >
+          {{ t(USER_STATUS[item.status]) }}
+        </VStatus>
+      </template>
       <template #item.actions="{ item }">
         <VTableActions
           @edit="editProduct(item)"
@@ -79,6 +90,7 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import VStatus from '@/components/ui/VStatus.vue'
 import UsersDialog from '@/components/pages/users-admin/UsersDialog.vue'
 
 import { ref } from 'vue'
@@ -89,7 +101,11 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
-import { USER_STATUS_INDEXED } from '@/utils/constants'
+import {
+  USER_STATUS_INDEXED,
+  USER_STATUS_COLORED,
+  USER_STATUS,
+} from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -131,12 +147,16 @@ const headers = [
     width: '30px',
   },
   {
-    text: t('name'),
-    value: 'name',
+    text: t('fio'),
+    value: 'full_name',
   },
   {
-    text: t('category'),
-    value: 'category_name',
+    text: t('phone'),
+    value: 'phone',
+  },
+  {
+    text: t('status'),
+    value: 'status',
   },
   {
     text: t('actions'),
