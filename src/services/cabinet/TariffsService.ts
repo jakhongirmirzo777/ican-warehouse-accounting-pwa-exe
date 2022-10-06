@@ -4,7 +4,7 @@ import type {
   TariffPageOptionsType,
   TariffFormTypes,
   TariffDataItemType,
-} from '@/types/cabinet/AdminTariffTypes'
+} from '@/types/cabinet/TariffsTypes'
 const BASE_URL_ADDITIONAL = 'admin'
 
 export const fetchTariffs = async (params: TariffPageOptionsType) => {

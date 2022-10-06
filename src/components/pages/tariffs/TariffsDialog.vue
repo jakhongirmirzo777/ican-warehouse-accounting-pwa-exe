@@ -71,8 +71,8 @@ import { useI18n } from 'vue-i18n'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import { createEditTariffs } from '@/services/cabinet/AdminTariffsService'
-import type { TariffFormTypes } from '@/types/cabinet/AdminTariffTypes'
+import { createEditTariffs } from '@/services/cabinet/TariffsService'
+import type { TariffFormTypes } from '@/types/cabinet/TariffsTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
 
 const { $successMessage } = useNotificationService()

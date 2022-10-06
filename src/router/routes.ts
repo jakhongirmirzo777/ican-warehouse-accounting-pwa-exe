@@ -193,7 +193,7 @@ const rawRoutes = [
       {
         path: 'tariffs',
         name: 'tariffs',
-        component: () => import('@/pages/cabinet/admin/admin-tariff.vue'),
+        component: () => import('@/pages/cabinet/admin/tariffs.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
         },

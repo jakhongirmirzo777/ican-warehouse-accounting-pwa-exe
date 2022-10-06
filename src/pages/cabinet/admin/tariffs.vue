@@ -29,7 +29,7 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <AdminTariffDialog ref="dialogRef" @fetchData="fetchData" />
+  <TariffsDialog ref="dialogRef" @fetchData="fetchData" />
 </template>
 
 <script setup lang="ts">
@@ -44,11 +44,11 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VLine from '@/components/ui/VLine.vue'
-import AdminTariffDialog from '@/components/pages/admin-tariff/AdminTariffDialog.vue'
+import TariffsDialog from '@/components/pages/tariffs/TariffsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchTariffs } from '@/services/cabinet/AdminTariffsService'
+import { fetchTariffs } from '@/services/cabinet/TariffsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -56,7 +56,7 @@ import type {
   TariffDataItemType,
   TariffPageOptionsType,
   TariffFormTypes,
-} from '@/types/cabinet/AdminTariffTypes'
+} from '@/types/cabinet/TariffsTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
