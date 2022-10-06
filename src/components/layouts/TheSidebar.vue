@@ -221,6 +221,11 @@ const menus = computed(() => {
         ],
       },
       {
+        name: t('employees'),
+        icon: 'employees',
+        children: [{ name: t('users'), path: 'users-admin' }],
+      },
+      {
         name: t('setting'),
         icon: 'setting-icon',
         children: [{ name: t('tariffs'), path: 'tariffs' }],

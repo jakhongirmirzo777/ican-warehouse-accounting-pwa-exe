@@ -190,6 +190,11 @@ export default {
   smsCode: 'СМС код',
   paidUntil: 'Оплачено до',
   tariffs: 'Тарифы',
+  employees: 'Сотрудники',
+  users: 'Пользователи',
+  addUser: 'Добавление пользователя',
+  editUser: 'Редактирование пользователя',
+  fio: 'Ф.И.О',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

@@ -172,3 +172,32 @@ export const PAYMENT_STATUSES_INDEXED = Object.entries(PAYMENT_STATUSES).reduce(
   },
   []
 )
+
+export const USER_STATUS = {
+  '10': 'active',
+  '0': 'notActive',
+}
+
+export const USER_STATUS_COLORED = {
+  '10': {
+    theme: 'rgba(40, 180, 70, 0.24)',
+    color: '#28B446',
+  },
+  '0': {
+    theme: 'rgba(255,32,144,0.24)',
+    color: '#FF2090',
+  },
+}
+
+export const USER_STATUS_INDEXED = Object.entries(MKO_STATUSES).reduce(
+  (acc: Array<Record<string, string | number>>, [key, val]) => {
+    return [
+      ...acc,
+      {
+        text: val,
+        value: +key,
+      },
+    ]
+  },
+  []
+)
