@@ -80,6 +80,7 @@ import type {
   MkoOrganisation,
   MkoOrganisationEditValues,
 } from '@/types/cabinet/MkoOrganisationsTypes'
+import { $parseQueryStatus } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -106,7 +107,7 @@ const options = ref<{
   status: null | number
 }>({
   page: +queries.page || 1,
-  status: +queries.status || null,
+  status: $parseQueryStatus(queries.status),
   search: queries.search || null,
   lastPage: null,
   perPage: null,

@@ -7,7 +7,7 @@
   >
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
-        <VCol>
+        <VCol v-if="!isUpdate">
           <VInput
             vid="username"
             rules="required"
@@ -23,7 +23,7 @@
             </template>
           </VInput>
         </VCol>
-        <VCol>
+        <VCol v-if="!isUpdate">
           <VInput
             vid="password"
             rules="required|min:6"
@@ -152,7 +152,7 @@ watch(
       formData.value.id = props.data.id || null
       formData.value.full_name = props.data.full_name || null
       formData.value.phone = props.data.phone || null
-      formData.value.status = props.data.status || null
+      formData.value.status = props.data.status === 10 ? 10 : 0
     }
   }
 )

@@ -53,10 +53,7 @@
         </VStatus>
       </template>
       <template #item.actions="{ item }">
-        <VTableActions
-          @edit="editProduct(item)"
-          @delete="handleDelete(item.id)"
-        />
+        <VTableActions @edit="editUser(item)" @delete="handleDelete(item.id)" />
       </template>
     </VTable>
     <VPagination
@@ -100,7 +97,7 @@ import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
-import { $isPageExists } from '@/utils/pure-functions'
+import { $isPageExists, $parseQueryStatus } from '@/utils/pure-functions'
 import {
   USER_STATUS_INDEXED,
   USER_STATUS_COLORED,
@@ -136,7 +133,7 @@ const options = ref<{
   lastPage: null,
   perPage: null,
   total: null,
-  status: +queries.status || null,
+  status: $parseQueryStatus(queries.status),
   search: queries.search || null,
 })
 
@@ -149,6 +146,10 @@ const headers = [
   {
     text: t('fio'),
     value: 'full_name',
+  },
+  {
+    text: t('username'),
+    value: 'username',
   },
   {
     text: t('phone'),
@@ -237,7 +238,7 @@ const useFetchData = async () => {
   }
 }
 
-const editProduct = (item: {
+const editUser = (item: {
   id: number
   full_name: string
   phone: string

@@ -21,7 +21,7 @@ export function useQuery() {
     if ($deepEquals(allQueries, route.query)) return
     const filteredQueries = Object.entries(allQueries).reduce(
       (acc: Record<string, string | number>, [key, val]) => {
-        if (val) acc[key] = val as string
+        if (val || val === 0) acc[key] = val as string
         return acc
       },
       {}

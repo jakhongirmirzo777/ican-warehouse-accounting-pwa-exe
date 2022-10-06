@@ -154,7 +154,7 @@ import {
   MKO_STATUSES_COLORED,
   MKO_STATUSES,
 } from '@/utils/constants'
-import { $isPageExists } from '@/utils/pure-functions'
+import { $isPageExists, $parseQueryStatus } from '@/utils/pure-functions'
 import type { MkoOrganisation } from '@/types/cabinet/MkoOrganisationsAdminTypes'
 
 const { $setResponseErrors } = useErrorActions()
@@ -190,7 +190,7 @@ const options = ref<{
   perPage: null,
   total: null,
   search: queries.search || null,
-  status: +queries.status || null,
+  status: $parseQueryStatus(queries.status),
   name: queries.name || null,
   inn: +queries.inn || null,
   company_name: queries.company_name || null,

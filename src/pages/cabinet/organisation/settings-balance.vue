@@ -92,6 +92,7 @@ import {
   PAYMENT_STATUSES_INDEXED,
 } from '@/utils/constants'
 import { useQuery } from '@/composables/router-query'
+import { $parseQueryStatus } from '@/utils/pure-functions'
 const { getQuery, addQuery, clearQuery } = useQuery()
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -115,7 +116,7 @@ const options = ref<{
 }>({
   from: queries.from || null,
   to: queries.to || null,
-  status: +queries.status || null,
+  status: $parseQueryStatus(queries.status),
 })
 
 const headers = [
