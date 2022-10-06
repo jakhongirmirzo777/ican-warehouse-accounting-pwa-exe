@@ -92,6 +92,7 @@ $active-bg: #324071;
       &__icon {
         text-align: left;
         margin-right: 18px;
+        height: 24px;
         position: relative;
         z-index: 2;
         min-width: unset !important;
@@ -262,7 +263,7 @@ $active-bg: #324071;
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 765px) {
   .sidebar {
     &__list {
       width: 100% !important;
