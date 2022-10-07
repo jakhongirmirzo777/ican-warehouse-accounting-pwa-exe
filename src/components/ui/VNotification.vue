@@ -1,6 +1,6 @@
 <template>
   <Teleport to="#notifications">
-    <transition-group name="notify" tag="div" class="notify">
+    <TransitionGroup name="notify" tag="div" class="notify">
       <div
         v-for="notify in NOTIFICATION_LIST"
         :key="notify"
@@ -30,7 +30,7 @@
           </svg>
         </div>
       </div>
-    </transition-group>
+    </TransitionGroup>
   </Teleport>
 </template>
 

@@ -5,7 +5,13 @@
     :isMini="isMini"
     @toggleMini="toggleMini"
   >
-    <RouterView />
+    <RouterView v-slot="{ Component, route }">
+      <transition name="page" mode="out-in">
+        <main :key="route.name">
+          <component :is="Component" />
+        </main>
+      </transition>
+    </RouterView>
   </TheSidebar>
 </template>
 
@@ -27,3 +33,18 @@ const toggleMini = () => {
   localStorage.setItem(IS_MINI_KEY, `${isMini.value}`)
 }
 </script>
+
+<style lang="scss">
+.page {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.2s;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+</style>
