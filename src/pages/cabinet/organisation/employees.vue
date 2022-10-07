@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('organisations') }}
+    {{ t('employees') }}
   </VText>
   <VCard>
     <VRow>
@@ -12,7 +12,7 @@
           width="100%"
           @click="
             () => {
-              editValue.id = null
+              isUpdate = false
               dialog = true
             }
           "
@@ -26,76 +26,77 @@
       </VCol>
       <VCol xl="2" md="3">
         <VSelect
-          localize
           clearable
-          :label="t('status')"
-          :items="MKO_STATUSES_INDEXED"
-          v-model="options.status"
+          localize
           item-text="text"
           item-value="value"
+          :label="t('status')"
+          :items="USER_STATUS_INDEXED"
+          v-model="options.status"
         />
       </VCol>
       <VCol xl="2" md="3">
-        <VInput
-          only="number"
+        <VSelect
           clearable
-          :label="t('tin')"
-          v-model="options.inn"
+          :label="t('departments')"
+          :items="departments"
+          v-model="options.department_id"
         />
       </VCol>
-      <VCol xl="2" md="4">
-        <VInput clearable :label="t('name')" v-model="options.name" />
-      </VCol>
-      <VCol xl="2" md="4">
-        <VInput
+      <VCol xl="2" md="3">
+        <VSelect
           clearable
-          :label="t('companyName')"
-          v-model="options.company_name"
+          :label="t('positions')"
+          :items="positions"
+          v-model="options.position_id"
         />
       </VCol>
-      <VCol xl="1" md="4">
+      <VCol xl="2" md="3">
         <VFilterActions @filter="filterData" @clear="clearFilter" />
       </VCol>
     </VRow>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
-      <template #item.actions="{ item }">
-        <VTableActions
-          @edit="editOrganisation(item.id)"
-          @delete="handleDelete(item.id)"
-        />
-      </template>
-      <template #item.phones="{ item }">
-        <div>
-          <div v-for="(phone, i) in item.phones" :key="`phone-${i}`">
-            {{ $phoneFormat(phone) }}
-          </div>
-        </div>
+      <template #item.phone="{ item }">
+        {{ $phoneFormat(item.phone) }}
       </template>
       <template #item.status="{ item }">
+        <VStatus
+          min-width="100px"
+          :color="USER_STATUS_COLORED[item.status].color"
+          :theme="USER_STATUS_COLORED[item.status].theme"
+        >
+          {{ t(USER_STATUS[item.status]) }}
+        </VStatus>
+      </template>
+      <template #item.actions="{ item }">
         <div class="d-flex align-center">
-          <VStatus
-            min-width="100px"
-            :color="MKO_STATUSES_COLORED[item.status].color"
-            :theme="MKO_STATUSES_COLORED[item.status].theme"
-          >
-            {{ t(MKO_STATUSES[item.status]) }}
-          </VStatus>
-          <ElPopconfirm
-            hide-icon
-            :title="t('changeStatus')"
-            cancel-button-type="primary"
-            confirm-button-type="danger"
-            :confirm-button-text="t('yes')"
-            :cancel-button-text="t('no')"
-            @confirm="useChangeStatus(item.id)"
-          >
-            <template #reference>
-              <VBtn class="ml-2" small text>
-                <VIcon size="16" icon="pencil" />
-              </VBtn>
-            </template>
-          </ElPopconfirm>
+          <VBtn height="32px" class="mr-10" @click="useToggleStatus(item.id)">
+            <VIcon
+              v-if="item.status === USER_STATUS_VALUE.ACTIVE"
+              icon="lock-red"
+              size="14"
+            />
+            <VIcon v-else icon="unlock" size="14" />
+            <span
+              class="ml-8"
+              :class="[
+                item.status === USER_STATUS_VALUE.ACTIVE
+                  ? 'color-light-red'
+                  : 'color-green',
+              ]"
+            >
+              {{
+                item.status === USER_STATUS_VALUE.ACTIVE
+                  ? t('block')
+                  : t('unblock')
+              }}
+            </span>
+          </VBtn>
+          <VTableActions
+            @edit="editEmployee(item)"
+            @delete="handleDelete(item.id)"
+          />
         </div>
       </template>
     </VTable>
@@ -107,15 +108,13 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <MkoOrganisationsAdminDialog
+  <EmployeesDialog
     v-model="dialog"
-    :id="editValue.id"
-    @submit="
-      () => {
-        editValue.id = null
-        useFetchOrganisations()
-      }
-    "
+    :data="editValue"
+    :departments="departments"
+    :positions="positions"
+    :is-update="isUpdate"
+    @submit="useFetchEmployees"
   />
 </template>
 
@@ -133,44 +132,51 @@ import VTable from '@/components/ui/VTable.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
-import VStatus from '@/components/ui/VStatus.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-import MkoOrganisationsAdminDialog from '@/components/pages/mko-organisations/MkoOrganisationsAdminDialog.vue'
-import { ElPopconfirm } from 'element-plus'
+import VStatus from '@/components/ui/VStatus.vue'
+import EmployeesDialog from '@/components/pages/employees/EmployeesDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  changeStatus,
-  fetchOrganisations,
-  deleteOrganisation,
-} from '@/services/cabinet/MkoOrganisationsAdminService'
+  fetchDepartments,
+  fetchPositions,
+  fetchEmployees,
+  deleteEmployee,
+  toggleStatus,
+} from '@/services/cabinet/EmployeesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
-import {
-  MKO_STATUSES_INDEXED,
-  MKO_STATUSES_COLORED,
-  MKO_STATUSES,
-} from '@/utils/constants'
 import { $isPageExists, $parseQueryStatus } from '@/utils/pure-functions'
-import type { MkoOrganisation } from '@/types/cabinet/MkoOrganisationsAdminTypes'
+import {
+  USER_STATUS_INDEXED,
+  USER_STATUS_COLORED,
+  USER_STATUS_VALUE,
+  USER_STATUS,
+} from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { getQuery, addQuery, clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['search', 'status', 'name', 'inn', 'company_name'])
-clearQuery(['search', 'status', 'name', 'inn', 'company_name'])
+const queries = getQuery([
+  'search',
+  'status',
+  'department_id',
+  'position_id',
+  'page',
+])
+clearQuery(['search', 'status', 'department_id', 'position_id', 'page'])
 
 const breadcrumbs = [
   {
-    name: t('clientControlling'),
+    name: t('workersControlling'),
   },
   {
-    name: t('organisations'),
+    name: t('employees'),
   },
 ]
 
@@ -181,9 +187,8 @@ const options = ref<{
   total: null | number
   search: null | string
   status: null | number
-  name: null | string
-  inn: null | number
-  company_name: null | string
+  department_id: null | number
+  position_id: null | number
 }>({
   page: +queries.page || 1,
   lastPage: null,
@@ -191,9 +196,8 @@ const options = ref<{
   total: null,
   search: queries.search || null,
   status: $parseQueryStatus(queries.status),
-  name: queries.name || null,
-  inn: +queries.inn || null,
-  company_name: queries.company_name || null,
+  department_id: +queries.department_id || null,
+  position_id: +queries.position_id || null,
 })
 
 const headers = [
@@ -203,32 +207,24 @@ const headers = [
     width: '30px',
   },
   {
-    text: t('companyName'),
-    value: 'company_name',
+    text: t('fio'),
+    value: 'full_name',
   },
   {
-    text: t('name'),
-    value: 'name',
+    text: t('username'),
+    value: 'username',
   },
   {
-    text: t('tin'),
-    value: 'inn',
+    text: t('department'),
+    value: 'department_name',
   },
   {
-    text: t('mfo'),
-    value: 'mfo',
-  },
-  {
-    text: t('address'),
-    value: 'address',
-  },
-  {
-    text: t('director'),
-    value: 'director',
+    text: t('positionAtWork'),
+    value: 'position_name',
   },
   {
     text: t('phone'),
-    value: 'phones',
+    value: 'phone',
   },
   {
     text: t('status'),
@@ -242,37 +238,36 @@ const headers = [
 ]
 
 const dialog = ref(false)
-const items = ref<MkoOrganisation[]>([])
-const editValue = ref<{ id: number | null }>({
+const isUpdate = ref(false)
+const items = ref([])
+const departments = ref([])
+const positions = ref([])
+const editValue = ref<{
+  id: number | null
+  full_name: string | null
+  phone: string | null
+  status: number | null
+  department_id: number | null
+  position_id: number | null
+}>({
   id: null,
+  full_name: null,
+  phone: null,
+  status: null,
+  department_id: null,
+  position_id: null,
 })
 
-const useChangeStatus = async (id: number) => {
-  try {
-    await changeStatus(id)
-    await useFetchOrganisations()
-  } catch (err) {
-    $setResponseErrors(err)
-  }
-}
-
-const useFetchOrganisations = async () => {
+const useFetchEmployees = async () => {
   try {
     const {
       data: { data, links },
-    } = await fetchOrganisations(
-      options.value.page,
-      options.value.search,
-      options.value.status,
-      options.value.name,
-      options.value.inn,
-      options.value.company_name
-    )
+    } = await fetchEmployees(options.value)
     const { from, last_page, total, per_page } = links
     options.value.lastPage = last_page
     options.value.total = total
     options.value.perPage = per_page
-    items.value = data.map((item: MkoOrganisation, i: number) => {
+    items.value = data.map((item: Record<string, any>, i: number) => {
       item.index = from + i
       return item
     })
@@ -281,10 +276,32 @@ const useFetchOrganisations = async () => {
   }
 }
 
+const useFetchDepartments = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchDepartments()
+    departments.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+const useFetchPositions = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchPositions()
+    positions.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 const handleDelete = async (id: number) => {
   try {
     $showLoading()
-    await deleteOrganisation(id)
+    await deleteEmployee(id)
     if (
       options.value &&
       options.value.total &&
@@ -296,7 +313,7 @@ const handleDelete = async (id: number) => {
         page: 1,
       })
     }
-    await useFetchOrganisations()
+    await useFetchEmployees()
     $successMessage(t('notifications.deletedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
@@ -308,7 +325,9 @@ const handleDelete = async (id: number) => {
 const useFetchData = async () => {
   try {
     $showLoading()
-    await useFetchOrganisations()
+    await useFetchDepartments()
+    await useFetchPositions()
+    await useFetchEmployees()
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -316,8 +335,28 @@ const useFetchData = async () => {
   }
 }
 
-const editOrganisation = (id: number) => {
-  editValue.value.id = id
+const useToggleStatus = async (id: number) => {
+  try {
+    $showLoading()
+    await toggleStatus(id)
+    await useFetchEmployees()
+  } catch (err) {
+    $setResponseErrors(err)
+  } finally {
+    $clearLoading()
+  }
+}
+
+const editEmployee = (item: {
+  id: number
+  full_name: string
+  phone: string
+  status: number
+  department_id: number
+  position_id: number
+}) => {
+  editValue.value = item
+  isUpdate.value = true
   dialog.value = true
 }
 
@@ -325,14 +364,13 @@ const filterData = async () => {
   try {
     $showLoading()
     options.value.page = 1
-    await useFetchOrganisations()
+    await useFetchEmployees()
     await addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
-      name: options.value.name,
-      inn: options.value.inn,
-      company_name: options.value.company_name,
+      department_id: options.value.department_id,
+      position_id: options.value.position_id,
     })
   } catch (err) {
     $setResponseErrors(err)
@@ -347,17 +385,15 @@ const clearFilter = async () => {
     options.value.page = 1
     options.value.search = null
     options.value.status = null
-    options.value.name = null
-    options.value.inn = null
-    options.value.company_name = null
-    await useFetchOrganisations()
+    options.value.department_id = null
+    options.value.position_id = null
+    await useFetchEmployees()
     await addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
-      name: options.value.name,
-      inn: options.value.inn,
-      company_name: options.value.company_name,
+      department_id: options.value.department_id,
+      position_id: options.value.position_id,
     })
   } catch (err) {
     $setResponseErrors(err)
@@ -369,7 +405,7 @@ const clearFilter = async () => {
 const paginate = async () => {
   try {
     $showLoading()
-    await useFetchOrganisations()
+    await useFetchEmployees()
     await addQuery({
       page: options.value.page,
     })
@@ -379,6 +415,5 @@ const paginate = async () => {
     $clearLoading()
   }
 }
-
 useFetchData()
 </script>

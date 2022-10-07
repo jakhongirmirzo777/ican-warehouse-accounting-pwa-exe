@@ -150,6 +150,40 @@ const rawRoutes = [
         },
       },
       {
+        path: 'settings-bonus-tariffs',
+        name: 'settings-bonus-tariffs',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-bonus-tariffs.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'settings-balance',
+        name: 'settings-balance',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-balance.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'employees',
+        name: 'employees',
+        component: () => import('@/pages/cabinet/organisation/employees.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'dashboard-admin',
+        name: 'dashboard-admin',
+        component: () => import('@/pages/cabinet/admin/dashboard.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+        },
+      },
+      {
         path: 'reference-units',
         name: 'reference-units',
         component: () => import('@/pages/cabinet/admin/reference-units.vue'),
@@ -207,27 +241,9 @@ const rawRoutes = [
         },
       },
       {
-        path: 'settings-bonus-tariffs',
-        name: 'settings-bonus-tariffs',
-        component: () =>
-          import('@/pages/cabinet/organisation/settings-bonus-tariffs.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION],
-        },
-      },
-      {
-        path: 'settings-balance',
-        name: 'settings-balance',
-        component: () =>
-          import('@/pages/cabinet/organisation/settings-balance.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION],
-        },
-      },
-      {
-        path: 'dashboard-admin',
-        name: 'dashboard-admin',
-        component: () => import('@/pages/cabinet/admin/dashboard.vue'),
+        path: 'users',
+        name: 'users',
+        component: () => import('@/pages/cabinet/admin/users.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
         },

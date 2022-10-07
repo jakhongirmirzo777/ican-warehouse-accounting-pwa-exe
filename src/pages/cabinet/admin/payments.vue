@@ -127,6 +127,7 @@ import {
   PAYMENT_STATUSES_VALUE,
 } from '@/utils/constants'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import { $parseQueryStatus } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -159,7 +160,7 @@ const options = ref<{
 }>({
   from: queries.from || null,
   to: queries.to || null,
-  status: +queries.status || null,
+  status: $parseQueryStatus(queries.status),
   organisation_id: +queries.organisation_id || null,
   payment_type: queries.payment_type || null,
 })

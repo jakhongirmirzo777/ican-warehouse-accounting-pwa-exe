@@ -155,3 +155,9 @@ export const $parseQueryArray = (
     return []
   }
 }
+
+export const $parseQueryStatus = (status: string | undefined | null) => {
+  if (!status) return null
+  if (+status === 0) return 0
+  return +status
+}
