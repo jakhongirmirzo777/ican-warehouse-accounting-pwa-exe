@@ -55,7 +55,12 @@
       </template>
       <template #item.actions="{ item }">
         <div class="d-flex align-center">
-          <VBtn height="32px" class="mr-10" @click="useToggleStatus(item.id)">
+          <VBtn
+            min-width="150px"
+            height="32px"
+            class="mr-10"
+            @click="useToggleStatus(item.id)"
+          >
             <VIcon
               v-if="item.status === USER_STATUS_VALUE.ACTIVE"
               icon="lock-red"
