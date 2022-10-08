@@ -46,6 +46,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.status="{ item }">
         <VStatus
+          min-width="75px"
           :color="PAYMENT_STATUSES_COLORED[item.status]?.color"
           :theme="PAYMENT_STATUSES_COLORED[item.status]?.theme"
         >

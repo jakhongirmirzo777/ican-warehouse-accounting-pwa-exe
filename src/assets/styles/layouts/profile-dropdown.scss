@@ -2,6 +2,12 @@
   &__user-block {
     display: flex;
 
+    &__img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+    }
+
     &__info {
       margin-left: 14px;
       display: flex;

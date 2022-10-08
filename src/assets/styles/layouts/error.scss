@@ -20,6 +20,12 @@
   }
 }
 
+.not-found__wrapper.dark {
+  .not-found__title, .not-found__subtitle {
+    color: var(--color-white);
+  }
+}
+
 @media screen and (max-width: $offset-mobile){
   .not-found {
     &__title {

@@ -41,18 +41,6 @@
           />
         </VCol>
         <VCol>
-          <VSelect
-            vid="status"
-            localize
-            item-text="text"
-            item-value="value"
-            rules="required"
-            :label="t('status')"
-            :items="USER_STATUS_INDEXED"
-            v-model="formData.status"
-          />
-        </VCol>
-        <VCol>
           <VInput
             vid="phone"
             type="phone"
@@ -94,7 +82,6 @@ import VModal from '@/components/ui/VModal.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
-import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VIcon from '@/components/ui/VIcon.vue'
@@ -104,7 +91,6 @@ import { createUser, editUser } from '@/services/cabinet/UsersService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
-import { USER_STATUS_INDEXED } from '@/utils/constants'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import { useThemeService } from '@/plugins/theme-service'
 
@@ -118,7 +104,6 @@ const FORM_DATA = {
   password: null,
   full_name: null,
   phone: null,
-  status: null,
 }
 
 const props = defineProps({
@@ -152,7 +137,6 @@ watch(
       formData.value.id = props.data.id || null
       formData.value.full_name = props.data.full_name || null
       formData.value.phone = props.data.phone || null
-      formData.value.status = props.data.status === 10 ? 10 : 0
     }
   }
 )

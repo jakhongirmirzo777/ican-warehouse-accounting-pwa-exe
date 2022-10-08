@@ -42,18 +42,6 @@
         </VCol>
         <VCol md="6">
           <VSelect
-            vid="status"
-            localize
-            item-text="text"
-            item-value="value"
-            rules="required"
-            :label="t('status')"
-            :items="USER_STATUS_INDEXED"
-            v-model="formData.status"
-          />
-        </VCol>
-        <VCol md="6">
-          <VSelect
             vid="department_id"
             rules="required"
             :label="t('departments')"
@@ -125,7 +113,6 @@ import {
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
-import { USER_STATUS_INDEXED } from '@/utils/constants'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import { useThemeService } from '@/plugins/theme-service'
 
@@ -139,7 +126,6 @@ const FORM_DATA = {
   password: null,
   full_name: null,
   phone: null,
-  status: null,
   department_id: null,
   position_id: null,
 }
@@ -183,7 +169,6 @@ watch(
       formData.value.id = props.data.id || null
       formData.value.full_name = props.data.full_name || null
       formData.value.phone = props.data.phone || null
-      formData.value.status = props.data.status === 10 ? 10 : 0
       formData.value.department_id = props.data.department_id || null
       formData.value.position_id = props.data.position_id || null
     }

@@ -29,6 +29,7 @@
       </template>
       <template #item.system_course="{ item }">
         <VStatus
+          min-width="45px"
           color="#FFFFFF"
           :theme="item.system_course ? '#17BDC0' : '#FF2090'"
         >

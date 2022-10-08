@@ -99,7 +99,7 @@ const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
 const FORM_DATA = {
-  counterparty_id: 0,
+  counterparty_id: '',
   number: '',
   date: '',
   position: '',
