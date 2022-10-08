@@ -93,7 +93,7 @@ const props = defineProps({
   },
   collapseTags: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   modelValue: {
     type: [Array, String, Number],
