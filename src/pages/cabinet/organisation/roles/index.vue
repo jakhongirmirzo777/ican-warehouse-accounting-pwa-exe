@@ -84,22 +84,15 @@ const { addQuery, getQuery, clearQuery } = useQuery()
 
 const items = ref<RolesDataItemType[]>([])
 const { t } = useI18n()
-const queries = getQuery([
-  'page',
-  'search',
-  'counterparty_id',
-  'date',
-  'position',
-  'type',
-])
-clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
+const queries = getQuery(['page', 'search'])
+clearQuery(['page', 'search'])
 
 const breadcrumbs = [
   {
-    name: t('reference'),
+    name: t('workersControlling'),
   },
   {
-    name: t('units'),
+    name: t('roles'),
   },
 ]
 

@@ -1,4 +1,5 @@
 <template>
+  <VBackBtn class="mb-10" />
   <VCard>
     <Form @submit="submit" ref="formRef">
       <VRow>
@@ -79,7 +80,9 @@ import VArea from '@/components/ui/VArea.vue'
 import VCard from '@/components/ui/VCard.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
 import VText from '@/components/ui/VText.vue'
+import VBackBtn from '@/components/ui/VBackBtn.vue'
 import { Form } from 'vee-validate'
+
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
@@ -143,13 +146,6 @@ watch(dialog, (val) => {
     if (formRef.value) formRef.value.resetForm()
   }
 })
-
-const openDialog = (item: RolesFormTypes) => {
-  if (item && item.id) {
-    form.value = { ...item }
-  }
-  dialog.value = true
-}
 
 const getPermissions = async () => {
   $showLoading()
@@ -231,8 +227,6 @@ const submit = async (_: never, actions: ActionInterface) => {
     loading.value = false
   }
 }
-
-defineExpose({ openDialog })
 useFetchData()
 </script>
 
