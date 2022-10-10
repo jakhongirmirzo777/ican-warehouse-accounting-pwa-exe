@@ -233,6 +233,38 @@ const rawRoutes = [
         },
       },
       {
+        path: 'admin-roles',
+        name: 'admin-roles',
+        component: () => import('@/pages/cabinet/admin/roles/index.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+        },
+      },
+      {
+        path: 'admin-roles-form/:id?',
+        name: 'admin-roles-form',
+        component: () => import('@/pages/cabinet/admin/roles/form.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+        },
+      },
+      {
+        path: 'organisation-roles',
+        name: 'organisation-roles',
+        component: () => import('@/pages/cabinet/admin/roles/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'organisation-roles-form/:id?',
+        name: 'organisation-roles-form',
+        component: () => import('@/pages/cabinet/organisation/roles/form.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'payments',
         name: 'payments',
         component: () => import('@/pages/cabinet/admin/payments.vue'),
