@@ -28,5 +28,6 @@ export interface OneRoleType {
   permissions: Array<{ name: string }>
   name: string
   id: number
+  is_default: boolean
   description: string
 }

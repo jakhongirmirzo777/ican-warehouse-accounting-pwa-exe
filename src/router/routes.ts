@@ -251,7 +251,7 @@ const rawRoutes = [
       {
         path: 'organisation-roles',
         name: 'organisation-roles',
-        component: () => import('@/pages/cabinet/admin/roles/index.vue'),
+        component: () => import('@/pages/cabinet/organisation/roles/index.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },

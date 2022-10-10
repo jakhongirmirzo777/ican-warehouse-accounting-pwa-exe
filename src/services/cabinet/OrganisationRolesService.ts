@@ -7,7 +7,7 @@ import type {
   OneRoleType,
   PermissionsListTypes,
 } from '@/types/cabinet/RolesTypes'
-const BASE_URL_ADDITIONAL = 'organisations'
+const BASE_URL_ADDITIONAL = 'organisation'
 
 export const fetchOrganisationsRoles = async (params: RolesPageOptionsType) => {
   try {

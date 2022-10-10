@@ -183,6 +183,7 @@ const getOne = async () => {
     form.value.name = data.name
     form.value.description = data.description
     form.value.id = data.id
+    data.is_default ? (form.value.is_default = 1) : (form.value.is_default = 0)
     checkChoseAll()
   } catch (err) {
     $setResponseErrors(err)

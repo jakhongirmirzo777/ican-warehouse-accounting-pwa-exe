@@ -211,7 +211,7 @@ const submit = async (_: never, actions: ActionInterface) => {
     await createEditOrganisationsRoles(form.value)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
-    await router.push($localePath('/cabinet/admin-roles'))
+    await router.push($localePath('/cabinet/organisation-roles'))
     dialog.value = false
   } catch (err) {
     $setFormErrors(err)

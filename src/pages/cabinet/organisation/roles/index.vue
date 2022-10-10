@@ -10,7 +10,7 @@
           width="100%"
           color="primary"
           class="mb-20"
-          @click="$router.push($localePath('/cabinet/admin-roles-form'))"
+          @click="$router.push($localePath('/cabinet/organisation-roles-form'))"
         >
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
@@ -28,7 +28,9 @@
       <template #item.actions="{ item }">
         <VTableActions
           @edit="
-            $router.push($localePath(`/cabinet/admin-roles-form/${item.id}`))
+            $router.push(
+              $localePath(`/cabinet/organisation-roles-form/${item.id}`)
+            )
           "
           @delete="deleteItem(item.id)"
         />
