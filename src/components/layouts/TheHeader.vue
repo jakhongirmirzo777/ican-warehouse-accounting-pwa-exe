@@ -12,16 +12,16 @@
       <VIcon v-show="theme === THEME.DARK" size="100%" icon="logo-dark" />
     </div>
     <div class="header__search">
-      <VInput :label="$t('search')" hide-details v-model="search">
-        <template #prepend>
-          <VIcon v-show="theme === THEME.LIGHT" icon="search" size="16" />
-          <VIcon
-            v-show="theme === THEME.DARK"
-            icon="search-small-white"
-            size="16"
-          />
-        </template>
-      </VInput>
+      <!--      <VInput :label="$t('search')" hide-details v-model="search">-->
+      <!--        <template #prepend>-->
+      <!--          <VIcon v-show="theme === THEME.LIGHT" icon="search" size="16" />-->
+      <!--          <VIcon-->
+      <!--            v-show="theme === THEME.DARK"-->
+      <!--            icon="search-small-white"-->
+      <!--            size="16"-->
+      <!--          />-->
+      <!--        </template>-->
+      <!--      </VInput>-->
     </div>
     <VSpacer class="header__spacer"></VSpacer>
     <div class="header__setting-icons mr-10">
@@ -55,16 +55,16 @@
 
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
-import VInput from '@/components/ui/VInput.vue'
+// import VInput from '@/components/ui/VInput.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
 
 import { useThemeService } from '@/plugins/theme-service'
-import { ref } from 'vue'
+// import { ref } from 'vue'
 
 const { theme, THEME, toggleTheme } = useThemeService()
 
-const search = ref('')
+// const search = ref('')
 </script>
 
 <style lang="scss" scoped>
