@@ -148,7 +148,6 @@ watch(dialog, (val) => {
 })
 
 const getPermissions = async () => {
-  $showLoading()
   try {
     const { data } = await getPermissionsList()
     permissionsList.value = data
