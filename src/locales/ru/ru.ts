@@ -201,6 +201,12 @@ export default {
   editEmployee: 'Редактирование сотрудника',
   department: 'Отдел',
   positionAtWork: 'Должность',
+  roles: 'Роли',
+  addRoles: 'Добавление роли',
+  editRoles: 'Редактирование роли',
+  description: 'Описание',
+  chooseAll: 'Выбрать все',
+  personnelManagement: 'Управление кадрами',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

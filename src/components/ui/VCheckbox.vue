@@ -93,11 +93,22 @@ const props = defineProps({
     type: [String, Number, Boolean],
     default: false,
   },
+  value: {
+    type: String,
+  },
 })
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'change'])
 
 const isChecked = computed(() => {
+  if (
+    props.modelValue &&
+    props.value &&
+    Array.isArray(props.modelValue) &&
+    props.modelValue.includes(props.value)
+  ) {
+    return true
+  }
   return props.modelValue === props.trueValue
 })
 
@@ -109,9 +120,24 @@ const classes = computed(() => {
 
 const updateInput = (val: Event) => {
   const target = val.target as HTMLInputElement
+  if (props.modelValue && Array.isArray(props.modelValue)) {
+    const index = props.modelValue.indexOf(props.value)
+    const result = props.modelValue
+    if (index > -1) {
+      result.splice(index, 1)
+      emits('change', result)
+      return emits('update:modelValue', result)
+    } else {
+      result.push(props.value)
+      emits('change', result)
+      return emits('update:modelValue', result)
+    }
+  }
   if (target.checked) {
+    emits('change', props.trueValue)
     return emits('update:modelValue', props.trueValue)
   } else {
+    emits('change', props.falseValue)
     return emits('update:modelValue', props.falseValue)
   }
 }

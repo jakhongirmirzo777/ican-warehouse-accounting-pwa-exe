@@ -223,7 +223,10 @@ const menus = computed(() => {
       {
         name: t('employees'),
         icon: 'employees',
-        children: [{ name: t('users'), path: 'users' }],
+        children: [
+          { name: t('roles'), path: 'admin-roles' },
+          { name: t('users'), path: 'users' },
+        ],
       },
       {
         name: t('setting'),
@@ -316,6 +319,7 @@ const menus = computed(() => {
         name: t('workersControlling'),
         icon: 'users',
         children: [
+          { name: t('roles'), path: 'organisation-roles' },
           { name: t('positions'), path: 'workers-controlling-positions' },
           { name: t('departments'), path: 'workers-controlling-departments' },
           { name: t('employees'), path: 'employees' },
