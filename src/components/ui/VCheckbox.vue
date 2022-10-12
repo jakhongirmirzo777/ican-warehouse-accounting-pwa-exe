@@ -12,6 +12,7 @@
         $attrs.class,
         {
           'v-checkbox__hidden-details': hideDetails,
+          dark: theme === THEME.DARK,
         },
       ]"
     >
@@ -52,9 +53,13 @@
 </template>
 
 <script lang="ts" setup>
+import VTransition from '@/components/ui/VTransition.vue'
+
 import { computed } from 'vue'
 import type { PropType } from 'vue'
-import VTransition from '@/components/ui/VTransition.vue'
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   hideDetails: { type: Boolean, default: false },

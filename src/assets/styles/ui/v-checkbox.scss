@@ -108,3 +108,9 @@
     }
   }
 }
+
+.v-checkbox__box.dark {
+  .v-checkbox__label {
+    color: var(--color-white);
+  }
+}
