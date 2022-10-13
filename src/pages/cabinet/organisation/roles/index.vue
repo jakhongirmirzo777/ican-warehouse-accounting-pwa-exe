@@ -62,7 +62,7 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchOrganisationsRoles,
   deleteOrganisationsRoles,
-} from '@/services/cabinet/OrganisationRolesService'
+} from '@/services/cabinet/RolesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'

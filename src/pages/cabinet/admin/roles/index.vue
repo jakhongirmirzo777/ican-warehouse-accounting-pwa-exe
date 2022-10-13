@@ -64,7 +64,7 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchAdminRoles,
   deleteAdminRoles,
-} from '@/services/cabinet/AdminRolesService'
+} from '@/services/cabinet/RolesAdminService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'

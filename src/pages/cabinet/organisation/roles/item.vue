@@ -84,7 +84,7 @@ import {
   createEditOrganisationsRoles,
   getOneRole,
   getPermissionsList,
-} from '@/services/cabinet/OrganisationRolesService'
+} from '@/services/cabinet/RolesService'
 import type {
   RolesFormTypes,
   PermissionsListTypes,

@@ -93,7 +93,7 @@ import {
   createEditAdminRoles,
   getOneRole,
   getPermissionsList,
-} from '@/services/cabinet/AdminRolesService'
+} from '@/services/cabinet/RolesAdminService'
 import type {
   RolesFormTypes,
   PermissionsListTypes,
