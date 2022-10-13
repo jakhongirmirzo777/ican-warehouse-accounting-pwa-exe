@@ -10,7 +10,7 @@
           width="100%"
           color="primary"
           class="mb-20"
-          @click="$router.push($localePath('/cabinet/organisation-roles-form'))"
+          to="/cabinet/roles-item"
         >
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
@@ -27,11 +27,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
-          @edit="
-            $router.push(
-              $localePath(`/cabinet/organisation-roles-form/${item.id}`)
-            )
-          "
+          @edit="$router.push($localePath(`/cabinet/roles-item/${item.id}`))"
           @delete="deleteItem(item.id)"
         />
       </template>

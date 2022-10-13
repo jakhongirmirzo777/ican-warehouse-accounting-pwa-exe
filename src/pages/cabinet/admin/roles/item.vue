@@ -216,8 +216,9 @@ const submit = async (_: never, actions: ActionInterface) => {
     form.value.permissions = permissionResult.value
     await createEditAdminRoles(form.value)
     emits('fetch-data')
-    $successMessage(t('notifications.addedSuccessfully'))
-    await router.push($localePath('/cabinet/admin-roles'))
+    if (form.value.id) $successMessage(t('notifications.editedSuccessfully'))
+    else $successMessage(t('notifications.addedSuccessfully'))
+    await router.push($localePath('/cabinet/roles-admin'))
     dialog.value = false
   } catch (err) {
     $setFormErrors(err)
