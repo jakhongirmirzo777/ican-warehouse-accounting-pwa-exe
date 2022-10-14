@@ -11,6 +11,15 @@ export const fetchDepartments = async () => {
   }
 }
 
+export const fetchRoles = async () => {
+  try {
+    const data = await http.get('/organisation/roles/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchPositions = async () => {
   try {
     const data = await http.get(

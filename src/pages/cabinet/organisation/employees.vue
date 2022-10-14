@@ -118,6 +118,7 @@
     :data="editValue"
     :departments="departments"
     :positions="positions"
+    :roles="roles"
     :is-update="isUpdate"
     @submit="useFetchEmployees"
   />
@@ -149,6 +150,7 @@ import {
   fetchEmployees,
   deleteEmployee,
   toggleStatus,
+  fetchRoles,
 } from '@/services/cabinet/EmployeesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -246,6 +248,7 @@ const dialog = ref(false)
 const isUpdate = ref(false)
 const items = ref([])
 const departments = ref([])
+const roles = ref([])
 const positions = ref([])
 const editValue = ref<{
   id: number | null
@@ -276,6 +279,17 @@ const useFetchEmployees = async () => {
       item.index = from + i
       return item
     })
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+const useFetchRoles = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchRoles()
+    roles.value = data
   } catch (err) {
     return Promise.reject(err)
   }
@@ -332,6 +346,7 @@ const useFetchData = async () => {
     $showLoading()
     await useFetchDepartments()
     await useFetchPositions()
+    await useFetchRoles()
     await useFetchEmployees()
   } catch (err) {
     $setResponseErrors(err)

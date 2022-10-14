@@ -100,6 +100,7 @@
   <UsersDialog
     v-model="dialog"
     :data="editValue"
+    :roles="roles"
     :is-update="isUpdate"
     @submit="useFetchUsers"
   />
@@ -129,6 +130,7 @@ import {
   fetchUsers,
   deleteUser,
   toggleStatus,
+  fetchRoles,
 } from '@/services/cabinet/UsersService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -207,6 +209,7 @@ const headers = [
 const dialog = ref(false)
 const isUpdate = ref(false)
 const items = ref([])
+const roles = ref([])
 const editValue = ref<{
   id: number | null
   full_name: string | null
@@ -241,6 +244,17 @@ const useFetchUsers = async () => {
   }
 }
 
+const useFetchRoles = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchRoles()
+    roles.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 const handleDelete = async (id: number) => {
   try {
     $showLoading()
@@ -268,6 +282,7 @@ const handleDelete = async (id: number) => {
 const useFetchData = async () => {
   try {
     $showLoading()
+    await useFetchRoles()
     await useFetchUsers()
   } catch (err) {
     $setResponseErrors(err)

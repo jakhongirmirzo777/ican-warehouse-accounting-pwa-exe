@@ -15,6 +15,15 @@ export const fetchUsers = async (
   }
 }
 
+export const fetchRoles = async () => {
+  try {
+    const data = await http.get('/admin/roles/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const createUser = async (
   formData: Record<string, string | number | null>
 ) => {

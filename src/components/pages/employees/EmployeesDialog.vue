@@ -42,6 +42,7 @@
         </VCol>
         <VCol md="6">
           <VSelect
+            autocomplete
             vid="department_id"
             rules="required"
             :label="t('departments')"
@@ -51,11 +52,22 @@
         </VCol>
         <VCol md="6">
           <VSelect
+            autocomplete
             vid="position_id"
             rules="required"
             :label="t('positions')"
             :items="positions"
             v-model="formData.position_id"
+          />
+        </VCol>
+        <VCol v-if="!isUpdate" md="6">
+          <VSelect
+            autocomplete
+            vid="role_id"
+            rules="required"
+            :label="t('roles')"
+            :items="roles"
+            v-model="formData.role_id"
           />
         </VCol>
         <VCol md="6">
@@ -128,6 +140,7 @@ const FORM_DATA = {
   phone: null,
   department_id: null,
   position_id: null,
+  role_id: null,
 }
 
 const props = defineProps({
@@ -148,6 +161,10 @@ const props = defineProps({
     default: () => [],
   },
   positions: {
+    type: Array,
+    default: () => [],
+  },
+  roles: {
     type: Array,
     default: () => [],
   },

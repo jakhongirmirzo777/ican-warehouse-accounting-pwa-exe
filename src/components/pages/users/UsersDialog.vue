@@ -40,6 +40,16 @@
             v-model="formData.full_name"
           />
         </VCol>
+        <VCol v-if="!isUpdate">
+          <VSelect
+            autocomplete
+            vid="role_id"
+            rules="required"
+            :label="t('roles')"
+            :items="roles"
+            v-model="formData.role_id"
+          />
+        </VCol>
         <VCol>
           <VInput
             vid="phone"
@@ -85,6 +95,7 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VIcon from '@/components/ui/VIcon.vue'
+import VSelect from '@/components/ui/VSelect.vue'
 
 import { ref, watch } from 'vue'
 import { createUser, editUser } from '@/services/cabinet/UsersService'
@@ -104,6 +115,7 @@ const FORM_DATA = {
   password: null,
   full_name: null,
   phone: null,
+  role_id: null,
 }
 
 const props = defineProps({
@@ -118,6 +130,10 @@ const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
+  },
+  roles: {
+    type: Array,
+    default: () => [],
   },
 })
 
