@@ -95,12 +95,86 @@
         </VBtn>
         <VBtn
           type="submit"
+          class="mr-16"
           color="primary"
           width="130px"
           :loading="loading"
           radius="12px"
         >
           {{ !isUpdate ? t('add') : t('edit') }}
+        </VBtn>
+        <VBtn
+          v-if="formData.id"
+          type="button"
+          color="primary"
+          width="160px"
+          radius="12px"
+          @click="changePasswordDialog = true"
+        >
+          {{ t('changePassword') }}
+        </VBtn>
+      </div>
+    </Form>
+  </VModal>
+  <VModal :title="t('changePassword')" v-model="changePasswordDialog">
+    <Form ref="formObj" @submit="onChangePassword">
+      <VRow>
+        <VCol>
+          <VInput
+            vid="username"
+            rules="required"
+            :label="$t('username')"
+            v-model="formDataPassword.username"
+          >
+            <template #prepend>
+              <VIcon
+                icon="user"
+                :color="theme === THEME.DARK ? '#fff' : '#868EAA'"
+                size="16"
+              />
+            </template>
+          </VInput>
+        </VCol>
+        <VCol>
+          <VInput
+            type="password"
+            vid="password"
+            :label="t('password')"
+            rules="required"
+            v-model="formDataPassword.password"
+          />
+        </VCol>
+        <VCol>
+          <VInput
+            type="password"
+            vid="confirm_password"
+            :label="t('confirmPassword')"
+            rules="required"
+            v-model="formDataPassword.confirm_password"
+          />
+        </VCol>
+      </VRow>
+      <VLine class="mb-24" />
+      <div class="d-flex justify-end align-center">
+        <VBtn
+          type="button"
+          class="mr-16"
+          outlined
+          width="130px"
+          color="primary"
+          radius="12px"
+          @click="changePasswordDialog = false"
+        >
+          {{ t('cancel') }}
+        </VBtn>
+        <VBtn
+          type="submit"
+          color="primary"
+          width="130px"
+          :loading="loadingChangePassword"
+          radius="12px"
+        >
+          {{ t('change') }}
         </VBtn>
       </div>
     </Form>
@@ -121,6 +195,7 @@ import { ref, watch } from 'vue'
 import {
   createEmployee,
   editEmployee,
+  changePassword,
 } from '@/services/cabinet/EmployeesService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
@@ -141,6 +216,12 @@ const FORM_DATA = {
   department_id: null,
   position_id: null,
   role_id: null,
+}
+
+const FORM_DATA_PASSWORD = {
+  username: null,
+  password: null,
+  confirm_password: null,
 }
 
 const props = defineProps({
@@ -174,7 +255,10 @@ const emits = defineEmits(['update:modelValue', 'submit'])
 
 const formObj = ref<any>(null)
 const loading = ref(false)
+const changePasswordDialog = ref(false)
+const loadingChangePassword = ref(false)
 const formData = ref<Record<string, any>>({ ...FORM_DATA })
+const formDataPassword = ref<Record<string, any>>({ ...FORM_DATA_PASSWORD })
 
 watch(
   () => props.modelValue,
@@ -191,6 +275,20 @@ watch(
     }
   }
 )
+
+const onChangePassword = async (_: never, actions: ActionInterface) => {
+  const { $setFormErrors } = useFormActions(actions)
+  try {
+    loadingChangePassword.value = true
+    await changePassword(formData.value.id, formDataPassword.value)
+    changePasswordDialog.value = false
+  } catch (err) {
+    $setFormErrors(err)
+    $setResponseErrors(err)
+  } finally {
+    loadingChangePassword.value = false
+  }
+}
 
 const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)

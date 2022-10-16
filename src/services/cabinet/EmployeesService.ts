@@ -66,6 +66,21 @@ export const createEmployee = async (
   }
 }
 
+export const changePassword = async (
+  id: number,
+  formData: Record<string, string>
+) => {
+  try {
+    const data = await http.post(
+      `/organisations/employee/change-password/${id}`,
+      formData
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const editEmployee = async (
   formData: Record<string, string | number | null>
 ) => {
