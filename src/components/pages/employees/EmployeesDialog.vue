@@ -60,7 +60,7 @@
             v-model="formData.position_id"
           />
         </VCol>
-        <VCol v-if="!isUpdate" md="6">
+        <VCol md="6">
           <VSelect
             autocomplete
             vid="role_id"

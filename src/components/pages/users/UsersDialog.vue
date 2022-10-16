@@ -40,7 +40,7 @@
             v-model="formData.full_name"
           />
         </VCol>
-        <VCol v-if="!isUpdate">
+        <VCol>
           <VSelect
             autocomplete
             vid="role_id"
