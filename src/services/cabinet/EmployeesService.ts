@@ -72,7 +72,7 @@ export const changePassword = async (
 ) => {
   try {
     const data = await http.post(
-      `/organisations/employee/change-password/${id}`,
+      `/organisation/employee/change-password/${id}`,
       formData
     )
     return Promise.resolve(data)
