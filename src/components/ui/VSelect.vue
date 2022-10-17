@@ -65,7 +65,6 @@
 <script lang="ts" setup>
 import { ElSelect, ElOption } from 'element-plus'
 import VTransition from '@/components/ui/VTransition.vue'
-import 'element-plus/dist/index.css'
 
 import { useThemeService } from '@/plugins/theme-service'
 import { onMounted, onUpdated, ref, watch } from 'vue'
@@ -149,6 +148,7 @@ watch(
   () => props.modelValue,
   (val) => {
     value.value = val
+    isFocused.value = !!(val || val === 0 || Array.isArray(val))
   }
 )
 
@@ -183,9 +183,11 @@ onUpdated(() => {
 const changeValue = (event: Event) => {
   emits('update:modelValue', event)
 }
+
 const cleared = () => {
   emits('update:modelValue', '')
 }
+
 const blur = () => {
   setTimeout(() => {
     if (
@@ -198,14 +200,6 @@ const blur = () => {
     }
   }, 200)
 }
-watch(props, (val) => {
-  if (
-    (!val.modelValue && val.modelValue !== 0) ||
-    (Array.isArray(val.modelValue) && !val.modelValue.length)
-  ) {
-    isFocused.value = false
-  }
-})
 </script>
 
 <style lang="scss">

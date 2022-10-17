@@ -20,9 +20,19 @@
             vid="category_id"
             autocomplete
             rules="required"
-            :label="t('category')"
+            :label="t('parentCategory')"
             :items="categories"
-            v-model="formData.category_id"
+            v-model="categoryForm.parent_category_id"
+          />
+        </VCol>
+        <VCol>
+          <VSelect
+            autocomplete
+            clearable
+            :disabled="!categoryForm.parent_category_id"
+            :label="t('category')"
+            :items="childCategories"
+            v-model="categoryForm.child_category_id"
           />
         </VCol>
       </VRow>
@@ -62,7 +72,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 
-import { ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import {
   createProduct,
   editProduct,
@@ -102,18 +112,49 @@ const emits = defineEmits(['update:modelValue', 'submit'])
 
 const formObj = ref<any>(null)
 const loading = ref(false)
+const categoryForm = reactive({
+  parent_category_id: null,
+  child_category_id: null,
+})
 const formData = ref<Record<string, any>>({ ...FORM_DATA })
+
+const childCategories = computed(() => {
+  const list = [...props.categories].find(
+    (item: any) => item.id === categoryForm.parent_category_id
+  )
+  return list
+    ? (list as Record<string, Array<Record<string, string | number>>>).children
+    : []
+})
 
 watch(
   () => props.modelValue,
   (val) => {
     if (!val) {
+      categoryForm.parent_category_id = null
+      categoryForm.child_category_id = null
       formData.value = { ...FORM_DATA }
       formObj.value?.resetForm()
     } else if (val && props.isUpdate) {
       formData.value.id = props.data.id || null
       formData.value.name = props.data.name || null
-      formData.value.category_id = props.data.category_id || null
+      const activeCategory = (props.categories as any)
+        ?.reduce((acc: any, cur: any) => {
+          return [...acc, ...cur.children]
+        }, [])
+        .find((item: any) => item.id === props.data.category_id)
+      if (activeCategory) {
+        categoryForm.parent_category_id = activeCategory.parent_id
+        categoryForm.child_category_id = activeCategory.id
+      } else {
+        const activeParentCategory: any = props.categories?.find(
+          (item: any) => item.id === props.data.category_id
+        )
+        if (activeParentCategory) {
+          categoryForm.parent_category_id = activeParentCategory.id
+          categoryForm.child_category_id = null
+        }
+      }
     }
   }
 )
@@ -122,6 +163,9 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
+    formData.value.category_id = categoryForm.child_category_id
+      ? categoryForm.child_category_id
+      : categoryForm.parent_category_id
     if (!props.isUpdate) await createProduct(formData.value)
     else await editProduct(formData.value)
     await emits('submit')
