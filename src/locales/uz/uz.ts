@@ -206,6 +206,7 @@ export default {
   description: 'Описание',
   chooseAll: 'Выбрать все',
   personnelManagement: 'Управление кадрами',
+  role: 'Роль',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

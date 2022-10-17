@@ -41,6 +41,9 @@
     </VRow>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
+      <template #item.role="{ item }">
+        {{ item.role.name }}
+      </template>
       <template #item.phone="{ item }">
         {{ $phoneFormat(item.phone) }}
       </template>
@@ -190,6 +193,10 @@ const headers = [
   {
     text: t('username'),
     value: 'username',
+  },
+  {
+    text: t('role'),
+    value: 'role',
   },
   {
     text: t('phone'),

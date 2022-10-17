@@ -240,6 +240,7 @@ watch(
       formData.value.id = props.data.id || null
       formData.value.full_name = props.data.full_name || null
       formData.value.phone = props.data.phone || null
+      formData.value.role_id = props.data.role.id || null
     }
   }
 )

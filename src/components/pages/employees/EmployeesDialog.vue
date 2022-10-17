@@ -272,6 +272,7 @@ watch(
       formData.value.phone = props.data.phone || null
       formData.value.department_id = props.data.department_id || null
       formData.value.position_id = props.data.position_id || null
+      formData.value.role_id = props.data.role.id || null
     }
   }
 )
