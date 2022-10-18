@@ -168,6 +168,15 @@ const rawRoutes = [
         },
       },
       {
+        path: 'settings-currencies',
+        name: 'settings-currencies',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-currencies.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'employees',
         name: 'employees',
         component: () => import('@/pages/cabinet/organisation/employees.vue'),

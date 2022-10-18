@@ -334,6 +334,7 @@ const menus = computed(() => {
         children: [
           { name: t('bonusTariff'), path: 'settings-bonus-tariffs' },
           { name: t('balance'), path: 'settings-balance' },
+          { name: t('systemCourse'), path: 'settings-currencies' },
         ],
       },
     ]

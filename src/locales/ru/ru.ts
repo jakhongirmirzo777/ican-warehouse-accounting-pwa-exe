@@ -91,8 +91,8 @@ export default {
   mfo: 'МФО',
   changePriceType: 'Изменение цены при добавление новых',
   systemCourse: 'Курс валюты',
-  addSystemCourse: 'Добавление куср валюты',
-  editSystemCourse: 'Редактирование куср валюты',
+  addSystemCourse: 'Добавление курс валюты',
+  editSystemCourse: 'Редактирование курс валюты',
   editOrganizations: 'Редактирование организации',
   available: 'Есть',
   unavailable: 'Нет',
@@ -208,6 +208,7 @@ export default {
   chooseAll: 'Выбрать все',
   personnelManagement: 'Управление кадрами',
   role: 'Роль',
+  currencyType: 'Тип валюты',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
