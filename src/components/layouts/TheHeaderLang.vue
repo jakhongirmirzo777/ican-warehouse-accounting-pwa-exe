@@ -35,6 +35,7 @@ import { getAppLocale } from '@/plugins/i18n'
 import { $removeLocaleFromPath } from '@/utils/pure-functions'
 import { useRoute, useRouter } from 'vue-router'
 import { useThemeService } from '@/plugins/theme-service'
+import { $changeLocale } from '@/plugins/i18n'
 
 const { theme, THEME } = useThemeService()
 const route = useRoute()
@@ -71,8 +72,9 @@ const getLanguage = () => {
   })
 }
 
-const onChangeLocale = (locale: string) => {
-  router.replace({
+const onChangeLocale = async (locale: string) => {
+  await $changeLocale(locale)
+  await router.replace({
     path: `/${locale}/${$removeLocaleFromPath(route.fullPath)}`,
   })
 }
