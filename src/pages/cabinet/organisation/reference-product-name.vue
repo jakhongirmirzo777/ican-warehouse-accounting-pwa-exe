@@ -28,9 +28,19 @@
         <VSelect
           clearable
           autocomplete
-          :label="t('category')"
+          :label="t('parentCategory')"
           :items="categories"
-          v-model="options.category_id"
+          v-model="options.parent_category_id"
+        />
+      </VCol>
+      <VCol md="3">
+        <VSelect
+          clearable
+          autocomplete
+          :disabled="!options.parent_category_id"
+          :label="t('category')"
+          :items="childCategories"
+          v-model="options.child_category_id"
         />
       </VCol>
       <VCol md="2">
@@ -80,17 +90,13 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchCategories,
   fetchProducts,
   deleteProduct,
 } from '@/services/cabinet/ReferenceProductNameService'
-import type {
-  CategoryInterface,
-  CategoryParentsInterface,
-} from '@/types/cabinet/ReferenceCharacteristicsTypes'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -101,8 +107,13 @@ const { $showLoading, $clearLoading } = useLoadingService()
 const { getQuery, addQuery, clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['search', 'category_id', 'page'])
-clearQuery(['search', 'category_id', 'page'])
+const queries = getQuery([
+  'search',
+  'parent_category_id',
+  'child_category_id',
+  'page',
+])
+clearQuery(['search', 'parent_category_id', 'child_category_id', 'page'])
 
 const breadcrumbs = [
   {
@@ -119,14 +130,16 @@ const options = ref<{
   perPage: null | number
   total: null | number
   search: null | string
-  category_id: null | number
+  parent_category_id: null | number
+  child_category_id: null | number
 }>({
   page: +queries.page || 1,
-  category_id: +queries.category_id || null,
   search: queries.search || null,
   lastPage: null,
   perPage: null,
   total: null,
+  parent_category_id: +queries.parent_category_id || null,
+  child_category_id: +queries.child_category_id || null,
 })
 
 const headers = [
@@ -164,17 +177,22 @@ const editValue = ref<{
   category_id: null,
 })
 
+const childCategories = computed(() => {
+  const list = categories.value.find(
+    (item: Record<string, number>) =>
+      item.id === options.value.parent_category_id
+  )
+  return list
+    ? (list as Record<string, Array<Record<string, string | number>>>).children
+    : []
+})
+
 const useFetchCategories = async () => {
   try {
     const {
       data: { data },
     } = await fetchCategories()
-    categories.value = data.reduce(
-      (acc: CategoryInterface[], cur: CategoryParentsInterface) => {
-        return [...acc, ...cur.children]
-      },
-      []
-    )
+    categories.value = data
   } catch (err) {
     return Promise.reject(err)
   }
@@ -187,7 +205,9 @@ const useFetchProducts = async () => {
     } = await fetchProducts(
       options.value.page,
       options.value.search,
-      options.value.category_id
+      options.value.child_category_id
+        ? options.value.child_category_id
+        : options.value.parent_category_id
     )
     const { from, last_page, total, per_page } = links
     options.value.lastPage = last_page
@@ -256,7 +276,8 @@ const filterData = async () => {
     await addQuery({
       page: options.value.page,
       search: options.value.search,
-      category_id: options.value.category_id,
+      parent_category_id: options.value.parent_category_id,
+      child_category_id: options.value.child_category_id,
     })
   } catch (err) {
     $setResponseErrors(err)
@@ -269,13 +290,15 @@ const clearFilter = async () => {
   try {
     $showLoading()
     options.value.page = 1
-    options.value.category_id = null
+    options.value.parent_category_id = null
+    options.value.child_category_id = null
     options.value.search = null
     await useFetchProducts()
     await addQuery({
       page: options.value.page,
       search: options.value.search,
-      category_id: options.value.category_id,
+      parent_category_id: options.value.parent_category_id,
+      child_category_id: options.value.child_category_id,
     })
   } catch (err) {
     $setResponseErrors(err)

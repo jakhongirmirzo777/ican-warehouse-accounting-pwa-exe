@@ -24,6 +24,21 @@ export const fetchRoles = async () => {
   }
 }
 
+export const changePassword = async (
+  id: number,
+  formData: Record<string, string>
+) => {
+  try {
+    const data = await http.post(
+      `/admin/employee/change-password/${id}`,
+      formData
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const createUser = async (
   formData: Record<string, string | number | null>
 ) => {
