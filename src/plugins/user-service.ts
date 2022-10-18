@@ -10,11 +10,14 @@ interface UserDataInterface {
   id: number
   type: 'superAdmin' | 'organisation' | 'employer'
   username: string
-  blocked_by: string | null
   status: number
-  created_at: string | null
-  updated_at: string | null
-  deleted_at: string | null
+  status_text: string
+  balance: string | null
+  organisation_id: number
+  organisation_name: string
+  organisation_tariff: string
+  organisation_tariff_amount: number
+  permissions: string[]
 }
 
 const tokenService = useTokenService()

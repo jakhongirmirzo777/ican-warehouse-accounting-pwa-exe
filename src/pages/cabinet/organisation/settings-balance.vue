@@ -8,7 +8,7 @@
       <VCard>
         <VText class="mb-10" tag="p" size="14px">{{ t('tariff') }}:</VText>
         <VText color="#17BDC0" tag="h4" weight="600" size="16px">
-          300 000 сум\мес (Hali tayyormas)
+          {{ $moneyFormat(user?.organisation_tariff_amount) }} сум\мес
         </VText>
       </VCard>
     </VCol>
@@ -94,9 +94,12 @@ import {
 } from '@/utils/constants'
 import { useQuery } from '@/composables/router-query'
 import { $parseQueryStatus } from '@/utils/pure-functions'
+import { useUserService } from '@/plugins/user-service'
 const { getQuery, addQuery, clearQuery } = useQuery()
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
+
+const { user } = useUserService()
 const { t } = useI18n()
 const queries = getQuery(['from', 'to', 'status'])
 clearQuery(['from', 'to', 'status'])
