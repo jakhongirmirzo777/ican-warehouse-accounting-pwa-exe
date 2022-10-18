@@ -5,13 +5,13 @@ import { useStorageService } from '@/plugins/storage-service'
 import { APP_LANG_KEY } from '@/utils/constants'
 
 const storageService = useStorageService()
-export const SUPPORT_LOCALES = ['ru', 'oz', 'uz']
+export const SUPPORTED_LOCALES = ['ru', 'oz', 'uz']
 export const APP_LOCALE = getAppLocale()
 
 export function getAppLocale() {
   const FALLBACK_LOCALE = 'ru'
   const DEFAULT_LOCALE = storageService.get(APP_LANG_KEY) || FALLBACK_LOCALE
-  return SUPPORT_LOCALES.includes(DEFAULT_LOCALE)
+  return SUPPORTED_LOCALES.includes(DEFAULT_LOCALE)
     ? DEFAULT_LOCALE
     : FALLBACK_LOCALE
 }

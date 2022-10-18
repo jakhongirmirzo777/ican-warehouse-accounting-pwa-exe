@@ -1,6 +1,6 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { useUserService } from '@/plugins/user-service'
-import { SUPPORT_LOCALES, APP_LOCALE, $changeLocale } from '@/plugins/i18n'
+import { SUPPORTED_LOCALES, APP_LOCALE, $changeLocale } from '@/plugins/i18n'
 import { redirectToPages } from '@/middlewares/role-check'
 
 const userService = useUserService()
@@ -25,7 +25,7 @@ const i18nCheck = async (
   try {
     const hasParamsLocale = !!to.params.locale
     const locale = (to.params.locale || APP_LOCALE) as string
-    const isSupportedLocale = SUPPORT_LOCALES.includes(locale)
+    const isSupportedLocale = SUPPORTED_LOCALES.includes(locale)
 
     if (hasParamsLocale && isSupportedLocale) {
       await $changeLocale(locale)
