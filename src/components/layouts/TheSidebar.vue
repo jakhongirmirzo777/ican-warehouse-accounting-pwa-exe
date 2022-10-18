@@ -10,6 +10,8 @@
           @click="$emit('toggleMini')"
         />
         <ProfileDropdown class="sidebar__list__profile-dropdown" theme />
+        <VSpacer />
+        <TheHeaderLang />
       </div>
       <div
         v-for="(list, i) in listFrom"
@@ -95,6 +97,7 @@
 import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
+import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 
 import { computed, onMounted, ref, watch } from 'vue'
 import type { ListTypes } from '@/types/components/ListTypes'

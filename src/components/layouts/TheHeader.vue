@@ -46,6 +46,7 @@
         icon="notification"
       />
     </div>
+    <TheHeaderLang is-header />
     <ProfileDropdown
       :theme="theme === THEME.DARK"
       class="header__profile-dropdown"
@@ -58,6 +59,7 @@ import VIcon from '@/components/ui/VIcon.vue'
 // import VInput from '@/components/ui/VInput.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
+import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 
 import { useThemeService } from '@/plugins/theme-service'
 // import { ref } from 'vue'
