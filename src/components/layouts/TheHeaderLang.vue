@@ -3,6 +3,7 @@
     :class="[
       { 'lang-menu--header': isHeader },
       { 'lang-menu--sidebar': !isHeader },
+      { dark: theme === THEME.DARK },
       'lang-menu cursor-pointer mr-10',
     ]"
   >
@@ -33,7 +34,9 @@ import { ref } from 'vue'
 import { getAppLocale } from '@/plugins/i18n'
 import { $removeLocaleFromPath } from '@/utils/pure-functions'
 import { useRoute, useRouter } from 'vue-router'
+import { useThemeService } from '@/plugins/theme-service'
 
+const { theme, THEME } = useThemeService()
 const route = useRoute()
 const router = useRouter()
 
