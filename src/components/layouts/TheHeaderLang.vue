@@ -3,7 +3,7 @@
     :class="[
       { 'lang-menu--header': isHeader },
       { 'lang-menu--sidebar': !isHeader },
-      'lang-menu cursor-pointer',
+      'lang-menu cursor-pointer mr-10',
     ]"
   >
     <template #title>
@@ -30,11 +30,12 @@
 import VMenu from '@/components/ui/VMenu.vue'
 
 import { ref } from 'vue'
-import { APP_LANG_KEY } from '@/utils/constants'
-import { $changeLocale } from '@/plugins/i18n'
-import { useStorageService } from '@/plugins/storage-service'
+import { getAppLocale } from '@/plugins/i18n'
+import { $removeLocaleFromPath } from '@/utils/pure-functions'
+import { useRoute, useRouter } from 'vue-router'
 
-const storageService = useStorageService()
+const route = useRoute()
+const router = useRouter()
 
 interface LangType {
   title: string
@@ -58,10 +59,8 @@ const currentLang = ref<LangType>({ title: 'RU', value: 'ru' })
 const options = ref<Array<LangType>>([])
 
 const getLanguage = () => {
-  const lang = storageService.get(APP_LANG_KEY)
-  if (lang) {
-    currentLang.value = LANG[lang]
-  }
+  const lang = getAppLocale()
+  currentLang.value = LANG[lang]
   Object.keys(LANG).forEach((p: string) => {
     if (LANG[p].value !== currentLang.value.value) {
       options.value.push(LANG[p])
@@ -69,11 +68,16 @@ const getLanguage = () => {
   })
 }
 
+const onChangeLocale = (locale: string) => {
+  router.replace({
+    path: `/${locale}/${$removeLocaleFromPath(route.fullPath)}`,
+  })
+}
+
 const onMenuClick = (fn: () => unknown, body: LangType, i: number) => {
   options.value.push(currentLang.value)
   options.value.splice(i, 1)
-  storageService.set(APP_LANG_KEY, body.value)
-  $changeLocale(body.value)
+  onChangeLocale(body.value)
   currentLang.value = body
   fn()
 }
@@ -82,5 +86,5 @@ getLanguage()
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/layouts/the-header-lang.scss';
+@import '../../assets/styles/layouts/the-header-lang.scss';
 </style>
