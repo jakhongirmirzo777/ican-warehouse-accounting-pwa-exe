@@ -209,6 +209,7 @@ export default {
   personnelManagement: 'Управление кадрами',
   role: 'Роль',
   currencyType: 'Тип валюты',
+  currency: 'Валюта',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

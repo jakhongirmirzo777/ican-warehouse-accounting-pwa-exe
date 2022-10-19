@@ -18,25 +18,11 @@ export const fetchCurrencyTypes = async () => {
   }
 }
 
-export const createCurrency = async (
+export const createOrUpdateCurrency = async (
   formData: Record<string, string | number | null>
 ) => {
   try {
     const data = await http.post('/organisation/settings/courses', formData)
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const editCurrency = async (
-  formData: Record<string, string | number | null>
-) => {
-  try {
-    const data = await http.post(`/organisation/product/${formData.id}`, {
-      ...formData,
-      _method: 'PUT',
-    })
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

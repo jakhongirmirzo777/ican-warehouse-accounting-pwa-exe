@@ -63,10 +63,7 @@ import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 
 import { ref, watch } from 'vue'
-import {
-  createCurrency,
-  editCurrency,
-} from '@/services/cabinet/SettingsCurrenciesService'
+import { createOrUpdateCurrency } from '@/services/cabinet/SettingsCurrenciesService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
@@ -76,7 +73,6 @@ const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
 const FORM_DATA = {
-  id: null,
   currency_id: null,
   amount: null,
 }
@@ -113,7 +109,6 @@ watch(
       formData.value = { ...FORM_DATA }
       formObj.value?.resetForm()
     } else if (val && props.isUpdate) {
-      formData.value.id = props.data.id || null
       formData.value.currency_id = props.data.currency_id || null
       formData.value.amount = props.data.amount || null
     }
@@ -126,8 +121,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     loading.value = true
     const formDataCopy = { ...formData.value }
     formDataCopy.amount = +$clearNonDigits(formDataCopy.amount)
-    if (!props.isUpdate) await createCurrency(formDataCopy)
-    else await editCurrency(formDataCopy)
+    await createOrUpdateCurrency(formDataCopy)
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {

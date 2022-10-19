@@ -4,25 +4,27 @@
     {{ t('systemCourse') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol md="1">
-        <VBtn
-          class="mb-20"
-          color="primary"
-          width="100%"
-          @click="
-            () => {
-              isUpdate = false
-              dialog = true
-            }
-          "
-        >
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ t('add') }}
-        </VBtn>
-      </VCol>
-    </VRow>
-    <VLine class="mb-20" />
+    <template v-if="items.length !== currencyTypes.length">
+      <VRow>
+        <VCol md="1">
+          <VBtn
+            class="mb-20"
+            color="primary"
+            width="100%"
+            @click="
+              () => {
+                isUpdate = false
+                dialog = true
+              }
+            "
+          >
+            <VIcon class="mr-10" size="20" icon="circle-plus" />
+            {{ t('add') }}
+          </VBtn>
+        </VCol>
+      </VRow>
+      <VLine class="mb-20" />
+    </template>
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
@@ -82,8 +84,8 @@ const headers = [
     width: '30px',
   },
   {
-    text: t('name'),
-    value: 'name',
+    text: t('currency'),
+    value: 'currency',
   },
   {
     text: t('amount'),
@@ -101,11 +103,9 @@ const isUpdate = ref(false)
 const items = ref([])
 const currencyTypes = ref([])
 const editValue = ref<{
-  id: number | null
   currency_id: number | null
   amount: number | null
 }>({
-  id: null,
   currency_id: null,
   amount: null,
 })
@@ -147,11 +147,7 @@ const useFetchData = async () => {
   }
 }
 
-const editCurrency = (item: {
-  id: number
-  currency_id: number
-  amount: number
-}) => {
+const editCurrency = (item: { currency_id: number; amount: number }) => {
   editValue.value = item
   isUpdate.value = true
   dialog.value = true
