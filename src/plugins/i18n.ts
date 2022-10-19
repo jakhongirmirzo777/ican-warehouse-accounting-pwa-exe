@@ -79,7 +79,3 @@ export function $localePath(path: string): string {
   if (!path) return ''
   return `/${locale}${path}`
 }
-
-$changeLocale(getAppLocale())
-  .then()
-  .catch((err) => console.error('Could not load locale ', err))
