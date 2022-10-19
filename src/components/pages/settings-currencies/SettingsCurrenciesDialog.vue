@@ -7,7 +7,7 @@
   >
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
-        <VCol>
+        <VCol v-if="!isUpdate">
           <VSelect
             vid="currency_id"
             :label="t('currencyType')"
