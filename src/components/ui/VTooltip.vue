@@ -58,7 +58,7 @@ const classes = computed(() => {
 
 const detectUserDevice = () => {
   if (
-    /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/gi.test(
       navigator.userAgent
     )
   ) {
