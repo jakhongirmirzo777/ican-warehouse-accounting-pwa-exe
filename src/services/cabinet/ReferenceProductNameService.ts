@@ -15,6 +15,24 @@ export const fetchProducts = async (
   }
 }
 
+export const fetchUnits = async () => {
+  try {
+    const data = await http.get('/admin/units/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const generateBarcode = async () => {
+  try {
+    const data = await http.get('/organisation/product/generate/barcode')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchCategories = async () => {
   try {
     const data = await http.get('/organisation/category/parents')

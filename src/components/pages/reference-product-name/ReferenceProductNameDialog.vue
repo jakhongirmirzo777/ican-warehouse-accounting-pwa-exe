@@ -1,13 +1,13 @@
 <template>
   <VModal
-    width="400px"
+    width="800px"
     :title="!isUpdate ? t('addProductName') : t('editProductName')"
     :model-value="modelValue"
     @update:modelValue="(val) => $emit('update:modelValue', val)"
   >
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
-        <VCol>
+        <VCol md="6">
           <VInput
             vid="name"
             :label="t('name')"
@@ -15,7 +15,7 @@
             v-model="formData.name"
           />
         </VCol>
-        <VCol>
+        <VCol md="6">
           <VSelect
             vid="category_id"
             autocomplete
@@ -25,7 +25,7 @@
             v-model="categoryForm.parent_category_id"
           />
         </VCol>
-        <VCol>
+        <VCol md="6">
           <VSelect
             autocomplete
             clearable
@@ -34,6 +34,45 @@
             :items="childCategories"
             v-model="categoryForm.child_category_id"
           />
+        </VCol>
+        <VCol md="6">
+          <VSelect
+            vid="unit_id"
+            autocomplete
+            rules="required"
+            :label="t('units')"
+            :items="units"
+            v-model="formData.unit_id"
+          />
+        </VCol>
+        <VCol md="6">
+          <VInput
+            vid="articule"
+            :label="t('articule')"
+            rules="required|max:255"
+            v-model="formData.articule"
+          />
+        </VCol>
+        <VCol md="6">
+          <div class="d-flex">
+            <VInput
+              class="mr-5"
+              vid="barcode"
+              type="number"
+              :label="t('barcode')"
+              rules="required|max:255"
+              v-model="formData.barcode"
+            />
+            <VBtn
+              type="button"
+              min-width="40px"
+              color="primary"
+              :loading="barcodeLoading"
+              @click="useGenerateBarcode"
+            >
+              <VIcon size="20" icon="barcode" color="#fff" />
+            </VBtn>
+          </div>
         </VCol>
       </VRow>
       <VLine class="mb-24" />
@@ -76,10 +115,12 @@ import { computed, reactive, ref, watch } from 'vue'
 import {
   createProduct,
   editProduct,
+  generateBarcode,
 } from '@/services/cabinet/ReferenceProductNameService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
+import VIcon from '@/components/ui/VIcon.vue'
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
@@ -87,6 +128,9 @@ const FORM_DATA = {
   id: null,
   name: null,
   category_id: null,
+  unit_id: null,
+  barcode: null,
+  articule: null,
 }
 
 const props = defineProps({
@@ -106,12 +150,17 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  units: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const emits = defineEmits(['update:modelValue', 'submit'])
 
 const formObj = ref<any>(null)
 const loading = ref(false)
+const barcodeLoading = ref(false)
 const categoryForm = reactive({
   parent_category_id: null,
   child_category_id: null,
@@ -158,6 +207,20 @@ watch(
     }
   }
 )
+
+const useGenerateBarcode = async () => {
+  try {
+    barcodeLoading.value = true
+    const {
+      data: { data },
+    } = await generateBarcode()
+    formData.value.barcode = data.barcode
+  } catch (err) {
+    $setResponseErrors(err)
+  } finally {
+    barcodeLoading.value = false
+  }
+}
 
 const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)

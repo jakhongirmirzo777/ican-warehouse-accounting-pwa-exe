@@ -68,6 +68,7 @@
     v-model="dialog"
     :data="editValue"
     :categories="categories"
+    :units="units"
     :is-update="isUpdate"
     @submit="useFetchProducts"
   />
@@ -95,6 +96,7 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchCategories,
   fetchProducts,
+  fetchUnits,
   deleteProduct,
 } from '@/services/cabinet/ReferenceProductNameService'
 import { useErrorActions } from '@/composables/set-errors'
@@ -157,6 +159,18 @@ const headers = [
     value: 'category_name',
   },
   {
+    text: t('units'),
+    value: 'unit_text',
+  },
+  {
+    text: t('articule'),
+    value: 'articule',
+  },
+  {
+    text: t('barcode'),
+    value: 'barcode',
+  },
+  {
     text: t('actions'),
     value: 'actions',
     width: '150px',
@@ -167,14 +181,21 @@ const dialog = ref(false)
 const isUpdate = ref(false)
 const categories = ref([])
 const items = ref([])
+const units = ref([])
 const editValue = ref<{
   id: number | null
   name: string | null
   category_id: number | null
+  unit_id: number | null
+  articule: string | null
+  barcode: string | null
 }>({
   id: null,
   name: null,
   category_id: null,
+  unit_id: null,
+  articule: null,
+  barcode: null,
 })
 
 const childCategories = computed(() => {
@@ -193,6 +214,17 @@ const useFetchCategories = async () => {
       data: { data },
     } = await fetchCategories()
     categories.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+const useFetchUnits = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchUnits()
+    units.value = data
   } catch (err) {
     return Promise.reject(err)
   }
@@ -250,6 +282,7 @@ const useFetchData = async () => {
   try {
     $showLoading()
     await useFetchCategories()
+    await useFetchUnits()
     await useFetchProducts()
   } catch (err) {
     $setResponseErrors(err)
@@ -262,6 +295,9 @@ const editProduct = (item: {
   id: number
   name: string
   category_id: number
+  unit_id: number
+  articule: string
+  barcode: string
 }) => {
   editValue.value = item
   isUpdate.value = true

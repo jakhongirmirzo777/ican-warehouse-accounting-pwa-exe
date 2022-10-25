@@ -210,6 +210,8 @@ export default {
   role: 'Роль',
   currencyType: 'Тип валюты',
   currency: 'Валюта',
+  articule: 'Артикул',
+  barcode: 'Штрих-код',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
