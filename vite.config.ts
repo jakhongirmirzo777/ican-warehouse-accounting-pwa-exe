@@ -22,6 +22,34 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         sourcemap: true,
       },
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      manifest: {
+        name: 'iCAN accounting of warehouse',
+        short_name: 'iCAN accounting',
+        description: 'iCAN Web Application for accounting of warehouse',
+        start_url: '/',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        display: 'standalone',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
+      },
     }),
   ],
   resolve: {
