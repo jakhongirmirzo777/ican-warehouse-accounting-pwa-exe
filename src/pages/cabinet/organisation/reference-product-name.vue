@@ -160,7 +160,7 @@ const headers = [
   },
   {
     text: t('units'),
-    value: 'unit_text',
+    value: 'unit_name',
   },
   {
     text: t('articule'),

@@ -35,7 +35,7 @@
             v-model="categoryForm.child_category_id"
           />
         </VCol>
-        <VCol md="6">
+        <VCol v-if="!isUpdate" md="6">
           <VSelect
             vid="unit_id"
             autocomplete
@@ -45,7 +45,7 @@
             v-model="formData.unit_id"
           />
         </VCol>
-        <VCol md="6">
+        <VCol v-if="!isUpdate" md="6">
           <VInput
             vid="articule"
             :label="t('articule')"
@@ -53,7 +53,7 @@
             v-model="formData.articule"
           />
         </VCol>
-        <VCol md="6">
+        <VCol v-if="!isUpdate" md="6">
           <div class="d-flex">
             <VInput
               class="mr-5"
@@ -187,6 +187,9 @@ watch(
     } else if (val && props.isUpdate) {
       formData.value.id = props.data.id || null
       formData.value.name = props.data.name || null
+      formData.value.unit_id = props.data.unit_id || null
+      formData.value.barcode = props.data.barcode || null
+      formData.value.articule = props.data.articule || null
       const activeCategory = (props.categories as any)
         ?.reduce((acc: any, cur: any) => {
           return [...acc, ...cur.children]
