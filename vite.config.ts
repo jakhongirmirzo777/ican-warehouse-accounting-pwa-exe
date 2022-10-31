@@ -27,7 +27,7 @@ export default defineConfig({
         name: 'iCAN accounting of warehouse',
         short_name: 'iCAN accounting',
         description: 'iCAN Web Application for accounting of warehouse',
-        start_url: '/',
+        start_url: '/index.html',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',

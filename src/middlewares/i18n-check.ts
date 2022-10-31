@@ -4,6 +4,7 @@ import { SUPPORTED_LOCALES, APP_LOCALE, $changeLocale } from '@/plugins/i18n'
 import { redirectToPages } from '@/middlewares/role-check'
 
 const userService = useUserService()
+let IS_FIRST_LOAD = true
 
 const redirectRouteLocale = (
   to: RouteLocationNormalized,
@@ -27,9 +28,9 @@ const i18nCheck = async (
     const locale = (to.params.locale || APP_LOCALE) as string
     const isSupportedLocale = SUPPORTED_LOCALES.includes(locale)
 
-    if (hasParamsLocale && isSupportedLocale) {
+    if (hasParamsLocale && isSupportedLocale && IS_FIRST_LOAD) {
       $changeLocale(locale)
-        .then()
+        .then(() => (IS_FIRST_LOAD = false))
         .catch((err) => console.error('Could not load locale ', err))
     }
 
