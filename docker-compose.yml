@@ -4,6 +4,6 @@ services:
     build: ./
     container_name: ican_c
     ports:
-      - '4000:4000'
+      - '80:4000'
     stdin_open: true
     tty: true
