@@ -80,7 +80,7 @@ const { t } = useI18n()
 
 const FORM_DATA = {
   organisation_id: null,
-  account: '',
+  account: null,
   comment: '',
 }
 
@@ -125,8 +125,8 @@ const submit = async (_: never, actions: ActionInterface) => {
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false
   } catch (err) {
-    $setFormErrors(err)
     $setResponseErrors(err)
+    $setFormErrors(err)
   } finally {
     loading.value = false
   }
