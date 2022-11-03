@@ -53,7 +53,7 @@ import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VLine from '@/components/ui/VLine.vue'
-import ReferenceUnitsDialog from '@/components/pages/reference-units/SettlementReferenceUnitsDialog.vue'
+import ReferenceUnitsDialog from '@/components/pages/reference-units/ReferenceUnitsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
