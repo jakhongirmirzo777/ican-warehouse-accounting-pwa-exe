@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('units') }}
+    {{ t('counterpartyAccounts') }}
   </VText>
   <VCard>
     <VRow>
@@ -12,7 +12,15 @@
         </VBtn>
       </VCol>
       <VCol md="3">
-        <VInput :label="$t('search')" v-model="params.search" clearable />
+        <VSelect
+          :label="$t('organisation')"
+          clearable
+          :items="organisationList"
+          item-value="id"
+          multiple
+          item-text="name"
+          v-model="params.organisation_ids"
+        />
       </VCol>
       <VCol md="1">
         <VFilterActions @filter="startFilter" @clear="clearFilter" />
@@ -21,11 +29,7 @@
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
-        <VTableActions
-          @edit="openDialog(item)"
-          @delete="deleteItem(item.id)"
-          :actions="{ view: false, edit: true, delete: false }"
-        />
+        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
       </template>
     </VTable>
     <VPagination
@@ -36,7 +40,11 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <ReferenceUnitsDialog ref="organizationDialogRef" @fetchData="fetchData" />
+  <SettlementReferenceUnitsDialog
+    ref="organizationDialogRef"
+    @fetchData="fetchData"
+    :organisationList="organisationList"
+  />
 </template>
 
 <script setup lang="ts">
@@ -49,58 +57,56 @@ import VRow from '@/components/ui/VRow.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCol from '@/components/ui/VCol.vue'
-import VInput from '@/components/ui/VInput.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VLine from '@/components/ui/VLine.vue'
-import ReferenceUnitsDialog from '@/components/pages/reference-units/SettlementReferenceUnitsDialog.vue'
+import SettlementReferenceUnitsDialog from '@/components/pages/financial-accounting-settlement/SettlementCreateUpdateModal.vue'
+import VSelect from '@/components/ui/VSelect.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  fetchReferenceUnits,
-  deleteReferenceUnits,
-} from '@/services/cabinet/ReferenceUnitsService'
+  fetchSettlement,
+  deleteSettlement,
+} from '@/services/cabinet/FinancialAccountingSettlementServices'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
-import { $isPageExists } from '@/utils/pure-functions'
+import { $isPageExists, $parseQueryArray } from '@/utils/pure-functions'
 import type {
-  ReferencePartyUnitsDataItemType,
-  ReferenceUnitsFormTypes,
-  UnitsPageOptionsType,
-} from '@/types/cabinet/ReferenceUnitsTypes'
+  SettlementDataItemType,
+  SettlementFormTypes,
+  SettlementPageOptionsType,
+} from '@/types/cabinet/FinancialAccountingSettlementTypes'
+import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
+import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
 
-const items = ref<ReferencePartyUnitsDataItemType[]>([])
-const { t, locale } = useI18n()
+const items = ref<SettlementDataItemType[]>([])
+const { t } = useI18n()
 const organizationDialogRef = ref()
-const queries = getQuery([
-  'page',
-  'search',
-  'counterparty_id',
-  'date',
-  'position',
-  'type',
-])
-clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
+const queries = getQuery(['page', 'organisation_ids'])
+clearQuery(['page', 'organisation_ids'])
 
 const breadcrumbs = [
   {
-    name: t('reference'),
+    name: t('financialAccounting'),
   },
   {
-    name: t('units'),
+    name: t('counterpartyAccounts'),
   },
 ]
 
-const params = ref<UnitsPageOptionsType>({
-  search: queries.search || '',
+const organisationList = ref<Array<MkoOrganisationListType>>([])
+
+const params = ref<SettlementPageOptionsType>({
+  organisation_ids:
+    $parseQueryArray(queries.organisation_ids, 'number') || null,
   page: +queries.page || 1,
 })
 const pageOptions = ref<{
@@ -129,7 +135,7 @@ const startFilter = async () => {
 const clearFilter = async () => {
   try {
     $showLoading()
-    params.value.search = ''
+    params.value.organisation_ids = ''
     params.value.page = 1
     await fetchData()
     addQuery(params.value)
@@ -142,11 +148,11 @@ const clearFilter = async () => {
 
 const fetchData = async () => {
   try {
-    const { data, links } = await fetchReferenceUnits(params.value)
+    const { data, links } = await fetchSettlement(params.value)
     if (links && links.total) pageOptions.value.total = links.total
     if (links && links.last_page) pageOptions.value.lastPage = links.last_page
     if (links && links.per_page) pageOptions.value.perPage = links.per_page
-    items.value = data.map((p: ReferencePartyUnitsDataItemType, i: number) => {
+    items.value = data.map((p: SettlementDataItemType, i: number) => {
       if (links) p.index = links.from + i
       return p
     })
@@ -155,16 +161,26 @@ const fetchData = async () => {
   }
 }
 
+const getOrganisationList = async () => {
+  try {
+    const { data } = await fetchOrganisationsList()
+    organisationList.value = data
+  } catch (e) {
+    $setResponseErrors(e)
+  }
+}
+
 const useFetchData = async () => {
   $showLoading()
   await fetchData()
+  await getOrganisationList()
   $clearLoading()
 }
 
 const deleteItem = async (id: number) => {
   $showLoading()
   try {
-    await deleteReferenceUnits(id)
+    await deleteSettlement(id)
     if (
       pageOptions.value &&
       $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
@@ -195,7 +211,7 @@ const changePage = async () => {
   }
 }
 
-const openDialog = (item: ReferenceUnitsFormTypes) => {
+const openDialog = (item: SettlementFormTypes) => {
   organizationDialogRef.value.openDialog(item)
 }
 
@@ -207,8 +223,9 @@ const headers = ref([
     value: 'index',
     width: '30px',
   },
-  { text: t('name'), value: `name_${locale.value}` },
-  { text: t('key'), value: 'type' },
+  { text: t('accountNumber'), value: 'account' },
+  { text: t('organisation'), value: 'organisation_name' },
+  { text: t('comment'), value: 'comment' },
   {
     text: t('actions'),
     value: 'actions',

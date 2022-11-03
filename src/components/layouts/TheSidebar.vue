@@ -337,6 +337,16 @@ const menus = computed(() => {
           { name: t('systemCourse'), path: 'settings-currencies' },
         ],
       },
+      {
+        name: t('financialAccounting'),
+        icon: 'financial-accounting',
+        children: [
+          {
+            name: t('counterpartyAccounts'),
+            path: 'financial-account-settlement',
+          },
+        ],
+      },
     ]
   }
   return [

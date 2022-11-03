@@ -212,6 +212,8 @@ export default {
   currency: 'Валюта',
   articule: 'Артикул',
   barcode: 'Штрих-код',
+  financialAccounting: 'Финансовый учет',
+  accountNumber: 'Номер счета',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

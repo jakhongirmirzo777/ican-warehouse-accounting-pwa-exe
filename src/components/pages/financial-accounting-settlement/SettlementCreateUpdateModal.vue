@@ -2,40 +2,39 @@
   <VModal
     :title="form.id ? t('editUnits') : t('addUnits')"
     v-model="dialog"
-    width="718"
+    width="447"
   >
     <Form @submit="submit" ref="formRef">
       <VRow>
-        <VCol md="6">
-          <VInput
-            :label="$t('name_uz')"
-            rules="required|max:255"
+        <VCol>
+          <VSelect
+            :label="$t('organisation')"
+            rules="required"
             vid="name_uz"
-            v-model="form.name_uz"
+            :items="organisationList"
+            item-value="id"
+            item-text="name"
+            v-model="form.organisation_id"
           />
         </VCol>
-        <VCol md="6">
+        <VCol>
           <VInput
-            :label="$t('name_oz')"
+            :label="$t('accountNumber')"
             rules="required|max:255"
-            vid="name_oz"
-            v-model="form.name_oz"
+            pattern="####################"
+            counter="20"
+            type="number"
+            vid="account"
+            v-model="form.account"
           />
         </VCol>
-        <VCol md="6">
-          <VInput
-            :label="$t('name_ru')"
-            rules="required|max:255"
-            vid="name_ru"
-            v-model="form.name_ru"
-          />
-        </VCol>
-        <VCol md="6">
-          <VInput
-            :label="$t('key')"
-            rules="required|max:255"
-            vid="type"
-            v-model="form.type"
+        <VCol>
+          <VArea
+            :label="$t('comment')"
+            rules="required|max:10000"
+            vid="comment"
+            rows="5"
+            v-model="form.comment"
           />
         </VCol>
       </VRow>
@@ -62,40 +61,38 @@ import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
+import VSelect from '@/components/ui/VSelect.vue'
+import VArea from '@/components/ui/VArea.vue'
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import { createEditReferenceUnits } from '@/services/cabinet/ReferenceUnitsService'
-import type { ReferenceUnitsFormTypes } from '@/types/cabinet/ReferenceUnitsTypes'
-
-interface ValueType<T> {
-  value: T
-}
+import { createEditSettlement } from '@/services/cabinet/FinancialAccountingSettlementServices'
+import type { SettlementFormTypes } from '@/types/cabinet/FinancialAccountingSettlementTypes'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
 const FORM_DATA = {
-  name_uz: '',
-  name_oz: '',
-  name_ru: '',
-  type: '',
+  organisation_id: null,
+  account: '',
+  comment: '',
 }
 
 defineProps({
   positionList: Array,
   counterpartyList: Array,
+  organisationList: Array,
 })
 
 const emits = defineEmits(['fetch-data'])
 
 const dialog = ref(false)
 
-const form: ValueType<ReferenceUnitsFormTypes> = ref({
+const form = ref<SettlementFormTypes>({
   ...FORM_DATA,
 })
 
@@ -110,7 +107,7 @@ watch(dialog, (val) => {
   }
 })
 
-const openDialog = (item: ReferenceUnitsFormTypes) => {
+const openDialog = (item: SettlementFormTypes) => {
   if (item && item.id) {
     form.value = { ...item }
   }
@@ -121,7 +118,7 @@ const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
-    await createEditReferenceUnits(form.value)
+    await createEditSettlement(form.value)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false
