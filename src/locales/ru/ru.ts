@@ -43,6 +43,8 @@ export default {
   address: 'Адрес',
   director: 'Директор',
   counterpartyAccounts: 'Расчетные счета',
+  addCounterpartyAccounts: 'Добавление Расчетные счета',
+  editCounterpartyAccounts: 'Редактирование Расчетные счета',
   addCounterparty: 'Добавление контрагента',
   editCounterparty: 'Редактирование контрагента',
   brandName: 'Имя бренда',

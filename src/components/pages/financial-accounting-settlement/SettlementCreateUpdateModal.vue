@@ -1,6 +1,8 @@
 <template>
   <VModal
-    :title="form.id ? t('editUnits') : t('addUnits')"
+    :title="
+      form.id ? t('editCounterpartyAccounts') : t('addCounterpartyAccounts')
+    "
     v-model="dialog"
     width="447"
   >
