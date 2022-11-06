@@ -31,7 +31,7 @@
 import VMenu from '@/components/ui/VMenu.vue'
 
 import { ref } from 'vue'
-import { getAppLocale } from '@/plugins/i18n'
+import { getAppLocale, $changeLocale } from '@/plugins/i18n'
 import { $removeLocaleFromPath } from '@/utils/pure-functions'
 import { useRoute, useRouter } from 'vue-router'
 import { useThemeService } from '@/plugins/theme-service'
@@ -80,6 +80,7 @@ const onChangeLocale = async (locale: string) => {
 const onMenuClick = (fn: () => unknown, body: LangType, i: number) => {
   options.value.push(currentLang.value)
   options.value.splice(i, 1)
+  $changeLocale(body.value)
   onChangeLocale(body.value)
   currentLang.value = body
   fn()
