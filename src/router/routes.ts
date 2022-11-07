@@ -297,6 +297,17 @@ const rawRoutes = [
           roles: [ROLES.EMPLOYER],
         },
       },
+      {
+        path: 'financial-account-settlement',
+        name: 'financial-account-settlement',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/financial-accounting-settlement.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
     ],
   },
   {

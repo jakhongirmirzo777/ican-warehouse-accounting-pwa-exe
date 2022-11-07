@@ -43,6 +43,8 @@ export default {
   address: 'Адрес',
   director: 'Директор',
   counterpartyAccounts: 'Расчетные счета',
+  addCounterpartyAccounts: 'Добавление Расчетные счета',
+  editCounterpartyAccounts: 'Редактирование Расчетные счета',
   addCounterparty: 'Добавление контрагента',
   editCounterparty: 'Редактирование контрагента',
   brandName: 'Имя бренда',
@@ -212,6 +214,8 @@ export default {
   currency: 'Валюта',
   articule: 'Артикул',
   barcode: 'Штрих-код',
+  financialAccounting: 'Финансовый учет',
+  accountNumber: 'Номер счета',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

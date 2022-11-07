@@ -1,5 +1,8 @@
 import http from '@/plugins/http'
-import type { MkoOrganisationData } from '@/types/cabinet/MkoOrganisationsTypes'
+import type {
+  MkoOrganisationData,
+  MkoOrganisationListType,
+} from '@/types/cabinet/MkoOrganisationsTypes'
 
 export const fetchOrganisations = async (
   page: number,
@@ -44,7 +47,9 @@ export const changePassword = async (
 
 export const fetchOrganisationsList = async () => {
   try {
-    const data = await http.get('/organisation/organisation/list')
+    const { data } = await http.get<{ data: Array<MkoOrganisationListType> }>(
+      '/organisation/organisation/list'
+    )
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

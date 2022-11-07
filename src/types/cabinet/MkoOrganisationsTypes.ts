@@ -46,3 +46,9 @@ export interface MkoOrganisationEditValues {
   phones: string[]
   logo_url: string | null
 }
+
+export interface MkoOrganisationListType {
+  id: number
+  company_name: string
+  name: string
+}
