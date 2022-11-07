@@ -12,7 +12,7 @@
           <VSelect
             :label="$t('organisation')"
             rules="required"
-            vid="name_uz"
+            vid="organisation_id"
             :items="organisationList"
             item-value="id"
             item-text="name"
