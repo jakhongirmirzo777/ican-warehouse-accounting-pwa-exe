@@ -141,6 +141,8 @@ export default {
   maxStores: 'Максимальное количество магазинов',
   passivePeriod: 'Пассивный период',
   agreements: 'Договора',
+  addAgreements: 'Добавление договора',
+  editAgreements: 'Редактирование договора',
   contractNumber: '№ договора',
   comment: 'Комментарий',
   login: 'Войти',

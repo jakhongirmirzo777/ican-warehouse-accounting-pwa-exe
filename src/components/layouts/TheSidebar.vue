@@ -345,6 +345,10 @@ const menus = computed(() => {
             name: t('counterpartyAccounts'),
             path: 'financial-account-settlement',
           },
+          {
+            name: t('income'),
+            path: 'financial-account-income',
+          },
         ],
       },
     ]

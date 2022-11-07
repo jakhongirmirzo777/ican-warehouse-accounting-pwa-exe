@@ -308,6 +308,17 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION],
         },
       },
+      {
+        path: 'financial-account-income',
+        name: 'financial-account-income',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/financial-accounting-income.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
     ],
   },
   {
