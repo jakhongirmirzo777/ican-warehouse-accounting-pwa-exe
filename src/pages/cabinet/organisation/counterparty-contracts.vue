@@ -152,7 +152,7 @@ import type {
   CounterpartyContractDataItemType,
   ContractPageOptionsType,
 } from '@/types/cabinet/CounterpertyContractsTypes'
-import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
+import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 
 interface ValueType<T> {
   value: T

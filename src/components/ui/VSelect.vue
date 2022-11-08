@@ -25,6 +25,9 @@
       >
       <el-select
         style="height: 42px; width: 100%"
+        size="large"
+        :no-data-text="noDataText || t('noDataText')"
+        :no-match-text="noMatchText || t('noMatchText')"
         v-model="value"
         :multiple="multiple"
         @change="changeValue"
@@ -35,7 +38,6 @@
         :disabled="disabled"
         :filterable="autocomplete"
         :placeholder="' '"
-        size="large"
         :clearable="clearable"
         v-bind="field"
         :loading="loading"
@@ -46,6 +48,14 @@
           :label="!localize ? item[itemText] : t(item[itemText])"
           :value="item[itemValue]"
         />
+        <template v-if="canAdd" #empty>
+          <p
+            class="el-select-dropdown__empty cursor-pointer"
+            @click="$emit('add')"
+          >
+            {{ t('add') }}
+          </p>
+        </template>
       </el-select>
     </label>
     <div
@@ -106,6 +116,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  canAdd: {
+    type: Boolean,
+    default: false,
+  },
   autocomplete: {
     type: Boolean,
     default: false,
@@ -126,6 +140,14 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  noDataText: {
+    type: String,
+    default: '',
+  },
+  noMatchText: {
+    type: String,
+    default: '',
+  },
   name: {
     type: String,
     default: '',
@@ -142,7 +164,7 @@ const props = defineProps({
 
 const value = ref<any>(null)
 const isFocused = ref(false)
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'add'])
 
 watch(
   () => props.modelValue,

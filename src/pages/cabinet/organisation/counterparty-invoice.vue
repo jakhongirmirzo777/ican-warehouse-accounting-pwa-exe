@@ -122,7 +122,7 @@ import type {
   CounterpartyInvoiceFormTypes,
   InvoicePageOptionsType,
 } from '@/types/cabinet/CounterpartyInvoiceTypes'
-import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
+import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 
 interface ValueType<T> {
   value: T
