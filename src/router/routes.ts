@@ -190,7 +190,17 @@ const rawRoutes = [
         path: 'inventory-income',
         name: 'inventory-income',
         component: () =>
-          import('@/pages/cabinet/organisation/inventory-income.vue'),
+          import('@/pages/cabinet/organisation/inventory-income/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'inventory-income-item/:id',
+        name: 'inventory-income-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-income/item.vue'),
+        props: true,
         meta: {
           roles: [ROLES.ORGANISATION],
         },

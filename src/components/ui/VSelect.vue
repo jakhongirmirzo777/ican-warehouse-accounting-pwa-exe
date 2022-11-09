@@ -24,6 +24,7 @@
         >{{ label }}</span
       >
       <el-select
+        ref="elementSelect"
         style="height: 42px; width: 100%"
         size="large"
         :no-data-text="noDataText || t('noDataText')"
@@ -51,7 +52,7 @@
         <template v-if="canAdd" #empty>
           <p
             class="el-select-dropdown__empty cursor-pointer"
-            @click="$emit('add')"
+            @click="onClickEmpty"
           >
             {{ t('add') }}
           </p>
@@ -162,6 +163,7 @@ const props = defineProps({
   },
 })
 
+const elementSelect = ref<any>(null)
 const value = ref<any>(null)
 const isFocused = ref(false)
 const emits = defineEmits(['update:modelValue', 'add'])
@@ -201,6 +203,11 @@ onUpdated(() => {
     }
   }
 })
+
+const onClickEmpty = async () => {
+  await elementSelect.value.blur()
+  await emits('add')
+}
 
 const changeValue = (event: Event) => {
   emits('update:modelValue', event)

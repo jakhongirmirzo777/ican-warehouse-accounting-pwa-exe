@@ -233,6 +233,10 @@ export default {
   incomePrice: 'Сумма по цене прихода',
   sellPrice: 'Сумма по цене продажи',
   process: 'Провести',
+  goodsPosting: 'Оприходование товаров',
+  createFinancialEntry: 'Создать фин.проводку',
+  addGoods: 'Добавление товаров',
+  excelImport: 'Импорт Excel',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

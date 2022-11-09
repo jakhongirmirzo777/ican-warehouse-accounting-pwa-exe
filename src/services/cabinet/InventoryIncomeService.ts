@@ -1,9 +1,40 @@
 import http from '@/plugins/http'
 
-export const fetchIncomes = async (page: number) => {
+export const fetchIncomes = async (params: {
+  lastPage: number | null
+  perPage: number | null
+  total: number | null
+  search: string | null
+  organisation_id: number | null
+  counterparty_id: number | null
+  contract_id: number | null
+  invoice_id: number | null
+  store_id: number | null
+  date: string | null
+  page: number | null
+}) => {
+  const {
+    search,
+    organisation_id,
+    counterparty_id,
+    contract_id,
+    invoice_id,
+    store_id,
+    date,
+    page,
+  } = params
   try {
     const data = await http.get('/organisation/documents', {
-      params: { page },
+      params: {
+        search,
+        organisation_id,
+        counterparty_id,
+        contract_id,
+        invoice_id,
+        store_id,
+        date,
+        page,
+      },
     })
     return Promise.resolve(data)
   } catch (err) {
@@ -56,9 +87,11 @@ export const deleteIncome = async (id: number) => {
   }
 }
 
-export const fetchProduct = async (id: number) => {
+export const fetchProduct = async (id: number, page: number) => {
   try {
-    const data = await http.get(`/organisation/documents/product/list/${id}`)
+    const data = await http.get(`/organisation/documents/product/list/${id}`, {
+      params: { page },
+    })
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

@@ -213,8 +213,8 @@ export const INVENTORY_DOCUMENTS_COLORED = {
     color: '#28B446',
   },
   '10': {
-    theme: 'rgba(230,168,18,0.24)',
-    color: '#E6A812',
+    theme: 'rgba(23,189,192,0.24)',
+    color: '#17BDC0',
   },
   '5': {
     theme: 'rgba(255,32,144,0.24)',

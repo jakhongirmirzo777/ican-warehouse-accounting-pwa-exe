@@ -1,6 +1,25 @@
 @mixin spaces($p, $num, $name) {
   @for $i from 0 through $num {
-    // margin
+    .mt#{$name}-auto {
+      margin-top: auto;
+    }
+    .mb#{$name}-auto {
+      margin-bottom: auto;
+    }
+    .ml#{$name}-auto {
+      margin-left: auto;
+    }
+    .mr#{$name}-auto {
+      margin-right: auto;
+    }
+    .mx#{$name}-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .my#{$name}-auto {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
     .ma#{$name}-#{$i} {
       margin: #{$i*$p}px
     }
@@ -22,7 +41,6 @@
     .my#{$name}-#{$i} {
       margin: #{$i*$p}px 0
     }
-    //padding
     .pa#{$name}-#{$i} {
       padding: #{$i*$p}px
     }

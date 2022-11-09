@@ -28,7 +28,6 @@
           <VSelect
             vid="organisation_id"
             autocomplete
-            can-add
             rules="required"
             :label="t('organisation')"
             :items="organisations"
@@ -53,6 +52,7 @@
                 formData.invoice_id = null
               }
             "
+            @add="counterpartiesDialog = true"
           />
         </VCol>
         <VCol md="6">
@@ -66,6 +66,7 @@
             :label="t('agreement')"
             :items="contracts"
             v-model="formData.contract_id"
+            @add="contractsDialog = true"
           />
         </VCol>
         <VCol md="6">
@@ -79,6 +80,7 @@
             :label="t('invoice')"
             :items="invoices"
             v-model="formData.invoice_id"
+            @add="invoicesDialog = true"
           />
         </VCol>
         <VCol md="6">
@@ -90,6 +92,7 @@
             :label="t('warehouse')"
             :items="warehouses"
             v-model="formData.store_id"
+            @add="warehousesDialog = true"
           />
         </VCol>
         <VCol v-if="!isUpdate" md="6">
@@ -136,6 +139,21 @@
       </div>
     </Form>
   </VModal>
+  <CounterpartyCounterpartiesDialog
+    v-model="counterpartiesDialog"
+    @fetch-data="useReFetchResources"
+  />
+  <CounterpartyContractsDialog
+    :counterpart-id="formData.counterparty_id"
+    v-model="contractsDialog"
+    @fetch-data="useReFetchResources"
+  />
+  <CounterpartyInvoiceDialog
+    :counterpart-id="formData.counterparty_id"
+    v-model="invoicesDialog"
+    @fetch-data="useReFetchResources"
+  />
+  <WarehousesDialog v-model="warehousesDialog" @submit="$emit('re-fetch')" />
 </template>
 
 <script lang="ts" setup>
@@ -147,6 +165,10 @@ import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
+import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
+import CounterpartyInvoiceDialog from '@/components/pages/counterparty-invoice/CounterpartyInvoiceDialog.vue'
+import WarehousesDialog from '@/components/pages/warehouses/WarehousesDialog.vue'
 
 import { computed, ref, watch } from 'vue'
 import {
@@ -203,8 +225,11 @@ const props = defineProps({
   },
 })
 
-const emits = defineEmits(['update:modelValue', 'submit'])
-
+const emits = defineEmits(['update:modelValue', 'submit', 're-fetch'])
+const counterpartiesDialog = ref(false)
+const contractsDialog = ref(false)
+const invoicesDialog = ref(false)
+const warehousesDialog = ref(false)
 const formObj = ref<any>(null)
 const loading = ref(false)
 const formData = ref<Record<string, any>>({ ...FORM_DATA })
@@ -244,6 +269,25 @@ watch(
     }
   }
 )
+
+const useReFetchResources = async () => {
+  try {
+    formData.value.counterparty_id = null
+    formData.value.contract_id = null
+    formData.value.invoice_id = null
+    counterpartiesDialog.value = false
+    contractsDialog.value = false
+    invoicesDialog.value = false
+    warehousesDialog.value = false
+    if (!formData.value.organisation_id) return
+    const {
+      data: { data },
+    } = await fetchResources(formData.value.organisation_id)
+    resources.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
 
 const useFetchResources = async (dontClear = false) => {
   try {

@@ -14,7 +14,7 @@
             v-model="form.number"
           />
         </VCol>
-        <VCol cols="12" md="6">
+        <VCol v-if="!counterpartId" cols="12" md="6">
           <VSelect
             :label="$t('counterparties')"
             :items="counterpartyList"
@@ -121,9 +121,13 @@ const FORM_DATA = {
   comment: '',
 }
 
-defineProps({
+const props = defineProps({
   positionList: Array,
   counterpartyList: Array,
+  counterpartId: {
+    type: [Number, String],
+    default: '',
+  },
 })
 
 const emits = defineEmits(['fetch-data'])
@@ -154,8 +158,10 @@ const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
-    form.value.amount = $clearNonDigits(form.value.amount.toString())
-    await createEditContract(form.value)
+    const newForm = { ...form.value }
+    newForm.amount = $clearNonDigits(newForm.amount.toString())
+    if (props.counterpartId) newForm.counterparty_id = props.counterpartId
+    await createEditContract(newForm)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false

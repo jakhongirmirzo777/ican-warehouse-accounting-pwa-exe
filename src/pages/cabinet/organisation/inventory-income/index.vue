@@ -117,6 +117,15 @@
           {{ item.status_text }}
         </VStatus>
       </template>
+      <template #item.products_count_sum="{ item }">
+        {{ item.products_count_sum || 0 }}
+      </template>
+      <template #item.incoming_price_sum="{ item }">
+        {{ item.incoming_price_sum || 0 }}
+      </template>
+      <template #item.selling_price_sum="{ item }">
+        {{ item.selling_price_sum || 0 }}
+      </template>
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VBtn class="mr-8" height="32px" outlined color="primary">
@@ -124,6 +133,12 @@
             <span>{{ t('process') }}</span>
           </VBtn>
           <VTableActions
+            :actions="{ view: true, edit: true, delete: true }"
+            @view="
+              $router.push(
+                $localePath(`/cabinet/inventory-income-item/${item.id}`)
+              )
+            "
             @edit="editIncome(item.id)"
             @delete="handleDelete(item.id)"
           />
@@ -146,6 +161,7 @@
     :currencies="currencies"
     :is-update="isUpdate"
     @submit="useFetchIncomes"
+    @re-fetch="useFetchWarehouses"
   />
 </template>
 
@@ -260,6 +276,10 @@ const headers = [
     value: 'number',
   },
   {
+    text: t('date'),
+    value: 'date',
+  },
+  {
     text: t('organisation'),
     value: 'organisation_name',
   },
@@ -289,7 +309,7 @@ const headers = [
   },
   {
     text: t('countOfNames'),
-    value: 'count',
+    value: 'products_count_sum',
   },
   {
     text: t('incomePrice'),
@@ -401,7 +421,7 @@ const useFetchIncomes = async () => {
   try {
     const {
       data: { data, links },
-    } = await fetchIncomes(options.value.page)
+    } = await fetchIncomes(options.value)
     const { from, last_page, total, per_page } = links
     options.value.lastPage = last_page
     options.value.total = total

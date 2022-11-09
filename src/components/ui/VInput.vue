@@ -152,7 +152,7 @@ const props = defineProps({
     default: 'text',
   },
   modelValue: {
-    type: String,
+    type: [String, Number],
     default: '',
   },
   vid: {
