@@ -48,7 +48,7 @@
                 @clear="clearFilter"
                 @collapse="toggle"
               />
-              <VExcel url="test" :filters="options" />
+              <VExcel url="" :filters="options" />
             </div>
           </VCol>
         </VRow>
@@ -109,7 +109,13 @@
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.status="{ item }">
-        {{ item.status_text }}
+        <VStatus
+          min-width="80px"
+          :theme="INVENTORY_DOCUMENTS_COLORED[item.status].theme"
+          :color="INVENTORY_DOCUMENTS_COLORED[item.status].color"
+        >
+          {{ item.status_text }}
+        </VStatus>
       </template>
       <template #item.actions="{ item }">
         <div class="d-flex">
@@ -161,6 +167,7 @@ import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VExcel from '@/components/ui/VExcel.vue'
+import VStatus from '@/components/ui/VStatus.vue'
 import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
 
 import { computed, ref } from 'vue'
@@ -179,6 +186,7 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
+import { INVENTORY_DOCUMENTS_COLORED } from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

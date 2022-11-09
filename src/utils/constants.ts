@@ -206,3 +206,18 @@ export const USER_STATUS_INDEXED = Object.entries(MKO_STATUSES).reduce(
   },
   []
 )
+
+export const INVENTORY_DOCUMENTS_COLORED = {
+  '1': {
+    theme: 'rgba(40, 180, 70, 0.24)',
+    color: '#28B446',
+  },
+  '10': {
+    theme: 'rgba(230,168,18,0.24)',
+    color: '#E6A812',
+  },
+  '5': {
+    theme: 'rgba(255,32,144,0.24)',
+    color: '#FF2090',
+  },
+}
