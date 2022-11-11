@@ -140,7 +140,7 @@ export default {
   setting: 'Настройки',
   maxStores: 'Максимальное количество магазинов',
   passivePeriod: 'Пассивный период',
-  agreements: 'Договора',
+  agreements: 'Договоры',
   contractNumber: '№ договора',
   comment: 'Комментарий',
   login: 'Войти',

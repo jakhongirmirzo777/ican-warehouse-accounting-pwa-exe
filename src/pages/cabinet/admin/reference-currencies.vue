@@ -37,7 +37,6 @@
   </VCard>
   <ReferenceCurrenciesDialog
     ref="organizationDialogRef"
-    :positionList="positionList"
     @fetchData="fetchData"
   />
 </template>
@@ -99,11 +98,6 @@ const pageOptions = ref<{
   total: 0,
   perPage: 0,
 })
-
-const positionList = ref([
-  { value: 'buyer', text: t('buyer') },
-  { value: 'seller', text: t('seller') },
-])
 
 const POSITION = {
   buyer: t('buyer'),

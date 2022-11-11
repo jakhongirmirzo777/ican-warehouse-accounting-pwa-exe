@@ -141,17 +141,17 @@
   </VModal>
   <CounterpartyCounterpartiesDialog
     v-model="counterpartiesDialog"
-    @fetch-data="useReFetchResources"
+    @fetch-data="useReFetchResources('COUNTERPARTY')"
   />
   <CounterpartyContractsDialog
     :counterpart-id="formData.counterparty_id"
     v-model="contractsDialog"
-    @fetch-data="useReFetchResources"
+    @fetch-data="useReFetchResources('CONTRACT')"
   />
   <CounterpartyInvoiceDialog
     :counterpart-id="formData.counterparty_id"
     v-model="invoicesDialog"
-    @fetch-data="useReFetchResources"
+    @fetch-data="useReFetchResources('INVOICE')"
   />
   <WarehousesDialog v-model="warehousesDialog" @submit="$emit('re-fetch')" />
 </template>
@@ -270,11 +270,20 @@ watch(
   }
 )
 
-const useReFetchResources = async () => {
+const useReFetchResources = async (
+  type: 'COUNTERPARTY' | 'CONTRACT' | 'INVOICE'
+) => {
   try {
-    formData.value.counterparty_id = null
-    formData.value.contract_id = null
-    formData.value.invoice_id = null
+    if (type === 'COUNTERPARTY') {
+      formData.value.counterparty_id = null
+      formData.value.contract_id = null
+      formData.value.invoice_id = null
+    } else if (type === 'CONTRACT') {
+      formData.value.contract_id = null
+    } else if (type === 'INVOICE') {
+      formData.value.invoice_id = null
+    }
+    await formObj.value?.resetForm()
     counterpartiesDialog.value = false
     contractsDialog.value = false
     invoicesDialog.value = false

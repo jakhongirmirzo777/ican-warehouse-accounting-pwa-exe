@@ -35,7 +35,8 @@
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            :items="positionList"
+            localize
+            :items="POSITIONS_INDEXED"
             item-value="value"
             item-text="text"
             :label="$t('position')"
@@ -89,6 +90,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { CounterpartyInvoiceFormTypes } from '@/types/cabinet/CounterpartyInvoiceTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
+import { POSITIONS_INDEXED } from '@/utils/constants'
 
 interface ValueType<T> {
   value: T
@@ -107,7 +109,6 @@ const FORM_DATA = {
 }
 
 const props = defineProps({
-  positionList: Array,
   counterpartyList: Array,
   counterpartId: {
     type: [Number, String],

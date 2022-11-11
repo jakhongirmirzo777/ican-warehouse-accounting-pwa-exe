@@ -16,6 +16,24 @@ export const ROLES = {
   EMPLOYER: 'employer',
 }
 
+export const POSITIONS = {
+  BUYER: 'buyer',
+  SELLER: 'seller',
+}
+
+export const POSITIONS_INDEXED = Object.entries(POSITIONS).reduce(
+  (acc: Array<Record<string, string | number>>, [_, val]) => {
+    return [
+      ...acc,
+      {
+        text: val,
+        value: val,
+      },
+    ]
+  },
+  []
+)
+
 export const NOTIFICATION_TYPES: Record<
   string,
   'success' | 'error' | 'warning'

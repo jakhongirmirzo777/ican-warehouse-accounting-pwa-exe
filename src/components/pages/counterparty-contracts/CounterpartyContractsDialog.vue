@@ -43,7 +43,8 @@
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            :items="positionList"
+            localize
+            :items="POSITIONS_INDEXED"
             item-value="value"
             item-text="text"
             :label="$t('position')"
@@ -96,6 +97,7 @@ import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VArea from '@/components/ui/VArea.vue'
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -105,7 +107,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { CounterpartyContractFormTypes } from '@/types/cabinet/CounterpertyContractsTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
-import VArea from '@/components/ui/VArea.vue'
+import { POSITIONS_INDEXED } from '@/utils/constants'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
@@ -122,7 +124,6 @@ const FORM_DATA = {
 }
 
 const props = defineProps({
-  positionList: Array,
   counterpartyList: Array,
   counterpartId: {
     type: [Number, String],

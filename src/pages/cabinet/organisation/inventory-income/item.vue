@@ -100,7 +100,7 @@
     :organisations="organisations"
     :warehouses="warehouses"
     :currencies="currencies"
-    @submit="useFetchProduct"
+    @submit="useFetchIncome"
   />
 </template>
 
@@ -119,7 +119,9 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
+import VExcel from '@/components/ui/VExcel.vue'
 import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
+import CounterpartyInvoiceItemDocumentInfo from '@/components/pages/counterparty-invoice-item/CounterpartyInvoiceItemDocumentInfo.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -141,8 +143,7 @@ import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
 import { useRoute } from 'vue-router'
-import VExcel from '@/components/ui/VExcel.vue'
-import CounterpartyInvoiceItemDocumentInfo from '@/components/pages/counterparty-invoice-item/CounterpartyInvoiceItemDocumentInfo.vue'
+
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { getQuery, addQuery, clearQuery } = useQuery()
