@@ -10,6 +10,7 @@
     "inn": "{field} noto‘g‘ri",
     "pnfl": "{field} noto‘g‘ri",
     "confirmed": "Parol mos kelmadi",
-    "max_value": "{field} maydoni {max_value} yoki undan kam bo'lishi kerak"
+    "min_value": "{field} maydoni {params} yoki undan katta bo'lishi kerak",
+    "max_value": "{field} maydoni {params} yoki undan kam bo'lishi kerak"
   }
 }

@@ -10,6 +10,7 @@
     "inn": "{field} не действительный",
     "pnfl": "{field} не действительный",
     "confirmed": "Пароли не совпадают",
-    "max_value": "Поле {field} должно быть {max_value} или меньше"
+    "min_value": "Поле {field} должно быть {params} или больше",
+    "max_value": "Поле {field} должно быть {params} или меньше"
   }
 }

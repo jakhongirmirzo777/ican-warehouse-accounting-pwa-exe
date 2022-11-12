@@ -46,113 +46,138 @@
       </div>
     </div>
     <VLine class="mb-16" />
-    <VRow>
-      <VCol md="2">
-        <VSelect
-          autocomplete
-          :label="t('typeNameOfProduct')"
-          :items="products"
-          v-model="formData.product_id"
-          @filter="useFetchProductSearchDebounce"
-        />
-      </VCol>
-      <VCol md="2">
-        <VInput
-          type="number"
-          rules="required"
-          :label="t('quantity')"
-          v-model="formData.count"
-        />
-      </VCol>
-      <VCol md="2">
-        <VInput
-          type="money"
-          rules="required"
-          :label="t('arrivalPrice')"
-          v-model="formData.count"
-        />
-      </VCol>
-      <VCol md="2">
-        <VInput
-          type="number"
-          rules="required"
-          :label="t('priceMargin')"
-          v-model="formData.count"
-        >
-          <template #append> % </template>
-        </VInput>
-      </VCol>
-      <VCol md="2">
-        <VInput
-          type="money"
-          rules="required"
-          :label="t('sellingPrice')"
-          v-model="formData.count"
-        />
-      </VCol>
-      <VCol md="2">
-        <VBtn class="w-100" outlined color="primary">
-          {{ t('characteristics') }}
-        </VBtn>
-      </VCol>
-      <VCol md="2">
-        <VCheckbox
-          class="mt-6"
-          hide-details
-          v-model="formData.is_showcase"
-          :label="t('placeOnShowcase')"
-        />
-      </VCol>
-      <VCol md="2">
-        <VInput disabled :label="t('name')" v-model="productInfo.name" />
-      </VCol>
-      <VCol md="2">
-        <VInput
-          disabled
-          :label="t('category')"
-          v-model="productInfo.category_name"
-        />
-      </VCol>
-      <VCol md="2">
-        <VInput
-          disabled
-          :label="t('articule')"
-          v-model="productInfo.articule"
-        />
-      </VCol>
-      <VCol md="2">
-        <VInput disabled :label="t('barcode')" v-model="productInfo.barcode" />
-      </VCol>
-      <VCol md="2">
-        <VInput disabled :label="t('units')" v-model="productInfo.unit_name" />
-      </VCol>
-      <VCol md="2">
-        <VBtn
-          class="mb-20"
-          color="primary"
-          width="100%"
-          @click="
-            () => {
-              isUpdate = false
-              dialog = true
-            }
-          "
-        >
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ t('add') }}
-        </VBtn>
-      </VCol>
-    </VRow>
+    <Form @submit="onSubmit" ref="formObj">
+      <VRow>
+        <VCol md="2">
+          <VSelect
+            vid="product_id"
+            can-add
+            autocomplete
+            rules="required"
+            :label="t('typeNameOfProduct')"
+            :items="products"
+            v-model="formData.product_id"
+            @filter="useFetchProductSearchDebounce"
+            @add="productDialog = true"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            vid="count"
+            type="number"
+            rules="required"
+            :label="t('quantity')"
+            v-model="formData.count"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            vid="incoming_price"
+            type="money"
+            rules="required"
+            :label="t('arrivalPrice')"
+            v-model="formData.incoming_price"
+            @update:modelValue="handlePriceLogic('INCOMING_PRICE')"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            vid="margin"
+            type="number"
+            rules="required|min_value:0"
+            :label="t('priceMargin')"
+            v-model="formData.margin"
+            @update:modelValue="handlePriceLogic('MARGIN')"
+          >
+            <template #append> % </template>
+          </VInput>
+        </VCol>
+        <VCol md="2">
+          <VInput
+            vid="selling_price"
+            type="money"
+            rules="required"
+            :label="t('sellingPrice')"
+            v-model="formData.selling_price"
+            @update:modelValue="handlePriceLogic('SELLING_PRICE')"
+          />
+        </VCol>
+        <VCol md="2">
+          <VCheckbox
+            class="my-8"
+            hide-details
+            v-model="formData.is_showcase"
+            :label="t('placeOnShowcase')"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput disabled :label="t('name')" v-model="productInfo.name" />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            disabled
+            :label="t('category')"
+            v-model="productInfo.category_name"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            disabled
+            :label="t('articule')"
+            v-model="productInfo.articule"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            disabled
+            :label="t('barcode')"
+            v-model="productInfo.barcode"
+          />
+        </VCol>
+        <VCol md="2">
+          <VInput
+            disabled
+            :label="t('units')"
+            v-model="productInfo.unit_name"
+          />
+        </VCol>
+        <VCol v-if="!isUpdate" md="2">
+          <VBtn type="submit" class="mb-20" color="primary" width="100%">
+            <VIcon class="mr-10" size="20" icon="circle-plus" />
+            {{ t('add') }}
+          </VBtn>
+        </VCol>
+        <VCol v-if="isUpdate" md="1">
+          <VBtn
+            type="button"
+            class="mb-20"
+            outlined
+            color="primary"
+            width="100%"
+            @click="isUpdate = false"
+          >
+            {{ t('cancel') }}
+          </VBtn>
+        </VCol>
+        <VCol v-if="isUpdate" md="1">
+          <VBtn type="submit" class="mb-20" color="primary" width="100%">
+            {{ t('edit') }}
+          </VBtn>
+        </VCol>
+      </VRow>
+    </Form>
     <VTable :headers="headers" :items="items">
+      <template #item.count="{ item }">
+        {{ $moneyFormat(item.count) }}
+      </template>
+      <template #item.incoming_price_sum="{ item }">
+        {{ $moneyFormat(item.incoming_price_sum) }}
+      </template>
+      <template #item.selling_price_sum="{ item }">
+        {{ $moneyFormat(item.selling_price_sum) }}
+      </template>
       <template #item.is_showcase="{ item }">
         {{ item.is_showcase ? t('showcase') : '' }}
-      </template>
-      <template #item.features="{ item }">
-        {{
-          item.features
-            .map((feature) => `${feature.feature}: ${feature.value}`)
-            .join(', ')
-        }}
       </template>
       <template #item.actions="{ item }">
         <VTableActions
@@ -178,6 +203,12 @@
     :currencies="currencies"
     @submit="useFetchIncome"
   />
+  <ReferenceProductNameDialog
+    v-model="productDialog"
+    :categories="categories"
+    :units="units"
+    @submit="handleAddProduct"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -198,6 +229,7 @@ import VBackBtn from '@/components/ui/VBackBtn.vue'
 import VExcel from '@/components/ui/VExcel.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
 import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
+import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 import CounterpartyInvoiceItemDocumentInfo from '@/components/pages/counterparty-invoice-item/CounterpartyInvoiceItemDocumentInfo.vue'
 
 import { computed, ref } from 'vue'
@@ -209,16 +241,23 @@ import {
   fetchCurrencies,
   fetchProductSearch,
   fetchProduct,
-  // createProduct,
-  // editProduct,
+  fetchCategories,
+  fetchUnits,
+  createProduct,
+  editProduct,
   deleteProduct,
 } from '@/services/cabinet/InventoryIncomeService'
-import { useErrorActions } from '@/composables/set-errors'
+import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
-import { $debounce, $isPageExists } from '@/utils/pure-functions'
+import {
+  $debounce,
+  $isPageExists,
+  $clearNonDigits,
+} from '@/utils/pure-functions'
 import { useRoute } from 'vue-router'
+import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -248,7 +287,6 @@ const FORM_DATA = {
   selling_price: null,
   count: null,
   is_showcase: false,
-  features: [],
 }
 
 const options = ref<{
@@ -298,10 +336,6 @@ const headers = [
     value: 'is_showcase',
   },
   {
-    text: t('characteristics'),
-    value: 'features',
-  },
-  {
     text: t('arrivalPrice'),
     value: 'incoming_price_sum',
   },
@@ -316,43 +350,28 @@ const headers = [
   },
 ]
 
-const id = route.params.id
+const id = computed(() => route.params.id || null)
+const formObj = ref<any>(null)
+const productDialog = ref(false)
 const documentDialog = ref(false)
-const dialog = ref(false)
 const isUpdate = ref(false)
 const document = ref({})
 const organisations = ref([])
 const warehouses = ref([])
+const categories = ref([])
+const units = ref([])
 const currencies = ref([])
 const products = ref([])
 const items = ref([])
 const formData = ref<{
   product_id: null | number
-  incoming_price: null | string
-  margin: null | string
-  selling_price: null | string
-  count: null | string
+  incoming_price: null | string | number
+  margin: null | string | number
+  selling_price: null | string | number
+  count: null | string | number
   is_showcase: boolean
-  features: Array<Record<string, string | number>>
 }>({
   ...FORM_DATA,
-})
-const editValue = ref<{
-  id: number | null
-  organisation_id: number | null
-  contract_id: number | null
-  store_id: number | null
-  counterparty_id: number | null
-  invoice_id: number | null
-  date: string | null
-}>({
-  id: null,
-  organisation_id: null,
-  contract_id: null,
-  store_id: null,
-  counterparty_id: null,
-  invoice_id: null,
-  date: null,
 })
 
 const productInfo = computed(() => {
@@ -371,6 +390,28 @@ const productInfo = computed(() => {
     unit_name: null,
   }
 })
+
+const useFetchCategories = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchCategories()
+    categories.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+const useFetchUnits = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchUnits()
+    units.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
 
 const useFetchOrganisations = async () => {
   try {
@@ -407,21 +448,21 @@ const useFetchCurrencies = async () => {
 
 const useFetchIncome = async () => {
   try {
-    if (!id) return
+    if (!id.value) return
     const {
       data: { data },
-    } = await fetchIncome(+id)
+    } = await fetchIncome(+id.value)
     document.value = data
   } catch (err) {
     return Promise.reject(err)
   }
 }
 
-const useFetchProductSearch = async () => {
+const useFetchProductSearch = async (search = '') => {
   try {
     const {
       data: { data },
-    } = await fetchProductSearch('')
+    } = await fetchProductSearch(search)
     products.value = data
   } catch (err) {
     return Promise.reject(err)
@@ -434,7 +475,7 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
     const {
       data: { data },
     } = await fetchProductSearch(value)
-    products.value.concat(data)
+    products.value = data
   } catch (err) {
     $setResponseErrors(err)
   }
@@ -442,10 +483,10 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
 
 const useFetchProduct = async () => {
   try {
-    if (!id) return
+    if (!id.value) return
     const {
       data: { data, links },
-    } = await fetchProduct(+id, options.value.page)
+    } = await fetchProduct(+id.value, options.value.page)
     const { from, last_page, total, per_page } = links
     options.value.lastPage = last_page
     options.value.total = total
@@ -483,15 +524,37 @@ const handleDelete = async (id: number) => {
   }
 }
 
+const onSubmit = async (_: never, actions: ActionInterface) => {
+  const { $setFormErrors } = useFormActions(actions)
+  try {
+    const newFormData = { ...formData.value }
+    newFormData.incoming_price = $clearNonDigits(
+      newFormData.incoming_price?.toString() || '0'
+    )
+    newFormData.selling_price = $clearNonDigits(
+      newFormData.selling_price?.toString() || '0'
+    )
+    if (isUpdate.value) await editProduct(id.value as any, newFormData)
+    else await createProduct(id.value as any, newFormData)
+  } catch (err) {
+    $setResponseErrors(err)
+    $setFormErrors(err)
+  }
+}
+
 const useFetchData = async () => {
   try {
     $showLoading()
-    await useFetchIncome()
-    await useFetchProductSearch()
-    await useFetchOrganisations()
-    await useFetchWarehouses()
-    await useFetchCurrencies()
-    await useFetchProduct()
+    await Promise.all([
+      useFetchCategories(),
+      useFetchUnits(),
+      useFetchIncome(),
+      useFetchProductSearch(),
+      useFetchOrganisations(),
+      useFetchWarehouses(),
+      useFetchCurrencies(),
+      useFetchProduct(),
+    ])
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -500,17 +563,22 @@ const useFetchData = async () => {
 }
 
 const useEditProduct = (item: {
-  id: number
-  organisation_id: number
-  contract_id: number
-  store_id: number
-  counterparty_id: number
-  invoice_id: number
-  date: string
+  product_id: number
+  product_name: string
+  incoming_price: string
+  margin: string
+  selling_price: string
+  count: number
+  is_showcase: boolean
 }) => {
-  editValue.value = item
+  useFetchProductSearch(item.product_name)
+  formData.value.product_id = item.product_id
+  formData.value.incoming_price = +item.incoming_price
+  formData.value.margin = +item.margin
+  formData.value.selling_price = +item.selling_price
+  formData.value.count = +item.count
+  formData.value.is_showcase = item.is_showcase
   isUpdate.value = true
-  dialog.value = true
 }
 
 const paginate = async () => {
@@ -526,6 +594,34 @@ const paginate = async () => {
     $clearLoading()
   }
 }
+
+const handleAddProduct = () => {
+  useFetchProductSearch()
+  formData.value.product_id = null
+  formObj.value?.resetForm()
+}
+
+const handlePriceLogic = $debounce((t: any) => {
+  const type = (t && t.length && t[0]) || ''
+  const incomingPrice = +$clearNonDigits(
+    formData.value.incoming_price?.toString() || '0'
+  )
+  const sellingPrice = +$clearNonDigits(
+    formData.value.selling_price?.toString() || '0'
+  )
+  const margin = +$clearNonDigits(formData.value.margin?.toString() || '0')
+  if (type === 'INCOMING_PRICE' || type === 'MARGIN') {
+    if (formData.value.incoming_price && formData.value.margin) {
+      formData.value.selling_price =
+        incomingPrice + (incomingPrice * margin) / 100
+    }
+  } else if (type === 'SELLING_PRICE') {
+    if (formData.value.incoming_price && formData.value.selling_price) {
+      formData.value.margin =
+        ((sellingPrice - incomingPrice) * 100) / incomingPrice
+    }
+  }
+})
 
 useFetchData()
 </script>

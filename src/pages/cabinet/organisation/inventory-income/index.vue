@@ -117,14 +117,17 @@
           {{ item.status_text }}
         </VStatus>
       </template>
+      <template #item.course="{ item }">
+        {{ $moneyFormat(item.course) }}
+      </template>
       <template #item.products_count_sum="{ item }">
-        {{ item.products_count_sum || 0 }}
+        {{ $moneyFormat(item.products_count_sum) || 0 }}
       </template>
       <template #item.incoming_price_sum="{ item }">
-        {{ item.incoming_price_sum || 0 }}
+        {{ $moneyFormat(item.incoming_price_sum) || 0 }}
       </template>
       <template #item.selling_price_sum="{ item }">
-        {{ item.selling_price_sum || 0 }}
+        {{ $moneyFormat(item.selling_price_sum) || 0 }}
       </template>
       <template #item.actions="{ item }">
         <div class="d-flex">

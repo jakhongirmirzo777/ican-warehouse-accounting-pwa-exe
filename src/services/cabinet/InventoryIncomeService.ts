@@ -98,10 +98,13 @@ export const fetchProduct = async (id: number, page: number) => {
   }
 }
 
-export const createProduct = async (formData: Record<string, any>) => {
+export const createProduct = async (
+  id: string | number,
+  formData: Record<string, any>
+) => {
   try {
     const data = await http.post(
-      `/organisation/documents/product/add/${formData.id}`,
+      `/organisation/documents/product/add/${id}`,
       formData
     )
     return Promise.resolve(data)
@@ -111,11 +114,12 @@ export const createProduct = async (formData: Record<string, any>) => {
 }
 
 export const editProduct = async (
-  formData: Record<string, string | number | null>
+  id: string | number,
+  formData: Record<string, any>
 ) => {
   try {
     const data = await http.post(
-      `/organisation/documents/product/update/${formData.id}`,
+      `/organisation/documents/product/update/${id}`,
       formData
     )
     return Promise.resolve(data)
@@ -196,11 +200,18 @@ export const fetchProductSearch = async (search: string) => {
   }
 }
 
-export const fetchFeatures = async (search: string) => {
+export const fetchCategories = async () => {
   try {
-    const data = await http.get('/organisation/feature', {
-      params: { search },
-    })
+    const data = await http.get('/organisation/category/parents')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchUnits = async () => {
+  try {
+    const data = await http.get('/admin/units/list')
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

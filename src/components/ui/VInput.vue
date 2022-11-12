@@ -68,7 +68,7 @@
           class="v-input__label"
           :class="{
             error: errors && errors[0],
-            has__value: !!modelValue,
+            has__value: !!modelValue || modelValue === 0,
             has__prepend:
               $slots?.prepend || type === 'password' || type === 'email',
           }"
