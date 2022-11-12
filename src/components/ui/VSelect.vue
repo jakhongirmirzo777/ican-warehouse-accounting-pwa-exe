@@ -24,24 +24,25 @@
         >{{ label }}</span
       >
       <el-select
+        v-bind="field"
         ref="elementSelect"
         style="height: 42px; width: 100%"
         size="large"
+        :placeholder="' '"
         :no-data-text="noDataText || t('noDataText')"
         :no-match-text="noMatchText || t('noMatchText')"
-        v-model="value"
         :multiple="multiple"
-        @change="changeValue"
-        @focus="isFocused = true"
-        @clear="cleared"
         :collapse-tags="collapseTags"
-        @blur="blur"
         :disabled="disabled"
         :filterable="autocomplete"
-        :placeholder="' '"
         :clearable="clearable"
-        v-bind="field"
         :loading="loading"
+        v-model="value"
+        @focus="isFocused = true"
+        @change="changeValue"
+        @clear="cleared"
+        @blur="blur"
+        @input="(e) => $emit('filter', e.target.value)"
       >
         <el-option
           v-for="(item, i) in items"
@@ -166,7 +167,7 @@ const props = defineProps({
 const elementSelect = ref<any>(null)
 const value = ref<any>(null)
 const isFocused = ref(false)
-const emits = defineEmits(['update:modelValue', 'add'])
+const emits = defineEmits(['update:modelValue', 'add', 'filter'])
 
 watch(
   () => props.modelValue,

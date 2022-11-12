@@ -98,9 +98,7 @@ export const fetchProduct = async (id: number, page: number) => {
   }
 }
 
-export const createProduct = async (
-  formData: Record<string, string | number | null>
-) => {
+export const createProduct = async (formData: Record<string, any>) => {
   try {
     const data = await http.post(
       `/organisation/documents/product/add/${formData.id}`,
@@ -187,13 +185,10 @@ export const fetchCurrencies = async () => {
   }
 }
 
-export const fetchProductSearch = async (
-  search: string,
-  category_id: number
-) => {
+export const fetchProductSearch = async (search: string) => {
   try {
     const data = await http.get('/organisation/product', {
-      params: { search, category_id },
+      params: { search },
     })
     return Promise.resolve(data)
   } catch (err) {
@@ -201,10 +196,10 @@ export const fetchProductSearch = async (
   }
 }
 
-export const fetchFeatures = async (search: string, category_ids: number[]) => {
+export const fetchFeatures = async (search: string) => {
   try {
     const data = await http.get('/organisation/feature', {
-      params: { search, category_ids },
+      params: { search },
     })
     return Promise.resolve(data)
   } catch (err) {
