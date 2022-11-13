@@ -81,6 +81,7 @@ import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
+import VCheckbox from '@/components/ui/VCheckbox.vue'
 
 import { ref, watch } from 'vue'
 import {
@@ -91,7 +92,6 @@ import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
 import { $clearNonDigits } from '@/utils/pure-functions'
-import VCheckbox from '@/components/ui/VCheckbox.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
