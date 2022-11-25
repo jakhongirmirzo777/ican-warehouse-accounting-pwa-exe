@@ -6,7 +6,7 @@
   >
     <Form @submit="submit" ref="formRef">
       <VRow>
-        <VCol cols="12" md="6">
+        <VCol v-if="!counterpartId" cols="12" md="6">
           <VSelect
             :label="$t('counterparties')"
             :items="counterpartyList"
@@ -35,7 +35,8 @@
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            :items="positionList"
+            localize
+            :items="POSITIONS_INDEXED"
             item-value="value"
             item-text="text"
             :label="$t('position')"
@@ -89,6 +90,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { CounterpartyInvoiceFormTypes } from '@/types/cabinet/CounterpartyInvoiceTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
+import { POSITIONS_INDEXED } from '@/utils/constants'
 
 interface ValueType<T> {
   value: T
@@ -106,9 +108,12 @@ const FORM_DATA = {
   amount: '',
 }
 
-defineProps({
-  positionList: Array,
+const props = defineProps({
   counterpartyList: Array,
+  counterpartId: {
+    type: [Number, String],
+    default: '',
+  },
 })
 
 const emits = defineEmits(['fetch-data'])
@@ -141,8 +146,10 @@ const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
-    form.value.amount = $clearNonDigits(form.value.amount)
-    await createEditInvoice(form.value)
+    const newForm = { ...form.value }
+    newForm.amount = $clearNonDigits(newForm.amount.toString())
+    if (props.counterpartId) newForm.counterparty_id = props.counterpartId
+    await createEditInvoice(newForm)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false

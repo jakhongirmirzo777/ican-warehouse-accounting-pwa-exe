@@ -106,10 +106,12 @@ const rawRoutes = [
         },
       },
       {
-        path: 'counterparty-organisations',
-        name: 'counterparty-organisations',
+        path: 'counterparty-counterparties',
+        name: 'counterparty-counterparties',
         component: () =>
-          import('@/pages/cabinet/organisation/counterparty-organisations.vue'),
+          import(
+            '@/pages/cabinet/organisation/counterparty-counterparties.vue'
+          ),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
@@ -180,6 +182,25 @@ const rawRoutes = [
         path: 'employees',
         name: 'employees',
         component: () => import('@/pages/cabinet/organisation/employees.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'inventory-income',
+        name: 'inventory-income',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-income/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'inventory-income-item/:id',
+        name: 'inventory-income-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-income/item.vue'),
+        props: true,
         meta: {
           roles: [ROLES.ORGANISATION],
         },

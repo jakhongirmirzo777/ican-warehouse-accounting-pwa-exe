@@ -1,9 +1,9 @@
 export interface CounterpartyInvoiceFormTypes {
-  id?: number
+  id?: number | string
   amount: string
   position: string
   date: string
-  counterparty_id: number
+  counterparty_id: number | string
   number: string
   _method?: string
 }

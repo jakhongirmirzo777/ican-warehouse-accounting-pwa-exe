@@ -245,19 +245,11 @@ const menus = computed(() => {
         icon: 'home-icon',
         path: 'dashboard-organisation',
       },
-      // {
-      //   name: 'Складской учет',
-      //   icon: 'document',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //     { name: 'Переоценка', path: 'dashboard' },
-      //     { name: 'Инвентаризация', path: 'credits' },
-      //     { name: 'Перемещение между складами', path: 'dashboard-admin' },
-      //     { name: 'Возврат поставщику', path: 'credits' },
-      //     { name: 'Списание', path: 'dashboard' },
-      //   ],
-      // },
+      {
+        name: t('inventoryControl'),
+        icon: 'document',
+        children: [{ name: t('incoming'), path: 'inventory-income' }],
+      },
       // {
       //   name: 'Учет основных средств',
       //   icon: 'graph',
@@ -304,7 +296,7 @@ const menus = computed(() => {
         name: t('counterparties'),
         icon: 'work',
         children: [
-          { name: t('organisations'), path: 'counterparty-organisations' },
+          { name: t('counterparties'), path: 'counterparty-counterparties' },
           { name: t('agreements'), path: 'contracts' },
           { name: t('invoices'), path: 'counterparty-invoice' },
           // { name: 'Ввод остатков', path: 'credits-admin' },

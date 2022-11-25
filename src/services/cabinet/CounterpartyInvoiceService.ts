@@ -6,7 +6,7 @@ import type {
   InvoiceListType,
 } from '@/types/cabinet/CounterpartyInvoiceTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
-import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
+import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 
 export const fetchInvoice = async (params: InvoicePageOptionsType) => {

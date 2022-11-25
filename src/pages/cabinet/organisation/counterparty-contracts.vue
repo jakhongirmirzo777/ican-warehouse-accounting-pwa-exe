@@ -59,7 +59,8 @@
           </VCol>
           <VCol md="3">
             <VSelect
-              :items="positionList"
+              localize
+              :items="POSITIONS_INDEXED"
               item-value="value"
               item-text="text"
               :label="$t('position')"
@@ -110,7 +111,6 @@
   </VCard>
   <CounterpartyContractsDialog
     ref="organizationDialogRef"
-    :positionList="positionList"
     :counterpartyList="counterpartyList"
     @fetchData="fetchData"
   />
@@ -147,12 +147,13 @@ import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { $isPageExists } from '@/utils/pure-functions'
+import { POSITIONS_INDEXED } from '@/utils/constants'
 import type {
   CounterpartyContractFormTypes,
   CounterpartyContractDataItemType,
   ContractPageOptionsType,
 } from '@/types/cabinet/CounterpertyContractsTypes'
-import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
+import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 
 interface ValueType<T> {
   value: T
@@ -200,11 +201,6 @@ const pageOptions = ref<{
   total: 0,
   perPage: 0,
 })
-
-const positionList = ref([
-  { value: 'buyer', text: t('buyer') },
-  { value: 'seller', text: t('seller') },
-])
 
 const breadcrumbs = [
   {

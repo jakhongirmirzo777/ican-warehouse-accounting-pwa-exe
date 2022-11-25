@@ -40,6 +40,12 @@
             v-model="formData.phone"
           />
         </VCol>
+        <VCol md="6">
+          <VCheckbox
+            v-model="formData.sale_available"
+            :label="t('saleAvailable')"
+          />
+        </VCol>
       </VRow>
       <VLine class="mb-24" />
       <div class="d-flex justify-end align-center">
@@ -75,6 +81,7 @@ import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
+import VCheckbox from '@/components/ui/VCheckbox.vue'
 
 import { ref, watch } from 'vue'
 import {
@@ -95,6 +102,7 @@ const FORM_DATA = {
   address: null,
   director: null,
   phone: null,
+  sale_available: false,
 }
 
 const props = defineProps({
@@ -130,6 +138,7 @@ watch(
       formData.value.address = props.data.address || null
       formData.value.director = props.data.director || null
       formData.value.phone = props.data.phone || null
+      formData.value.sale_available = props.data.sale_available || null
     }
   }
 )

@@ -108,10 +108,6 @@ const FORM_DATA = {
   symbol: '',
 }
 
-defineProps({
-  positionList: Array,
-})
-
 const emits = defineEmits(['fetch-data'])
 
 const dialog = ref(false)

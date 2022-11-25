@@ -14,7 +14,7 @@
             v-model="form.number"
           />
         </VCol>
-        <VCol cols="12" md="6">
+        <VCol v-if="!counterpartId" cols="12" md="6">
           <VSelect
             :label="$t('counterparties')"
             :items="counterpartyList"
@@ -43,7 +43,8 @@
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            :items="positionList"
+            localize
+            :items="POSITIONS_INDEXED"
             item-value="value"
             item-text="text"
             :label="$t('position')"
@@ -96,6 +97,7 @@ import VInput from '@/components/ui/VInput.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VArea from '@/components/ui/VArea.vue'
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -105,7 +107,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { CounterpartyContractFormTypes } from '@/types/cabinet/CounterpertyContractsTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
-import VArea from '@/components/ui/VArea.vue'
+import { POSITIONS_INDEXED } from '@/utils/constants'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
@@ -121,9 +123,12 @@ const FORM_DATA = {
   comment: '',
 }
 
-defineProps({
-  positionList: Array,
+const props = defineProps({
   counterpartyList: Array,
+  counterpartId: {
+    type: [Number, String],
+    default: '',
+  },
 })
 
 const emits = defineEmits(['fetch-data'])
@@ -154,8 +159,10 @@ const submit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
-    form.value.amount = $clearNonDigits(form.value.amount.toString())
-    await createEditContract(form.value)
+    const newForm = { ...form.value }
+    newForm.amount = $clearNonDigits(newForm.amount.toString())
+    if (props.counterpartId) newForm.counterparty_id = props.counterpartId
+    await createEditContract(newForm)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false

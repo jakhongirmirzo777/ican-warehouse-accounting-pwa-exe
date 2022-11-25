@@ -29,7 +29,8 @@
       </VCol>
       <VCol xl="2" md="3">
         <VSelect
-          :items="positionList"
+          localize
+          :items="POSITIONS_INDEXED"
           item-value="value"
           item-text="text"
           :label="$t('position')"
@@ -81,7 +82,6 @@
   </VCard>
   <CounterpartyInvoiceDialog
     ref="organizationDialogRef"
-    :positionList="positionList"
     :counterpartyList="counterpartyList"
     @fetchData="fetchData"
   />
@@ -122,7 +122,8 @@ import type {
   CounterpartyInvoiceFormTypes,
   InvoicePageOptionsType,
 } from '@/types/cabinet/CounterpartyInvoiceTypes'
-import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
+import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
+import { POSITIONS_INDEXED } from '@/utils/constants'
 
 interface ValueType<T> {
   value: T
@@ -172,11 +173,6 @@ const pageOptions = ref<{
   total: 0,
   perPage: 0,
 })
-
-const positionList = ref([
-  { value: 'buyer', text: t('buyer') },
-  { value: 'seller', text: t('seller') },
-])
 
 const typeList = ref([{ value: 'legal', text: t('legal') }])
 

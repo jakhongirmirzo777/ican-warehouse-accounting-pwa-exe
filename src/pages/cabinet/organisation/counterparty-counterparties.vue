@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('organisations') }}
+    {{ t('counterparties') }}
   </VText>
   <VCard>
     <VRow>
@@ -54,7 +54,7 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <CounterpartyOrganisationsDialog
+  <CounterpartyCounterpartiesDialog
     @fetchData="fetchData"
     ref="organizationDialogRef"
   />
@@ -70,24 +70,24 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VInput from '@/components/ui/VInput.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
-import CounterpartyOrganisationsDialog from '@/components/pages/counterparty-organisations/CounterpartyOrganisationsDialog.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VLine from '@/components/ui/VLine.vue'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchOrganisations,
   deleteOrganisations,
-} from '@/services/cabinet/CounterpartyOrganisationsService'
+} from '@/services/cabinet/CounterpartyCounterpartiesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
-import type { OrganizationsCounterpartyTypesFetch } from '@/types/cabinet/CounterpartyOrganisationsTypes'
+import type { OrganizationsCounterpartyTypesFetch } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 import { $isPageExists } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
@@ -106,7 +106,7 @@ const breadcrumbs = [
     name: t('counterparties'),
   },
   {
-    name: t('organisations'),
+    name: t('counterparties'),
   },
 ]
 

@@ -16,6 +16,24 @@ export const ROLES = {
   EMPLOYER: 'employer',
 }
 
+export const POSITIONS = {
+  BUYER: 'buyer',
+  SELLER: 'seller',
+}
+
+export const POSITIONS_INDEXED = Object.entries(POSITIONS).reduce(
+  (acc: Array<Record<string, string | number>>, [_, val]) => {
+    return [
+      ...acc,
+      {
+        text: val,
+        value: val,
+      },
+    ]
+  },
+  []
+)
+
 export const NOTIFICATION_TYPES: Record<
   string,
   'success' | 'error' | 'warning'
@@ -206,3 +224,18 @@ export const USER_STATUS_INDEXED = Object.entries(MKO_STATUSES).reduce(
   },
   []
 )
+
+export const INVENTORY_DOCUMENTS_COLORED = {
+  '1': {
+    theme: 'rgba(40, 180, 70, 0.24)',
+    color: '#28B446',
+  },
+  '10': {
+    theme: 'rgba(23,189,192,0.24)',
+    color: '#17BDC0',
+  },
+  '5': {
+    theme: 'rgba(255,32,144,0.24)',
+    color: '#FF2090',
+  },
+}
