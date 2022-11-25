@@ -28,6 +28,7 @@
             :items="organisationList"
             item-value="id"
             item-text="name"
+            autocomplete
             clearable
             @change="changeOrganisation"
             :label="$t('organisation')"
@@ -40,7 +41,10 @@
             :label="$t('counterparties')"
             :items="counterpartyList"
             item-text="company_name"
+            autocomplete
             item-value="id"
+            can-add
+            @add="$refs.organizationDialogRef.openDialog()"
             clearable
             vid="counterparty_id"
             @change="changeCounterparty"
@@ -52,7 +56,10 @@
             :label="$t('accountNumber')"
             :items="settlementList"
             item-text="account"
+            autocomplete
             clearable
+            can-add
+            @add="$refs.SettlementReferenceUnitsDialogRef.openDialog()"
             item-value="id"
             rules="required"
             vid="account_id"
@@ -64,6 +71,9 @@
             :label="$t('counterpartyAccount')"
             :items="counterpartyAccountList.accounts"
             item-text="account"
+            autocomplete
+            can-add
+            @add="$refs.CounterpartyCounterpartiesAccountDialogRef.openDialog()"
             item-value="id"
             clearable
             vid="counterparty_account_id"
@@ -76,6 +86,9 @@
             :items="incomeList"
             item-text="name"
             item-value="id"
+            can-add
+            @add="incomeDialog = true"
+            autocomplete
             clearable
             rules="required"
             vid="type_id"
@@ -99,7 +112,8 @@
             :label="$t('invoice')"
             :items="counterpartyAccountList.invoices"
             item-text="number"
-            clearable
+            clearabl
+            autocomplete
             item-value="id"
             vid="invoice_id"
             v-model="form.invoice_id"
@@ -124,6 +138,7 @@
                 :items="coursesList"
                 item-text="currency"
                 item-value="id"
+                autocomplete
                 rules="required"
                 vid="currency_id"
                 v-model="form.currency_id"
@@ -154,6 +169,26 @@
         </VBtn>
       </VCardAction>
     </Form>
+    <CounterpartyCounterpartiesDialog
+      @fetchData="$emit('get-counter-party-list')"
+      ref="organizationDialogRef"
+    />
+    <SettlementReferenceUnitsDialog
+      ref="SettlementReferenceUnitsDialogRef"
+      @fetchData="$emit('get-accounting-settlement-list')"
+      :organisationList="organisationList"
+    />
+    <ReferenceIncomeDialog
+      v-model="incomeDialog"
+      :data="editValue"
+      :is-update="false"
+      @submit="$emit('get-income-list')"
+    />
+    <CounterpartyCounterpartiesAccountDialog
+      ref="CounterpartyCounterpartiesAccountDialogRef"
+      @fetchData="$emit('get-counter-party-list')"
+      :counterparty-list="counterpartyList"
+    />
   </VModal>
 </template>
 
@@ -169,6 +204,8 @@ import VLine from '@/components/ui/VLine.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VArea from '@/components/ui/VArea.vue'
+import ReferenceIncomeDialog from '@/components/pages/reference-income-outcome/ReferenceIncomeDialog.vue'
+import SettlementReferenceUnitsDialog from '@/components/pages/financial-accounting-settlement/SettlementCreateUpdateModal.vue'
 
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
@@ -182,6 +219,8 @@ import { fetchCurrencies } from '@/services/cabinet/SettingsCurrenciesService'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { FinancialIncomeFormTypes } from '@/types/cabinet/FinancialIncomeTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
+import CounterpartyCounterpartiesAccountDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesAccountDialog.vue'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
@@ -221,6 +260,8 @@ const emits = defineEmits([
 
 const dialog = ref(false)
 
+const incomeDialog = ref(false)
+
 const form = ref<FinancialIncomeFormTypes>({ ...FORM_DATA })
 
 const loading = ref(false)
@@ -232,6 +273,11 @@ const counterpartyAccountList = ref<CounterpartyListWitContractType>({
 const coursesList = ref([])
 
 const formRef = ref()
+
+const editValue = ref<{ id: number | null; name: string | null }>({
+  id: null,
+  name: null,
+})
 
 watch(dialog, (val) => {
   if (!val) {
@@ -279,6 +325,9 @@ const changeCounterparty = (val: number) => {
   counterpartyAccountList.value = props.counterpartyList?.find(
     (p: CounterpartyListWitContractType) => p.id === val
   ) ?? { id: null }
+  form.value.account_id = null
+  form.value.counterparty_account_id = null
+  form.value.contract_id = null
 }
 
 const changeOrganisation = (e: number) => {

@@ -2,6 +2,7 @@ import http from '../../plugins/http'
 import type {
   OrganizationFetchData,
   OrganisationParams,
+  CounterpartyOrganisationAccountForm
 } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 import type { CounterpartyInvoiceFormTypes } from '@/types/cabinet/CounterpartyInvoiceTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
@@ -43,6 +44,20 @@ export const createEditOrganisations = async (
         form
       )
     } else data = await http.post(`${BASE_URL_ADDITIONAL}/counterparty`, form)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const createAccount = async (
+  form: CounterpartyOrganisationAccountForm
+) => {
+  try {
+    const data = await http.post(
+      `${BASE_URL_ADDITIONAL}/counterparty/account`,
+      form
+    )
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

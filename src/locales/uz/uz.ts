@@ -254,6 +254,7 @@ export default {
   typeIncome: 'Тип дохода',
   organisationAccount: 'Счет организации',
   counterpartyAccount: 'Счет контрагента',
+  addCounterpartyAccount: 'Добавление счет контрагента',
   purpose: 'Назначение',
   purposePayment: 'Назначение платежа',
   noData: 'Нет информации',

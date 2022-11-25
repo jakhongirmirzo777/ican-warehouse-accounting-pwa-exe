@@ -148,7 +148,7 @@
     :incomeList="incomeList"
     @fetch-data="fetchData"
     @get-counter-partyList="getCounterPartyList"
-    @get-cccounting-settlement-list="getAccountingSettlementList"
+    @get-accounting-settlement-list="getAccountingSettlementList"
     @get-income-list="getIncomeList"
     @get-organisations-list="getOrganisationsList"
   />
