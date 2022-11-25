@@ -214,9 +214,9 @@ const props = defineProps({
 
 const emits = defineEmits([
   'fetch-data',
-  'getCounterPartyList',
-  'getAccountingSettlementList',
-  'getIncomeList',
+  'get-counter-party-list',
+  'get-accounting-settlement-list',
+  'get-income-list',
 ])
 
 const dialog = ref(false)
@@ -282,9 +282,9 @@ const changeCounterparty = (val: number) => {
 }
 
 const changeOrganisation = (e: number) => {
-  emits('getCounterPartyList', e)
-  emits('getAccountingSettlementList', e)
-  emits('getIncomeList', e)
+  emits('get-counter-party-list', e)
+  emits('get-accounting-settlement-list', e)
+  emits('get-income-list', e)
   form.value.counterparty_id = null
 }
 

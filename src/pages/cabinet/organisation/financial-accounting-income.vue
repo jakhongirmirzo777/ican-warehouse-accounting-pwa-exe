@@ -146,11 +146,11 @@
     :organisationList="organisationList"
     :settlementList="settlementList"
     :incomeList="incomeList"
-    @fetchData="fetchData"
-    @getCounterPartyList="getCounterPartyList"
-    @getAccountingSettlementList="getAccountingSettlementList"
-    @getIncomeList="getIncomeList"
-    @getOrganisationsList="getOrganisationsList"
+    @fetch-data="fetchData"
+    @get-counter-partyList="getCounterPartyList"
+    @get-cccounting-settlement-list="getAccountingSettlementList"
+    @get-income-list="getIncomeList"
+    @get-organisations-list="getOrganisationsList"
   />
 </template>
 
