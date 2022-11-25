@@ -98,3 +98,24 @@ export const deleteOutcome = async (id: number) => {
     return Promise.reject(err)
   }
 }
+
+export const fetchIncomeOutcomeList = async (
+  type = 'income',
+  organisation_id: number | null
+) => {
+  try {
+    const params = {} as Record<string, any>
+    if (organisation_id) params.organisation_id = organisation_id
+    const data = await http.get(
+      `/organisation/reference/income/list?type=${type}`,
+      {
+        params: {
+          ...params,
+        },
+      }
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}

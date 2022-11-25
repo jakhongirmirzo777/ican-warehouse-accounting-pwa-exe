@@ -3,6 +3,7 @@ import type {
   CounterpartyInvoiceFormTypes,
   CounterPartyDataItemType,
   InvoicePageOptionsType,
+  InvoiceListType,
 } from '@/types/cabinet/CounterpartyInvoiceTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyOrganisationsTypes'
@@ -26,6 +27,17 @@ export const getCounterpartyList = async () => {
   try {
     const { data } = await http.get<{ data: Array<OrganizationListType> }>(
       `${BASE_URL_ADDITIONAL}/counterparty/list`
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchInvoiceList = async () => {
+  try {
+    const { data } = await http.get<{ data: Array<InvoiceListType> }>(
+      `${BASE_URL_ADDITIONAL}/invoice/list`
     )
     return Promise.resolve(data)
   } catch (err) {

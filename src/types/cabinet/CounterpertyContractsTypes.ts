@@ -30,3 +30,22 @@ export interface ContractPageOptionsType {
   search: string
   page?: number
 }
+
+export interface CounterpartyListWitContractType {
+  id: number | null
+  accounts?: Array<any>
+  contracts?: Array<{
+    number: string
+    start_date: string
+  }>
+  invoices?: Array<{
+    date: string
+    number: string
+  }>
+}
+
+export interface CounterpartyContractListType {
+  number: string
+  id: number
+  position: string
+}

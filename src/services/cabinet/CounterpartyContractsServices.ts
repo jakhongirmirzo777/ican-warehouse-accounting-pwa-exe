@@ -3,6 +3,8 @@ import type {
   CounterpartyContractDataItemType,
   CounterpartyContractFormTypes,
   ContractPageOptionsType,
+  CounterpartyListWitContractType,
+  CounterpartyContractListType,
 } from '@/types/cabinet/CounterpertyContractsTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
@@ -40,6 +42,34 @@ export const createEditContract = async (
       form._method = 'PUT'
       data = await http.post(`${BASE_URL_ADDITIONAL}/contract/${form.id}`, form)
     } else data = await http.post(`${BASE_URL_ADDITIONAL}/contract`, form)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchCounterpartyWithContract = async (
+  organisation_id: number | null
+) => {
+  try {
+    const { data } = await http.get<{
+      data: Array<CounterpartyListWitContractType>
+    }>(`${BASE_URL_ADDITIONAL}/counterparty/list-with-contract`, {
+      params: {
+        organisation_id: organisation_id ?? '',
+      },
+    })
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchCounterpartyContractList = async () => {
+  try {
+    const { data } = await http.get<{
+      data: Array<CounterpartyContractListType>
+    }>(`${BASE_URL_ADDITIONAL}/contract/list`)
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

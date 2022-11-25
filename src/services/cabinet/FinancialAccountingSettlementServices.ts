@@ -44,3 +44,19 @@ export const createEditSettlement = async (form: SettlementFormTypes) => {
     return Promise.reject(err)
   }
 }
+
+export const fetchAccountingSettlementList = async (id: number | null) => {
+  try {
+    const { data } = await http.get<{ data: Array<Record<string, any>> }>(
+      `${BASE_URL_ADDITIONAL}/accounts/list`,
+      {
+        params: {
+          organisation_id: id ?? '',
+        },
+      }
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}

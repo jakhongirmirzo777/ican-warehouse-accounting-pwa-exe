@@ -135,7 +135,7 @@ const startFilter = async () => {
 const clearFilter = async () => {
   try {
     $showLoading()
-    params.value.organisation_ids = ''
+    params.value.organisation_ids = []
     params.value.page = 1
     await fetchData()
     addQuery(params.value)

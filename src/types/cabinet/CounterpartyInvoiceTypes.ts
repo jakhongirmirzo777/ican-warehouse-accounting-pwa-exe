@@ -33,3 +33,13 @@ export interface InvoicePageOptionsType {
   search: string
   page: number
 }
+
+export interface InvoiceListType {
+  id: number
+  organisation_id: number
+  counterparty_id: number
+  number: string
+  type: string
+  position: string
+  amount: string
+}
