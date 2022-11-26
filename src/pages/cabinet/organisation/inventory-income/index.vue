@@ -131,10 +131,6 @@
       </template>
       <template #item.actions="{ item }">
         <div class="d-flex">
-          <VBtn class="mr-8" height="32px" outlined color="primary">
-            <VIcon color="#17BDC0" icon="reply" size="12" class="mr-8" />
-            <span>{{ t('process') }}</span>
-          </VBtn>
           <VTableActions
             :actions="{ view: true, edit: true, delete: true }"
             @view="

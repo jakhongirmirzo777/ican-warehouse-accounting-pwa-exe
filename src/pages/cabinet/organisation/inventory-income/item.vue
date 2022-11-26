@@ -51,6 +51,7 @@
         <VCol md="2">
           <VSelect
             vid="product_id"
+            focus
             can-add
             autocomplete
             rules="required"
@@ -73,7 +74,7 @@
         <VCol md="2">
           <VInput
             vid="incoming_price"
-            type="money"
+            type="number"
             rules="required"
             :label="t('arrivalPrice')"
             v-model="formData.incoming_price"
@@ -95,7 +96,7 @@
         <VCol md="2">
           <VInput
             vid="selling_price"
-            type="money"
+            type="number"
             rules="required"
             :label="t('sellingPrice')"
             v-model="formData.selling_price"
@@ -170,14 +171,18 @@
       <template #item.count="{ item }">
         {{ $moneyFormat(item.count) }}
       </template>
-      <template #item.incoming_price_sum="{ item }">
-        {{ $moneyFormat(item.incoming_price_sum) }}
-      </template>
-      <template #item.selling_price_sum="{ item }">
-        {{ $moneyFormat(item.selling_price_sum) }}
-      </template>
       <template #item.is_showcase="{ item }">
-        {{ item.is_showcase ? t('showcase') : '' }}
+        <VStatus
+          min-width="70px"
+          :theme="
+            item.is_showcase
+              ? 'rgba(40, 180, 70, 0.24)'
+              : 'rgba(23,189,192,0.24)'
+          "
+          :color="item.is_showcase ? '#28B446' : '#17BDC0'"
+        >
+          {{ item.is_showcase ? t('showcase') : t('warehouse') }}
+        </VStatus>
       </template>
       <template #item.actions="{ item }">
         <VTableActions
@@ -228,6 +233,7 @@ import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 import VExcel from '@/components/ui/VExcel.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
+import VStatus from '@/components/ui/VStatus.vue'
 import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 import CounterpartyInvoiceItemDocumentInfo from '@/components/pages/counterparty-invoice-item/CounterpartyInvoiceItemDocumentInfo.vue'
@@ -251,11 +257,7 @@ import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
-import {
-  $debounce,
-  $isPageExists,
-  $clearNonDigits,
-} from '@/utils/pure-functions'
+import { $debounce, $isPageExists } from '@/utils/pure-functions'
 import { useRoute } from 'vue-router'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 
@@ -281,6 +283,7 @@ const breadcrumbs = [
 ]
 
 const FORM_DATA = {
+  id: null,
   product_id: null,
   incoming_price: null,
   margin: null,
@@ -337,11 +340,11 @@ const headers = [
   },
   {
     text: t('arrivalPrice'),
-    value: 'incoming_price_sum',
+    value: 'incoming_price',
   },
   {
     text: t('sellingPrice'),
-    value: 'selling_price_sum',
+    value: 'selling_price',
   },
   {
     text: t('actions'),
@@ -364,6 +367,7 @@ const currencies = ref([])
 const products = ref([])
 const items = ref([])
 const formData = ref<{
+  id: null | number
   product_id: null | number
   incoming_price: null | string | number
   margin: null | string | number
@@ -528,14 +532,20 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     const newFormData = { ...formData.value }
-    newFormData.incoming_price = $clearNonDigits(
-      newFormData.incoming_price?.toString() || '0'
-    )
-    newFormData.selling_price = $clearNonDigits(
-      newFormData.selling_price?.toString() || '0'
-    )
-    if (isUpdate.value) await editProduct(id.value as any, newFormData)
-    else await createProduct(id.value as any, newFormData)
+    newFormData.incoming_price = Number(newFormData.incoming_price).toFixed(1)
+    newFormData.selling_price = Number(newFormData.selling_price).toFixed(1)
+    newFormData.margin = Number(newFormData.margin).toFixed(1)
+    if (isUpdate.value) {
+      await editProduct(newFormData.id as any, newFormData)
+      await $successMessage(t('notifications.editedSuccessfully'))
+    } else {
+      await createProduct(id.value as any, newFormData)
+      await $successMessage(t('notifications.addedSuccessfully'))
+    }
+    formData.value = { ...FORM_DATA }
+    formObj.value?.resetForm()
+    await useFetchProduct()
+    await useFetchIncome()
   } catch (err) {
     $setResponseErrors(err)
     $setFormErrors(err)
@@ -563,6 +573,7 @@ const useFetchData = async () => {
 }
 
 const useEditProduct = (item: {
+  id: number
   product_id: number
   product_name: string
   incoming_price: string
@@ -572,6 +583,7 @@ const useEditProduct = (item: {
   is_showcase: boolean
 }) => {
   useFetchProductSearch(item.product_name)
+  formData.value.id = item.id
   formData.value.product_id = item.product_id
   formData.value.incoming_price = +item.incoming_price
   formData.value.margin = +item.margin
@@ -603,13 +615,9 @@ const handleAddProduct = () => {
 
 const handlePriceLogic = $debounce((t: any) => {
   const type = (t && t.length && t[0]) || ''
-  const incomingPrice = +$clearNonDigits(
-    formData.value.incoming_price?.toString() || '0'
-  )
-  const sellingPrice = +$clearNonDigits(
-    formData.value.selling_price?.toString() || '0'
-  )
-  const margin = +$clearNonDigits(formData.value.margin?.toString() || '0')
+  const incomingPrice = +(formData.value.incoming_price || '0')
+  const sellingPrice = +(formData.value.selling_price || '0')
+  const margin = +(formData.value.margin || '0')
   if (type === 'INCOMING_PRICE' || type === 'MARGIN') {
     if (formData.value.incoming_price && formData.value.margin) {
       formData.value.selling_price =

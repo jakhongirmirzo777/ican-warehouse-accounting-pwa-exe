@@ -130,6 +130,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  focus: {
+    type: Boolean,
+    default: false,
+  },
   hideDetails: {
     type: Boolean,
     default: false,
@@ -178,6 +182,9 @@ watch(
 )
 
 onMounted(() => {
+  if (props.focus) {
+    elementSelect.value?.focus()
+  }
   if (props.modelValue || props.modelValue === 0) {
     value.value = props.modelValue
     if (Array.isArray(props.modelValue) && props.modelValue.length) {
