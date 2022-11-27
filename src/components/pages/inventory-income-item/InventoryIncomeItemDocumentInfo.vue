@@ -75,7 +75,7 @@
       </VCol>
       <VCol class="mb-18" md="2">
         <VText weight="400" class="mb-6" size="12" color="#868EAA" tag="h5">
-          {{ t('countOfNames') }}
+          {{ t('countOfProducts') }}
         </VText>
         <VText weight="500" size="14" color="#18275D" tag="h4">
           {{ document.products_count_sum || 0 }}

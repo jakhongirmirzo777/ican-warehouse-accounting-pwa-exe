@@ -206,6 +206,25 @@ const rawRoutes = [
         },
       },
       {
+        path: 'inventory-balance',
+        name: 'inventory-balance',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-balance/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'inventory-balance-item/:id',
+        name: 'inventory-balance-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-balance/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),

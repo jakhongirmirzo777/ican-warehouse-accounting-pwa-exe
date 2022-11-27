@@ -248,7 +248,10 @@ const menus = computed(() => {
       {
         name: t('inventoryControl'),
         icon: 'document',
-        children: [{ name: t('incoming'), path: 'inventory-income' }],
+        children: [
+          { name: t('incoming'), path: 'inventory-income' },
+          { name: t('enteringBalances'), path: 'inventory-balance' },
+        ],
       },
       // {
       //   name: 'Учет основных средств',
