@@ -262,6 +262,13 @@ export default {
   enteringBalances: 'Ввод остатков',
   reports: 'Отчеты',
   reportsByStock: 'Отчеты по складу',
+  remainderOfProducts: 'Остатки товаров',
+  incomeOfProducts: 'Приход товаров',
+  consolidatedReport: 'Сводный отчет',
+  registerOfIncomes: 'Реестр прихода',
+  onSale: 'В наличии',
+  editPutPlace: 'Изменение места размещения',
+  moveTo: 'Переместить на',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
