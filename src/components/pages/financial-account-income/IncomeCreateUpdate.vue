@@ -102,7 +102,6 @@
             item-text="number"
             item-value="id"
             clearable
-            rules="required"
             vid="contract_id"
             v-model="form.contract_id"
           />
