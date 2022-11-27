@@ -15,7 +15,13 @@
       >
         {{ t('createFinancialEntry') }}
       </VBtn>
-      <VBtn class="w-100 w-md-unset" outlined color="primary">
+      <VBtn
+        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
+        class="w-100 w-md-unset"
+        outlined
+        color="primary"
+        @click="useForwardToStore"
+      >
         <VIcon color="#17BDC0" icon="reply" size="12" class="mr-8" />
         <span>{{ t('process') }}</span>
       </VBtn>
@@ -252,12 +258,14 @@ import {
   createProduct,
   editProduct,
   deleteProduct,
+  forwardToStore,
 } from '@/services/cabinet/InventoryIncomeService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $debounce, $isPageExists } from '@/utils/pure-functions'
+import { INVENTORY_DOCUMENTS_STATUS_VALUE } from '@/utils/constants'
 import { useRoute } from 'vue-router'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 
@@ -450,6 +458,16 @@ const useFetchCurrencies = async () => {
   }
 }
 
+const useForwardToStore = async () => {
+  try {
+    if (!id.value) return
+    await forwardToStore(+id.value)
+    await useFetchIncome()
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
+
 const useFetchIncome = async () => {
   try {
     if (!id.value) return
@@ -537,6 +555,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     newFormData.margin = Number(newFormData.margin).toFixed(1)
     if (isUpdate.value) {
       await editProduct(newFormData.id as any, newFormData)
+      isUpdate.value = false
       await $successMessage(t('notifications.editedSuccessfully'))
     } else {
       await createProduct(id.value as any, newFormData)

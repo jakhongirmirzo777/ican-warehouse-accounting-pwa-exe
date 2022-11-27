@@ -43,5 +43,3 @@ export interface InvoiceListType {
   position: string
   amount: string
 }
-
-

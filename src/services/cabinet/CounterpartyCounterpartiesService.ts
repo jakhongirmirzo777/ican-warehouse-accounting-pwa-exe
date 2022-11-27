@@ -2,7 +2,7 @@ import http from '../../plugins/http'
 import type {
   OrganizationFetchData,
   OrganisationParams,
-  CounterpartyOrganisationAccountForm
+  CounterpartyOrganisationAccountForm,
 } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 import type { CounterpartyInvoiceFormTypes } from '@/types/cabinet/CounterpartyInvoiceTypes'
 const BASE_URL_ADDITIONAL = 'organisation'

@@ -225,6 +225,12 @@ export const USER_STATUS_INDEXED = Object.entries(MKO_STATUSES).reduce(
   []
 )
 
+export const INVENTORY_DOCUMENTS_STATUS_VALUE = {
+  NEW: 1,
+  CANCELED: 5,
+  HELD: 10,
+}
+
 export const INVENTORY_DOCUMENTS_COLORED = {
   '1': {
     theme: 'rgba(40, 180, 70, 0.24)',

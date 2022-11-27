@@ -98,8 +98,27 @@
         </VText>
       </VCol>
     </VRow>
-    <div class="d-flex justify-end">
-      <VBtn outlined color="primary" @click="$emit('edit')">
+    <div
+      class="d-flex flex-md-row flex-column align-md-end align-start justify-between"
+    >
+      <div class="mb-18 mb-md-0">
+        <VText weight="400" class="mb-6" size="12" color="#868EAA" tag="h5">
+          {{ t('status') }}
+        </VText>
+        <VStatus
+          min-width="80px"
+          :theme="INVENTORY_DOCUMENTS_COLORED[document.status]?.theme"
+          :color="INVENTORY_DOCUMENTS_COLORED[document.status]?.color"
+        >
+          {{ document.status_text }}
+        </VStatus>
+      </div>
+      <VBtn
+        class="w-100 w-md-unset"
+        outlined
+        color="primary"
+        @click="$emit('edit')"
+      >
         <VIcon size="16" icon="pencil-blue" class="mr-8" />
         <span>{{ t('edit') }}</span>
       </VBtn>
@@ -115,6 +134,8 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VText from '@/components/ui/VText.vue'
 import VRow from '@/components/ui/VRow.vue'
+import VStatus from '@/components/ui/VStatus.vue'
+import { INVENTORY_DOCUMENTS_COLORED } from '@/utils/constants'
 
 const { t } = useI18n()
 
