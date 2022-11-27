@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('incoming') }}
+    {{ t('enteringBalances') }}
   </VText>
   <VCard>
     <VFilterCollapse>
@@ -120,6 +120,15 @@
       <template #item.course="{ item }">
         {{ $moneyFormat(item.course) }}
       </template>
+      <template #item.counterparties_company_name="{ item }">
+        {{ item.counterparties_company_name || '-' }}
+      </template>
+      <template #item.contract_number="{ item }">
+        {{ item.contract_number || '-' }}
+      </template>
+      <template #item.invoice_number="{ item }">
+        {{ item.invoice_number || '-' }}
+      </template>
       <template #item.products_count_sum="{ item }">
         {{ $moneyFormat(item.products_count_sum) || 0 }}
       </template>
@@ -135,7 +144,7 @@
             :actions="{ view: true, edit: true, delete: true }"
             @view="
               $router.push(
-                $localePath(`/cabinet/inventory-income-item/${item.id}`)
+                $localePath(`/cabinet/inventory-balance-item/${item.id}`)
               )
             "
             @edit="editIncome(item.id)"
@@ -152,7 +161,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <InventoryIncomeDialog
+  <InventoryBalanceDialog
     v-model="dialog"
     :data="editValue"
     :organisations="organisations"
@@ -183,7 +192,7 @@ import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VExcel from '@/components/ui/VExcel.vue'
 import VStatus from '@/components/ui/VStatus.vue'
-import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
+import InventoryBalanceDialog from '@/components/pages/inventory-balance/InventoryBalanceDialog.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -195,7 +204,7 @@ import {
   fetchResources,
   deleteIncome,
   fetchCurrencies,
-} from '@/services/cabinet/InventoryIncomeService'
+} from '@/services/cabinet/InventoryBalanceService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -234,7 +243,7 @@ const breadcrumbs = [
     name: t('inventoryControl'),
   },
   {
-    name: t('incoming'),
+    name: t('enteringBalances'),
   },
 ]
 

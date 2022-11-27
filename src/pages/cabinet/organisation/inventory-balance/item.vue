@@ -28,7 +28,7 @@
       </VBtn>
     </div>
   </div>
-  <InventoryIncomeItemDocumentInfo
+  <InventoryBalanceItemDocumentInfo
     class="mb-15"
     :document="document"
     @edit="documentDialog = true"
@@ -206,7 +206,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <InventoryIncomeDialog
+  <InventoryBalanceDialog
     is-update
     v-model="documentDialog"
     :data="document"
@@ -241,9 +241,9 @@ import VBackBtn from '@/components/ui/VBackBtn.vue'
 import VExcel from '@/components/ui/VExcel.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
 import VStatus from '@/components/ui/VStatus.vue'
-import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
+import InventoryBalanceDialog from '@/components/pages/inventory-balance/InventoryBalanceDialog.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
-import InventoryIncomeItemDocumentInfo from '@/components/pages/inventory-income-item/InventoryIncomeItemDocumentInfo.vue'
+import InventoryBalanceItemDocumentInfo from '@/components/pages/inventory-balance-item/InventoryBalanceItemDocumentInfo.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -260,7 +260,7 @@ import {
   editProduct,
   deleteProduct,
   forwardToStore,
-} from '@/services/cabinet/InventoryIncomeService'
+} from '@/services/cabinet/InventoryBalanceService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -284,7 +284,7 @@ const breadcrumbs = [
     name: t('inventoryControl'),
   },
   {
-    name: t('incoming'),
+    name: t('enteringBalances'),
   },
   {
     name: t('document'),
