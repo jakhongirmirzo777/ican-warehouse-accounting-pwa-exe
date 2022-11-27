@@ -120,6 +120,15 @@
       <template #item.course="{ item }">
         {{ $moneyFormat(item.course) }}
       </template>
+      <template #item.counterparties_company_name="{ item }">
+        {{ item.counterparties_company_name || '-' }}
+      </template>
+      <template #item.contract_number="{ item }">
+        {{ item.contract_number || '-' }}
+      </template>
+      <template #item.invoice_number="{ item }">
+        {{ item.invoice_number || '-' }}
+      </template>
       <template #item.products_count_sum="{ item }">
         {{ $moneyFormat(item.products_count_sum) || 0 }}
       </template>
