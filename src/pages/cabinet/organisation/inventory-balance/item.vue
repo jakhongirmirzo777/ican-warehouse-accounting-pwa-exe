@@ -539,6 +539,7 @@ const handleDelete = async (id: number) => {
       })
     }
     await useFetchProduct()
+    await useFetchIncome()
     $successMessage(t('notifications.deletedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
