@@ -269,14 +269,20 @@ const menus = computed(() => {
           { name: t('warehouses'), path: 'warehouses' },
         ],
       },
-      // {
-      //   name: 'Финансовый учет',
-      //   icon: 'activity',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //   ],
-      // },
+      {
+        name: t('financialAccounting'),
+        icon: 'financial-accounting',
+        children: [
+          {
+            name: t('counterpartyAccounts'),
+            path: 'financial-account-settlement',
+          },
+          {
+            name: t('income'),
+            path: 'financial-account-income',
+          },
+        ],
+      },
       // {
       //   name: 'Касса',
       //   icon: 'terminal',
@@ -330,20 +336,6 @@ const menus = computed(() => {
           { name: t('bonusTariff'), path: 'settings-bonus-tariffs' },
           { name: t('balance'), path: 'settings-balance' },
           { name: t('systemCourse'), path: 'settings-currencies' },
-        ],
-      },
-      {
-        name: t('financialAccounting'),
-        icon: 'financial-accounting',
-        children: [
-          {
-            name: t('counterpartyAccounts'),
-            path: 'financial-account-settlement',
-          },
-          {
-            name: t('income'),
-            path: 'financial-account-income',
-          },
         ],
       },
     ]
