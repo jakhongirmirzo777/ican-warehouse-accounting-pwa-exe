@@ -311,14 +311,11 @@ const menus = computed(() => {
           // { name: 'Ввод остатков', path: 'credits-admin' },
         ],
       },
-      // {
-      //   name: 'Отчеты',
-      //   icon: 'list',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //   ],
-      // },
+      {
+        name: t('reports'),
+        icon: 'list',
+        children: [{ name: t('reportsByStock'), path: 'reports-stock' }],
+      },
       {
         name: t('workersControlling'),
         icon: 'users',

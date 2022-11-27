@@ -225,6 +225,15 @@ const rawRoutes = [
         },
       },
       {
+        path: 'reports-stock',
+        name: 'reports-stock',
+        component: () =>
+          import('@/pages/cabinet/organisation/reports-stock.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
