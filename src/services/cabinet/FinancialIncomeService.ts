@@ -7,7 +7,7 @@ import type {
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 
-export const fetchContract = async (params: FinancialIncomeOptionsType) => {
+export const fetchIncome = async (params: FinancialIncomeOptionsType) => {
   try {
     const { data } = await http.get<
       FetchDataTypes<FinancialIncomeDataItemType>
@@ -20,7 +20,7 @@ export const fetchContract = async (params: FinancialIncomeOptionsType) => {
   }
 }
 
-export const deleteContract = async (id: number) => {
+export const deleteIncome = async (id: number) => {
   try {
     const { data } = await http.delete<FinancialIncomeOptionsType>(
       `${BASE_URL_ADDITIONAL}/income/${id}`
@@ -31,7 +31,7 @@ export const deleteContract = async (id: number) => {
   }
 }
 
-export const createEditContract = async (form: FinancialIncomeFormTypes) => {
+export const createEditIncome = async (form: FinancialIncomeFormTypes) => {
   try {
     let data
     if (form.id) {

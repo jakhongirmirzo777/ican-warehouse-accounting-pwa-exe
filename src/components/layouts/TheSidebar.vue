@@ -341,6 +341,10 @@ const menus = computed(() => {
             name: t('income'),
             path: 'financial-account-income',
           },
+          {
+            name: t('outcome'),
+            path: 'financial-account-spending',
+          },
         ],
       },
     ]

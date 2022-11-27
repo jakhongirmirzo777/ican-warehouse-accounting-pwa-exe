@@ -340,6 +340,15 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION],
         },
       },
+      {
+        path: 'financial-account-spending',
+        name: 'financial-account-spending',
+        component: () =>
+          import('@/pages/cabinet/organisation/financial-account-spending.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
     ],
   },
   {

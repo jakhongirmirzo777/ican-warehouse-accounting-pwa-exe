@@ -18,6 +18,8 @@ export default {
   income: 'Доходы',
   addingPayment: 'Добавление платежа',
   outcome: 'Расходы',
+  addOutcome: 'Добавление расходы',
+  editOutcome: 'Редактирование расходы',
   add: 'Добавить',
   name: 'Наименование',
   name_uz: 'Наименование (UZ)',
