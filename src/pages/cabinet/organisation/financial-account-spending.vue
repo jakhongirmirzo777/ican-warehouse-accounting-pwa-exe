@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('income') }}
+    {{ t('outcome') }}
   </VText>
   <VCard>
     <VFilterCollapse>
@@ -126,7 +126,7 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <IncomeCreateUpdate
+  <SpendingCreateUpdate
     ref="organizationDialogRef"
     :counterpartyList="counterpartyList"
     :organisationList="organisationList"
@@ -157,14 +157,14 @@ import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
-import IncomeCreateUpdate from '@/components/pages/financial-account-income/IncomeCreateUpdate.vue'
+import SpendingCreateUpdate from '@/components/pages/financial-accounting-spending/SpendingCreateUpdate.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  fetchIncome,
-  deleteIncome,
-} from '@/services/cabinet/FinancialIncomeService'
+  fetchSpending,
+  deleteSpending,
+} from '@/services/cabinet/FinancialSpendingService'
 import {
   fetchCounterpartyContractList,
   fetchCounterpartyWithContract,
@@ -179,10 +179,10 @@ import { fetchIncomeOutcomeList } from '@/services/cabinet/ReferenceIncomeOutcom
 import { fetchInvoiceList } from '@/services/cabinet/CounterpartyInvoiceService'
 import { $isPageExists, $parseQueryArray } from '@/utils/pure-functions'
 import type {
-  FinancialIncomeFormTypes,
-  FinancialIncomeDataItemType,
-  FinancialIncomeOptionsType,
-} from '@/types/cabinet/FinancialIncomeTypes'
+  FinancialSpendingFormTypes,
+  FinancialSpendingDataItemType,
+  FinancialSpendingOptionsType,
+} from '@/types/cabinet/FinancialSpendingTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
 import type {
   CounterpartyContractListType,
@@ -195,7 +195,7 @@ const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
 
-const items = ref<FinancialIncomeDataItemType[]>([])
+const items = ref<FinancialSpendingDataItemType[]>([])
 const { t } = useI18n()
 const organizationDialogRef = ref()
 const queries = getQuery([
@@ -221,7 +221,7 @@ clearQuery([
   'organisation_ids',
 ])
 
-const params = ref<FinancialIncomeOptionsType>({
+const params = ref<FinancialSpendingOptionsType>({
   search: queries.search || '',
   page: +queries.page || 1,
   counterparty_id: +queries.counterparty_id || null,
@@ -247,7 +247,7 @@ const breadcrumbs = [
     name: t('financialAccounting'),
   },
   {
-    name: t('income'),
+    name: t('outcome'),
   },
 ]
 
@@ -300,11 +300,11 @@ const clearFilter = async () => {
 
 const fetchData = async () => {
   try {
-    const { data, links } = await fetchIncome(params.value)
+    const { data, links } = await fetchSpending(params.value)
     if (links && links.total) pageOptions.value.total = links.total
     if (links && links.last_page) pageOptions.value.lastPage = links.last_page
     if (links && links.per_page) pageOptions.value.perPage = links.per_page
-    items.value = data.map((p: FinancialIncomeDataItemType, i: number) => {
+    items.value = data.map((p: FinancialSpendingDataItemType, i: number) => {
       if (links) p.index = links.from + i
       return p
     })
@@ -362,7 +362,7 @@ const getIncomeList = async (organisation_id: number | null) => {
   try {
     const {
       data: { data },
-    } = await fetchIncomeOutcomeList('income', organisation_id)
+    } = await fetchIncomeOutcomeList('expense', organisation_id)
     incomeList.value = data
   } catch (err) {
     $setResponseErrors(err)
@@ -384,7 +384,7 @@ const useFetchData = async () => {
 const deleteItem = async (id: number) => {
   $showLoading()
   try {
-    await deleteIncome(id)
+    await deleteSpending(id)
     if (
       pageOptions.value &&
       $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
@@ -415,7 +415,7 @@ const changePage = async () => {
   }
 }
 
-const openDialog = (item: FinancialIncomeFormTypes) => {
+const openDialog = (item: FinancialSpendingFormTypes) => {
   organizationDialogRef.value.openDialog(item)
 }
 
