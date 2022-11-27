@@ -233,7 +233,7 @@ export default {
   noMatchText: 'Нет соответствующих данных',
   numberForDocument: '№ документа',
   currencyOfDocument: 'Валюта документа',
-  countOfNames: 'Кол-во наименований',
+  countOfProducts: 'Кол-во товаров',
   document: 'Документ',
   incomePrice: 'Сумма по цене прихода',
   sellPrice: 'Сумма по цене продажи',
@@ -259,6 +259,7 @@ export default {
   purpose: 'Назначение',
   purposePayment: 'Назначение платежа',
   noData: 'Нет информации',
+  enteringBalances: 'Ввод остатков',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

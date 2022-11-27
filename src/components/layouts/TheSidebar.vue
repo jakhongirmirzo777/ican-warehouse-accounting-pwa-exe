@@ -248,7 +248,10 @@ const menus = computed(() => {
       {
         name: t('inventoryControl'),
         icon: 'document',
-        children: [{ name: t('incoming'), path: 'inventory-income' }],
+        children: [
+          { name: t('incoming'), path: 'inventory-income' },
+          { name: t('enteringBalances'), path: 'inventory-balance' },
+        ],
       },
       // {
       //   name: 'Учет основных средств',
@@ -266,14 +269,20 @@ const menus = computed(() => {
           { name: t('warehouses'), path: 'warehouses' },
         ],
       },
-      // {
-      //   name: 'Финансовый учет',
-      //   icon: 'activity',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //   ],
-      // },
+      {
+        name: t('financialAccounting'),
+        icon: 'financial-accounting',
+        children: [
+          {
+            name: t('counterpartyAccounts'),
+            path: 'financial-account-settlement',
+          },
+          {
+            name: t('income'),
+            path: 'financial-account-income',
+          },
+        ],
+      },
       // {
       //   name: 'Касса',
       //   icon: 'terminal',
