@@ -132,7 +132,11 @@
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VTableActions
-            :actions="{ view: true, edit: true, delete: true }"
+            :actions="{
+              view: true,
+              edit: true,
+              delete: item.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD,
+            }"
             @view="
               $router.push(
                 $localePath(`/cabinet/inventory-income-item/${item.id}`)
@@ -201,7 +205,10 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
-import { INVENTORY_DOCUMENTS_COLORED } from '@/utils/constants'
+import {
+  INVENTORY_DOCUMENTS_COLORED,
+  INVENTORY_DOCUMENTS_STATUS_VALUE,
+} from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

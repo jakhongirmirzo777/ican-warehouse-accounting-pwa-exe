@@ -15,7 +15,6 @@
         <VCol md="8">
           <VSelect
             localize
-            disabled
             label=""
             :name="t('putPlace')"
             vid="move_to"

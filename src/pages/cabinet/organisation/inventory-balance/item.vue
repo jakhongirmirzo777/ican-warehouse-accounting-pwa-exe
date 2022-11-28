@@ -149,7 +149,13 @@
             v-model="productInfo.unit_name"
           />
         </VCol>
-        <VCol v-if="!isUpdate" md="2">
+        <VCol
+          v-if="
+            !isUpdate &&
+            document.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD
+          "
+          md="2"
+        >
           <VBtn type="submit" class="mb-20" color="primary" width="100%">
             <VIcon class="mr-10" size="20" icon="circle-plus" />
             {{ t('add') }}
@@ -193,6 +199,7 @@
       </template>
       <template #item.actions="{ item }">
         <VTableActions
+          v-if="document.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD"
           @edit="useEditProduct(item)"
           @delete="handleDelete(item.id)"
         />
