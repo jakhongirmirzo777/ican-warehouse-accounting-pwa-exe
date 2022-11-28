@@ -260,6 +260,8 @@ export default {
   purposePayment: 'Назначение платежа',
   noData: 'Нет информации',
   enteringBalances: 'Ввод остатков',
+  reports: 'Отчеты',
+  reportsByStock: 'Отчеты по складу',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
