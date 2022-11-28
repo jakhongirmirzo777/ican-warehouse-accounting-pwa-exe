@@ -262,6 +262,8 @@ export default {
   noData: 'Нет информации',
   enteringBalances: 'Ввод остатков',
   reportsByStock: 'Отчеты по складу',
+  directSale: 'Прямая продажа',
+  cashRegister: 'Касса',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

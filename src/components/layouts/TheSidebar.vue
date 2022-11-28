@@ -353,6 +353,16 @@ const menus = computed(() => {
           },
         ],
       },
+      {
+        name: t('cashRegister'),
+        icon: 'financial-accounting',
+        children: [
+          {
+            name: t('counterpartyAccounts'),
+            path: 'financial-account-settlement',
+          },
+        ],
+      },
     ]
   }
   return [
