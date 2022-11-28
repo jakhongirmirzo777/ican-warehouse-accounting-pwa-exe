@@ -37,6 +37,13 @@ export interface OrganizationListType {
   organisation_id: number
 }
 
+export interface OrganizationListType {
+  id: number
+  organisation_id: number
+  brand_name: string
+  company_name: string
+}
+
 export interface CounterpartyOrganisationAccountForm {
   counterparty_id: number | null
   account: number | null

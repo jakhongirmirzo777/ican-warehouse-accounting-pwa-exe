@@ -3,6 +3,7 @@ import type {
   OrganizationFetchData,
   OrganisationParams,
   CounterpartyOrganisationAccountForm,
+  OrganizationListType,
 } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 import type { CounterpartyInvoiceFormTypes } from '@/types/cabinet/CounterpartyInvoiceTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
@@ -14,6 +15,17 @@ export const fetchOrganisations = async (params: OrganisationParams) => {
       {
         params: { ...params },
       }
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchCounterpartyList = async () => {
+  try {
+    const { data } = await http.get<{ data: Array<OrganizationListType> }>(
+      `${BASE_URL_ADDITIONAL}/counterparty/list`
     )
     return Promise.resolve(data)
   } catch (err) {

@@ -260,6 +260,13 @@ export default {
   purposePayment: 'Назначение платежа',
   noData: 'Нет информации',
   enteringBalances: 'Ввод остатков',
+  mutualSettlements: 'Взаиморасчеты',
+  paymentHistory: 'История платежей',
+  finalBalance: 'Сальдо конечное',
+  inFavor: 'В пользу',
+  open: 'Открыть',
+  datePeriod: 'Период дат',
+  payer: 'Плательщик',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
