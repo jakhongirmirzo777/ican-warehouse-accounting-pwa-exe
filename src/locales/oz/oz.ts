@@ -261,6 +261,13 @@ export default {
   noData: 'Нет информации',
   enteringBalances: 'Ввод остатков',
   reportsByStock: 'Отчеты по складу',
+  mutualSettlements: 'Взаиморасчеты',
+  paymentHistory: 'История платежей',
+  finalBalance: 'Сальдо конечное',
+  inFavor: 'В пользу',
+  open: 'Открыть',
+  datePeriod: 'Период дат',
+  payer: 'Плательщик',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

@@ -351,6 +351,10 @@ const menus = computed(() => {
             name: t('outcome'),
             path: 'financial-account-spending',
           },
+          {
+            name: t('mutualSettlements'),
+            path: 'finance-accounting',
+          },
         ],
       },
     ]

@@ -377,6 +377,24 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION],
         },
       },
+      {
+        path: 'finance-accounting',
+        name: 'finance-accounting',
+        component: () =>
+          import('@/pages/cabinet/organisation/finance-accounting/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'finance-accounting-item',
+        name: 'finance-accounting-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/finance-accounting/item.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
     ],
   },
   {

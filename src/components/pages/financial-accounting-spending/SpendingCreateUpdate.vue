@@ -174,7 +174,7 @@
     />
     <SettlementReferenceUnitsDialog
       ref="SettlementReferenceUnitsDialogRef"
-      @fetchData="$emit('get-accounting-settlement-list')"
+      @fetch-data="$emit('get-accounting-settlement-list')"
       :organisationList="organisationList"
     />
     <ReferenceOutcomeDialog
@@ -185,7 +185,7 @@
     />
     <CounterpartyCounterpartiesAccountDialog
       ref="CounterpartyCounterpartiesAccountDialogRef"
-      @fetchData="$emit('get-counter-party-list')"
+      @fetch-data="$emit('get-counter-party-list')"
       :counterparty-list="counterpartyList"
     />
   </VModal>
