@@ -280,18 +280,6 @@ const headers = ref([
 ])
 </script>
 
-<style lang="scss">
-.finance-debit-amount {
-  padding: 17px 0;
-  position: relative;
-  &:after {
-    position: absolute;
-    content: '';
-    height: 1px;
-    background: #e3e3f1;
-    width: 100%;
-    top: 0;
-    left: 0;
-  }
-}
+<style scoped lang="scss">
+@import '@/assets/styles/pages/finance-accounting.scss';
 </style>
