@@ -268,7 +268,11 @@ export default {
   onSale: 'В наличии',
   editPutPlace: 'Изменение места размещения',
   moveTo: 'Переместить на',
+  typeExpenses: 'Тип расхода',
   accountCounterparty: 'Номер счета контрагента',
+  statusOfFinRecord: 'Статус фин. проводки',
+  heldFinRecord: 'Проведен',
+  unHeldFinRecord: 'Не проведен',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
