@@ -268,6 +268,7 @@ export default {
   onSale: 'В наличии',
   editPutPlace: 'Изменение места размещения',
   moveTo: 'Переместить на',
+  accountCounterparty: 'Номер счета контрагента',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

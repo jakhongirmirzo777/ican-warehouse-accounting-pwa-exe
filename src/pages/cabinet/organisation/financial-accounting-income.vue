@@ -128,10 +128,10 @@
   </VCard>
   <IncomeCreateUpdate
     ref="organizationDialogRef"
-    :counterpartyList="counterpartyList"
-    :organisationList="organisationList"
-    :settlementList="settlementList"
-    :incomeList="incomeList"
+    :counterparty-list="counterpartyList"
+    :organisation-list="organisationList"
+    :settlement-list="settlementList"
+    :income-list="incomeList"
     @fetch-data="fetchData"
     @get-counter-party-list="getCounterPartyList"
     @get-accounting-settlement-list="getAccountingSettlementList"

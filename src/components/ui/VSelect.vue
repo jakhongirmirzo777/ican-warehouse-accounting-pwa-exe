@@ -181,9 +181,13 @@ watch(
   }
 )
 
+const focus = () => {
+  elementSelect.value?.focus()
+}
+
 onMounted(() => {
   if (props.focus) {
-    elementSelect.value?.focus()
+    focus()
   }
   if (props.modelValue || props.modelValue === 0) {
     value.value = props.modelValue
@@ -237,6 +241,8 @@ const blur = () => {
     }
   }, 200)
 }
+
+defineExpose({ focus })
 </script>
 
 <style lang="scss">

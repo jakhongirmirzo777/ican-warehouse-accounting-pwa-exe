@@ -9,10 +9,14 @@
     </div>
     <div class="d-flex align-center wrap w-100 w-md-unset">
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status"
+        v-if="
+          INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status &&
+          !document.is_fin_post
+        "
         class="mr-md-8 mb-8 mb-md-0 w-100 w-md-unset"
         outlined
         color="primary"
+        @click="financialDialog = true"
       >
         {{ t('createFinancialEntry') }}
       </VBtn>
@@ -57,11 +61,15 @@
       <VRow>
         <VCol md="2">
           <VSelect
+            ref="productRef"
             vid="product_id"
             focus
             can-add
             autocomplete
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('typeNameOfProduct')"
             :items="products"
             v-model="formData.product_id"
@@ -73,7 +81,10 @@
           <VInput
             vid="count"
             type="number"
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('quantity')"
             v-model="formData.count"
           />
@@ -82,7 +93,10 @@
           <VInput
             vid="incoming_price"
             type="number"
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('arrivalPrice')"
             v-model="formData.incoming_price"
             @update:modelValue="handlePriceLogic('INCOMING_PRICE')"
@@ -92,7 +106,11 @@
           <VInput
             vid="margin"
             type="number"
-            rules="required|min_value:0"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+              min_value: 0,
+            }"
             :label="t('priceMargin')"
             v-model="formData.margin"
             @update:modelValue="handlePriceLogic('MARGIN')"
@@ -104,7 +122,10 @@
           <VInput
             vid="selling_price"
             type="number"
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('sellingPrice')"
             v-model="formData.selling_price"
             @update:modelValue="handlePriceLogic('SELLING_PRICE')"
@@ -228,6 +249,12 @@
     :units="units"
     @submit="handleAddProduct"
   />
+  <InventoryFinancialRegisterDialog
+    v-model="financialDialog"
+    :organisations="organisations"
+    :id="document.counterparty_id"
+    @submit="useFetchIncome"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -250,6 +277,7 @@ import VCheckbox from '@/components/ui/VCheckbox.vue'
 import VStatus from '@/components/ui/VStatus.vue'
 import InventoryIncomeDialog from '@/components/pages/inventory-income/InventoryIncomeDialog.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
+import InventoryFinancialRegisterDialog from '@/components/pages/inventory/InventoryFinancialRegisterDialog.vue'
 import InventoryIncomeItemDocumentInfo from '@/components/pages/inventory-income-item/InventoryIncomeItemDocumentInfo.vue'
 
 import { computed, ref } from 'vue'
@@ -371,9 +399,11 @@ const headers = [
 
 const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
+const productRef = ref()
 const productDialog = ref(false)
 const documentDialog = ref(false)
 const isUpdate = ref(false)
+const financialDialog = ref(false)
 const document = ref({})
 const organisations = ref([])
 const warehouses = ref([])
@@ -572,6 +602,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     }
     formData.value = { ...FORM_DATA }
     formObj.value?.resetForm()
+    await productRef.value.focus()
     await useFetchProduct()
     await useFetchIncome()
   } catch (err) {

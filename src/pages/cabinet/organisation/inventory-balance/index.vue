@@ -214,7 +214,10 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
-import { INVENTORY_DOCUMENTS_COLORED, INVENTORY_DOCUMENTS_STATUS_VALUE } from '@/utils/constants'
+import {
+  INVENTORY_DOCUMENTS_COLORED,
+  INVENTORY_DOCUMENTS_STATUS_VALUE,
+} from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
