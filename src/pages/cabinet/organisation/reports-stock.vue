@@ -19,14 +19,14 @@
   </VTabs>
   <VTabsItems v-model="tab">
     <VTabItem value="incomes">
-      <ReportsStockRemainders
+      <ReportsStockIncomes
         :warehouses="warehouses"
         :organisations="organisations"
         :categories="categories"
       />
     </VTabItem>
     <VTabItem value="remainders">
-      <ReportsStockIncomes />
+      <ReportsStockRemainders />
     </VTabItem>
     <VTabItem value="consolidations">
       <ReportsStockConsolidations />

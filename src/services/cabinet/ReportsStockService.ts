@@ -1,6 +1,6 @@
 import http from '@/plugins/http'
 
-export const fetchRemainders = async (params: {
+export const fetchIncomes = async (params: {
   page: number
   search: string | null
   store_id: number | null
