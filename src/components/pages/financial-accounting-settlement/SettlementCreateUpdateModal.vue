@@ -12,6 +12,7 @@
           <VSelect
             :label="$t('organisation')"
             rules="required"
+            autocomplete
             vid="organisation_id"
             :items="organisationList"
             item-value="id"

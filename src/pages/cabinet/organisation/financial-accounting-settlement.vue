@@ -15,6 +15,7 @@
         <VSelect
           :label="$t('organisation')"
           clearable
+          autocomplete
           :items="organisationList"
           item-value="id"
           multiple

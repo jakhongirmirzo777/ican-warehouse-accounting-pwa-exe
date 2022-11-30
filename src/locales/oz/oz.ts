@@ -266,7 +266,7 @@ export default {
   finalBalance: 'Сальдо конечное',
   inFavor: 'В пользу',
   open: 'Открыть',
-  datePeriod: 'Период дат',
+  datePeriod: 'Период даты',
   payer: 'Плательщик',
   remainderOfProducts: 'Остатки товаров',
   incomeOfProducts: 'Приход товаров',
