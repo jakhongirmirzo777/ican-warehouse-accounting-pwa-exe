@@ -1,9 +1,11 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-  <VBackBtn class="mb-10" />
-  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('paymentHistory') }}
-  </VText>
+  <div class="d-flex align-center mb-24">
+    <VBackBtn />
+    <VText class="ml-16" tag="h2" weight="600" color="#0E1E56">
+      {{ t('paymentHistory') }}
+    </VText>
+  </div>
   <VCard>
     <VRow>
       <VCol md="3">

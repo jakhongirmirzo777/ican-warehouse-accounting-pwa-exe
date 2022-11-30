@@ -281,6 +281,14 @@ const menus = computed(() => {
             name: t('income'),
             path: 'financial-account-income',
           },
+          {
+            name: t('outcome'),
+            path: 'financial-account-spending',
+          },
+          {
+            name: t('mutualSettlements'),
+            path: 'finance-accounting',
+          },
         ],
       },
       // {
@@ -333,28 +341,6 @@ const menus = computed(() => {
           { name: t('bonusTariff'), path: 'settings-bonus-tariffs' },
           { name: t('balance'), path: 'settings-balance' },
           { name: t('systemCourse'), path: 'settings-currencies' },
-        ],
-      },
-      {
-        name: t('financialAccounting'),
-        icon: 'financial-accounting',
-        children: [
-          {
-            name: t('counterpartyAccounts'),
-            path: 'financial-account-settlement',
-          },
-          {
-            name: t('income'),
-            path: 'financial-account-income',
-          },
-          {
-            name: t('outcome'),
-            path: 'financial-account-spending',
-          },
-          {
-            name: t('mutualSettlements'),
-            path: 'finance-accounting',
-          },
         ],
       },
     ]
