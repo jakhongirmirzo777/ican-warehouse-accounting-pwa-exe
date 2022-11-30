@@ -9,18 +9,6 @@
     </div>
     <div class="d-flex align-center wrap w-100 w-md-unset">
       <VBtn
-        v-if="
-          INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status &&
-          !document.is_fin_post
-        "
-        class="mr-md-8 mb-8 mb-md-0 w-100 w-md-unset"
-        outlined
-        color="primary"
-        @click="financialDialog = true"
-      >
-        {{ t('createFinancialEntry') }}
-      </VBtn>
-      <VBtn
         v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
         class="w-100 w-md-unset"
         outlined
@@ -255,12 +243,6 @@
     :units="units"
     @submit="handleAddProduct"
   />
-  <InventoryFinancialRegisterDialog
-    v-model="financialDialog"
-    :organisations="organisations"
-    :id="document.counterparty_id"
-    @submit="useFetchIncome"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -283,7 +265,6 @@ import VCheckbox from '@/components/ui/VCheckbox.vue'
 import VStatus from '@/components/ui/VStatus.vue'
 import InventoryBalanceDialog from '@/components/pages/inventory-balance/InventoryBalanceDialog.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
-import InventoryFinancialRegisterDialog from '@/components/pages/inventory/InventoryFinancialRegisterDialog.vue'
 import InventoryBalanceItemDocumentInfo from '@/components/pages/inventory-balance-item/InventoryBalanceItemDocumentInfo.vue'
 
 import { computed, ref } from 'vue'
@@ -409,7 +390,6 @@ const productRef = ref()
 const productDialog = ref(false)
 const documentDialog = ref(false)
 const isUpdate = ref(false)
-const financialDialog = ref(false)
 const document = ref({})
 const organisations = ref([])
 const warehouses = ref([])

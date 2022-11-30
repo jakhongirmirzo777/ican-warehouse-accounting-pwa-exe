@@ -111,23 +111,7 @@
           {{ document.status_text }}
         </VStatus>
       </VCol>
-      <VCol class="mb-18" md="2">
-        <VText weight="400" class="mb-6" size="12" color="#868EAA" tag="h5">
-          {{ t('statusOfFinRecord') }}
-        </VText>
-        <VStatus
-          min-width="80px"
-          :theme="
-            document.is_fin_post
-              ? 'rgba(40, 180, 70, 0.24)'
-              : 'rgba(230,168,18,0.24)'
-          "
-          :color="document.is_fin_post ? '#28B446' : '#E6A812'"
-        >
-          {{ document.is_fin_post ? t('heldFinRecord') : t('unHeldFinRecord') }}
-        </VStatus>
-      </VCol>
-      <VCol class="mb-18" md="8">
+      <VCol class="mb-18" md="10">
         <div class="h-100 w-100 d-flex align-end justify-end">
           <VBtn
             class="w-100 w-md-unset"
