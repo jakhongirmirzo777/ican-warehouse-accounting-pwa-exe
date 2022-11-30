@@ -258,7 +258,8 @@
   <InventoryFinancialRegisterDialog
     v-model="financialDialog"
     :organisations="organisations"
-    :id="document.counterparty_id"
+    :document-id="document.id"
+    :counterparty-id="document.counterparty_id"
     @submit="useFetchIncome"
   />
 </template>

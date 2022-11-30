@@ -277,6 +277,9 @@ export default {
   productsInShowcase: 'Товары в витрине',
   productsInStock: 'Товары в складе',
   incomeAvgPrice: 'Сумма по цене прихода (средняя)',
+  arrivalPriceInCurrency: 'Цена прихода в валютах',
+  sellingPriceInCurrency: 'Цена продажи в валютах',
+  from: 'От',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

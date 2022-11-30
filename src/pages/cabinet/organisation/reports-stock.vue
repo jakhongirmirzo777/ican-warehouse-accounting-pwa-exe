@@ -36,7 +36,7 @@
       <ReportsStockConsolidations />
     </VTabItem>
     <VTabItem value="registers">
-      <ReportsStockRegisters />
+      <ReportsStockRegisters :organisations="organisations" />
     </VTabItem>
   </VTabsItems>
 </template>

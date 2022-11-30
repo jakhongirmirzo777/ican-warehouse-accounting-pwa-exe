@@ -126,7 +126,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  id: {
+  documentId: {
+    type: [Number, String],
+    default: '',
+  },
+  counterpartyId: {
     type: [Number, String],
     default: '',
   },
@@ -153,8 +157,8 @@ watch(
     if (!val) {
       formData.value = { ...FORM_DATA }
       formObj.value?.resetForm()
-    } else if (val && props.id) {
-      formData.value.id = props.id
+    } else if (val && props.counterpartyId && props.documentId) {
+      formData.value.id = props.documentId
       useFetchData()
     }
   }
@@ -190,7 +194,7 @@ const useFetchCounterpartyAccountsList = async () => {
   try {
     const {
       data: { data },
-    } = await fetchCounterpartyAccountsList(formData.value.id)
+    } = await fetchCounterpartyAccountsList(+props.counterpartyId)
     counterpartyAccountsList.value = data
   } catch (err) {
     return Promise.reject(err)
