@@ -98,10 +98,8 @@
         </VText>
       </VCol>
     </VRow>
-    <div
-      class="d-flex flex-md-row flex-column align-md-end align-start justify-between"
-    >
-      <div class="mb-18 mb-md-0">
+    <VRow>
+      <VCol class="mb-18" md="2">
         <VText weight="400" class="mb-6" size="12" color="#868EAA" tag="h5">
           {{ t('status') }}
         </VText>
@@ -112,17 +110,21 @@
         >
           {{ document.status_text }}
         </VStatus>
-      </div>
-      <VBtn
-        class="w-100 w-md-unset"
-        outlined
-        color="primary"
-        @click="$emit('edit')"
-      >
-        <VIcon size="16" icon="pencil-blue" class="mr-8" />
-        <span>{{ t('edit') }}</span>
-      </VBtn>
-    </div>
+      </VCol>
+      <VCol class="mb-18" md="10">
+        <div class="h-100 w-100 d-flex align-end justify-end">
+          <VBtn
+            class="w-100 w-md-unset"
+            outlined
+            color="primary"
+            @click="$emit('edit')"
+          >
+            <VIcon size="16" icon="pencil-blue" class="mr-8" />
+            <span>{{ t('edit') }}</span>
+          </VBtn>
+        </div>
+      </VCol>
+    </VRow>
   </VCard>
 </template>
 

@@ -168,6 +168,49 @@ export const forwardToStore = async (id: number) => {
   }
 }
 
+export const moveToSpending = async (formData: Record<string, any>) => {
+  try {
+    const data = await http.post(
+      `organisation/spending/with-document/${formData.id}`,
+      formData
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchCounterpartyAccountsList = async (id: number) => {
+  try {
+    const data = await http.get(
+      `/organisation/counterparty/account-list?counterparty_id=${id}`
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchAccountList = async () => {
+  try {
+    const data = await http.get('/organisation/accounts/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const fetchExpensesList = async () => {
+  try {
+    const data = await http.get(
+      '/organisation/reference/expenses/list?type=expense'
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchResources = async (organisation_id: number) => {
   try {
     const data = await http.get(

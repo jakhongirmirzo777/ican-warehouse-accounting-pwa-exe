@@ -9,14 +9,6 @@
     </div>
     <div class="d-flex align-center wrap w-100 w-md-unset">
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status"
-        class="mr-md-8 mb-8 mb-md-0 w-100 w-md-unset"
-        outlined
-        color="primary"
-      >
-        {{ t('createFinancialEntry') }}
-      </VBtn>
-      <VBtn
         v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
         class="w-100 w-md-unset"
         outlined
@@ -57,11 +49,15 @@
       <VRow>
         <VCol md="2">
           <VSelect
+            ref="productRef"
             vid="product_id"
             focus
             can-add
             autocomplete
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('typeNameOfProduct')"
             :items="products"
             v-model="formData.product_id"
@@ -73,7 +69,10 @@
           <VInput
             vid="count"
             type="number"
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('quantity')"
             v-model="formData.count"
           />
@@ -82,7 +81,10 @@
           <VInput
             vid="incoming_price"
             type="number"
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('arrivalPrice')"
             v-model="formData.incoming_price"
             @update:modelValue="handlePriceLogic('INCOMING_PRICE')"
@@ -92,7 +94,11 @@
           <VInput
             vid="margin"
             type="number"
-            rules="required|min_value:0"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+              min_value: 0,
+            }"
             :label="t('priceMargin')"
             v-model="formData.margin"
             @update:modelValue="handlePriceLogic('MARGIN')"
@@ -104,7 +110,10 @@
           <VInput
             vid="selling_price"
             type="number"
-            rules="required"
+            :rules="{
+              required:
+                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+            }"
             :label="t('sellingPrice')"
             v-model="formData.selling_price"
             @update:modelValue="handlePriceLogic('SELLING_PRICE')"
@@ -149,7 +158,13 @@
             v-model="productInfo.unit_name"
           />
         </VCol>
-        <VCol v-if="!isUpdate" md="2">
+        <VCol
+          v-if="
+            !isUpdate &&
+            document.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD
+          "
+          md="2"
+        >
           <VBtn type="submit" class="mb-20" color="primary" width="100%">
             <VIcon class="mr-10" size="20" icon="circle-plus" />
             {{ t('add') }}
@@ -178,6 +193,12 @@
       <template #item.count="{ item }">
         {{ $moneyFormat(item.count) }}
       </template>
+      <template #item.incoming_price="{ item }">
+        {{ $moneyFormat(item.incoming_price) }}
+      </template>
+      <template #item.selling_price="{ item }">
+        {{ $moneyFormat(item.selling_price) }}
+      </template>
       <template #item.is_showcase="{ item }">
         <VStatus
           min-width="70px"
@@ -193,6 +214,7 @@
       </template>
       <template #item.actions="{ item }">
         <VTableActions
+          v-if="document.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD"
           @edit="useEditProduct(item)"
           @delete="handleDelete(item.id)"
         />
@@ -260,7 +282,7 @@ import {
   editProduct,
   deleteProduct,
   forwardToStore,
-} from '@/services/cabinet/InventoryBalanceService'
+} from '@/services/cabinet/InventoryIncomeService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -364,6 +386,7 @@ const headers = [
 
 const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
+const productRef = ref()
 const productDialog = ref(false)
 const documentDialog = ref(false)
 const isUpdate = ref(false)
@@ -565,6 +588,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     }
     formData.value = { ...FORM_DATA }
     formObj.value?.resetForm()
+    await productRef.value.focus()
     await useFetchProduct()
     await useFetchIncome()
   } catch (err) {

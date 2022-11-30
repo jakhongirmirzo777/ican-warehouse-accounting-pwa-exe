@@ -40,10 +40,10 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <SettlementReferenceUnitsDialog
+  <SettlementCreateUpdateModal
     ref="organizationDialogRef"
-    @fetchData="fetchData"
-    :organisationList="organisationList"
+    @fetch-data="fetchData"
+    :organisation-list="organisationList"
   />
 </template>
 
@@ -60,7 +60,7 @@ import VCol from '@/components/ui/VCol.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VLine from '@/components/ui/VLine.vue'
-import SettlementReferenceUnitsDialog from '@/components/pages/financial-accounting-settlement/SettlementCreateUpdateModal.vue'
+import SettlementCreateUpdateModal from '@/components/pages/financial-accounting-settlement/SettlementCreateUpdateModal.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 
 import { ref } from 'vue'

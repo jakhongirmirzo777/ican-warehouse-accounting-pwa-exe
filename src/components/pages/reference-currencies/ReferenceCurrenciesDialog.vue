@@ -48,7 +48,7 @@
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            :label="$t('counterparties')"
+            :label="$t('currencies')"
             :items="currencyKeyList"
             item-text="name"
             item-value="id"

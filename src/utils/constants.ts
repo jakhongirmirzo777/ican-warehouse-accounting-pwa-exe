@@ -245,3 +245,14 @@ export const INVENTORY_DOCUMENTS_COLORED = {
     color: '#FF2090',
   },
 }
+
+export const PUT_PLACE_INDEXED = [
+  {
+    text: 'showcase',
+    value: 1,
+  },
+  {
+    text: 'warehouse',
+    value: 0,
+  },
+]
