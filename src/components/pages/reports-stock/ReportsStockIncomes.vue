@@ -95,10 +95,16 @@
       </div>
     </template>
     <template #item.count="{ item }">
-      {{ item.count }} {{ item.unit_name }}
+      {{ $moneyFormat(item.count) }} {{ item.unit_name }}
     </template>
     <template #item.available_count="{ item }">
-      {{ item.available_count }} {{ item.unit_name }}
+      {{ $moneyFormat(item.available_count) }} {{ item.unit_name }}
+    </template>
+    <template #item.incoming_price_sum="{ item }">
+      {{ $moneyFormat(item.incoming_price_sum) }}
+    </template>
+    <template #item.selling_price_sum="{ item }">
+      {{ $moneyFormat(item.selling_price_sum) }}
     </template>
   </VTable>
   <VPagination
@@ -197,12 +203,16 @@ const headers = [
     value: 'organisation_name',
   },
   {
-    text: t('product'),
-    value: 'product_name',
+    text: t('warehouse'),
+    value: 'store_name',
   },
   {
     text: t('category'),
     value: 'category_name',
+  },
+  {
+    text: t('product'),
+    value: 'product_name',
   },
   {
     text: t('articule'),
@@ -219,10 +229,6 @@ const headers = [
   {
     text: t('onSale'),
     value: 'available_count',
-  },
-  {
-    text: t('warehouse'),
-    value: 'store_name',
   },
   {
     text: t('putPlace'),

@@ -121,13 +121,16 @@
         {{ $moneyFormat(item.course) }}
       </template>
       <template #item.products_count_sum="{ item }">
-        {{ $moneyFormat(item.products_count_sum) || 0 }}
+        {{ $moneyFormat(item.products_count_sum) }}
+      </template>
+      <template #item.count="{ item }">
+        {{ $moneyFormat(item.count) }}
       </template>
       <template #item.incoming_price_sum="{ item }">
-        {{ $moneyFormat(item.incoming_price_sum) || 0 }}
+        {{ $moneyFormat(item.incoming_price_sum) }}
       </template>
       <template #item.selling_price_sum="{ item }">
-        {{ $moneyFormat(item.selling_price_sum) || 0 }}
+        {{ $moneyFormat(item.selling_price_sum) }}
       </template>
       <template #item.actions="{ item }">
         <div class="d-flex">

@@ -205,6 +205,12 @@
       <template #item.count="{ item }">
         {{ $moneyFormat(item.count) }}
       </template>
+      <template #item.incoming_price="{ item }">
+        {{ $moneyFormat(item.incoming_price) }}
+      </template>
+      <template #item.selling_price="{ item }">
+        {{ $moneyFormat(item.selling_price) }}
+      </template>
       <template #item.is_showcase="{ item }">
         <VStatus
           min-width="70px"

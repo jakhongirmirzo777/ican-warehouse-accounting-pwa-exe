@@ -17,6 +17,7 @@ export const $phoneFormat = (payload: string) => {
 }
 
 export const $moneyFormat = (val: string | number) => {
+  if (+val === 0) return 0
   if (!val) return ''
   const num = val ? Math.round(+val * 100) / 100 : null
   return num ? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ') : 0

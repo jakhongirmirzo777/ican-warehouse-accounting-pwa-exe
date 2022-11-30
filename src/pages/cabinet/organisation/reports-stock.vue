@@ -26,7 +26,11 @@
       />
     </VTabItem>
     <VTabItem value="remainders">
-      <ReportsStockRemainders />
+      <ReportsStockRemainders
+        :warehouses="warehouses"
+        :organisations="organisations"
+        :categories="categories"
+      />
     </VTabItem>
     <VTabItem value="consolidations">
       <ReportsStockConsolidations />

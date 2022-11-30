@@ -36,6 +36,33 @@ export const fetchIncomes = async (params: {
   }
 }
 
+export const fetchRemainders = async (params: {
+  page: number
+  search: string | null
+  store_id: number | null
+  category_id: number | null
+  organisation_ids: number[] | null
+}) => {
+  try {
+    const { page, search, store_id, category_id, organisation_ids } = params
+    const data = await http.get(
+      '/organisation/reports/stock/available-products',
+      {
+        params: {
+          page,
+          search,
+          store_id,
+          category_id,
+          organisation_ids,
+        },
+      }
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchCategories = async () => {
   try {
     const data = await http.get('/organisation/category/parents')
