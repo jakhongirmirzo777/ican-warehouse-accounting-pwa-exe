@@ -286,6 +286,8 @@ export default {
   arrivalPriceInCurrency: 'Цена прихода в валютах',
   sellingPriceInCurrency: 'Цена продажи в валютах',
   from: 'От',
+  rePricing: 'Переоценка',
+  new: 'Новый',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

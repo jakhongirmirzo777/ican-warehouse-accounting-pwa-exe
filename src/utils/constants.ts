@@ -225,6 +225,24 @@ export const USER_STATUS_INDEXED = Object.entries(MKO_STATUSES).reduce(
   []
 )
 
+export const INVENTORY_DOCUMENTS_STATUS = {
+  '1': 'new',
+  '5': 'canceled',
+  '10': 'heldFinRecord',
+}
+
+export const INVENTORY_DOCUMENTS_STATUS_INDEXED = Object.entries(
+  INVENTORY_DOCUMENTS_STATUS
+).reduce((acc: Array<Record<string, string | number>>, [key, val]) => {
+  return [
+    ...acc,
+    {
+      text: val,
+      value: +key,
+    },
+  ]
+}, [])
+
 export const INVENTORY_DOCUMENTS_STATUS_VALUE = {
   NEW: 1,
   CANCELED: 5,
