@@ -21,6 +21,16 @@
         {{ t('createFinancialEntry') }}
       </VBtn>
       <VBtn
+        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status"
+        class="w-100 w-md-unset"
+        outlined
+        color="danger"
+        @click="useCancelFromStore"
+      >
+        <VIcon color="#F94E4F" icon="x-mark" size="12" class="mr-8" />
+        <span>{{ t('cancel') }}</span>
+      </VBtn>
+      <VBtn
         v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
         class="w-100 w-md-unset"
         outlined
@@ -68,7 +78,7 @@
             autocomplete
             :rules="{
               required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
             :label="t('typeNameOfProduct')"
             :items="products"
@@ -83,7 +93,7 @@
             type="number"
             :rules="{
               required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
             :label="t('quantity')"
             v-model="formData.count"
@@ -95,7 +105,7 @@
             type="number"
             :rules="{
               required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
             :label="t('arrivalPrice')"
             v-model="formData.incoming_price"
@@ -108,7 +118,7 @@
             type="number"
             :rules="{
               required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
               min_value: 0,
             }"
             :label="t('priceMargin')"
@@ -124,7 +134,7 @@
             type="number"
             :rules="{
               required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status,
+                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
             :label="t('sellingPrice')"
             v-model="formData.selling_price"
@@ -173,7 +183,7 @@
         <VCol
           v-if="
             !isUpdate &&
-            document.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD
+            INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status
           "
           md="2"
         >
@@ -226,7 +236,7 @@
       </template>
       <template #item.actions="{ item }">
         <VTableActions
-          v-if="document.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD"
+          v-if="document.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW"
           @edit="useEditProduct(item)"
           @delete="handleDelete(item.id)"
         />
@@ -302,6 +312,7 @@ import {
   editProduct,
   deleteProduct,
   forwardToStore,
+  cancelFromStore,
 } from '@/services/cabinet/InventoryIncomeService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -507,6 +518,16 @@ const useForwardToStore = async () => {
   try {
     if (!id.value) return
     await forwardToStore(+id.value)
+    await useFetchIncome()
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
+
+const useCancelFromStore = async () => {
+  try {
+    if (!id.value) return
+    await cancelFromStore(+id.value)
     await useFetchIncome()
   } catch (err) {
     $setResponseErrors(err)

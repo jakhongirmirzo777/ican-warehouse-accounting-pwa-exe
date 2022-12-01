@@ -173,6 +173,15 @@ export const forwardToStore = async (id: number) => {
   }
 }
 
+export const cancelFromStore = async (id: number) => {
+  try {
+    const data = await http.post(`/organisation/documents/cancel-forward/${id}`)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchResources = async (organisation_id: number) => {
   try {
     const data = await http.get(

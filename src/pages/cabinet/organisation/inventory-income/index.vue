@@ -138,7 +138,7 @@
             :actions="{
               view: true,
               edit: true,
-              delete: item.status !== INVENTORY_DOCUMENTS_STATUS_VALUE.HELD,
+              delete: item.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW,
             }"
             @view="
               $router.push(
