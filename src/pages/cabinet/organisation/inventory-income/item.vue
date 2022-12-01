@@ -59,7 +59,11 @@
         {{ t('addGoods') }}
       </VText>
       <div class="d-flex wrap w-100 w-md-unset">
-        <VBtn class="mb-16 mb-md-0 mr-md-16 w-100 w-md-unset" color="success">
+        <VBtn
+          v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
+          class="mb-16 mb-md-0 mr-md-16 w-100 w-md-unset"
+          color="success"
+        >
           <VIcon size="18" icon="file" color="#fff" class="mr-2" />
           {{ t('excelImport') }}
         </VBtn>
@@ -73,7 +77,7 @@
           <VSelect
             ref="productRef"
             vid="product_id"
-            focus
+            :focus="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
             can-add
             autocomplete
             :rules="{

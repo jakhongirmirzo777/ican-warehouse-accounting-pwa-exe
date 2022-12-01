@@ -111,7 +111,11 @@
           {{ document.status_text }}
         </VStatus>
       </VCol>
-      <VCol class="mb-18" md="10">
+      <VCol
+        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
+        class="mb-18"
+        md="10"
+      >
         <div class="h-100 w-100 d-flex align-end justify-end">
           <VBtn
             class="w-100 w-md-unset"
@@ -137,7 +141,10 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VText from '@/components/ui/VText.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VStatus from '@/components/ui/VStatus.vue'
-import { INVENTORY_DOCUMENTS_COLORED } from '@/utils/constants'
+import {
+  INVENTORY_DOCUMENTS_COLORED,
+  INVENTORY_DOCUMENTS_STATUS_VALUE,
+} from '@/utils/constants'
 
 const { t } = useI18n()
 

@@ -137,7 +137,7 @@
           <VTableActions
             :actions="{
               view: true,
-              edit: true,
+              edit: item.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW,
               delete: item.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW,
             }"
             @view="
