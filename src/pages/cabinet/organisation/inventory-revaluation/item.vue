@@ -242,6 +242,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 import VExcel from '@/components/ui/VExcel.vue'
+import VFilterActions from '@/components/ui/VFilterActions.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 
 import { computed, ref } from 'vue'
@@ -266,7 +267,6 @@ import { $debounce, $isPageExists } from '@/utils/pure-functions'
 import { INVENTORY_DOCUMENTS_STATUS_VALUE } from '@/utils/constants'
 import { useRoute } from 'vue-router'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import VFilterActions from '@/components/ui/VFilterActions.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
