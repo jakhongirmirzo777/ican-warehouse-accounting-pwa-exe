@@ -24,7 +24,6 @@
             v-model="options.store_id"
           />
         </VCol>
-
         <VCol md="3">
           <div class="d-flex flex-column flex-md-row">
             <VFilterActions

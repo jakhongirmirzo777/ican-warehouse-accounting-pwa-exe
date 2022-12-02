@@ -72,7 +72,7 @@
       </div>
     </Form>
   </VModal>
-  <WarehousesDialog v-model="warehousesDialog" @submit="$emit('re-fetch')" />
+  <WarehousesDialog v-model="warehousesDialog" @submit="useReFetchResources" />
 </template>
 
 <script lang="ts" setup>
@@ -89,7 +89,6 @@ import WarehousesDialog from '@/components/pages/warehouses/WarehousesDialog.vue
 import { ref, watch } from 'vue'
 import {
   createRevaluation,
-  editRevaluation,
   fetchDocumentNumber,
 } from '@/services/cabinet/InventoryRevaluationService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
@@ -153,6 +152,17 @@ watch(
   }
 )
 
+const useReFetchResources = async () => {
+  try {
+    formData.value.store_id = null
+    await formObj.value?.resetForm()
+    warehousesDialog.value = false
+    emits('re-fetch')
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
+
 const useFetchDocumentNumber = async () => {
   try {
     const {
@@ -170,7 +180,6 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     loading.value = true
     const newFormData = { ...formData.value }
     if (!props.isUpdate) await createRevaluation(newFormData)
-    else await editRevaluation(newFormData)
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {

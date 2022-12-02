@@ -2,7 +2,7 @@
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <div class="d-flex align-center justify-between wrap mb-24">
     <div class="d-flex align-center wrap mb-16 mb-md-0">
-      <VBackBtn class="mr-16 mb-16 mb-md-0" />
+      <VBackBtn class="mr-16" />
       <VText tag="h2" weight="600" color="#0E1E56">
         {{ t('goodsPosting') }}
       </VText>
@@ -502,6 +502,7 @@ const useForwardToStore = async () => {
     if (!id.value) return
     await forwardToStore(+id.value)
     await useFetchIncome()
+    $successMessage(t('notifications.forwardedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
   }
@@ -512,6 +513,7 @@ const useCancelFromStore = async () => {
     if (!id.value) return
     await cancelFromStore(+id.value)
     await useFetchIncome()
+    $successMessage(t('notifications.canceledSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
   }

@@ -12,12 +12,7 @@
               class="mb-20"
               color="primary"
               width="100%"
-              @click="
-                () => {
-                  isUpdate = false
-                  dialog = true
-                }
-              "
+              @click="dialog = true"
             >
               <VIcon class="mr-10" size="20" icon="circle-plus" />
               {{ t('add') }}
@@ -88,36 +83,30 @@
           {{ item.status_text }}
         </VStatus>
       </template>
-      <template #item.course="{ item }">
-        {{ $moneyFormat(item.course) }}
+      <template #item.product_count_total="{ item }">
+        {{ $moneyFormat(item.product_count_total) }}
       </template>
-      <template #item.products_count_sum="{ item }">
-        {{ $moneyFormat(item.products_count_sum) }}
+      <template #item.sell_amount_before="{ item }">
+        {{ $moneyFormat(item.sell_amount_before) }}
       </template>
-      <template #item.count="{ item }">
-        {{ $moneyFormat(item.count) }}
-      </template>
-      <template #item.incoming_price_sum="{ item }">
-        {{ $moneyFormat(item.incoming_price_sum) }}
-      </template>
-      <template #item.selling_price_sum="{ item }">
-        {{ $moneyFormat(item.selling_price_sum) }}
+      <template #item.sell_amount_after="{ item }">
+        {{ $moneyFormat(item.sell_amount_after) }}
       </template>
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VTableActions
             :actions="{
               view: true,
-              edit: item.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW,
-              delete: item.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW,
+              edit: false,
+              delete: false,
             }"
             @view="
               $router.push(
-                $localePath(`/cabinet/inventory-revaluation-item/${item.id}`)
+                $localePath(
+                  `/cabinet/inventory-revaluation-item/${item.id}?store_id=${item.store_id}&status=${item.status}`
+                )
               )
             "
-            @edit="editRevaluation(item.id)"
-            @delete="handleDelete(item.id)"
           />
         </div>
       </template>
@@ -132,10 +121,8 @@
   </VCard>
   <InventoryRevaluationDialog
     v-model="dialog"
-    :data="editValue"
     :organisations="organisations"
     :warehouses="warehouses"
-    :is-update="isUpdate"
     @submit="useFetchRevaluaitons"
     @re-fetch="useFetchWarehouses"
   />
@@ -166,26 +153,20 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchRevaluations,
-  fetchRevaluation,
-  deleteRevaluation,
   fetchOrganisations,
   fetchWarehouses,
 } from '@/services/cabinet/InventoryRevaluationService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
-import { useNotificationService } from '@/plugins/notification-service'
-import { $isPageExists } from '@/utils/pure-functions'
 import {
   INVENTORY_DOCUMENTS_COLORED,
-  INVENTORY_DOCUMENTS_STATUS_VALUE,
   INVENTORY_DOCUMENTS_STATUS_INDEXED,
 } from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { getQuery, addQuery, clearQuery } = useQuery()
-const { $successMessage } = useNotificationService()
 const { t } = useI18n()
 const queries = getQuery([
   'search',
@@ -235,6 +216,14 @@ const headers = [
     width: '30px',
   },
   {
+    text: t('organisation'),
+    value: 'organisation_name',
+  },
+  {
+    text: t('warehouse'),
+    value: 'store_name',
+  },
+  {
     text: t('document'),
     value: 'number',
   },
@@ -243,44 +232,16 @@ const headers = [
     value: 'date',
   },
   {
-    text: t('organisation'),
-    value: 'organisation_name',
-  },
-  {
-    text: t('counterpart'),
-    value: 'counterparties_company_name',
-  },
-  {
-    text: t('agreement'),
-    value: 'contract_number',
-  },
-  {
-    text: t('invoice'),
-    value: 'invoice_number',
-  },
-  {
-    text: t('warehouse'),
-    value: 'store_name',
-  },
-  {
-    text: t('currencyOfDocument'),
-    value: 'currency',
-  },
-  {
-    text: t('systemCourse'),
-    value: 'course',
-  },
-  {
     text: t('countOfProducts'),
-    value: 'products_count_sum',
+    value: 'product_count_total',
   },
   {
-    text: t('incomePrice'),
-    value: 'incoming_price_sum',
+    text: t('sellPriceOld'),
+    value: 'sell_amount_before',
   },
   {
     text: t('sellPrice'),
-    value: 'selling_price_sum',
+    value: 'sell_amount_after',
   },
   {
     text: t('status'),
@@ -294,21 +255,9 @@ const headers = [
 ]
 
 const dialog = ref(false)
-const isUpdate = ref(false)
 const items = ref([])
 const organisations = ref([])
 const warehouses = ref([])
-const editValue = ref<{
-  id: number | null
-  organisation_id: number | null
-  store_id: number | null
-  date: string | null
-}>({
-  id: null,
-  organisation_id: null,
-  store_id: null,
-  date: null,
-})
 
 const useFetchOrganisations = async () => {
   try {
@@ -350,30 +299,6 @@ const useFetchRevaluaitons = async () => {
   }
 }
 
-const handleDelete = async (id: number) => {
-  try {
-    $showLoading()
-    await deleteRevaluation(id)
-    if (
-      options.value &&
-      options.value.total &&
-      options.value.perPage &&
-      $isPageExists(options.value.total, options.value.perPage)
-    ) {
-      options.value.page = 1
-      addQuery({
-        page: 1,
-      })
-    }
-    await useFetchRevaluaitons()
-    $successMessage(t('notifications.deletedSuccessfully'))
-  } catch (err) {
-    $setResponseErrors(err)
-  } finally {
-    $clearLoading()
-  }
-}
-
 const useFetchData = async () => {
   try {
     $showLoading()
@@ -384,19 +309,6 @@ const useFetchData = async () => {
     $setResponseErrors(err)
   } finally {
     $clearLoading()
-  }
-}
-
-const editRevaluation = async (id: number) => {
-  try {
-    const {
-      data: { data },
-    } = await fetchRevaluation(id)
-    editValue.value = data
-    isUpdate.value = true
-    dialog.value = true
-  } catch (err) {
-    $setResponseErrors(err)
   }
 }
 

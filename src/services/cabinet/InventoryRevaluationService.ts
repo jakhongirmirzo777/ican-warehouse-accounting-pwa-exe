@@ -29,15 +29,6 @@ export const fetchRevaluations = async (params: {
   }
 }
 
-export const fetchRevaluation = async (id: number) => {
-  try {
-    const data = await http.get(`/organisation/revaluations/view/${id}`)
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
 export const createRevaluation = async (
   formData: Record<string, string | number | null>
 ) => {
@@ -49,37 +40,20 @@ export const createRevaluation = async (
   }
 }
 
-export const editRevaluation = async (
-  formData: Record<string, string | number | null>
-) => {
+export const fetchProduct = async (params: {
+  id: number
+  search: null | string
+  category_id: null | number
+}) => {
   try {
-    const data = await http.post(
-      `/organisation/revaluations/update/${formData.id}`,
-      {
-        ...formData,
-      }
-    )
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const deleteRevaluation = async (id: number) => {
-  try {
-    const data = await http.delete(`/organisation/revaluations/delete/${id}`)
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchProduct = async (id: number, page: number) => {
-  try {
+    const { search, category_id } = params
     const data = await http.get(
-      `/organisation/revaluations/product/list/${id}`,
+      `/organisation/revaluations/product/list/${params.id}`,
       {
-        params: { page },
+        params: {
+          search,
+          category_id,
+        },
       }
     )
     return Promise.resolve(data)
@@ -169,57 +143,9 @@ export const cancelFromStore = async (id: number) => {
   }
 }
 
-export const moveToSpending = async (formData: Record<string, any>) => {
+export const cancelRevaluation = async (id: number) => {
   try {
-    const data = await http.post(
-      `organisation/spending/with-document/${formData.id}`,
-      formData
-    )
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchCounterpartyAccountsList = async (id: number) => {
-  try {
-    const data = await http.get(
-      `/organisation/counterparty/account-list?counterparty_id=${id}`
-    )
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchAccountList = async () => {
-  try {
-    const data = await http.get('/organisation/accounts/list')
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchExpensesList = async () => {
-  try {
-    const data = await http.get(
-      '/organisation/reference/expenses/list?type=expense'
-    )
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchResources = async (organisation_id: number) => {
-  try {
-    const data = await http.get(
-      '/organisation/counterparty/list-with-contract',
-      {
-        params: { organisation_id },
-      }
-    )
+    const data = await http.post(`/organisation/revaluations/cancel/${id}`)
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)
@@ -235,19 +161,10 @@ export const fetchWarehouses = async () => {
   }
 }
 
-export const fetchCurrencies = async () => {
-  try {
-    const data = await http.get('organisation/settings/courses/currencies')
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchProductSearch = async (search: string) => {
+export const fetchProductSearch = async (store_id: number, search: string) => {
   try {
     const data = await http.get('/organisation/product', {
-      params: { search },
+      params: { search, store_id },
     })
     return Promise.resolve(data)
   } catch (err) {
