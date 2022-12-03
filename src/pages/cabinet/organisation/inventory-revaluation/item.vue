@@ -107,6 +107,8 @@
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
             :label="t('typeNameOfProduct')"
+            item-text="product_name"
+            item-value="id"
             :items="products"
             v-model="formData.product_id"
             @filter="useFetchProductSearchDebounce"
@@ -156,7 +158,11 @@
           />
         </VCol>
         <VCol md="2">
-          <VInput disabled :label="t('name')" v-model="productInfo.name" />
+          <VInput
+            disabled
+            :label="t('name')"
+            v-model="productInfo.product_name"
+          />
         </VCol>
         <VCol md="2">
           <VInput
@@ -413,7 +419,7 @@ const productInfo = computed(() => {
   if (data) return data
   return {
     id: null,
-    name: null,
+    product_name: null,
     barcode: null,
     category_name: null,
     articule: null,
@@ -580,7 +586,6 @@ const useFetchData = async () => {
     await Promise.all([
       useFetchCategories(),
       useFetchUnits(),
-      useFetchProductSearch(document.value.store_id),
       useFetchProduct(),
     ])
   } catch (err) {

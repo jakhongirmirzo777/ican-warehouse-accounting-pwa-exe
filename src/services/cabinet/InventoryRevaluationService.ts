@@ -163,7 +163,7 @@ export const fetchWarehouses = async () => {
 
 export const fetchProductSearch = async (store_id: number, search: string) => {
   try {
-    const data = await http.get('/organisation/product', {
+    const data = await http.get('/organisation/product/search', {
       params: { search, store_id },
     })
     return Promise.resolve(data)
