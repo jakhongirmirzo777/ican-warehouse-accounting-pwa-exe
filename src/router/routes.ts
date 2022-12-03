@@ -246,6 +246,25 @@ const rawRoutes = [
         },
       },
       {
+        path: 'inventory-inventory',
+        name: 'inventory-inventory',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-inventory/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'inventory-inventory-item/:id',
+        name: 'inventory-inventory-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-inventory/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'reports-stock',
         name: 'reports-stock',
         component: () =>
