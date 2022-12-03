@@ -168,14 +168,17 @@
     </Form>
     <VLine class="mb-16" />
     <VTable :headers="headers" :items="items">
-      <template #item.selling_price_sum_before="{ item }">
-        {{ $moneyFormat(item.selling_price_sum_before) }}
+      <template #item.count_showcase_after="{ item }">
+        {{ $moneyFormat(item.count_showcase_after) }}
       </template>
-      <template #item.selling_price_sum_after="{ item }">
-        {{ $moneyFormat(item.selling_price_sum_after) }}
+      <template #item.count_showcase_before="{ item }">
+        {{ $moneyFormat(item.count_showcase_before) }}
       </template>
-      <template #item.margin="{ item }">
-        {{ $moneyFormat(item.margin) }}
+      <template #item.count_stock_after="{ item }">
+        {{ $moneyFormat(item.count_stock_after) }}
+      </template>
+      <template #item.count_stock_before="{ item }">
+        {{ $moneyFormat(item.count_stock_before) }}
       </template>
       <template #item.actions="{ item }">
         <VTableActions
