@@ -31,68 +31,6 @@
     </div>
   </div>
   <VCard class="mb-24">
-    <VRow>
-      <VCol md="3">
-        <VInput clearable :label="t('search')" v-model="options.search" />
-      </VCol>
-      <VCol md="3">
-        <VSelect
-          clearable
-          autocomplete
-          :label="t('parentCategory')"
-          :items="categories"
-          v-model="options.parent_category_id"
-        />
-      </VCol>
-      <VCol md="3">
-        <VSelect
-          clearable
-          autocomplete
-          :disabled="!options.parent_category_id"
-          :label="t('category')"
-          :items="childCategories"
-          v-model="options.child_category_id"
-        />
-      </VCol>
-      <VCol md="3">
-        <div class="d-flex flex-column flex-md-row">
-          <VFilterActions
-            class="mr-md-8 mb-8 mb-md-0"
-            @filter="filterData"
-            @clear="clearFilter"
-          />
-          <VExcel url="" :filters="options" />
-        </div>
-      </VCol>
-    </VRow>
-    <VLine class="mb-16" />
-    <VTable :headers="headers" :items="items">
-      <template #item.selling_price_sum_before="{ item }">
-        {{ $moneyFormat(item.selling_price_sum_before) }}
-      </template>
-      <template #item.selling_price_sum_after="{ item }">
-        {{ $moneyFormat(item.selling_price_sum_after) }}
-      </template>
-      <template #item.margin="{ item }">
-        {{ $moneyFormat(item.margin) }}
-      </template>
-      <template #item.actions="{ item }">
-        <VTableActions
-          v-if="document.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW"
-          @edit="useEditProduct(item)"
-          @delete="handleDelete(item.id)"
-        />
-      </template>
-    </VTable>
-    <VPagination
-      v-if="options.lastPage > 1"
-      v-model="options.page"
-      :pages="options.lastPage"
-      :total="options.total"
-      @update:modelValue="paginate"
-    />
-  </VCard>
-  <VCard>
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
         <VCol md="3">
@@ -100,7 +38,6 @@
             ref="productRef"
             vid="product_id"
             :focus="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
-            can-add
             autocomplete
             :rules="{
               required:
@@ -112,7 +49,6 @@
             :items="products"
             v-model="formData.product_id"
             @filter="useFetchProductSearchDebounce"
-            @add="productDialog = true"
           />
         </VCol>
         <VCol md="3">
@@ -223,13 +159,33 @@
         </VCol>
       </VRow>
     </Form>
+    <VLine class="mb-16" />
+    <VTable :headers="headers" :items="items">
+      <template #item.selling_price_sum_before="{ item }">
+        {{ $moneyFormat(item.selling_price_sum_before) }}
+      </template>
+      <template #item.selling_price_sum_after="{ item }">
+        {{ $moneyFormat(item.selling_price_sum_after) }}
+      </template>
+      <template #item.margin="{ item }">
+        {{ $moneyFormat(item.margin) }}
+      </template>
+      <template #item.actions="{ item }">
+        <VTableActions
+          v-if="document.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW"
+          @edit="useEditProduct(item)"
+          @delete="handleDelete(item.id)"
+        />
+      </template>
+    </VTable>
+    <VPagination
+      v-if="options.lastPage > 1"
+      v-model="options.page"
+      :pages="options.lastPage"
+      :total="options.total"
+      @update:modelValue="paginate"
+    />
   </VCard>
-  <ReferenceProductNameDialog
-    v-model="productDialog"
-    :categories="categories"
-    :units="units"
-    @submit="handleAddProduct"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -247,17 +203,12 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
-import VExcel from '@/components/ui/VExcel.vue'
-import VFilterActions from '@/components/ui/VFilterActions.vue'
-import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchProductSearch,
   fetchProduct,
-  fetchCategories,
-  fetchUnits,
   createProduct,
   editProduct,
   deleteProduct,
@@ -280,22 +231,8 @@ const { getQuery, addQuery, clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const route = useRoute()
 const { t } = useI18n()
-const queries = getQuery([
-  'page',
-  'store_id',
-  'status',
-  'search',
-  'parent_category_id',
-  'child_category_id',
-])
-clearQuery([
-  'page',
-  'store_id',
-  'status',
-  'search',
-  'parent_category_id',
-  'child_category_id',
-])
+const queries = getQuery(['page', 'store_id', 'status'])
+clearQuery(['page', 'store_id', 'status'])
 
 const breadcrumbs = [
   {
@@ -322,17 +259,11 @@ const options = ref<{
   lastPage: null | number
   perPage: null | number
   total: null | number
-  search: null | string
-  parent_category_id: null | number
-  child_category_id: null | number
 }>({
   page: +queries.page || 1,
   lastPage: null,
   perPage: null,
   total: null,
-  search: queries.search || null,
-  parent_category_id: +queries.parent_category_id || null,
-  child_category_id: +queries.child_category_id || null,
 })
 
 const headers = [
@@ -387,10 +318,7 @@ const document = ref({
 const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
 const productRef = ref()
-const productDialog = ref(false)
 const isUpdate = ref(false)
-const categories = ref([])
-const units = ref([])
 const products = ref([])
 const items = ref([])
 const formData = ref<{
@@ -401,15 +329,6 @@ const formData = ref<{
   selling_price_sum_after: null | string | number
 }>({
   ...FORM_DATA,
-})
-
-const childCategories = computed(() => {
-  const list = categories.value.find(
-    (item: any) => item.id === options.value.parent_category_id
-  )
-  return list
-    ? (list as Record<string, Array<Record<string, string | number>>>).children
-    : []
 })
 
 const productInfo = computed(() => {
@@ -426,28 +345,6 @@ const productInfo = computed(() => {
     unit_name: null,
   }
 })
-
-const useFetchUnits = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchUnits()
-    units.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-const useFetchCategories = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchCategories()
-    categories.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
 
 const useForwardToStore = async () => {
   try {
@@ -493,6 +390,7 @@ const useFetchProductSearch = async (store_id: number, search = '') => {
 const useFetchProductSearchDebounce = $debounce(async (val: any) => {
   try {
     const value = (val && val.length && val[0]) || ''
+    if (!value) return
     const {
       data: { data },
     } = await fetchProductSearch(document.value.store_id, value)
@@ -507,13 +405,7 @@ const useFetchProduct = async () => {
     if (!id.value) return
     const {
       data: { data, links },
-    } = await fetchProduct({
-      id: +id.value,
-      search: options.value.search,
-      category_id: options.value.child_category_id
-        ? options.value.child_category_id
-        : options.value.parent_category_id,
-    })
+    } = await fetchProduct(+id.value, options.value.page)
     const { from, last_page, total, per_page } = links
     options.value.lastPage = last_page
     options.value.total = total
@@ -583,11 +475,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
 const useFetchData = async () => {
   try {
     $showLoading()
-    await Promise.all([
-      useFetchCategories(),
-      useFetchUnits(),
-      useFetchProduct(),
-    ])
+    await useFetchProduct()
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -612,45 +500,6 @@ const useEditProduct = (item: {
   isUpdate.value = true
 }
 
-const filterData = async () => {
-  try {
-    $showLoading()
-    options.value.page = 1
-    await useFetchProduct()
-    await addQuery({
-      page: options.value.page,
-      search: options.value.search,
-      parent_category_id: options.value.parent_category_id,
-      child_category_id: options.value.child_category_id,
-    })
-  } catch (err) {
-    $setResponseErrors(err)
-  } finally {
-    $clearLoading()
-  }
-}
-
-const clearFilter = async () => {
-  try {
-    $showLoading()
-    options.value.page = 1
-    options.value.search = null
-    options.value.parent_category_id = null
-    options.value.child_category_id = null
-    await useFetchProduct()
-    await addQuery({
-      page: options.value.page,
-      search: options.value.search,
-      parent_category_id: options.value.parent_category_id,
-      child_category_id: options.value.child_category_id,
-    })
-  } catch (err) {
-    $setResponseErrors(err)
-  } finally {
-    $clearLoading()
-  }
-}
-
 const paginate = async () => {
   try {
     $showLoading()
@@ -663,12 +512,6 @@ const paginate = async () => {
   } finally {
     $clearLoading()
   }
-}
-
-const handleAddProduct = () => {
-  useFetchProductSearch(document.value.store_id)
-  formData.value.product_id = null
-  formObj.value?.resetForm()
 }
 
 const handlePriceLogic = $debounce((t: any) => {

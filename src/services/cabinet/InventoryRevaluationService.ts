@@ -40,19 +40,13 @@ export const createRevaluation = async (
   }
 }
 
-export const fetchProduct = async (params: {
-  id: number
-  search: null | string
-  category_id: null | number
-}) => {
+export const fetchProduct = async (id: number, page: number) => {
   try {
-    const { search, category_id } = params
     const data = await http.get(
-      `/organisation/revaluations/product/list/${params.id}`,
+      `/organisation/revaluations/product/list/${id}`,
       {
         params: {
-          search,
-          category_id,
+          page,
         },
       }
     )
@@ -166,24 +160,6 @@ export const fetchProductSearch = async (store_id: number, search: string) => {
     const data = await http.get('/organisation/product/search', {
       params: { search, store_id },
     })
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchCategories = async () => {
-  try {
-    const data = await http.get('/organisation/category/parents')
-    return Promise.resolve(data)
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-export const fetchUnits = async () => {
-  try {
-    const data = await http.get('/admin/units/list')
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)
