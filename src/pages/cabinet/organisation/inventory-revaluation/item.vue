@@ -4,16 +4,16 @@
     <div class="d-flex align-center wrap mb-16 mb-md-0">
       <VBackBtn class="mr-16" />
       <VText tag="h2" weight="600" color="#0E1E56">
-        {{ t('goodsPosting') }}
+        {{ t('rePricing') }}
       </VText>
     </div>
     <div class="d-flex align-center wrap w-100 w-md-unset">
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status"
-        class="w-100 w-md-unset"
+        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.CANCELED !== document.status"
+        class="w-100 w-md-unset mr-md-10 mb-16 mb-md-0"
         outlined
         color="danger"
-        @click="useCancelFromStore"
+        @click="useCancel"
       >
         <VIcon color="#F94E4F" icon="x-mark" size="12" class="mr-8" />
         <span>{{ t('cancel') }}</span>
@@ -30,81 +30,41 @@
       </VBtn>
     </div>
   </div>
-  <InventoryBalanceItemDocumentInfo
-    class="mb-15"
-    :document="document"
-    @edit="documentDialog = true"
-  />
-  <VCard>
-    <div class="mb-16 d-flex justify-between align-center wrap">
-      <VText
-        class="mb-16 mb-md-0"
-        weight="600"
-        color="#0E1E56"
-        size="18"
-        tag="h3"
-      >
-        {{ t('addGoods') }}
-      </VText>
-      <div class="d-flex wrap w-100 w-md-unset">
-        <VBtn
-          v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
-          class="mb-16 mb-md-0 mr-md-16 w-100 w-md-unset"
-          color="success"
-        >
-          <VIcon size="18" icon="file" color="#fff" class="mr-2" />
-          {{ t('excelImport') }}
-        </VBtn>
-        <VExcel class="w-100 w-md-unset" url="" :filters="options" />
-      </div>
-    </div>
-    <VLine class="mb-16" />
+  <VCard class="mb-24">
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             ref="productRef"
             vid="product_id"
             :focus="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
-            can-add
             autocomplete
             :rules="{
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
             :label="t('typeNameOfProduct')"
+            item-text="product_name"
+            item-value="id"
             :items="products"
             v-model="formData.product_id"
             @filter="useFetchProductSearchDebounce"
-            @add="productDialog = true"
           />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VInput
-            vid="count"
+            vid="selling_price_sum_before"
             type="number"
             :rules="{
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
-            :label="t('quantity')"
-            v-model="formData.count"
+            :label="t('oldPrice')"
+            v-model="formData.selling_price_sum_before"
+            @update:modelValue="handlePriceLogic('SELLING_PRICE_BEFORE')"
           />
         </VCol>
-        <VCol md="2">
-          <VInput
-            vid="incoming_price"
-            type="number"
-            :rules="{
-              required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-            }"
-            :label="t('arrivalPrice')"
-            v-model="formData.incoming_price"
-            @update:modelValue="handlePriceLogic('INCOMING_PRICE')"
-          />
-        </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VInput
             vid="margin"
             type="number"
@@ -120,29 +80,25 @@
             <template #append> % </template>
           </VInput>
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VInput
-            vid="selling_price"
+            vid="selling_price_sum_after"
             type="number"
             :rules="{
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
-            :label="t('sellingPrice')"
-            v-model="formData.selling_price"
-            @update:modelValue="handlePriceLogic('SELLING_PRICE')"
+            :label="t('newPrice')"
+            v-model="formData.selling_price_sum_after"
+            @update:modelValue="handlePriceLogic('SELLING_PRICE_AFTER')"
           />
         </VCol>
         <VCol md="2">
-          <VCheckbox
-            class="my-8"
-            hide-details
-            v-model="formData.is_showcase"
-            :label="t('placeOnShowcase')"
+          <VInput
+            disabled
+            :label="t('name')"
+            v-model="productInfo.product_name"
           />
-        </VCol>
-        <VCol md="2">
-          <VInput disabled :label="t('name')" v-model="productInfo.name" />
         </VCol>
         <VCol md="2">
           <VInput
@@ -203,28 +159,16 @@
         </VCol>
       </VRow>
     </Form>
+    <VLine class="mb-16" />
     <VTable :headers="headers" :items="items">
-      <template #item.count="{ item }">
-        {{ $moneyFormat(item.count) }}
+      <template #item.selling_price_sum_before="{ item }">
+        {{ $moneyFormat(item.selling_price_sum_before) }}
       </template>
-      <template #item.incoming_price="{ item }">
-        {{ $moneyFormat(item.incoming_price) }}
+      <template #item.selling_price_sum_after="{ item }">
+        {{ $moneyFormat(item.selling_price_sum_after) }}
       </template>
-      <template #item.selling_price="{ item }">
-        {{ $moneyFormat(item.selling_price) }}
-      </template>
-      <template #item.is_showcase="{ item }">
-        <VStatus
-          min-width="70px"
-          :theme="
-            item.is_showcase
-              ? 'rgba(40, 180, 70, 0.24)'
-              : 'rgba(23,189,192,0.24)'
-          "
-          :color="item.is_showcase ? '#28B446' : '#17BDC0'"
-        >
-          {{ item.is_showcase ? t('showcase') : t('warehouse') }}
-        </VStatus>
+      <template #item.margin="{ item }">
+        {{ $moneyFormat(item.margin) }}
       </template>
       <template #item.actions="{ item }">
         <VTableActions
@@ -242,21 +186,6 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <InventoryBalanceDialog
-    is-update
-    v-model="documentDialog"
-    :data="document"
-    :organisations="organisations"
-    :warehouses="warehouses"
-    :currencies="currencies"
-    @submit="useFetchIncome"
-  />
-  <ReferenceProductNameDialog
-    v-model="productDialog"
-    :categories="categories"
-    :units="units"
-    @submit="handleAddProduct"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -274,30 +203,19 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
-import VExcel from '@/components/ui/VExcel.vue'
-import VCheckbox from '@/components/ui/VCheckbox.vue'
-import VStatus from '@/components/ui/VStatus.vue'
-import InventoryBalanceDialog from '@/components/pages/inventory-balance/InventoryBalanceDialog.vue'
-import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
-import InventoryBalanceItemDocumentInfo from '@/components/pages/inventory-balance-item/InventoryBalanceItemDocumentInfo.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  fetchIncome,
-  fetchOrganisations,
-  fetchWarehouses,
-  fetchCurrencies,
   fetchProductSearch,
   fetchProduct,
-  fetchCategories,
-  fetchUnits,
   createProduct,
   editProduct,
   deleteProduct,
   forwardToStore,
   cancelFromStore,
-} from '@/services/cabinet/InventoryBalanceService'
+  cancelRevaluation,
+} from '@/services/cabinet/InventoryRevaluationService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -313,15 +231,15 @@ const { getQuery, addQuery, clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const route = useRoute()
 const { t } = useI18n()
-const queries = getQuery(['page'])
-clearQuery(['page'])
+const queries = getQuery(['page', 'store_id', 'status'])
+clearQuery(['page', 'store_id', 'status'])
 
 const breadcrumbs = [
   {
     name: t('inventoryControl'),
   },
   {
-    name: t('enteringBalances'),
+    name: t('rePricing'),
   },
   {
     name: t('document'),
@@ -331,11 +249,9 @@ const breadcrumbs = [
 const FORM_DATA = {
   id: null,
   product_id: null,
-  incoming_price: null,
+  selling_price_sum_before: null,
+  selling_price_sum_after: null,
   margin: null,
-  selling_price: null,
-  count: null,
-  is_showcase: false,
 }
 
 const options = ref<{
@@ -373,24 +289,20 @@ const headers = [
     value: 'barcode',
   },
   {
-    text: t('quantity'),
-    value: 'count',
-  },
-  {
     text: t('units'),
     value: 'unit_name',
   },
   {
-    text: t('putPlace'),
-    value: 'is_showcase',
+    text: t('oldPrice'),
+    value: 'selling_price_sum_before',
   },
   {
-    text: t('arrivalPrice'),
-    value: 'incoming_price',
+    text: t('priceMargin'),
+    value: 'margin',
   },
   {
-    text: t('sellingPrice'),
-    value: 'selling_price',
+    text: t('newPrice'),
+    value: 'selling_price_sum_after',
   },
   {
     text: t('actions'),
@@ -399,28 +311,22 @@ const headers = [
   },
 ]
 
+const document = ref({
+  store_id: +queries.store_id,
+  status: +queries.status,
+})
 const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
 const productRef = ref()
-const productDialog = ref(false)
-const documentDialog = ref(false)
 const isUpdate = ref(false)
-const document = ref({})
-const organisations = ref([])
-const warehouses = ref([])
-const categories = ref([])
-const units = ref([])
-const currencies = ref([])
 const products = ref([])
 const items = ref([])
 const formData = ref<{
   id: null | number
   product_id: null | number
-  incoming_price: null | string | number
+  selling_price_sum_before: null | string | number
   margin: null | string | number
-  selling_price: null | string | number
-  count: null | string | number
-  is_showcase: boolean
+  selling_price_sum_after: null | string | number
 }>({
   ...FORM_DATA,
 })
@@ -432,9 +338,7 @@ const productInfo = computed(() => {
   if (data) return data
   return {
     id: null,
-    unit_id: null,
-    category_id: null,
-    name: null,
+    product_name: null,
     barcode: null,
     category_name: null,
     articule: null,
@@ -442,100 +346,41 @@ const productInfo = computed(() => {
   }
 })
 
-const useFetchCategories = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchCategories()
-    categories.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-const useFetchUnits = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchUnits()
-    units.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-const useFetchOrganisations = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchOrganisations()
-    organisations.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-const useFetchWarehouses = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchWarehouses()
-    warehouses.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-const useFetchCurrencies = async () => {
-  try {
-    const {
-      data: { data },
-    } = await fetchCurrencies()
-    currencies.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
 const useForwardToStore = async () => {
   try {
     if (!id.value) return
     await forwardToStore(+id.value)
-    await useFetchIncome()
+    document.value.status = INVENTORY_DOCUMENTS_STATUS_VALUE.HELD
+    await addQuery({
+      status: document.value.status,
+    })
     $successMessage(t('notifications.forwardedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
   }
 }
 
-const useCancelFromStore = async () => {
+const useCancel = async () => {
   try {
     if (!id.value) return
-    await cancelFromStore(+id.value)
-    await useFetchIncome()
+    if (document.value.status === INVENTORY_DOCUMENTS_STATUS_VALUE.HELD)
+      await cancelFromStore(+id.value)
+    else await cancelRevaluation(+id.value)
+    document.value.status = INVENTORY_DOCUMENTS_STATUS_VALUE.CANCELED
+    await addQuery({
+      status: document.value.status,
+    })
     $successMessage(t('notifications.canceledSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
   }
 }
 
-const useFetchIncome = async () => {
-  try {
-    if (!id.value) return
-    const {
-      data: { data },
-    } = await fetchIncome(+id.value)
-    document.value = data
-  } catch (err) {
-    return Promise.reject(err)
-  }
-}
-
-const useFetchProductSearch = async (search = '') => {
+const useFetchProductSearch = async (store_id: number, search = '') => {
   try {
     const {
       data: { data },
-    } = await fetchProductSearch(search)
+    } = await fetchProductSearch(store_id, search)
     products.value = data
   } catch (err) {
     return Promise.reject(err)
@@ -545,9 +390,10 @@ const useFetchProductSearch = async (search = '') => {
 const useFetchProductSearchDebounce = $debounce(async (val: any) => {
   try {
     const value = (val && val.length && val[0]) || ''
+    if (!value) return
     const {
       data: { data },
-    } = await fetchProductSearch(value)
+    } = await fetchProductSearch(document.value.store_id, value)
     products.value = data
   } catch (err) {
     $setResponseErrors(err)
@@ -589,7 +435,6 @@ const handleDelete = async (id: number) => {
       })
     }
     await useFetchProduct()
-    await useFetchIncome()
     $successMessage(t('notifications.deletedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
@@ -602,8 +447,12 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     const newFormData = { ...formData.value }
-    newFormData.incoming_price = Number(newFormData.incoming_price).toFixed(1)
-    newFormData.selling_price = Number(newFormData.selling_price).toFixed(1)
+    newFormData.selling_price_sum_before = Number(
+      newFormData.selling_price_sum_before
+    ).toFixed(1)
+    newFormData.selling_price_sum_after = Number(
+      newFormData.selling_price_sum_after
+    ).toFixed(1)
     newFormData.margin = Number(newFormData.margin).toFixed(1)
     if (isUpdate.value) {
       await editProduct(newFormData.id as any, newFormData)
@@ -617,7 +466,6 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     formObj.value?.resetForm()
     await productRef.value.focus()
     await useFetchProduct()
-    await useFetchIncome()
   } catch (err) {
     $setResponseErrors(err)
     $setFormErrors(err)
@@ -627,16 +475,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
 const useFetchData = async () => {
   try {
     $showLoading()
-    await Promise.all([
-      useFetchCategories(),
-      useFetchUnits(),
-      useFetchIncome(),
-      useFetchProductSearch(),
-      useFetchOrganisations(),
-      useFetchWarehouses(),
-      useFetchCurrencies(),
-      useFetchProduct(),
-    ])
+    await useFetchProduct()
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -648,20 +487,16 @@ const useEditProduct = (item: {
   id: number
   product_id: number
   product_name: string
-  incoming_price: string
+  selling_price_sum_before: string
+  selling_price_sum_after: string
   margin: string
-  selling_price: string
-  count: number
-  is_showcase: boolean
 }) => {
-  useFetchProductSearch(item.product_name)
+  useFetchProductSearch(document.value.store_id, item.product_name)
   formData.value.id = item.id
   formData.value.product_id = item.product_id
-  formData.value.incoming_price = +item.incoming_price
+  formData.value.selling_price_sum_before = +item.selling_price_sum_before
+  formData.value.selling_price_sum_after = +item.selling_price_sum_after
   formData.value.margin = +item.margin
-  formData.value.selling_price = +item.selling_price
-  formData.value.count = +item.count
-  formData.value.is_showcase = item.is_showcase
   isUpdate.value = true
 }
 
@@ -679,26 +514,26 @@ const paginate = async () => {
   }
 }
 
-const handleAddProduct = () => {
-  useFetchProductSearch()
-  formData.value.product_id = null
-  formObj.value?.resetForm()
-}
-
 const handlePriceLogic = $debounce((t: any) => {
   const type = (t && t.length && t[0]) || ''
-  const incomingPrice = +(formData.value.incoming_price || '0')
-  const sellingPrice = +(formData.value.selling_price || '0')
+  const sellingPriceSumBefore = +(
+    formData.value.selling_price_sum_before || '0'
+  )
+  const sellingPriceSumAfter = +(formData.value.selling_price_sum_after || '0')
   const margin = +(formData.value.margin || '0')
-  if (type === 'INCOMING_PRICE' || type === 'MARGIN') {
-    if (formData.value.incoming_price && formData.value.margin) {
-      formData.value.selling_price =
-        incomingPrice + (incomingPrice * margin) / 100
+  if (type === 'SELLING_PRICE_BEFORE' || type === 'MARGIN') {
+    if (formData.value.selling_price_sum_before && formData.value.margin) {
+      formData.value.selling_price_sum_after =
+        sellingPriceSumBefore + (sellingPriceSumBefore * margin) / 100
     }
-  } else if (type === 'SELLING_PRICE') {
-    if (formData.value.incoming_price && formData.value.selling_price) {
+  } else if (type === 'SELLING_PRICE_AFTER') {
+    if (
+      formData.value.selling_price_sum_before &&
+      formData.value.selling_price_sum_after
+    ) {
       formData.value.margin =
-        ((sellingPrice - incomingPrice) * 100) / incomingPrice
+        ((sellingPriceSumAfter - sellingPriceSumBefore) * 100) /
+        sellingPriceSumBefore
     }
   }
 })

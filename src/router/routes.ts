@@ -225,6 +225,27 @@ const rawRoutes = [
         },
       },
       {
+        path: 'inventory-revaluation',
+        name: 'inventory-revaluation',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/inventory-revaluation/index.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
+        path: 'inventory-revaluation-item/:id',
+        name: 'inventory-revaluation-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-revaluation/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
+      {
         path: 'reports-stock',
         name: 'reports-stock',
         component: () =>

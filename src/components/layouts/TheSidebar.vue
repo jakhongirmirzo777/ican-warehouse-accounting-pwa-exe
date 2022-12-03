@@ -251,6 +251,7 @@ const menus = computed(() => {
         children: [
           { name: t('incoming'), path: 'inventory-income' },
           { name: t('enteringBalances'), path: 'inventory-balance' },
+          { name: t('rePricing'), path: 'inventory-revaluation' },
         ],
       },
       // {
