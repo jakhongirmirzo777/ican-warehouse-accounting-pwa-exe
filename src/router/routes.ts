@@ -28,7 +28,7 @@ const rawRoutes = [
         name: 'dashboard-organisation',
         component: () => import('@/pages/cabinet/organisation/dashboard.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -37,7 +37,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/reference-income-outcome.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -48,7 +48,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/reference-category-products.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -59,7 +59,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/reference-characteristics/index.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -71,7 +71,7 @@ const rawRoutes = [
           ),
         props: true,
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -80,7 +80,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/reference-product-name.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -88,7 +88,7 @@ const rawRoutes = [
         name: 'departments',
         component: () => import('@/pages/cabinet/organisation/departments.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -96,7 +96,7 @@ const rawRoutes = [
         name: 'positions',
         component: () => import('@/pages/cabinet/organisation/positions.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -107,7 +107,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/counterparty-counterparties.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -116,7 +116,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/counterparty-invoices.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -125,7 +125,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/organisations.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -134,7 +134,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/counterparty-contracts.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -142,7 +142,7 @@ const rawRoutes = [
         name: 'warehouses',
         component: () => import('@/pages/cabinet/organisation/warehouses.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -151,7 +151,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/settings-bonus-tariffs.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -160,7 +160,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/settings-balance.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -169,7 +169,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/settings-currencies.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -177,7 +177,7 @@ const rawRoutes = [
         name: 'employees',
         component: () => import('@/pages/cabinet/organisation/employees.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -186,7 +186,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/inventory-income/index.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -196,7 +196,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/inventory-income/item.vue'),
         props: true,
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -205,7 +205,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/inventory-balance/index.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -215,7 +215,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/inventory-balance/item.vue'),
         props: true,
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -226,7 +226,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/inventory-revaluation/index.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -236,7 +236,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/inventory-revaluation/item.vue'),
         props: true,
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -245,7 +245,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/inventory-inventory/index.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -255,7 +255,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/inventory-inventory/item.vue'),
         props: true,
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -264,7 +264,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/reports-stock.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -345,7 +345,7 @@ const rawRoutes = [
         name: 'roles',
         component: () => import('@/pages/cabinet/organisation/roles/index.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -353,7 +353,7 @@ const rawRoutes = [
         name: 'roles-item',
         component: () => import('@/pages/cabinet/organisation/roles/item.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -388,7 +388,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/financial-accounting-accounts.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -399,7 +399,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/financial-accounting-income.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -410,7 +410,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/financial-accounting-spending.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -421,7 +421,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/financial-accounting-settlements/index.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -432,7 +432,7 @@ const rawRoutes = [
             '@/pages/cabinet/organisation/financial-accounting-settlements/item.vue'
           ),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
     ],

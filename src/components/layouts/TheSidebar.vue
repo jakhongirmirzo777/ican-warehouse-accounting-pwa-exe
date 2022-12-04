@@ -238,7 +238,10 @@ const menus = computed(() => {
       },
     ]
   }
-  if (user.value?.type === ROLES.ORGANISATION) {
+  if (
+    user.value?.type === ROLES.ORGANISATION ||
+    user.value?.type === ROLES.EMPLOYER
+  ) {
     return [
       {
         name: t('main'),
@@ -347,13 +350,7 @@ const menus = computed(() => {
       },
     ]
   }
-  return [
-    {
-      name: t('main'),
-      icon: 'home-icon',
-      path: 'dashboard-employer',
-    },
-  ]
+  return []
 })
 </script>
 

@@ -13,8 +13,8 @@ export const redirectToPages = {
     path: `${$localePath('/cabinet/dashboard-organisation')}`,
   },
   [ROLES.EMPLOYER]: {
-    name: 'dashboard-employer',
-    path: `${$localePath('/cabinet/dashboard-employer')}`,
+    name: 'dashboard-organisation',
+    path: `${$localePath('/cabinet/dashboard-organisation')}`,
   },
   login: {
     name: 'login',
