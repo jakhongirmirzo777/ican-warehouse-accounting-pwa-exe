@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('counterpartyAccounts') }}
+    {{ t('mutualSettlements') }}
   </VText>
   <VCard>
     <VRow>
@@ -47,7 +47,7 @@
           @click="
             $router.push(
               $localePath(
-                `/cabinet/finance-accounting-item?counterparty_id=${item.counterparty_id}&organisation_id=${item.organisation_id}`
+                `/cabinet/financial-accounting-settlements-item?counterparty_id=${item.counterparty_id}&organisation_id=${item.organisation_id}`
               )
             )
           "
@@ -64,13 +64,15 @@
         <TableText :item="item" show="balance" />
       </template>
       <template #item.inFavor="{ item }">
-        <div v-if="item?.sum?.debit || item?.sum?.credit" class="pb-17 pt-17">
-          {{ $t('UZS') }} -
-          {{
-            item.sum.is_profitable
-              ? item.organisation_name
-              : item.counterparty_name
-          }}
+        <div class="pb-17 pt-17">
+          <div v-if="item?.sum?.debit || item?.sum?.credit">
+            {{ $t('UZS') }} -
+            {{
+              item.sum.is_profitable
+                ? item.organisation_name
+                : item.counterparty_name
+            }}
+          </div>
         </div>
         <div
           v-if="item?.usd?.debit || item?.usd?.credit"

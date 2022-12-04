@@ -1,5 +1,12 @@
 <template>
-  <VBackBtn class="mb-10" />
+  <div class="d-flex justify-between align-center mb-24">
+    <div class="d-flex align-center">
+      <VBackBtn class="mr-16" />
+      <VText tag="h2" weight="600" color="#0E1E56">
+        {{ t('roles') }}
+      </VText>
+    </div>
+  </div>
   <VCard>
     <Form @submit="submit" ref="formRef">
       <VRow>

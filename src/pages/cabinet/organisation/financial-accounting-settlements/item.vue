@@ -94,6 +94,9 @@ const breadcrumbs = [
   {
     name: t('mutualSettlements'),
   },
+  {
+    name: t('paymentHistory'),
+  },
 ]
 
 const counterpartyList = ref<Array<OrganizationListType>>([])

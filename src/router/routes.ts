@@ -84,23 +84,17 @@ const rawRoutes = [
         },
       },
       {
-        path: 'workers-controlling-departments',
-        name: 'workers-controlling-departments',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/workers-controlling-departments.vue'
-          ),
+        path: 'departments',
+        name: 'departments',
+        component: () => import('@/pages/cabinet/organisation/departments.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
       },
       {
-        path: 'workers-controlling-positions',
-        name: 'workers-controlling-positions',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/workers-controlling-positions.vue'
-          ),
+        path: 'positions',
+        name: 'positions',
+        component: () => import('@/pages/cabinet/organisation/positions.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
@@ -117,26 +111,26 @@ const rawRoutes = [
         },
       },
       {
-        path: 'counterparty-invoice',
-        name: 'counterparty-invoice',
+        path: 'counterparty-invoices',
+        name: 'counterparty-invoices',
         component: () =>
-          import('@/pages/cabinet/organisation/counterparty-invoice.vue'),
+          import('@/pages/cabinet/organisation/counterparty-invoices.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
       },
       {
-        path: 'mko-organisations',
-        name: 'mko-organisations',
+        path: 'organisations',
+        name: 'organisations',
         component: () =>
-          import('@/pages/cabinet/organisation/mko-organisations.vue'),
+          import('@/pages/cabinet/organisation/organisations.vue'),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
       },
       {
-        path: 'contracts',
-        name: 'contracts',
+        path: 'counterparty-contracts',
+        name: 'counterparty-contracts',
         component: () =>
           import('@/pages/cabinet/organisation/counterparty-contracts.vue'),
         meta: {
@@ -306,9 +300,9 @@ const rawRoutes = [
         },
       },
       {
-        path: 'mko-organisations-admin',
-        name: 'mko-organisations-admin',
-        component: () => import('@/pages/cabinet/admin/mko-organisations.vue'),
+        path: 'organisations-admin',
+        name: 'organisations-admin',
+        component: () => import('@/pages/cabinet/admin/organisations.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
         },
@@ -387,19 +381,19 @@ const rawRoutes = [
         },
       },
       {
-        path: 'financial-account-settlement',
-        name: 'financial-account-settlement',
+        path: 'financial-accounting-accounts',
+        name: 'financial-accounting-accounts',
         component: () =>
           import(
-            '@/pages/cabinet/organisation/financial-accounting-settlement.vue'
+            '@/pages/cabinet/organisation/financial-accounting-accounts.vue'
           ),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
       },
       {
-        path: 'financial-account-income',
-        name: 'financial-account-income',
+        path: 'financial-accounting-income',
+        name: 'financial-accounting-income',
         component: () =>
           import(
             '@/pages/cabinet/organisation/financial-accounting-income.vue'
@@ -409,28 +403,34 @@ const rawRoutes = [
         },
       },
       {
-        path: 'financial-account-spending',
-        name: 'financial-account-spending',
+        path: 'financial-accounting-spending',
+        name: 'financial-accounting-spending',
         component: () =>
-          import('@/pages/cabinet/organisation/financial-account-spending.vue'),
+          import(
+            '@/pages/cabinet/organisation/financial-accounting-spending.vue'
+          ),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
       },
       {
-        path: 'finance-accounting',
-        name: 'finance-accounting',
+        path: 'financial-accounting-settlements',
+        name: 'financial-accounting-settlements',
         component: () =>
-          import('@/pages/cabinet/organisation/finance-accounting/index.vue'),
+          import(
+            '@/pages/cabinet/organisation/financial-accounting-settlements/index.vue'
+          ),
         meta: {
           roles: [ROLES.ORGANISATION],
         },
       },
       {
-        path: 'finance-accounting-item',
-        name: 'finance-accounting-item',
+        path: 'financial-accounting-settlements-item',
+        name: 'financial-accounting-settlements-item',
         component: () =>
-          import('@/pages/cabinet/organisation/finance-accounting/item.vue'),
+          import(
+            '@/pages/cabinet/organisation/financial-accounting-settlements/item.vue'
+          ),
         meta: {
           roles: [ROLES.ORGANISATION],
         },

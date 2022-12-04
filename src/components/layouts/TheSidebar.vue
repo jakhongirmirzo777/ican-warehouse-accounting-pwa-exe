@@ -210,7 +210,7 @@ const menus = computed(() => {
         name: t('clientControlling'),
         icon: 'clients',
         children: [
-          { name: t('organisations'), path: 'mko-organisations-admin' },
+          { name: t('organisations'), path: 'organisations-admin' },
           { name: t('payments'), path: 'payments' },
         ],
       },
@@ -267,7 +267,7 @@ const menus = computed(() => {
         name: t('organisationsAndWarehouse'),
         icon: 'home',
         children: [
-          { name: t('organisations'), path: 'mko-organisations' },
+          { name: t('organisations'), path: 'organisations' },
           { name: t('warehouses'), path: 'warehouses' },
         ],
       },
@@ -277,19 +277,19 @@ const menus = computed(() => {
         children: [
           {
             name: t('counterpartyAccounts'),
-            path: 'financial-account-settlement',
+            path: 'financial-accounting-accounts',
           },
           {
             name: t('income'),
-            path: 'financial-account-income',
+            path: 'financial-accounting-income',
           },
           {
             name: t('outcome'),
-            path: 'financial-account-spending',
+            path: 'financial-accounting-spending',
           },
           {
             name: t('mutualSettlements'),
-            path: 'finance-accounting',
+            path: 'financial-accounting-settlements',
           },
         ],
       },
@@ -316,8 +316,8 @@ const menus = computed(() => {
         icon: 'work',
         children: [
           { name: t('counterparties'), path: 'counterparty-counterparties' },
-          { name: t('agreements'), path: 'contracts' },
-          { name: t('invoices'), path: 'counterparty-invoice' },
+          { name: t('agreements'), path: 'counterparty-contracts' },
+          { name: t('invoices'), path: 'counterparty-invoices' },
           // { name: 'Ввод остатков', path: 'credits-admin' },
         ],
       },
@@ -331,8 +331,8 @@ const menus = computed(() => {
         icon: 'users',
         children: [
           { name: t('roles'), path: 'roles' },
-          { name: t('positions'), path: 'workers-controlling-positions' },
-          { name: t('departments'), path: 'workers-controlling-departments' },
+          { name: t('positions'), path: 'positions' },
+          { name: t('departments'), path: 'departments' },
           { name: t('employees'), path: 'employees' },
         ],
       },
