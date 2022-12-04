@@ -125,12 +125,12 @@ import VBtn from '@/components/ui/VBtn.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchFinanceAccounting } from '@/services/cabinet/FinanceAccountingService'
+import { fetchFinanceAccounting } from '@/services/cabinet/FinancialAccountingSettlementService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { $parseQueryArray } from '@/utils/pure-functions'
-import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
+import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import { fetchCounterpartyList } from '@/services/cabinet/CounterpartyCounterpartiesService'
 import type {
   FinanceAccountDataItemType,

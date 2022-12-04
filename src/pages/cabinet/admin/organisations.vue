@@ -144,7 +144,7 @@ import {
   changeStatus,
   fetchOrganisations,
   deleteOrganisation,
-} from '@/services/cabinet/MkoOrganisationsAdminService'
+} from '@/services/cabinet/OrganisationsAdminService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'

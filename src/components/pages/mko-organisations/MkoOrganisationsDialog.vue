@@ -235,7 +235,7 @@ import { ref, watch } from 'vue'
 import {
   editOrganisation,
   changePassword,
-} from '@/services/cabinet/MkoOrganisationsService'
+} from '@/services/cabinet/OrganisationsService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { PRICE_CHANGE_INDEXED } from '@/utils/constants'
 import { $getValuesByKey, $clearNonDigits } from '@/utils/pure-functions'

@@ -72,7 +72,7 @@ import MkoOrganisationsDialog from '@/components/pages/mko-organisations/MkoOrga
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchOrganisations } from '@/services/cabinet/MkoOrganisationsService'
+import { fetchOrganisations } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'

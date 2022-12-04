@@ -55,7 +55,7 @@ import { ref, watch } from 'vue'
 import {
   createDepartment,
   editDepartment,
-} from '@/services/cabinet/WorkersControllingDepartmentsService'
+} from '@/services/cabinet/DepartmentsService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'

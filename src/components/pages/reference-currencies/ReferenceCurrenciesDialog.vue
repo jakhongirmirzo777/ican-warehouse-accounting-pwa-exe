@@ -88,7 +88,7 @@ import { useI18n } from 'vue-i18n'
 import {
   createEditCourses,
   getCurrencyList,
-} from '@/services/cabinet/ReferenceCurrenciesServise'
+} from '@/services/cabinet/ReferenceCurrenciesService'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'

@@ -324,7 +324,7 @@ import {
   fetchOrganisation,
   editOrganisation,
   changePassword,
-} from '@/services/cabinet/MkoOrganisationsAdminService'
+} from '@/services/cabinet/OrganisationsAdminService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { PRICE_CHANGE_INDEXED } from '@/utils/constants'
 import { $getValuesByKey, $clearNonDigits } from '@/utils/pure-functions'

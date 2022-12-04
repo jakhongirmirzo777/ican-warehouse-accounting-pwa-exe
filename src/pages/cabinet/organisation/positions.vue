@@ -74,7 +74,7 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchPositions,
   deletePosition,
-} from '@/services/cabinet/WorkersControllingPositionsService'
+} from '@/services/cabinet/PositionsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'

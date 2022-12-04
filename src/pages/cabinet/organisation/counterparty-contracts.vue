@@ -141,7 +141,7 @@ import {
   fetchContract,
   deleteContract,
 } from '@/services/cabinet/CounterpartyContractsServices'
-import { getCounterpartyList } from '@/services/cabinet/CounterpartyInvoiceService'
+import { getCounterpartyList } from '@/services/cabinet/CounterpartyInvoicesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'

@@ -69,7 +69,7 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchSettlement,
   deleteSettlement,
-} from '@/services/cabinet/FinancialAccountingSettlementServices'
+} from '@/services/cabinet/FinancialAccountingAccountsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -80,7 +80,7 @@ import type {
   SettlementFormTypes,
   SettlementPageOptionsType,
 } from '@/types/cabinet/FinancialAccountingSettlementTypes'
-import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
+import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
 
 const { $setResponseErrors } = useErrorActions()

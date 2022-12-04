@@ -55,7 +55,7 @@ import { ref, watch } from 'vue'
 import {
   createPosition,
   editPosition,
-} from '@/services/cabinet/WorkersControllingPositionsService'
+} from '@/services/cabinet/PositionsService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'

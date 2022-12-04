@@ -72,7 +72,7 @@ import { useI18n } from 'vue-i18n'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import { createEditSettlement } from '@/services/cabinet/FinancialAccountingSettlementServices'
+import { createEditSettlement } from '@/services/cabinet/FinancialAccountingAccountsService'
 import type { SettlementFormTypes } from '@/types/cabinet/FinancialAccountingSettlementTypes'
 
 const { $successMessage } = useNotificationService()

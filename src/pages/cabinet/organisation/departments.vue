@@ -86,7 +86,7 @@ import {
   fetchDepartments,
   fetchOrganisations,
   deleteDepartment,
-} from '@/services/cabinet/WorkersControllingDepartmentsService'
+} from '@/services/cabinet/DepartmentsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'

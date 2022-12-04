@@ -111,7 +111,7 @@ import {
   fetchInvoice,
   deleteInvoice,
   getCounterpartyList,
-} from '@/services/cabinet/CounterpartyInvoiceService'
+} from '@/services/cabinet/CounterpartyInvoicesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'

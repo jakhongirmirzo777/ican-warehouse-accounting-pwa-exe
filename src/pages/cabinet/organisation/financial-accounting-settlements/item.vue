@@ -65,7 +65,7 @@ import VBackBtn from '@/components/ui/VBackBtn.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchFinanceAccountingList } from '@/services/cabinet/FinanceAccountingService'
+import { fetchFinanceAccountingList } from '@/services/cabinet/FinancialAccountingSettlementService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -76,7 +76,7 @@ import type {
 } from '@/types/cabinet/FinanceAccountingTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
-import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
+import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

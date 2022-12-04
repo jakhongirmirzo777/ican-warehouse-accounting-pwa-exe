@@ -164,19 +164,19 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchIncome,
   deleteIncome,
-} from '@/services/cabinet/FinancialIncomeService'
+} from '@/services/cabinet/FinancialAccountingIncomeService'
 import {
   fetchCounterpartyContractList,
   fetchCounterpartyWithContract,
 } from '@/services/cabinet/CounterpartyContractsServices'
-import { fetchOrganisationsList } from '@/services/cabinet/MkoOrganisationsService'
+import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
-import { fetchAccountingSettlementList } from '@/services/cabinet/FinancialAccountingSettlementServices'
+import { fetchAccountingSettlementList } from '@/services/cabinet/FinancialAccountingAccountsService'
 import { fetchIncomeOutcomeList } from '@/services/cabinet/ReferenceIncomeOutcomeService'
-import { fetchInvoiceList } from '@/services/cabinet/CounterpartyInvoiceService'
+import { fetchInvoiceList } from '@/services/cabinet/CounterpartyInvoicesService'
 import { $isPageExists, $parseQueryArray } from '@/utils/pure-functions'
 import type {
   FinancialIncomeFormTypes,

@@ -54,7 +54,7 @@ import { useI18n } from 'vue-i18n'
 import {
   fetchCourses,
   deleteCourses,
-} from '@/services/cabinet/ReferenceCurrenciesServise'
+} from '@/services/cabinet/ReferenceCurrenciesService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
