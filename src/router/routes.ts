@@ -373,14 +373,6 @@ const rawRoutes = [
         },
       },
       {
-        path: 'dashboard-employer',
-        name: 'dashboard-employer',
-        component: () => import('@/pages/cabinet/employer/dashboard.vue'),
-        meta: {
-          roles: [ROLES.EMPLOYER],
-        },
-      },
-      {
         path: 'financial-accounting-accounts',
         name: 'financial-accounting-accounts',
         component: () =>
