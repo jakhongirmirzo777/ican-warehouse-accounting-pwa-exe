@@ -55,7 +55,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <WorkersControllingDepartmentsDialog
+  <DepartmentsDialog
     v-model="dialog"
     :data="editValue"
     :is-update="isUpdate"
@@ -78,7 +78,7 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-import WorkersControllingDepartmentsDialog from '@/components/pages/workers-controlling-departments/WorkersControllingDepartmentsDialog.vue'
+import DepartmentsDialog from '@/components/pages/departments/DepartmentsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'

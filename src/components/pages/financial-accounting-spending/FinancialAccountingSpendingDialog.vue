@@ -1,6 +1,6 @@
 <template>
   <VModal
-    :title="form.id ? t('editIncome') : t('addIncome')"
+    :title="form.id ? t('editOutcome') : t('addOutcome')"
     v-model="dialog"
     width="742"
   >
@@ -174,10 +174,10 @@
     />
     <SettlementReferenceUnitsDialog
       ref="SettlementReferenceUnitsDialogRef"
-      @fetchData="$emit('get-accounting-settlement-list')"
+      @fetch-data="$emit('get-accounting-settlement-list')"
       :organisationList="organisationList"
     />
-    <ReferenceIncomeDialog
+    <ReferenceOutcomeDialog
       v-model="incomeDialog"
       :data="editValue"
       :is-update="false"
@@ -185,7 +185,7 @@
     />
     <CounterpartyCounterpartiesAccountDialog
       ref="CounterpartyCounterpartiesAccountDialogRef"
-      @fetchData="$emit('get-counter-party-list')"
+      @fetch-data="$emit('get-counter-party-list')"
       :counterparty-list="counterpartyList"
     />
   </VModal>
@@ -203,20 +203,20 @@ import VLine from '@/components/ui/VLine.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VArea from '@/components/ui/VArea.vue'
-import ReferenceIncomeDialog from '@/components/pages/reference-income-outcome/ReferenceIncomeDialog.vue'
-import SettlementReferenceUnitsDialog from '@/components/pages/financial-accounting-settlement/SettlementCreateUpdateModal.vue'
+import SettlementReferenceUnitsDialog from '@/components/pages/financial-accounting-accounts/FinancialAccountingAccountsDialog.vue'
+import ReferenceOutcomeDialog from '@/components/pages/reference-income-outcome/ReferenceOutcomeDialog.vue'
 
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
 import type { PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { createEditIncome } from '@/services/cabinet/FinancialAccountingIncomeService'
+import { createEditSpending } from '@/services/cabinet/FinancialAccountingSpendingService'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import { fetchCurrencies } from '@/services/cabinet/SettingsCurrenciesService'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import type { FinancialIncomeFormTypes } from '@/types/cabinet/FinancialIncomeTypes'
+import type { FinancialSpendingFormTypes } from '@/types/cabinet/FinancialSpendingTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
 import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 import CounterpartyCounterpartiesAccountDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesAccountDialog.vue'
@@ -261,7 +261,7 @@ const dialog = ref(false)
 
 const incomeDialog = ref(false)
 
-const form = ref<FinancialIncomeFormTypes>({ ...FORM_DATA })
+const form = ref<FinancialSpendingFormTypes>({ ...FORM_DATA })
 
 const loading = ref(false)
 
@@ -285,7 +285,7 @@ watch(dialog, (val) => {
   }
 })
 
-const openDialog = (item: FinancialIncomeFormTypes) => {
+const openDialog = (item: FinancialSpendingFormTypes) => {
   if (item && item.id) {
     form.value = { ...item }
   }
@@ -297,7 +297,7 @@ const submit = async (_: never, actions: ActionInterface) => {
   try {
     loading.value = true
     form.value.amount = $clearNonDigits(form.value.amount.toString())
-    await createEditIncome(form.value)
+    await createEditSpending(form.value)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false

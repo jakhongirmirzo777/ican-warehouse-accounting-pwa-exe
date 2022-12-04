@@ -45,7 +45,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <WorkersControllingPositionsDialog
+  <PositionsDialog
     v-model="dialog"
     :data="editValue"
     :is-update="isUpdate"
@@ -67,7 +67,7 @@ import VTable from '@/components/ui/VTable.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-import WorkersControllingPositionsDialog from '@/components/pages/workers-controlling-positions/WorkersControllingPositionsDialog.vue'
+import PositionsDialog from '@/components/pages/positions/PositionsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'

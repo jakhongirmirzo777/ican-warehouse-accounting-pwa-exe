@@ -126,7 +126,7 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <SpendingCreateUpdate
+  <FinancialAccountingSpendingDialog
     ref="organizationDialogRef"
     :counterpartyList="counterpartyList"
     :organisationList="organisationList"
@@ -157,7 +157,7 @@ import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
-import SpendingCreateUpdate from '@/components/pages/financial-accounting-spending/SpendingCreateUpdate.vue'
+import FinancialAccountingSpendingDialog from '@/components/pages/financial-accounting-spending/FinancialAccountingSpendingDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'

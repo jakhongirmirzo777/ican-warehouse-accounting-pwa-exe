@@ -107,7 +107,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <MkoOrganisationsAdminDialog
+  <OrganisationsAdminDialog
     v-model="dialog"
     :id="editValue.id"
     @submit="
@@ -135,7 +135,7 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VStatus from '@/components/ui/VStatus.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-import MkoOrganisationsAdminDialog from '@/components/pages/mko-organisations/MkoOrganisationsAdminDialog.vue'
+import OrganisationsAdminDialog from '@/components/pages/organisations/OrganisationsAdminDialog.vue'
 import { ElPopconfirm } from 'element-plus'
 
 import { ref } from 'vue'

@@ -148,7 +148,7 @@
     v-model="contractsDialog"
     @fetch-data="useReFetchResources('CONTRACT')"
   />
-  <CounterpartyInvoiceDialog
+  <CounterpartyInvoicesDialog
     :counterpart-id="formData.counterparty_id"
     v-model="invoicesDialog"
     @fetch-data="useReFetchResources('INVOICE')"
@@ -167,7 +167,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
 import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
-import CounterpartyInvoiceDialog from '@/components/pages/counterparty-invoice/CounterpartyInvoiceDialog.vue'
+import CounterpartyInvoicesDialog from '@/components/pages/counterparty-invoices/CounterpartyInvoicesDialog.vue'
 import WarehousesDialog from '@/components/pages/warehouses/WarehousesDialog.vue'
 
 import { computed, ref, watch } from 'vue'

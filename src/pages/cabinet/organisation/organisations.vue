@@ -48,7 +48,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <MkoOrganisationsDialog
+  <OrganisationsDialog
     v-model="dialog"
     :data="editValue"
     @submit="useFetchOrganisations"
@@ -68,7 +68,7 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VStatus from '@/components/ui/VStatus.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-import MkoOrganisationsDialog from '@/components/pages/mko-organisations/MkoOrganisationsDialog.vue'
+import OrganisationsDialog from '@/components/pages/organisations/OrganisationsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'

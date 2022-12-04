@@ -77,7 +77,7 @@
       </div>
     </Form>
   </VModal>
-  <SettlementCreateUpdateModal
+  <FinancialAccountingAccountsDialog
     ref="accountDialogRef"
     @fetch-data="useFetchResources('ACCOUNTS')"
     :organisation-list="organisations"
@@ -97,7 +97,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import ReferenceOutcomeDialog from '@/components/pages/reference-income-outcome/ReferenceOutcomeDialog.vue'
-import SettlementCreateUpdateModal from '@/components/pages/financial-accounting-settlement/SettlementCreateUpdateModal.vue'
+import FinancialAccountingAccountsDialog from '@/components/pages/financial-accounting-accounts/FinancialAccountingAccountsDialog.vue'
 
 import { ref, watch } from 'vue'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'

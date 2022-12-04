@@ -126,7 +126,7 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <IncomeCreateUpdate
+  <FinancialAccountingIncomeDialog
     ref="organizationDialogRef"
     :counterparty-list="counterpartyList"
     :organisation-list="organisationList"
@@ -157,7 +157,7 @@ import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
-import IncomeCreateUpdate from '@/components/pages/financial-account-income/IncomeCreateUpdate.vue'
+import FinancialAccountingIncomeDialog from '@/components/pages/financial-accounting-income/FinancialAccountingIncomeDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'

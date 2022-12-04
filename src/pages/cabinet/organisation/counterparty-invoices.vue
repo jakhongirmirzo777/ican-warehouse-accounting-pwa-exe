@@ -80,7 +80,7 @@
       @update:modelValue="changePage"
     />
   </VCard>
-  <CounterpartyInvoiceDialog
+  <CounterpartyInvoicesDialog
     ref="organizationDialogRef"
     :counterpartyList="counterpartyList"
     @fetchData="fetchData"
@@ -93,7 +93,7 @@ import VTable from '@/components/ui/VTable.vue'
 import VCard from '@/components/ui/VCard.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
-import CounterpartyInvoiceDialog from '@/components/pages/counterparty-invoice/CounterpartyInvoiceDialog.vue'
+import CounterpartyInvoicesDialog from '@/components/pages/counterparty-invoices/CounterpartyInvoicesDialog.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
