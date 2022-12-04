@@ -70,6 +70,17 @@
           />
         </VCol>
         <VCol md="4">
+          <VInput
+            vid="min_margin_percent"
+            type="number"
+            rules="required|min_value:0"
+            :label="t('minimumMargin')"
+            v-model="formData.min_margin_percent"
+          >
+            <template #append> % </template>
+          </VInput>
+        </VCol>
+        <VCol md="4">
           <VSwitch
             color="primary"
             :label="t('systemCourse')"
@@ -238,6 +249,7 @@ const FORM_DATA = {
   company_name: null,
   system_course: 0,
   change_price_type: null,
+  min_margin_percent: null,
   inn: null,
   mfo: null,
   director: null,

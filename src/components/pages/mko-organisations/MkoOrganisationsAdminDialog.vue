@@ -144,6 +144,17 @@
           />
         </VCol>
         <VCol md="4">
+          <VInput
+            vid="min_margin_percent"
+            type="number"
+            rules="required|min_value:0"
+            :label="t('minimumMargin')"
+            v-model="formData.min_margin_percent"
+          >
+            <template #append> % </template>
+          </VInput>
+        </VCol>
+        <VCol md="4">
           <VFile
             clearable
             vid="contract_file"
@@ -343,6 +354,7 @@ const FORM_DATA = {
   phones: [],
   contract_file: null,
   logo: null,
+  min_margin_percent: null,
 }
 
 const FORM_DATA_PASSWORD = {

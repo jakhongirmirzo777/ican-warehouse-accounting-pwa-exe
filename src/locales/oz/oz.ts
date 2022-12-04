@@ -299,6 +299,7 @@ export default {
   countStockAfter: 'Кол-во в складе (факт)',
   countShowcaseBefore: 'Кол-во в витрине (план)',
   countShowcaseAfter: 'Кол-во в витрине (факт)',
+  minimumMargin: 'Минимальная наценка (в процентах)',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
