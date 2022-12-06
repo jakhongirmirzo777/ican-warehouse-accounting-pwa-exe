@@ -46,6 +46,22 @@
             @add="warehousesDialog = true"
           />
         </VCol>
+        <VCol md="6">
+          <VSelect
+            autocomplete
+            can-add
+            vid="counterparty_id"
+            rules="required"
+            item-text="company_name"
+            :label="t('counterpart')"
+            :items="counterparties"
+            v-model="formData.counterparty_id"
+            @add="counterpartiesDialog = true"
+          />
+        </VCol>
+        <VCol md="6">
+          <VArea vid="note" :label="t('note')" v-model="formData.note" />
+        </VCol>
       </VRow>
       <VLine class="mb-24" />
       <div class="d-flex justify-end align-center">
@@ -72,7 +88,14 @@
       </div>
     </Form>
   </VModal>
-  <WarehousesDialog v-model="warehousesDialog" @submit="useReFetchResources" />
+  <CounterpartyCounterpartiesDialog
+    v-model="counterpartiesDialog"
+    @fetch-data="useReFetchResources('COUNTERPARTY')"
+  />
+  <WarehousesDialog
+    v-model="warehousesDialog"
+    @submit="useReFetchResources('WAREHOUSE')"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -84,13 +107,15 @@ import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VArea from '@/components/ui/VArea.vue'
 import WarehousesDialog from '@/components/pages/warehouses/WarehousesDialog.vue'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 
 import { ref, watch } from 'vue'
 import {
-  createRevaluation,
+  createReturn,
   fetchDocumentNumber,
-} from '@/services/cabinet/InventoryRevaluationService'
+} from '@/services/cabinet/InventoryReturnService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
@@ -101,9 +126,11 @@ const { t } = useI18n()
 const FORM_DATA = {
   id: null,
   organisation_id: null,
+  counterparty_id: null,
   store_id: null,
   number: null,
   date: null,
+  note: null,
 }
 
 const props = defineProps({
@@ -123,10 +150,20 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  counterparties: {
+    type: Array,
+    default: () => [],
+  },
 })
 
-const emits = defineEmits(['update:modelValue', 'submit', 're-fetch'])
+const emits = defineEmits([
+  'update:modelValue',
+  'submit',
+  're-fetch-warehouse',
+  're-fetch-counterparty',
+])
 const warehousesDialog = ref(false)
+const counterpartiesDialog = ref(false)
 const formObj = ref<any>(null)
 const loading = ref(false)
 const formData = ref<Record<string, any>>({ ...FORM_DATA })
@@ -143,12 +180,19 @@ watch(
   }
 )
 
-const useReFetchResources = async () => {
+const useReFetchResources = async (type: 'COUNTERPARTY' | 'WAREHOUSE') => {
   try {
-    formData.value.store_id = null
-    await formObj.value?.resetForm()
-    warehousesDialog.value = false
-    emits('re-fetch')
+    if (type === 'COUNTERPARTY') {
+      formData.value.counterparty_id = null
+      await formObj.value?.resetForm()
+      counterpartiesDialog.value = false
+      await emits('re-fetch-counterparty')
+    } else if (type === 'WAREHOUSE') {
+      formData.value.store_id = null
+      await formObj.value?.resetForm()
+      warehousesDialog.value = false
+      await emits('re-fetch-warehouse')
+    }
   } catch (err) {
     $setResponseErrors(err)
   }
@@ -170,7 +214,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   try {
     loading.value = true
     const newFormData = { ...formData.value }
-    if (!props.isUpdate) await createRevaluation(newFormData)
+    if (!props.isUpdate) await createReturn(newFormData)
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {

@@ -304,6 +304,12 @@ export default {
   minimumMargin: 'Минимальная наценка (в процентах)',
   addIncome: 'Добавление дохода',
   editIncome: 'Редактирование дохода',
+  returnToSupplier: 'Возврат поставщику',
+  note: 'Примечание',
+  averageIncomePrice: 'Средняя цена прихода',
+  actualReturnPrice: 'Цена возврата',
+  getFromShowcase: 'Взъять из витрины',
+  fromShowcase: 'Из витрины?',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

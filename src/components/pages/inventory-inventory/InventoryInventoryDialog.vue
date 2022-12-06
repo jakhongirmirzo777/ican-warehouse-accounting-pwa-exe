@@ -115,10 +115,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
   organisations: {
     type: Array,
     default: () => [],
@@ -141,11 +137,6 @@ watch(
     if (!val) {
       formData.value = { ...FORM_DATA }
       formObj.value?.resetForm()
-    } else if (val && props.isUpdate) {
-      formData.value.id = props.data.id || null
-      formData.value.organisation_id = props.data.organisation_id || null
-      formData.value.store_id = props.data.store_id || null
-      formData.value.date = props.data.date || null
     } else if (val && !props.isUpdate) {
       useFetchDocumentNumber()
     }
