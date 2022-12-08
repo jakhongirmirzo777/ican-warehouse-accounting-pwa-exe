@@ -165,3 +165,18 @@ export const fetchProductSearch = async (store_id: number, search: string) => {
     return Promise.reject(err)
   }
 }
+
+export const fetchProductSearchAll = async (
+  organisation_id: number,
+  store_id: number,
+  type: 'all' | 'showcase' | 'stock'
+) => {
+  try {
+    const data = await http.get('/organisation/product/available', {
+      params: { organisation_id, store_id, type },
+    })
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
