@@ -257,6 +257,7 @@ const menus = computed(() => {
           { name: t('rePricing'), path: 'inventory-revaluation' },
           { name: t('inventory'), path: 'inventory-inventory' },
           { name: t('returnToSupplier'), path: 'inventory-return' },
+          { name: t('writeOff'), path: 'inventory-write-off' },
         ],
       },
       // {

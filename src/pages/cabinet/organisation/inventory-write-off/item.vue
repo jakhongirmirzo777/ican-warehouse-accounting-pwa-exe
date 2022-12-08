@@ -4,7 +4,7 @@
     <div class="d-flex align-center wrap mb-16 mb-md-0">
       <VBackBtn class="mr-16" />
       <VText tag="h2" weight="600" color="#0E1E56">
-        {{ t('returnToSupplier') }}
+        {{ t('writeOff') }}
       </VText>
     </div>
     <div class="d-flex align-center wrap w-100 w-md-unset">
@@ -18,7 +18,7 @@
             if (document.status === INVENTORY_DOCUMENTS_STATUS_VALUE.HELD) {
               useCancelFromStore()
             } else {
-              useCancelRevaluation()
+              useCancelWriteOff()
             }
           }
         "
@@ -26,18 +26,6 @@
         <VIcon color="#F94E4F" icon="x-mark" size="12" class="mr-8" />
         <span>{{ t('cancel') }}</span>
       </VBtn>
-      <!--      <VBtn-->
-      <!--        v-if="-->
-      <!--          INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status &&-->
-      <!--          !document.is_fin_post-->
-      <!--        "-->
-      <!--        class="w-100 w-md-unset mr-md-10 mb-16 mb-md-0"-->
-      <!--        outlined-->
-      <!--        color="primary"-->
-      <!--        @click="financialDialog = true"-->
-      <!--      >-->
-      <!--        {{ t('createFinancialEntry') }}-->
-      <!--      </VBtn>-->
       <VBtn
         v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
         class="w-100 w-md-unset"
@@ -92,7 +80,7 @@
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
-            :label="t('averageIncomePrice')"
+            :label="t('lastIncomePrice')"
             v-model="formData.incoming_price"
           />
         </VCol>
@@ -104,7 +92,7 @@
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
             }"
-            :label="t('actualReturnPrice')"
+            :label="t('actualWriteOffPrice')"
             v-model="formData.incoming_price_sum"
           />
         </VCol>
@@ -238,7 +226,7 @@ import VStatus from '@/components/ui/VStatus.vue'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  fetchReturn,
+  fetchWriteOff,
   fetchProductSearch,
   fetchProduct,
   createProduct,
@@ -246,8 +234,8 @@ import {
   deleteProduct,
   forwardToStore,
   cancelFromStore,
-  cancelRevaluation,
-} from '@/services/cabinet/InventoryReturnService'
+  cancelWriteOff,
+} from '@/services/cabinet/InventoryWriteOffService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -271,7 +259,7 @@ const breadcrumbs = [
     name: t('inventoryControl'),
   },
   {
-    name: t('returnToSupplier'),
+    name: t('writeOff'),
   },
   {
     name: t('document'),
@@ -377,7 +365,7 @@ const productInfo = computed(() => {
     product_name: null,
     barcode: null,
     category_name: null,
-    income_avg_price_sum: null,
+    last_income_price: null,
     articule: null,
     unit_name: null,
   }
@@ -385,26 +373,28 @@ const productInfo = computed(() => {
 
 watch(
   () => productInfo.value,
-  (val: {
+  (_val: {
     id: null
     product_name: null
     barcode: null
     category_name: null
-    income_avg_price_sum: null
+    last_income_price: null
     articule: null
     unit_name: null
   }) => {
-    formData.value.incoming_price = val.income_avg_price_sum
-    formData.value.incoming_price_sum = val.income_avg_price_sum
+    formData.value.incoming_price = '1000'
+    formData.value.incoming_price_sum = '1000'
+    // formData.value.incoming_price = val.last_income_price
+    // formData.value.incoming_price_sum = val.last_income_price
   }
 )
 
-const useFetchReturn = async () => {
+const useFetchWriteOff = async () => {
   try {
     if (id.value) {
       const {
         data: { data },
-      } = await fetchReturn(+id.value)
+      } = await fetchWriteOff(+id.value)
       document.value = data
     }
   } catch (err) {
@@ -416,7 +406,7 @@ const useForwardToStore = async () => {
   try {
     if (!id.value) return
     await forwardToStore(+id.value)
-    await useFetchReturn()
+    await useFetchWriteOff()
     $successMessage(t('notifications.forwardedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
@@ -427,18 +417,18 @@ const useCancelFromStore = async () => {
   try {
     if (!id.value) return
     await cancelFromStore(+id.value)
-    await useFetchReturn()
+    await useFetchWriteOff()
     $successMessage(t('notifications.canceledSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
   }
 }
 
-const useCancelRevaluation = async () => {
+const useCancelWriteOff = async () => {
   try {
     if (!id.value) return
-    await cancelRevaluation(+id.value)
-    await useFetchReturn()
+    await cancelWriteOff(+id.value)
+    await useFetchWriteOff()
     $successMessage(t('notifications.canceledSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
@@ -541,7 +531,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
 const useFetchData = async () => {
   try {
     $showLoading()
-    await useFetchReturn()
+    await useFetchWriteOff()
     await useFetchProduct()
   } catch (err) {
     $setResponseErrors(err)

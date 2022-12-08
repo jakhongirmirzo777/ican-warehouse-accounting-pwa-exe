@@ -310,6 +310,9 @@ export default {
   actualReturnPrice: 'Цена возврата',
   getFromShowcase: 'Взъять из витрины',
   fromShowcase: 'Из витрины?',
+  writeOff: 'Списание',
+  lastIncomePrice: 'Последняя цена прихода',
+  actualWriteOffPrice: 'Цена списании',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
