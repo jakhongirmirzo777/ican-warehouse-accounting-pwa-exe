@@ -417,6 +417,7 @@ const useForwardToStore = async () => {
   try {
     if (!id.value) return
     await forwardToStore(+id.value)
+    await useFetchReturn()
     $successMessage(t('notifications.forwardedSuccessfully'))
   } catch (err) {
     $setResponseErrors(err)
