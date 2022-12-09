@@ -365,7 +365,7 @@ const productInfo = computed(() => {
     product_name: null,
     barcode: null,
     category_name: null,
-    last_income_price: null,
+    last_income_price_sum: null,
     articule: null,
     unit_name: null,
   }
@@ -373,19 +373,17 @@ const productInfo = computed(() => {
 
 watch(
   () => productInfo.value,
-  (_val: {
+  (val: {
     id: null
     product_name: null
     barcode: null
     category_name: null
-    last_income_price: null
+    last_income_price_sum: null
     articule: null
     unit_name: null
   }) => {
-    formData.value.incoming_price = '1000'
-    formData.value.incoming_price_sum = '1000'
-    // formData.value.incoming_price = val.last_income_price
-    // formData.value.incoming_price_sum = val.last_income_price
+    formData.value.incoming_price = val.last_income_price_sum
+    formData.value.incoming_price_sum = val.last_income_price_sum
   }
 )
 
