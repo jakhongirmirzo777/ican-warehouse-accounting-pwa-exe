@@ -26,18 +26,18 @@
         <VIcon color="#F94E4F" icon="x-mark" size="12" class="mr-8" />
         <span>{{ t('cancel') }}</span>
       </VBtn>
-      <!--      <VBtn-->
-      <!--        v-if="-->
-      <!--          INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status &&-->
-      <!--          !document.is_fin_post-->
-      <!--        "-->
-      <!--        class="w-100 w-md-unset mr-md-10 mb-16 mb-md-0"-->
-      <!--        outlined-->
-      <!--        color="primary"-->
-      <!--        @click="financialDialog = true"-->
-      <!--      >-->
-      <!--        {{ t('createFinancialEntry') }}-->
-      <!--      </VBtn>-->
+      <VBtn
+        v-if="
+          INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status &&
+          !document.is_fin_post
+        "
+        class="w-100 w-md-unset mr-md-10 mb-16 mb-md-0"
+        outlined
+        color="primary"
+        @click="financialDialog = true"
+      >
+        {{ t('createFinancialEntry') }}
+      </VBtn>
       <VBtn
         v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
         class="w-100 w-md-unset"
@@ -215,6 +215,14 @@
       @update:modelValue="paginate"
     />
   </VCard>
+  <InventoryFinancialRegisterDialog
+    v-model="financialDialog"
+    type="income"
+    :organisations="organisations"
+    :document-id="document.id"
+    :counterparty-id="document.counterparty_id"
+    @submit="useFetchReturn"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -234,10 +242,12 @@ import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
 import VStatus from '@/components/ui/VStatus.vue'
+import InventoryFinancialRegisterDialog from '@/components/pages/inventory/InventoryFinancialRegisterDialog.vue'
 
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  fetchOrganisations,
   fetchReturn,
   fetchProductSearch,
   fetchProduct,
@@ -353,6 +363,8 @@ const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
 const productRef = ref()
 const isUpdate = ref(false)
+const financialDialog = ref(false)
+const organisations = ref([])
 const products = ref([])
 const items = ref([])
 const formData = ref<{
@@ -398,6 +410,17 @@ watch(
     formData.value.incoming_price_sum = val.income_avg_price_sum
   }
 )
+
+const useFetchOrganisations = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchOrganisations()
+    organisations.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
 
 const useFetchReturn = async () => {
   try {
@@ -541,8 +564,11 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
 const useFetchData = async () => {
   try {
     $showLoading()
-    await useFetchReturn()
-    await useFetchProduct()
+    await Promise.all([
+      useFetchOrganisations(),
+      useFetchReturn(),
+      useFetchProduct(),
+    ])
   } catch (err) {
     $setResponseErrors(err)
   } finally {

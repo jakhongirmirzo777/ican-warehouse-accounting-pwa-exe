@@ -271,6 +271,7 @@
   />
   <InventoryFinancialRegisterDialog
     v-model="financialDialog"
+    type="expense"
     :organisations="organisations"
     :document-id="document.id"
     :counterparty-id="document.counterparty_id"

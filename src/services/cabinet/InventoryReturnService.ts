@@ -184,3 +184,26 @@ export const fetchProductSearch = async (store_id: number, search: string) => {
     return Promise.reject(err)
   }
 }
+
+export const fetchIncomeList = async () => {
+  try {
+    const data = await http.get(
+      '/organisation/reference/income/list?type=income'
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const moveToIncome = async (formData: Record<string, any>) => {
+  try {
+    const data = await http.post(
+      `organisation/income/with-document/${formData.id}`,
+      formData
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}

@@ -31,7 +31,19 @@
             v-model="formData.counterparty_account_id"
           />
         </VCol>
-        <VCol>
+        <VCol v-if="type === 'income'">
+          <VSelect
+            can-add
+            vid="type_id"
+            rules="required"
+            autocomplete
+            :label="t('typeIncome')"
+            :items="incomeList"
+            v-model="formData.type_id"
+            @add="incomeDialog = true"
+          />
+        </VCol>
+        <VCol v-if="type === 'expense'">
           <VSelect
             can-add
             vid="type_id"
@@ -82,6 +94,10 @@
     @fetch-data="useFetchResources('ACCOUNTS')"
     :organisation-list="organisations"
   />
+  <ReferenceIncomeDialog
+    v-model="incomeDialog"
+    @submit="useFetchResources('INCOMES')"
+  />
   <ReferenceOutcomeDialog
     v-model="outcomeDialog"
     @submit="useFetchResources('EXPENSES')"
@@ -96,6 +112,7 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
+import ReferenceIncomeDialog from '@/components/pages/reference-income-outcome/ReferenceIncomeDialog.vue'
 import ReferenceOutcomeDialog from '@/components/pages/reference-income-outcome/ReferenceOutcomeDialog.vue'
 import FinancialAccountingAccountsDialog from '@/components/pages/financial-accounting-accounts/FinancialAccountingAccountsDialog.vue'
 
@@ -109,6 +126,10 @@ import {
   fetchCounterpartyAccountsList,
   fetchExpensesList,
 } from '@/services/cabinet/InventoryIncomeService'
+import {
+  fetchIncomeList,
+  moveToIncome,
+} from '@/services/cabinet/InventoryReturnService'
 
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
@@ -138,10 +159,15 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  type: {
+    type: String,
+    required: true,
+  },
 })
 
 const emits = defineEmits(['update:modelValue', 'submit'])
 
+const incomeDialog = ref(false)
 const outcomeDialog = ref(false)
 const accountDialogRef = ref()
 const formObj = ref<any>(null)
@@ -149,6 +175,7 @@ const loading = ref(false)
 const formData = ref<Record<string, any>>({ ...FORM_DATA })
 const accountList = ref([])
 const expensesList = ref([])
+const incomeList = ref([])
 const counterpartyAccountsList = ref([])
 
 watch(
@@ -164,10 +191,13 @@ watch(
   }
 )
 
-const useFetchResources = (type: 'ACCOUNTS' | 'EXPENSES') => {
+const useFetchResources = (type: 'ACCOUNTS' | 'EXPENSES' | 'INCOMES') => {
   if (type === 'ACCOUNTS') {
     useFetchAccountList()
     formData.value.account_id = null
+  } else if (type === 'INCOMES') {
+    useFetchIncomeList()
+    formData.value.type_id = null
   } else if (type === 'EXPENSES') {
     useFetchExpensesList()
     formData.value.type_id = null
@@ -179,7 +209,11 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
     loading.value = true
-    await moveToSpending(formData.value)
+    if (props.type === 'income') {
+      await moveToIncome(formData.value)
+    } else if (props.type === 'expense') {
+      await moveToSpending(formData.value)
+    }
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {
@@ -212,6 +246,17 @@ const useFetchAccountList = async () => {
   }
 }
 
+const useFetchIncomeList = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchIncomeList()
+    incomeList.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 const useFetchExpensesList = async () => {
   try {
     const {
@@ -228,8 +273,12 @@ const useFetchData = async () => {
     await Promise.all([
       useFetchCounterpartyAccountsList(),
       useFetchAccountList(),
-      useFetchExpensesList(),
     ])
+    if (props.type === 'income') {
+      await useFetchIncomeList()
+    } else if (props.type === 'expense') {
+      await useFetchExpensesList()
+    }
   } catch (err) {
     $setResponseErrors(err)
   }
