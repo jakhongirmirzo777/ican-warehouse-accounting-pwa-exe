@@ -259,6 +259,44 @@ const rawRoutes = [
         },
       },
       {
+        path: 'inventory-return',
+        name: 'inventory-return',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-return/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'inventory-return-item/:id',
+        name: 'inventory-return-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-return/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'inventory-write-off',
+        name: 'inventory-write-off',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-write-off/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'inventory-write-off-item/:id',
+        name: 'inventory-write-off-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-write-off/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
         path: 'reports-stock',
         name: 'reports-stock',
         component: () =>

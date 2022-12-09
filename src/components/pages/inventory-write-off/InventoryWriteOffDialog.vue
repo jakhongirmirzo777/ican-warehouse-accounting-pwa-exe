@@ -46,6 +46,9 @@
             @add="warehousesDialog = true"
           />
         </VCol>
+        <VCol md="6">
+          <VArea vid="note" :label="t('note')" v-model="formData.note" />
+        </VCol>
       </VRow>
       <VLine class="mb-24" />
       <div class="d-flex justify-end align-center">
@@ -72,7 +75,10 @@
       </div>
     </Form>
   </VModal>
-  <WarehousesDialog v-model="warehousesDialog" @submit="useReFetchResources" />
+  <WarehousesDialog
+    v-model="warehousesDialog"
+    @submit="useReFetchResources('WAREHOUSE')"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -84,13 +90,14 @@ import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VArea from '@/components/ui/VArea.vue'
 import WarehousesDialog from '@/components/pages/warehouses/WarehousesDialog.vue'
 
 import { ref, watch } from 'vue'
 import {
-  createRevaluation,
+  createWriteOff,
   fetchDocumentNumber,
-} from '@/services/cabinet/InventoryRevaluationService'
+} from '@/services/cabinet/InventoryWriteOffService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
@@ -104,6 +111,7 @@ const FORM_DATA = {
   store_id: null,
   number: null,
   date: null,
+  note: null,
 }
 
 const props = defineProps({
@@ -125,7 +133,7 @@ const props = defineProps({
   },
 })
 
-const emits = defineEmits(['update:modelValue', 'submit', 're-fetch'])
+const emits = defineEmits(['update:modelValue', 'submit', 're-fetch-warehouse'])
 const warehousesDialog = ref(false)
 const formObj = ref<any>(null)
 const loading = ref(false)
@@ -143,12 +151,14 @@ watch(
   }
 )
 
-const useReFetchResources = async () => {
+const useReFetchResources = async (type: 'WAREHOUSE') => {
   try {
-    formData.value.store_id = null
-    await formObj.value?.resetForm()
-    warehousesDialog.value = false
-    emits('re-fetch')
+    if (type === 'WAREHOUSE') {
+      formData.value.store_id = null
+      await formObj.value?.resetForm()
+      warehousesDialog.value = false
+      await emits('re-fetch-warehouse')
+    }
   } catch (err) {
     $setResponseErrors(err)
   }
@@ -170,7 +180,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   try {
     loading.value = true
     const newFormData = { ...formData.value }
-    if (!props.isUpdate) await createRevaluation(newFormData)
+    if (!props.isUpdate) await createWriteOff(newFormData)
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {
