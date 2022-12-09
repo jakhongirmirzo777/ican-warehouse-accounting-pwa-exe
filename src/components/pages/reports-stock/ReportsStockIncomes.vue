@@ -76,22 +76,7 @@
   <VLine class="mb-20" />
   <VTable :headers="headers" :items="items">
     <template #item.is_showcase="{ item }">
-      <div class="d-flex align-center">
-        <span class="mr-10">
-          {{ item.is_showcase ? t('showcase') : t('warehouse') }}
-        </span>
-        <VIcon
-          class="cursor-pointer"
-          icon="pencil"
-          size="15"
-          @click="
-            () => {
-              data = item
-              dialog = true
-            }
-          "
-        />
-      </div>
+      {{ item.is_showcase ? t('showcase') : t('warehouse') }}
     </template>
     <template #item.count="{ item }">
       {{ $moneyFormat(item.count) }} {{ item.unit_name }}
@@ -113,11 +98,6 @@
     :total="options.total"
     @update:modelValue="paginate"
   />
-  <ReportsStockMoveProductDialog
-    :data="data"
-    v-model="dialog"
-    @submit="useFetchIncomes"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -129,10 +109,8 @@ import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VTable from '@/components/ui/VTable.vue'
 import VExcel from '@/components/ui/VExcel.vue'
-import VIcon from '@/components/ui/VIcon.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
-import ReportsStockMoveProductDialog from '@/components/pages/reports-stock/ReportsStockMoveProductDialog.vue'
 
 import { PUT_PLACE_INDEXED } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
@@ -257,8 +235,6 @@ const props = defineProps({
     default: () => [],
   },
 })
-const dialog = ref(false)
-const data = ref({})
 const items = ref([])
 const childCategories = computed(() => {
   const list = props.categories.find(

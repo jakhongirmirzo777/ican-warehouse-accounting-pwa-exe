@@ -24,7 +24,6 @@
             v-model="options.store_id"
           />
         </VCol>
-
         <VCol md="3">
           <div class="d-flex flex-column flex-md-row">
             <VFilterActions
@@ -65,9 +64,6 @@
   </VFilterCollapse>
   <VLine class="mb-20" />
   <VTable :headers="headers" :items="items">
-    <template #item.count_showcase="{ item }">
-      {{ $moneyFormat(item.count_showcase) }} {{ item.unit_name }}
-    </template>
     <template #item.income_avg_price_sum="{ item }">
       {{ $moneyFormat(item.income_avg_price_sum) }}
     </template>
@@ -75,7 +71,42 @@
       {{ $moneyFormat(item.selling_price_sum) }}
     </template>
     <template #item.count_stock="{ item }">
-      {{ $moneyFormat(item.count_stock) }} {{ item.unit_name }}
+      <div class="d-flex align-center">
+        <span class="mr-10">
+          {{ $moneyFormat(item.count_stock) }} {{ item.unit_name }}
+        </span>
+        <VIcon
+          class="cursor-pointer"
+          icon="pencil"
+          size="15"
+          @click="
+            () => {
+              data = item
+              isShowcase = true
+              dialog = true
+            }
+          "
+        />
+      </div>
+    </template>
+    <template #item.count_showcase="{ item }">
+      <div class="d-flex align-center">
+        <span class="mr-10">
+          {{ $moneyFormat(item.count_showcase) }} {{ item.unit_name }}
+        </span>
+        <VIcon
+          class="cursor-pointer"
+          icon="pencil"
+          size="15"
+          @click="
+            () => {
+              data = item
+              isShowcase = false
+              dialog = true
+            }
+          "
+        />
+      </div>
     </template>
   </VTable>
   <VPagination
@@ -84,6 +115,12 @@
     :pages="options.lastPage"
     :total="options.total"
     @update:modelValue="paginate"
+  />
+  <ReportsStockMoveProductDialog
+    :data="data"
+    :is-showcase="isShowcase"
+    v-model="dialog"
+    @submit="useFetchRemainders"
   />
 </template>
 
@@ -95,9 +132,11 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VTable from '@/components/ui/VTable.vue'
 import VExcel from '@/components/ui/VExcel.vue'
+import VIcon from '@/components/ui/VIcon.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VFilterActions from '@/components/ui/VFilterActions.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
+import ReportsStockMoveProductDialog from '@/components/pages/reports-stock/ReportsStockMoveProductDialog.vue'
 
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
@@ -213,6 +252,10 @@ const props = defineProps({
     default: () => [],
   },
 })
+
+const dialog = ref(false)
+const isShowcase = ref(false)
+const data = ref({})
 const items = ref([])
 const childCategories = computed(() => {
   const list = props.categories.find(

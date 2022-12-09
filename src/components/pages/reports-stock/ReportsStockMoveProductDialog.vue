@@ -14,6 +14,7 @@
         </VCol>
         <VCol md="8">
           <VSelect
+            disabled
             localize
             label=""
             :name="t('putPlace')"
@@ -37,7 +38,7 @@
             vid="count"
             :rules="{
               required: true,
-              max_value: data.available_count,
+              max_value: isShowcase ? data.count_stock : data.count_showcase,
             }"
             v-model="formData.count"
           >
@@ -104,6 +105,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isShowcase: {
+    type: Boolean,
+    required: true,
+  },
   data: {
     type: Object,
     default: () => ({}),
@@ -124,7 +129,7 @@ watch(
       formObj.value?.resetForm()
     } else if (val) {
       formData.value.id = props.data.id
-      formData.value.move_to = props.data.is_showcase ? 0 : 1
+      formData.value.move_to = props.isShowcase ? 1 : 0
     }
   }
 )
