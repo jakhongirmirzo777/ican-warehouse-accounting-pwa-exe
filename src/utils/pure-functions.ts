@@ -166,7 +166,9 @@ export const $parseQueryStatus = (status: string | undefined | null) => {
 export const $printScreen = (id: string, innerHtml: string) => {
   const prtContent = document.getElementById(id)
   if (prtContent) {
-    prtContent.innerHTML = innerHtml
+    if (innerHtml) {
+      prtContent.innerHTML = innerHtml
+    }
     const winPrint = window.open(
       '',
       '',
