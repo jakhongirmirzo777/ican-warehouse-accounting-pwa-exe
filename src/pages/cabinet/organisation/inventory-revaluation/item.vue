@@ -381,7 +381,10 @@ const useFetchProductSearch = async (store_id: number, search = '') => {
     const {
       data: { data },
     } = await fetchProductSearch(store_id, search)
-    products.value = data
+    products.value = data.map((item: Record<string, string | number>) => {
+      item.name = `${item.name} (${item.articule})`
+      return item
+    })
   } catch (err) {
     return Promise.reject(err)
   }
@@ -394,7 +397,10 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
     const {
       data: { data },
     } = await fetchProductSearch(document.value.store_id, value)
-    products.value = data
+    products.value = data.map((item: Record<string, string | number>) => {
+      item.name = `${item.name} (${item.articule})`
+      return item
+    })
   } catch (err) {
     $setResponseErrors(err)
   }

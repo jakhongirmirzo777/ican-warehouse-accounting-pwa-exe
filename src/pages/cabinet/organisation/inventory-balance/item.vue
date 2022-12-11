@@ -536,7 +536,10 @@ const useFetchProductSearch = async (search = '') => {
     const {
       data: { data },
     } = await fetchProductSearch(search)
-    products.value = data
+    products.value = data.map((item: Record<string, string | number>) => {
+      item.name = `${item.name} (${item.articule})`
+      return item
+    })
   } catch (err) {
     return Promise.reject(err)
   }
@@ -548,7 +551,10 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
     const {
       data: { data },
     } = await fetchProductSearch(value)
-    products.value = data
+    products.value = data.map((item: Record<string, string | number>) => {
+      item.name = `${item.name} (${item.articule})`
+      return item
+    })
   } catch (err) {
     $setResponseErrors(err)
   }
