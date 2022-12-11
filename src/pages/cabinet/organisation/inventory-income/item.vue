@@ -577,6 +577,9 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
       item.name = `${item.name} (${item.articule})`
       return item
     })
+    if (products.value.length === 1) {
+      formData.value.product_id = (products.value[0] as any).id
+    }
   } catch (err) {
     $setResponseErrors(err)
   }

@@ -45,7 +45,7 @@
             }"
             :label="t('typeNameOfProduct')"
             item-text="product_name"
-            item-value="id"
+            item-value="product_id"
             :items="products"
             v-model="formData.product_id"
             @filter="useFetchProductSearchDebounce"
@@ -350,7 +350,8 @@ const formData = ref<{
 
 const productInfo = computed(() => {
   const data = products.value.find(
-    (item: { id: number }) => item.id === formData.value.product_id
+    (item: { product_id: number }) =>
+      item.product_id === formData.value.product_id
   )
   if (data) return data
   return {
@@ -399,7 +400,7 @@ const useFetchProductSearch = async (store_id: number, search = '') => {
       data: { data },
     } = await fetchProductSearch(store_id, search)
     products.value = data.map((item: Record<string, string | number>) => {
-      item.name = `${item.name} (${item.articule})`
+      item.product_name = `${item.product_name} (${item.articule})`
       return item
     })
   } catch (err) {
@@ -415,9 +416,12 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
       data: { data },
     } = await fetchProductSearch(document.value.store_id, value)
     products.value = data.map((item: Record<string, string | number>) => {
-      item.name = `${item.name} (${item.articule})`
+      item.product_name = `${item.product_name} (${item.articule})`
       return item
     })
+    if (products.value.length === 1) {
+      formData.value.product_id = (products.value[0] as any).product_id
+    }
   } catch (err) {
     $setResponseErrors(err)
   }
