@@ -41,7 +41,7 @@
         @focus="isFocused = true"
         @change="changeValue"
         @clear="cleared"
-        @blur="blur"
+        @blur="handleBlur"
         @input="(e) => $emit('filter', e.target.value)"
       >
         <el-option
@@ -168,6 +168,7 @@ const props = defineProps({
   },
 })
 
+const IS_FIRST_TIME = ref(true)
 const elementSelect = ref<any>(null)
 const value = ref<any>(null)
 const isFocused = ref(false)
@@ -181,13 +182,18 @@ watch(
   }
 )
 
-const focus = () => {
+const onFocus = () => {
   elementSelect.value?.focus()
 }
 
+const onBlur = () => {
+  elementSelect.value?.blur()
+}
+
 onMounted(() => {
-  if (props.focus) {
-    focus()
+  if (props.focus && IS_FIRST_TIME.value) {
+    onFocus()
+    IS_FIRST_TIME.value = false
   }
   if (props.modelValue || props.modelValue === 0) {
     value.value = props.modelValue
@@ -203,6 +209,10 @@ onMounted(() => {
 })
 
 onUpdated(() => {
+  if (props.focus && IS_FIRST_TIME.value) {
+    onFocus()
+    IS_FIRST_TIME.value = false
+  }
   if (props.modelValue || props.modelValue === 0) {
     value.value = props.modelValue
     if (Array.isArray(props.modelValue) && props.modelValue.length) {
@@ -217,7 +227,7 @@ onUpdated(() => {
 })
 
 const onClickEmpty = async () => {
-  await elementSelect.value.blur()
+  await onBlur()
   await emits('add')
 }
 
@@ -229,7 +239,7 @@ const cleared = () => {
   emits('update:modelValue', '')
 }
 
-const blur = () => {
+const handleBlur = () => {
   setTimeout(() => {
     if (
       (!props.modelValue && props.modelValue !== 0) ||
@@ -242,7 +252,7 @@ const blur = () => {
   }, 200)
 }
 
-defineExpose({ focus })
+defineExpose({ focus: onFocus, blur: onBlur })
 </script>
 
 <style lang="scss">

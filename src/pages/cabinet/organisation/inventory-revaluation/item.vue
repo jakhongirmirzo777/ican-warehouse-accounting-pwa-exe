@@ -404,6 +404,7 @@ const useFetchProductSearchDebounce = $debounce(async (val: any) => {
     })
     if (products.value.length === 1) {
       formData.value.product_id = (products.value[0] as any).product_id
+      await productRef.value.blur()
     }
   } catch (err) {
     $setResponseErrors(err)
