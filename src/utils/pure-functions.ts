@@ -162,3 +162,22 @@ export const $parseQueryStatus = (status: string | undefined | null) => {
   if (+status === 0) return 0
   return +status
 }
+
+export const $printScreen = (id: string, innerHtml: string) => {
+  const prtContent = document.getElementById(id)
+  if (prtContent) {
+    prtContent.innerHTML = innerHtml
+    const winPrint = window.open(
+      '',
+      '',
+      'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0'
+    )
+    if (winPrint) {
+      winPrint.document.write(prtContent.innerHTML)
+      winPrint.document.close()
+      winPrint.focus()
+      winPrint.print()
+      winPrint.close()
+    }
+  }
+}

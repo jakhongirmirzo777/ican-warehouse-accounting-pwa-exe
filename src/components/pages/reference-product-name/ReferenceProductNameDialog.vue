@@ -63,15 +63,26 @@
               rules="required|max:255"
               v-model="formData.barcode"
             />
-            <VBtn
-              type="button"
-              min-width="40px"
-              color="primary"
-              :loading="barcodeLoading"
-              @click="useGenerateBarcode"
-            >
-              <VIcon size="20" icon="barcode" color="#fff" />
-            </VBtn>
+            <div class="d-flex">
+              <VBtn
+                class="mr-4"
+                type="button"
+                min-width="40px"
+                color="primary"
+                :loading="barcodeLoading"
+                @click="useGenerateBarcode"
+              >
+                <VIcon size="20" icon="barcode" color="#fff" />
+              </VBtn>
+              <VBtn
+                type="button"
+                min-width="40px"
+                color="primary"
+                @click="handlePrint"
+              >
+                <VIcon size="20" icon="print" color="#fff" />
+              </VBtn>
+            </div>
           </div>
         </VCol>
       </VRow>
@@ -100,6 +111,7 @@
       </div>
     </Form>
   </VModal>
+  <ReferenceProductNamePrint id="reference-product-name-print" />
 </template>
 
 <script lang="ts" setup>
@@ -110,6 +122,8 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
+import VIcon from '@/components/ui/VIcon.vue'
+import ReferenceProductNamePrint from '@/components/pages/reference-product-name/ReferenceProductNamePrint.vue'
 
 import { computed, reactive, ref, watch } from 'vue'
 import {
@@ -120,7 +134,7 @@ import {
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
-import VIcon from '@/components/ui/VIcon.vue'
+import { $printScreen } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
 
@@ -159,6 +173,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue', 'submit'])
 
 const formObj = ref<any>(null)
+const barcodeSvg = ref<string | null>(null)
 const loading = ref(false)
 const barcodeLoading = ref(false)
 const categoryForm = reactive({
@@ -218,6 +233,7 @@ const useGenerateBarcode = async () => {
       data: { data },
     } = await generateBarcode()
     formData.value.barcode = data.barcode
+    barcodeSvg.value = data.svg
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -241,6 +257,19 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     $setResponseErrors(err)
   } finally {
     loading.value = false
+  }
+}
+
+const handlePrint = async () => {
+  try {
+    if (!formData.value.barcode) {
+      await useGenerateBarcode()
+    }
+    if (barcodeSvg.value) {
+      await $printScreen('reference-product-name-print', barcodeSvg.value)
+    }
+  } catch (err) {
+    $setResponseErrors(err)
   }
 }
 </script>
