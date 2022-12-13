@@ -377,6 +377,15 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION],
         },
       },
+      {
+        path: 'cash-register',
+        name: 'cash-register',
+        component: () =>
+          import('@/pages/cabinet/organisation/cash/direct-sale.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
     ],
   },
   {

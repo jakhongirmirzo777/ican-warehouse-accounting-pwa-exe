@@ -355,11 +355,11 @@ const menus = computed(() => {
       },
       {
         name: t('cashRegister'),
-        icon: 'financial-accounting',
+        icon: 'cash',
         children: [
           {
-            name: t('counterpartyAccounts'),
-            path: 'financial-account-settlement',
+            name: t('directSale'),
+            path: 'cash-register',
           },
         ],
       },

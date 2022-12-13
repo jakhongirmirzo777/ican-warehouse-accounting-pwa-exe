@@ -20,16 +20,19 @@
     transform: scale(.92) !important;
   }
 
-  &__disabled:after {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background: rgba(255, 255, 255, .5);
-    z-index: 10;
-    cursor: no-drop;
+  &__disabled {
+    pointer-events: none;
+    &:after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background: rgba(255, 255, 255, .5);
+      z-index: 10;
+      cursor: no-drop;
+    }
   }
 
   &__fab {

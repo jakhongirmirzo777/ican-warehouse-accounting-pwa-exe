@@ -1,0 +1,24 @@
+.payment-type-error-message {
+  height: 14px;
+  &__message {
+    color: #f94e4f;
+    font-size: 13px;
+  }
+}
+
+.direct-sale {
+  &__search {
+    position: relative;
+    &__body {
+      position: absolute;
+      z-index: 10;
+      background: white;
+      min-width: 100%;
+      width: 500px;
+      padding: 15px;
+      border-radius: 8px;
+      &__item {
+      }
+    }
+  }
+}
