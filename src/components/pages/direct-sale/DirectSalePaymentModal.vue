@@ -35,13 +35,13 @@
         </div>
       </div>
       <div class="amount-exceeded">
-        <el-alert
+        <ElAlert
           v-if="errorMessage"
           :title="errorMessage"
           type="error"
           :closable="false"
         />
-        <el-alert
+        <ElAlert
           v-if="errorMessageNonAmount"
           :title="errorMessageNonAmount"
           type="error"
