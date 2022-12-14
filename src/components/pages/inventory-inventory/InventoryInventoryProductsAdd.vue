@@ -180,7 +180,7 @@ const queries = getQuery(['organisation_id', 'store_id'])
 const options = ref({
   page: 1,
   lastPage: 1,
-  perPage: 15,
+  perPage: 3,
   total: 1,
 })
 
@@ -244,6 +244,7 @@ interface IFormData {
   product_id: null | number
   is_checked: boolean
   index: null | number
+  page: null | number
 }
 
 const formObj = ref<any>(null)
@@ -280,11 +281,13 @@ const useFetchProductSearchAll = async () => {
       product_id: item.product_id,
       is_checked: false,
       index: i,
+      page: Math.ceil((i + 1) / options.value.perPage),
     }))
     options.value.lastPage = Math.ceil(data.length / options.value.perPage)
     options.value.total = data.length
     items.value = data.map((item: IFormData, i: number) => {
       item.index = i
+      item.page = Math.ceil((i + 1) / options.value.perPage)
       return item
     })
   } catch (err) {
@@ -299,15 +302,18 @@ const onSubmit = async () => {
     btnLoading.value = true
     const data = JSON.parse(JSON.stringify(formData.value))
     const filteredData = data.filter((item: IFormData) => item.is_checked)
-    const isValid = filteredData.every(
+    const isInValid = filteredData.find(
       (item: IFormData) =>
         item.is_checked &&
-        item.count_stock_before &&
-        item.count_stock_after &&
-        item.count_showcase_before &&
-        item.count_showcase_after
+        !item.count_stock_before &&
+        !item.count_stock_after &&
+        !item.count_showcase_before &&
+        !item.count_showcase_after
     )
-    if (filteredData.length && isValid && btnIsClicked.value) {
+    if (isInValid && btnIsClicked.value) {
+      options.value.page = isInValid.page
+    }
+    if (filteredData.length && !isInValid && btnIsClicked.value) {
       const apiCalls = filteredData.map((item: IFormData) => {
         if (
           id.value &&
