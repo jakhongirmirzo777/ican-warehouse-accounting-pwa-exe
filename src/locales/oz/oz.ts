@@ -317,6 +317,7 @@ export default {
   stock: 'Склад',
   all: 'Все',
   shouldAdd: 'Добавить?',
+  barcodeGenerate: 'Генерировать штрих-код',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

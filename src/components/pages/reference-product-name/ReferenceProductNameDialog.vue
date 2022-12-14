@@ -111,7 +111,6 @@
       </div>
     </Form>
   </VModal>
-  <ReferenceProductNamePrint id="reference-product-name-print" />
 </template>
 
 <script lang="ts" setup>
@@ -123,7 +122,6 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VIcon from '@/components/ui/VIcon.vue'
-import ReferenceProductNamePrint from '@/components/pages/reference-product-name/ReferenceProductNamePrint.vue'
 
 import { computed, reactive, ref, watch } from 'vue'
 import {

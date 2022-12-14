@@ -75,3 +75,12 @@ export const deleteProduct = async (id: number) => {
     return Promise.reject(err)
   }
 }
+
+export const fetchBarcode = async (id: number) => {
+  try {
+    const data = await http.get(`/organisation/product/get-barcode-image/${id}`)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}

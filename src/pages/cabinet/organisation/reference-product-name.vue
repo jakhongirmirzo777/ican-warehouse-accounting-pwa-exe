@@ -49,6 +49,19 @@
     </VRow>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
+      <template #item.barcode_svg="{ item }">
+        <div class="d-flex justify-center">
+          <VBtn
+            type="button"
+            min-width="40px"
+            color="primary"
+            :loading="barcodeLoading[item.id]"
+            @click="useFetchBarcode(item.id)"
+          >
+            <VIcon size="20" icon="barcode" color="#fff" />
+          </VBtn>
+        </div>
+      </template>
       <template #item.actions="{ item }">
         <VTableActions
           @edit="editProduct(item)"
@@ -72,6 +85,7 @@
     :is-update="isUpdate"
     @submit="useFetchProducts"
   />
+  <ReferenceProductNamePrint id="reference-product-name-print" />
 </template>
 
 <script lang="ts" setup>
@@ -89,11 +103,13 @@ import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
+import ReferenceProductNamePrint from '@/components/pages/reference-product-name/ReferenceProductNamePrint.vue'
 import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  fetchBarcode,
   fetchCategories,
   fetchProducts,
   fetchUnits,
@@ -103,7 +119,7 @@ import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { useNotificationService } from '@/plugins/notification-service'
-import { $isPageExists } from '@/utils/pure-functions'
+import { $isPageExists, $printScreen } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { getQuery, addQuery, clearQuery } = useQuery()
@@ -171,6 +187,11 @@ const headers = [
     value: 'barcode',
   },
   {
+    text: t('barcodeGenerate'),
+    value: 'barcode_svg',
+    width: '170px',
+  },
+  {
     text: t('actions'),
     value: 'actions',
     width: '150px',
@@ -179,6 +200,8 @@ const headers = [
 
 const dialog = ref(false)
 const isUpdate = ref(false)
+const barcodeLoading = ref<boolean[]>([])
+const barcodeSvg = ref('')
 const categories = ref([])
 const items = ref([])
 const units = ref([])
@@ -227,6 +250,31 @@ const useFetchUnits = async () => {
     units.value = data
   } catch (err) {
     return Promise.reject(err)
+  }
+}
+
+const handlePrint = async () => {
+  try {
+    if (barcodeSvg.value) {
+      await $printScreen('reference-product-name-print', barcodeSvg.value)
+    }
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
+
+const useFetchBarcode = async (id: number) => {
+  try {
+    barcodeLoading.value[id] = true
+    const {
+      data: { data },
+    } = await fetchBarcode(id)
+    barcodeSvg.value = data.svg
+    await handlePrint()
+  } catch (err) {
+    $setResponseErrors(err)
+  } finally {
+    barcodeLoading.value[id] = false
   }
 }
 
