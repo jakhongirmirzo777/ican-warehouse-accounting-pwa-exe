@@ -55,6 +55,15 @@ export const fetchEmployees = async (params: {
   }
 }
 
+export const fetchEmployeeList = async () => {
+  try {
+    const data = await http.get('/organisation/employee/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const createEmployee = async (
   formData: Record<string, string | number | null>
 ) => {

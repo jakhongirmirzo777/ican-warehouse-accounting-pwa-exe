@@ -15,6 +15,15 @@ export const fetchWarehouses = async (
   }
 }
 
+export const fetchWarehouseList = async () => {
+  try {
+    const data = await http.get('/organisation/store/sale-available-list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchOrganisations = async () => {
   try {
     const data = await http.get('/organisation/organisation/list')

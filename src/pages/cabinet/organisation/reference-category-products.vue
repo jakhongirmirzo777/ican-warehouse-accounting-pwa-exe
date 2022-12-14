@@ -59,7 +59,7 @@
     :data="editValue"
     :parents="parents"
     :is-update="isUpdate"
-    @submit="useFetchCategories"
+    @submit="getData"
   />
 </template>
 
@@ -159,6 +159,11 @@ const editValue = ref<{
   name: null,
   parent_id: null,
 })
+
+const getData = () => {
+  useFetchCategories()
+  useFetchParents()
+}
 
 const useFetchParents = async () => {
   try {

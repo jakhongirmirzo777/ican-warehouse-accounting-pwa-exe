@@ -350,6 +350,34 @@ const menus = computed(() => {
           { name: t('systemCourse'), path: 'settings-currencies' },
         ],
       },
+      {
+        name: t('financialAccounting'),
+        icon: 'financial-accounting',
+        children: [
+          {
+            name: t('counterpartyAccounts'),
+            path: 'financial-account-settlement',
+          },
+          {
+            name: t('income'),
+            path: 'financial-account-income',
+          },
+          {
+            name: t('outcome'),
+            path: 'financial-account-spending',
+          },
+        ],
+      },
+      {
+        name: t('cashRegister'),
+        icon: 'cash',
+        children: [
+          {
+            name: t('directSale'),
+            path: 'cash-register',
+          },
+        ],
+      },
     ]
   }
   return []

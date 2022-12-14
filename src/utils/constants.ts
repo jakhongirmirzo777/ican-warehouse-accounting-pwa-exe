@@ -274,3 +274,20 @@ export const PUT_PLACE_INDEXED = [
     value: 0,
   },
 ]
+
+export const CLIENT_TYPES = {
+  individual: 'individual',
+  entity: 'entity',
+  credit: 'credit',
+}
+
+export const CURRENCIES_LIST = {
+  UZS: 'SUM',
+  USD: 'USD',
+  RUB: 'RUB',
+}
+
+export const PAYMENT_TYPE_ADDITIONAL_OR_MAIN = {
+  main: 'main',
+  additional: 'additional',
+}
