@@ -298,14 +298,16 @@ const menus = computed(() => {
           },
         ],
       },
-      // {
-      //   name: 'Касса',
-      //   icon: 'terminal',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //   ],
-      // },
+      {
+        name: t('cashRegister'),
+        icon: 'cash',
+        children: [
+          {
+            name: t('directSale'),
+            path: 'cash-register',
+          },
+        ],
+      },
       {
         name: t('reference'),
         icon: 'info-square',
@@ -348,16 +350,6 @@ const menus = computed(() => {
           { name: t('bonusTariff'), path: 'settings-bonus-tariffs' },
           { name: t('balance'), path: 'settings-balance' },
           { name: t('systemCourse'), path: 'settings-currencies' },
-        ],
-      },
-      {
-        name: t('cashRegister'),
-        icon: 'cash',
-        children: [
-          {
-            name: t('directSale'),
-            path: 'cash-register',
-          },
         ],
       },
     ]
