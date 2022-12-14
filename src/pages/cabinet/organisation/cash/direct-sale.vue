@@ -306,7 +306,7 @@ import {
   $debounce,
   $moneyFormatWithComma,
 } from '@/utils/pure-functions'
-import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesServise'
+import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

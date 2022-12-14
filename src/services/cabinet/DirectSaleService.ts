@@ -2,7 +2,8 @@ import http from '@/plugins/http'
 import type {
   DirectSaleDataItemType,
   DirectSaleOptionsType,
-  DirectSaleFormType, CheckBonusType,
+  DirectSaleFormType,
+  CheckBonusType,
 } from '@/types/cabinet/DirectSaleTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
