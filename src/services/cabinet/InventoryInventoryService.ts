@@ -169,7 +169,7 @@ export const fetchProductSearch = async (store_id: number, search: string) => {
 export const fetchProductSearchAll = async (
   organisation_id: number,
   store_id: number,
-  type: 'all' | 'showcase' | 'stock'
+  type: 'all' | 'showcase' | 'stock' = 'all'
 ) => {
   try {
     const data = await http.get('/organisation/product/available', {

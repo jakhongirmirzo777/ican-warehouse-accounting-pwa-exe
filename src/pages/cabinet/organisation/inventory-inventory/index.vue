@@ -103,7 +103,7 @@
             @view="
               $router.push(
                 $localePath(
-                  `/cabinet/inventory-inventory-item/${item.id}?store_id=${item.store_id}&status=${item.status}`
+                  `/cabinet/inventory-inventory-item/${item.id}?store_id=${item.store_id}&status=${item.status}&organisation_id=${item.organisation_id}`
                 )
               )
             "

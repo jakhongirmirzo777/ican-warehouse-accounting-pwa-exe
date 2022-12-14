@@ -30,143 +30,175 @@
       </VBtn>
     </div>
   </div>
+  <InventoryInventoryProductsAdd
+    v-if="addAsList"
+    @cancel="addAsList = false"
+    @submit="
+      () => {
+        useFetchProduct()
+        addAsList = false
+      }
+    "
+  />
   <VCard class="mb-24">
-    <Form @submit="onSubmit" ref="formObj">
-      <VRow>
-        <VCol md="4">
-          <VSelect
-            ref="productRef"
-            vid="product_id"
-            :focus="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
-            autocomplete
-            :rules="{
-              required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-            }"
-            :label="t('typeNameOfProduct')"
-            item-text="product_name"
-            item-value="product_id"
-            :items="products"
-            v-model="formData.product_id"
-            @filter="useFetchProductSearchDebounce"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            vid="count_stock_before"
-            type="money"
-            :rules="{
-              required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-            }"
-            :label="t('countStockBefore')"
-            v-model="formData.count_stock_before"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            vid="count_stock_after"
-            type="money"
-            :rules="{
-              required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-            }"
-            :label="t('countStockAfter')"
-            v-model="formData.count_stock_after"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            vid="count_showcase_before"
-            type="money"
-            :rules="{
-              required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-            }"
-            :label="t('countShowcaseBefore')"
-            v-model="formData.count_showcase_before"
-          />
-        </VCol>
-
-        <VCol md="2">
-          <VInput
-            vid="count_showcase_after"
-            type="money"
-            :rules="{
-              required:
-                INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-            }"
-            :label="t('countShowcaseAfter')"
-            v-model="formData.count_showcase_after"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            disabled
-            :label="t('name')"
-            v-model="productInfo.product_name"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            disabled
-            :label="t('category')"
-            v-model="productInfo.category_name"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            disabled
-            :label="t('articule')"
-            v-model="productInfo.articule"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            disabled
-            :label="t('barcode')"
-            v-model="productInfo.barcode"
-          />
-        </VCol>
-        <VCol md="2">
-          <VInput
-            disabled
-            :label="t('units')"
-            v-model="productInfo.unit_name"
-          />
-        </VCol>
-        <VCol
-          v-if="
-            !isUpdate &&
-            INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status
-          "
-          md="2"
-        >
-          <VBtn type="submit" class="mb-20" color="primary" width="100%">
-            <VIcon class="mr-10" size="20" icon="circle-plus" />
-            {{ t('add') }}
-          </VBtn>
-        </VCol>
-        <VCol v-if="isUpdate" md="1">
-          <VBtn
-            type="button"
-            class="mb-20"
-            outlined
-            color="primary"
-            width="100%"
-            @click="isUpdate = false"
+    <div v-if="!addAsList">
+      <Form @submit="onSubmit" ref="formObj">
+        <VRow>
+          <VCol md="4">
+            <VSelect
+              ref="productRef"
+              vid="product_id"
+              :focus="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
+              autocomplete
+              :rules="{
+                required:
+                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
+              }"
+              :label="t('typeNameOfProduct')"
+              item-text="product_name"
+              item-value="product_id"
+              :items="products"
+              v-model="formData.product_id"
+              @filter="useFetchProductSearchDebounce"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              vid="count_stock_before"
+              type="number"
+              :rules="{
+                required:
+                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
+              }"
+              :label="t('countStockBefore')"
+              v-model="formData.count_stock_before"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              vid="count_stock_after"
+              type="number"
+              :rules="{
+                required:
+                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
+              }"
+              :label="t('countStockAfter')"
+              v-model="formData.count_stock_after"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              vid="count_showcase_before"
+              type="number"
+              :rules="{
+                required:
+                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
+              }"
+              :label="t('countShowcaseBefore')"
+              v-model="formData.count_showcase_before"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              vid="count_showcase_after"
+              type="number"
+              :rules="{
+                required:
+                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
+              }"
+              :label="t('countShowcaseAfter')"
+              v-model="formData.count_showcase_after"
+            />
+          </VCol>
+          <VCol md="4">
+            <VInput
+              disabled
+              :label="t('name')"
+              v-model="productInfo.product_name"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              disabled
+              :label="t('category')"
+              v-model="productInfo.category_name"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              disabled
+              :label="t('articule')"
+              v-model="productInfo.articule"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              disabled
+              :label="t('barcode')"
+              v-model="productInfo.barcode"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              disabled
+              :label="t('units')"
+              v-model="productInfo.unit_name"
+            />
+          </VCol>
+        </VRow>
+        <VRow>
+          <VCol md="8" />
+          <VCol
+            v-if="
+              !isUpdate &&
+              INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status
+            "
+            md="2"
           >
-            {{ t('cancel') }}
-          </VBtn>
-        </VCol>
-        <VCol v-if="isUpdate" md="1">
-          <VBtn type="submit" class="mb-20" color="primary" width="100%">
-            {{ t('edit') }}
-          </VBtn>
-        </VCol>
-      </VRow>
-    </Form>
-    <VLine class="mb-16" />
+            <VBtn
+              type="button"
+              class="mb-20"
+              color="primary"
+              width="100%"
+              @click="addAsList = true"
+            >
+              <VIcon class="mr-10" size="20" icon="file" color="#fff" />
+              {{ t('fillList') }}
+            </VBtn>
+          </VCol>
+          <VCol
+            v-if="
+              !isUpdate &&
+              INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status
+            "
+            md="2"
+          >
+            <VBtn type="submit" class="mb-20" color="primary" width="100%">
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol v-if="isUpdate" md="2">
+            <VBtn
+              type="button"
+              class="mb-20"
+              outlined
+              color="primary"
+              width="100%"
+              @click="isUpdate = false"
+            >
+              {{ t('cancel') }}
+            </VBtn>
+          </VCol>
+          <VCol v-if="isUpdate" md="2">
+            <VBtn type="submit" class="mb-20" color="primary" width="100%">
+              {{ t('edit') }}
+            </VBtn>
+          </VCol>
+        </VRow>
+      </Form>
+      <VLine class="mb-16" />
+    </div>
     <VTable :headers="headers" :items="items">
       <template #item.count_showcase_after="{ item }">
         {{ $moneyFormat(item.count_showcase_after) }}
@@ -213,6 +245,7 @@ import VPagination from '@/components/ui/VPagination.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
+import InventoryInventoryProductsAdd from '@/components/pages/inventory-inventory/InventoryInventoryProductsAdd.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -234,7 +267,6 @@ import { $debounce, $isPageExists } from '@/utils/pure-functions'
 import { INVENTORY_DOCUMENTS_STATUS_VALUE } from '@/utils/constants'
 import { useRoute } from 'vue-router'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import { $clearNonDigits } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -243,7 +275,7 @@ const { $successMessage } = useNotificationService()
 const route = useRoute()
 const { t } = useI18n()
 const queries = getQuery(['page', 'store_id', 'status'])
-clearQuery(['page', 'store_id', 'status'])
+clearQuery(['page', 'store_id', 'status', 'organisation_id'])
 
 const breadcrumbs = [
   {
@@ -331,6 +363,7 @@ const document = ref({
   store_id: +queries.store_id,
   status: +queries.status,
 })
+const addAsList = ref(false)
 const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
 const productRef = ref()
@@ -474,7 +507,7 @@ const handleDelete = async (id: number) => {
 const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
   try {
-    const newFormData = { ...formData.value }
+    const newFormData: Record<string, any> = { ...formData.value }
     if (
       !newFormData.count_stock_before ||
       !newFormData.count_stock_after ||
@@ -483,18 +516,13 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     ) {
       return
     }
-
-    newFormData.count_stock_before = +$clearNonDigits(
-      newFormData.count_stock_before.toString()
+    newFormData.count_stock_before = Math.round(+newFormData.count_stock_before)
+    newFormData.count_stock_after = Math.round(+newFormData.count_stock_after)
+    newFormData.count_showcase_before = Math.round(
+      +newFormData.count_showcase_before
     )
-    newFormData.count_stock_after = +$clearNonDigits(
-      newFormData.count_stock_after.toString()
-    )
-    newFormData.count_showcase_before = +$clearNonDigits(
-      newFormData.count_showcase_before.toString()
-    )
-    newFormData.count_showcase_after = +$clearNonDigits(
-      newFormData.count_showcase_after.toString()
+    newFormData.count_showcase_after = Math.round(
+      +newFormData.count_showcase_after
     )
     if (isUpdate.value) {
       await editProduct(newFormData.id as any, newFormData)

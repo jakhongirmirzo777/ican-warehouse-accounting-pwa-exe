@@ -259,7 +259,7 @@ const handledValue = computed(() => {
 })
 
 const counterValue = computed(() => {
-  return props.modelValue?.length || 0
+  return props.modelValue?.toString()?.length || 0
 })
 
 const styles = computed(() => {

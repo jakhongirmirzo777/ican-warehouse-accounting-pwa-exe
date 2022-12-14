@@ -313,6 +313,11 @@ export default {
   writeOff: 'Списание',
   lastIncomePrice: 'Последняя цена прихода',
   actualWriteOffPrice: 'Цена списании',
+  fillList: 'Заполнить список',
+  addAll: 'Добавить все',
+  stock: 'Склад',
+  all: 'Все',
+  shouldAdd: 'Добавить?',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
