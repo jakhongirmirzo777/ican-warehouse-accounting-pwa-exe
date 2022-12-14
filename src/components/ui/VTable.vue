@@ -21,9 +21,13 @@
       <tbody class="v-table__body">
         <slot name="body.prepend" />
         <tr
-          class="v-table__body--row"
+          :class="[
+            'v-table__body--row',
+            { 'v-table__body--row-cursor-pointer': clickable },
+          ]"
           v-for="(item, index) in items"
           :key="`body-${item.id || index}`"
+          @click="$emit('clicked', item, index)"
         >
           <td
             v-for="(header, i) in headers"
@@ -74,6 +78,10 @@ defineProps({
     default: () => [],
   },
   loading: {
+    type: Boolean,
+    default: false,
+  },
+  clickable: {
     type: Boolean,
     default: false,
   },

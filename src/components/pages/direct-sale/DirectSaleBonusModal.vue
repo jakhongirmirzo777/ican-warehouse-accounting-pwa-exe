@@ -1,17 +1,6 @@
 <template>
   <VModal v-model="dialog" :title="$t('attention') + '!'" width="520">
-    <Form
-      @submit="
-        $emit(
-          'check-bonus-product',
-          itemDate,
-          indexBonus,
-          false,
-          bonusError.additional_amount,
-          bonusPaymentType
-        )
-      "
-    >
+    <Form @submit="submit">
       <span v-if="bonusError && bonusError.bonus_amount">
         {{ $t('allowedAmountBonusItem') }}
         <b>{{ bonusError.bonus_amount }}</b> {{ CURRENCIES_LIST[currency] }}.
@@ -78,16 +67,44 @@ defineProps({
   },
 })
 
+const emits = defineEmits(['check-bonus-with-search', 'check-bonus-product'])
+
 const bonusError = ref<any>({})
 const bonusPaymentType = ref('')
 const indexBonus = ref<number | null>(null)
 const itemDate = ref<Record<string, any>>({})
+const isSearchCheck = ref(false)
 
-const openDialog = (val: any, index: number, item: DirectSaleDataItemType) => {
+const submit = () => {
+  if (isSearchCheck.value)
+    emits(
+      'check-bonus-with-search',
+      itemDate.value,
+      bonusError.value.additional_amount,
+      bonusPaymentType.value
+    )
+  else
+    emits(
+      'check-bonus-product',
+      itemDate.value,
+      indexBonus.value,
+      false,
+      bonusError.value.additional_amount,
+      bonusPaymentType.value
+    )
+}
+
+const openDialog = (
+  val: any,
+  index: number,
+  item: DirectSaleDataItemType,
+  isSearchBonusCheck?: boolean
+) => {
   bonusError.value = val
   dialog.value = true
   itemDate.value = item
   indexBonus.value = index
+  if (isSearchBonusCheck) isSearchCheck.value = isSearchBonusCheck
 }
 
 const closeDialog = () => {

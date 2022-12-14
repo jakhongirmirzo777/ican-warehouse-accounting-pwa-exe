@@ -4,100 +4,112 @@
     <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
       {{ t('directSale') }}
     </VText>
-    <VCard>
+    <VCard class="direct-sale__body">
       <Form ref="cashRegisterRef">
         <VRow>
-          <VCol md="2" class="direct-sale__search">
-            <VSelect
-              :label="$t('warehouses')"
-              :items="storeList"
-              item-text="name"
-              item-value="id"
-              clearable
-              autocomplete
-              v-model="params.store_id"
-            />
-            <v-card v-if="isManyRes" class="direct-sale__search__body">
-              <VTable
-                :items="responseSearch"
-                :headers="headersForSelectableResponse"
-              >
-                <template #item.actions="{ item }">
-                  <VCheckbox
-                    @change="($event) => selectSearchedResponse(item, $event)"
+          <VCol md="6">
+            <form @submit.prevent="startFilter">
+              <VRow>
+                <VCol md="4" class="direct-sale__search">
+                  <VSelect
+                    :label="$t('warehouses')"
+                    :items="storeList"
+                    item-text="name"
+                    item-value="id"
+                    clearable
+                    autocomplete
+                    v-model="params.store_id"
                   />
-                </template>
-              </VTable>
-              <VCardAction>
-                <VSpacer />
-                <VBtn @click="cancelChoseSearchResponse" text class="mr-10">{{
-                  $t('cancel')
-                }}</VBtn>
-                <VBtn
-                  @click="doneChooseSearchResponse"
-                  color="success"
-                  :disabled="choseResponseSearch.length === 0"
-                >
-                  {{ $t('save') }}
-                </VBtn>
-              </VCardAction>
-            </v-card>
+                  <v-card v-if="isManyRes" class="direct-sale__search__body">
+                    <VTable
+                      :items="responseSearch"
+                      :headers="headersForSelectableResponse"
+                      clickable
+                      @clicked="selectSearchedResponse"
+                    />
+                    <VCardAction>
+                      <VSpacer />
+                      <VBtn
+                        @click="cancelChoseSearchResponse"
+                        text
+                        outlined
+                        color="danger"
+                        class="mr-10"
+                        >{{ $t('cancel') }}</VBtn
+                      >
+                    </VCardAction>
+                  </v-card>
+                </VCol>
+                <VCol md="6">
+                  <VInput
+                    :label="$t('search')"
+                    v-model="params.search"
+                    clearable
+                  />
+                </VCol>
+                <VCol md="2">
+                  <VBtn
+                    style="display: flex"
+                    min-width="40px"
+                    color="primary"
+                    class="mb-20 mb-md-0 justify-center align-center"
+                    type="submit"
+                    :disabled="!params.search || !params.store_id"
+                  >
+                    <VIcon size="24" icon="search-solid" />
+                  </VBtn>
+                </VCol>
+              </VRow>
+            </form>
           </VCol>
-          <VCol md="3">
-            <VInput :label="$t('search')" v-model="params.search" clearable />
-          </VCol>
-          <VCol md="1">
-            <VBtn
-              style="display: flex"
-              min-width="40px"
-              color="primary"
-              class="mb-20 mb-md-0 justify-center align-center"
-              @click="startFilter"
-              :disabled="!params.search || !params.store_id"
-            >
-              <VIcon size="24" icon="search-solid" />
-            </VBtn>
-          </VCol>
-          <VCol md="2">
-            <VInput
-              :label="$t('fullNameClient')"
-              v-model="form.full_name"
-              clearable
-            />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              :label="$t('saleCurrency')"
-              :items="currencyList"
-              item-text="name"
-              item-value="key"
-              rules="required"
-              vid="currency_id"
-              clearable
-              autocomplete
-              v-model="currency"
-            />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              v-if="isOrganisation"
-              :label="$t('employees')"
-              :items="employeeList"
-              item-text="full_name"
-              item-value="user_id"
-              rules="required"
-              vid="user_id"
-              clearable
-              autocomplete
-              v-model="form.user_id"
-            />
+          <VCol md="6">
+            <VRow>
+              <VCol md="4">
+                <VInput
+                  :label="$t('fullNameClient')"
+                  v-model="form.full_name"
+                  clearable
+                />
+              </VCol>
+              <VCol md="4">
+                <VSelect
+                  :label="$t('saleCurrency')"
+                  :items="currencyList"
+                  item-text="name"
+                  item-value="key"
+                  rules="required"
+                  vid="currency_id"
+                  clearable
+                  autocomplete
+                  v-model="currency"
+                />
+              </VCol>
+              <VCol md="4">
+                <VSelect
+                  v-if="isOrganisation"
+                  :label="$t('employees')"
+                  :items="employeeList"
+                  item-text="full_name"
+                  item-value="user_id"
+                  rules="required"
+                  vid="user_id"
+                  clearable
+                  autocomplete
+                  v-model="form.user_id"
+                />
+              </VCol>
+            </VRow>
           </VCol>
         </VRow>
       </Form>
       <VLine class="mb-20" />
       <VTable :headers="headers" :items="items">
-        <template #item.actions="{ iy }">
-          <VBtn class="ml-2" small @click="deleteItem(iy)">
+        <template #item.actions="{ item, iy }">
+          <VBtn
+            :class="['ml-2', { disabled: item.is_bonus }]"
+            small
+            @click="deleteItem(iy)"
+          >
             <VIcon size="12" icon="delete" />
           </VBtn>
         </template>
@@ -105,11 +117,16 @@
           <div class="d-flex align-center">
             <VInput
               v-model="item.selling_price_sum"
-              :rules="`min_value:${item.selling_price_min[currency]}`"
+              :rules="
+                !item.is_bonus
+                  ? `min_value:${item.selling_price_min[currency]}`
+                  : ''
+              "
               :name="$t('price')"
               @update:modelValue="changeSellPrice"
               type="number"
-              style="margin-bottom: -18px"
+              class="mt-18"
+              :disabled="item.is_bonus"
             />
           </div>
         </template>
@@ -121,6 +138,7 @@
               @change="checkBonusProduct(item, iy)"
               :true-value="item.product_id"
               :false-value="0"
+              :class="{ disabled: availableBonus && !item.is_bonus }"
               hide-details
             />
           </div>
@@ -133,8 +151,25 @@
           />
         </template>
       </VTable>
-      <div class="mt-10">
-        {{ $t('totalPayable') }}: {{ allPriceWithFormat }}
+      <div class="mt-10 mb-15 direct-sale__body__payment-text">
+        {{ $t('totalPayable') }}:
+        <b class="direct-sale__body__payment-text__amount">{{
+          allPriceWithFormat
+        }}</b>
+      </div>
+      <VLine v-if="payments.length" class="mb-10" />
+      <div
+        v-for="(item, i) in payments"
+        :key="`payments-${i}`"
+        class="mb-10 direct-sale__body__payment-text"
+      >
+        <span v-if="item.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main">
+          {{ item.name }}:
+        </span>
+        <span v-else>{{ $t('additionalAmount') }}: </span>
+        <b class="direct-sale__body__payment-text__amount">{{
+          $moneyFormatWithComma(item.amount)
+        }}</b>
       </div>
       <VLine class="my-20" />
       <VRow class="mt-5">
@@ -151,9 +186,10 @@
                 : ''
             "
             :outlined="paymentTypeErrorMessage && !isMainPaid"
+            :disabled="!items.length"
             v-for="(item, i) in paymentTypeList"
             :key="`payment-type-${i}`"
-            @click="selectPaymentType(item.type)"
+            @click="selectPaymentType(item)"
           >
             {{ item.name }}
           </VBtn>
@@ -201,8 +237,12 @@
       :currency="currency"
       :paymentTypeList="paymentTypeList"
       @check-bonus-product="checkBonusProduct"
+      @check-bonus-with-search="checkBonusWithSearch"
     />
-    <BonusOrNotModal ref="bonusOrNotRef" />
+    <BonusOrNotModal
+      ref="bonusOrNotRef"
+      @check-bonus-product="checkBonusWithSearch"
+    />
   </div>
 </template>
 
@@ -268,6 +308,8 @@ const { addQuery, getQuery, clearQuery } = useQuery()
 
 const { user } = useUserService()
 
+//static variables
+
 const FORM = {
   currency_id: null,
   full_name: '',
@@ -283,6 +325,9 @@ const FORM = {
     },
   ],
 }
+
+const CASH_REGISTER_KEY = 'CASH_REGISTER'
+const PAYMENTS = 'PAYMENTS'
 
 const queries = getQuery([
   'page',
@@ -348,6 +393,14 @@ const isMainPaid = computed(() => {
   return count > 0
 })
 
+const availableBonus = computed(() => {
+  let count = false
+  items.value.forEach((p) => {
+    if (p.is_bonus) count = true
+  })
+  return count
+})
+
 const submit = async () => {
   const { $setFormErrors } = useFormActions(cashRegisterRef.value)
   const validate = {} as Record<string, string>
@@ -366,7 +419,10 @@ const submit = async () => {
   if (validateValues.length) {
     cashRegisterRef.value.setErrors(validate)
   }
-  if (!payments.value.length) {
+  const isPayment = payments.value.filter(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
+  )
+  if (!payments.value.length || !isPayment.length) {
     paymentTypeErrorMessage.value = t('validation.required', {
       field: t('paymentType'),
     })
@@ -384,7 +440,12 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    if (p.price) form.value.products[i].sold = p.price
+    if (!fixedNumber(p.price)) form.value.products[i].sold = p.price
+    else
+      form.value.products[i].sold =
+        typeof p.price === 'string'
+          ? parseInt(p.price).toFixed(2)
+          : p.price.toFixed(2)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
@@ -409,6 +470,9 @@ const submit = async () => {
       cancelChoseSearchResponse()
       changeSellPrice()
       cashRegisterRef.value.resetForm()
+      $successMessage(t('notifications.addedSuccessfully'))
+      payments.value = []
+      SET_PAYMENTS()
     } catch (err) {
       $setResponseErrors(err)
       $setFormErrors(err)
@@ -417,7 +481,10 @@ const submit = async () => {
 }
 
 const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
+  clearMainPayments()
   payments.value.push(...val)
+  payment_type.value = ''
+  SET_PAYMENTS()
 }
 
 const startFilter = async () => {
@@ -433,43 +500,42 @@ const startFilter = async () => {
   }
 }
 
-const selectSearchedResponse = (item: DirectSaleDataItemType, e: boolean) => {
-  if (e) choseResponseSearch.value.push(item)
-  else {
-    const index = choseResponseSearch.value.map((p) => p.id).indexOf(item.id)
-    choseResponseSearch.value.splice(index, 1)
+const selectSearchedResponse = (item: DirectSaleDataItemType) => {
+  let index = -1
+  let isBonus = false
+  items.value.forEach((p, i) => {
+    if (
+      p.store_id === item.store_id &&
+      p.product_id === item.product_id &&
+      !p.is_bonus
+    ) {
+      index = i
+    } else if (
+      p.store_id === item.store_id &&
+      p.product_id === item.product_id &&
+      p.is_bonus
+    ) {
+      isBonus = true
+    }
+  })
+  if (isBonus) {
+    $errorMessage(t('selectedProductAvailableList'))
+    return
   }
+  if (index > -1 && !isBonus) bonusOrNotRef.value.openDialog(item)
+  else {
+    items.value.push(item)
+    isManyRes.value = false
+  }
+  clearFilter()
+  clearMainPayments()
+  changeSellPrice()
 }
 
 const cancelChoseSearchResponse = () => {
   isManyRes.value = false
   choseResponseSearch.value = []
   responseSearch.value = []
-}
-
-const doneChooseSearchResponse = () => {
-  if (items.value.length) {
-    for (let i = 0; i < choseResponseSearch.value.length; i++) {
-      const item = items.value.find(
-        (p) =>
-          p.product_id === choseResponseSearch.value[i].product_id &&
-          p.store_id === choseResponseSearch.value[i].store_id &&
-          !p.is_bonus
-      )
-      directSaleBonusRef.value.openDialog(null, i, item)
-      if (item) {
-        item.sell_count++
-      } else items.value.push(choseResponseSearch.value[i])
-    }
-  } else {
-    items.value.push(...choseResponseSearch.value)
-  }
-  $successMessage(t('notifications.addedSuccessfully'))
-  params.value.store_id = ''
-  params.value.search = ''
-  changeSellPrice()
-  cancelChoseSearchResponse()
-  addQuery(params.value)
 }
 
 const fetchData = async () => {
@@ -496,15 +562,16 @@ const fetchData = async () => {
         }
       })
       if (index > -1) {
-        items.value[index].sell_count++
+        // items.value[index].sell_count++
+        bonusOrNotRef.value.openDialog(value[0])
+        return
       } else {
         items.value.push(...value)
+        clearMainPayments()
       }
       $successMessage(t('notifications.addedSuccessfully'))
       changeSellPrice()
-      params.value.store_id = ''
-      params.value.search = ''
-      addQuery(params.value)
+      clearFilter()
     }
     SET_ITEMS()
   } catch (err) {
@@ -554,24 +621,86 @@ const fetchStoreList = async () => {
   }
 }
 
-const selectPaymentType = (type: string) => {
+const selectPaymentType = (item: Record<string, any>) => {
   paymentTypeErrorMessage.value = null
-  payment_type.value = type
+  payment_type.value = item.type
+  clearMainPayments()
   payments.value.push({
-    payment_type: type,
-    type: 'main',
+    payment_type: item.type,
+    name: item.name,
+    type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
     amount: allCellingPrice.value,
   })
 }
 
 const changeAdditionalBonusSum = $debounce(() => {
-  items.value.forEach((p, i) => {
-    if (p.is_bonus && p.isBonus) {
-      checkBonusProduct(p, i, true)
+  if (items.value) {
+    items.value.forEach((p, i) => {
+      if (p.is_bonus && p.isBonus) {
+        checkBonusProduct(p, i, true)
+      }
+    })
+    addQuery(params.value)
+  }
+}, 500)
+
+const bonusRepeatCodeBody = (
+  item: DirectSaleDataItemType,
+  data: any,
+  additional_amount_sum?: number,
+  payment_type?: string
+) => {
+  items.value.forEach((p) => {
+    if (p.is_bonus) {
+      p.isBonus = 0
+      p.bonus_id = 0
+      p.is_bonus = false
     }
   })
-  addQuery(params.value)
-}, 500)
+  item.isBonus = item.product_id
+  item.bonus_id = data.id
+  item.is_bonus = true
+  item.selling_price_sum = 0
+  payments.value = []
+  if (additional_amount_sum) directSaleBonusRef.value.closeDialog()
+  if (payment_type && additional_amount_sum) {
+    payments.value.push({
+      payment_type,
+      type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional,
+      amount: additional_amount_sum,
+    })
+  }
+}
+
+const bonusStartCheckRepeatCode = (
+  item: DirectSaleDataItemType,
+  additional_amount_sum?: number
+) => {
+  let allPrice = 0
+  if (items.value.length) {
+    items.value.forEach((p) => {
+      if (!p.is_bonus) {
+        allPrice += +p.price
+      }
+    })
+  }
+  const options: CheckBonusType = {
+    all_amount: allPrice,
+    selling_price_sum: item.selling_price_sum,
+    client_type: CLIENT_TYPES.individual,
+  }
+  if (additional_amount_sum) {
+    options.additional_amount_sum = additional_amount_sum
+    form.value.additional_amount_sum = additional_amount_sum
+  }
+  const currencyItem = currencyList.value.find((p) => p.key === currency.value)
+  if (currencyItem && currencyItem.id) options.currency_id = currencyItem.id
+
+  return {
+    allPrice,
+    options,
+  }
+}
 
 const checkBonusProduct = async (
   item: DirectSaleDataItemType,
@@ -580,87 +709,119 @@ const checkBonusProduct = async (
   additional_amount_sum?: number,
   payment_type?: string
 ) => {
-  let allPrice = 0
-  if (items.value.length && items.value.length > 1) {
+  $showLoading()
+  if (changeAdditional || !item.is_bonus) {
+    const { allPrice, options } = bonusStartCheckRepeatCode(
+      item,
+      additional_amount_sum
+    )
+    try {
+      if (allPrice) {
+        const {
+          data: { data },
+        } = await checkBonus(options)
+        if (!changeAdditional) {
+          bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
+        }
+      } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
+        $errorMessage(t('notifications.amountInsufficient'))
+        if (!changeAdditional) {
+          setTimeout(() => {
+            items.value[index].isBonus = 0
+          }, 200)
+        }
+      } else {
+        setTimeout(() => {
+          item.isBonus = 0
+          item.bonus_id = 0
+          item.is_bonus = false
+          const indexWithType = payments.value
+            .map((p) => p.type)
+            .indexOf(PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional)
+
+          if (indexWithType > -1) payments.value.splice(indexWithType, 1)
+        }, 50)
+      }
+    } catch (err: any) {
+      const errors = err?.response?.data?.errors
+      if (errors && errors.additional_amount && errors.bonus_amount) {
+        directSaleBonusRef.value.openDialog(
+          err.response.data.errors,
+          index,
+          item
+        )
+        items.value[index].isBonus = 0
+      } else {
+        directSaleBonusRef.value.closeDialog()
+      }
+      $setResponseErrors(err)
+    }
+  } else if (item.is_bonus) {
+    let count = 0
     items.value.forEach((p) => {
-      if (p.product_id !== item.product_id) {
-        allPrice += +p.price
+      if (p.product_id === item.product_id) {
+        count++
       }
     })
-  }
-  const currencyItem = currencyList.value.find((p) => p.key === currency.value)
-  const options: CheckBonusType = {
-    all_amount: allPrice,
-    selling_price_sum: item.selling_price_sum,
-    client_type: CLIENT_TYPES.individual,
-  }
-  if (currencyItem && currencyItem.id) options.currency_id = currencyItem.id
-  if (additional_amount_sum)
-    options.additional_amount_sum = additional_amount_sum
-  try {
-    if (allPrice > 0 && (changeAdditional || !item.is_bonus)) {
-      const {
-        data: { data },
-      } = await checkBonus(options)
-      if (!changeAdditional) {
-        items.value.forEach((p) => {
-          if (p.is_bonus) {
-            p.isBonus = 0
-            p.bonus_id = 0
-            p.is_bonus = false
-          }
-        })
-        item.isBonus = item.product_id
-        item.bonus_id = data.id
-        item.is_bonus = true
-        if (additional_amount_sum) directSaleBonusRef.value.closeDialog()
-        if (payment_type && additional_amount_sum) {
-          payments.value.push({
-            payment_type: payment_type,
-            type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional,
-            amount: additional_amount_sum,
-          })
-        }
-      }
-    } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
-      $errorMessage(t('notifications.amountInsufficient'))
-      if (!changeAdditional) {
-        setTimeout(() => {
-          items.value[index].isBonus = 0
-        }, 200)
-      }
+    if (count > 1) {
+      items.value.splice(index, 1)
     } else {
-      setTimeout(() => {
-        item.isBonus = 0
-        item.bonus_id = 0
-        item.is_bonus = false
-        const indexWithType = payments.value
-          .map((p) => p.type)
-          .indexOf(PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional)
-
-        if (indexWithType > -1) payments.value.splice(indexWithType, 1)
-      }, 50)
+      item.is_bonus = false
+      item.isBonus = 0
+      item.bonus_id = 0
+      item.selling_price_sum = item.price
     }
-    SET_ITEMS()
+  }
+  changeSellPrice()
+  $clearLoading()
+}
+
+const checkBonusWithSearch = async (
+  item: DirectSaleDataItemType,
+  additional_amount_sum?: number,
+  payment_type?: string
+) => {
+  const { options } = bonusStartCheckRepeatCode(item, additional_amount_sum)
+  try {
+    const { data } = await checkBonus(options)
+    bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
+    items.value.push(item)
+    if (isManyRes.value) isManyRes.value = false
+    changeSellPrice()
+    bonusOrNotRef.value.closeDialog()
+    clearFilter()
   } catch (err: any) {
+    bonusOrNotRef.value.closeDialog()
     const errors = err?.response?.data?.errors
     if (errors && errors.additional_amount && errors.bonus_amount) {
-      directSaleBonusRef.value.openDialog(err.response.data.errors, index, item)
+      directSaleBonusRef.value.openDialog(
+        err.response.data.errors,
+        0,
+        item,
+        true
+      )
+    } else {
+      directSaleBonusRef.value.closeDialog()
     }
-    items.value[index].isBonus = 0
     $setResponseErrors(err)
   }
 }
 
 const deleteItem = (index: number) => {
   items.value.forEach((p, i) => {
-    if (p.is_bonus && p.bonus_id) {
+    if (p.is_bonus && p.bonus_id && index !== i) {
       checkBonusProduct(p, i)
     }
   })
   items.value.splice(index, 1)
   $successMessage(t('notifications.deletedSuccessfully'))
   changeSellPrice()
+}
+
+const clearMainPayments = () => {
+  payments.value = payments.value.filter(
+    (p) => p.type !== PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
+  )
 }
 
 const changeSellPrice = $debounce(() => {
@@ -676,12 +837,11 @@ const changeSellPrice = $debounce(() => {
 }, 300)
 
 onBeforeUnmount(() => {
-  console.log('destroyed')
   items.value = []
+  payments.value = []
   SET_ITEMS()
+  SET_PAYMENTS()
 })
-
-const CASH_REGISTER_KEY = 'CASH_REGISTER'
 
 const SET_ITEMS = () => {
   localStorage.setItem(CASH_REGISTER_KEY, JSON.stringify(items.value))
@@ -693,11 +853,41 @@ const GET_ITEMS = () => {
   return null
 }
 
+const SET_PAYMENTS = () => {
+  localStorage.setItem(PAYMENTS, JSON.stringify(payments.value))
+}
+
+const GET_PAYMENTS = () => {
+  const payments = localStorage.getItem(PAYMENTS)
+  if (payments) return JSON.parse(payments)
+  return []
+}
+
+const clearFilter = () => {
+  params.value.store_id = ''
+  params.value.search = ''
+  addQuery(params.value)
+}
+
+const fixedNumber = (price: number | string) => {
+  const checkNumber =
+    typeof price === 'string' ? parseInt(price).toFixed() : price.toFixed()
+  const wholePartNumberLength = checkNumber.length
+  const totalLengthPrice =
+    typeof price === 'string'
+      ? price.length - 1
+      : price.toString(price).length - 1
+  return totalLengthPrice - wholePartNumberLength > 2
+}
+
 const useFetchData = async () => {
   $showLoading()
   if (GET_ITEMS()) {
     items.value = GET_ITEMS()
     changeSellPrice()
+  }
+  if (GET_PAYMENTS()) {
+    payments.value = GET_PAYMENTS()
   }
   await fetchCurrencyList()
   await fetchStoreList()

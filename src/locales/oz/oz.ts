@@ -285,6 +285,8 @@ export default {
     'Этот продукт доступен, выберите продукт, если вы хотите добавить продукт в качестве бонуса',
   acceptBonusProduct:
     'Товар есть в наличии, хотите добавить товар в качестве бонуса?',
+  selectedProductAvailableList: 'Выбранный продукт доступен в списке',
+  additionalAmount: 'Дополнительная сумма',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

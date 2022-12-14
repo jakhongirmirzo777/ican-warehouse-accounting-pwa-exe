@@ -1,30 +1,8 @@
 <template>
   <VModal v-model="dialog" :title="$t('attention') + '!'" width="520">
-    <Form
-      @submit="
-        $emit(
-          'check-bonus-product',
-          itemDate,
-          indexBonus,
-          false,
-          bonusError.additional_amount,
-          bonusPaymentType
-        )
-      "
-    >
+    <Form @submit="$emit('check-bonus-product', itemDate)">
       {{ $t('bonusProductText') }}
       <div class="mt-30">
-        <VSelect
-          :label="$t('paymentType')"
-          :items="paymentTypeList"
-          item-text="name"
-          item-value="type"
-          rules="required"
-          vid="bonusPaymentType"
-          clearable
-          autocomplete
-          v-model="bonusPaymentType"
-        />
         <VLine class="my-18" />
         <div class="d-flex justify-end align-center">
           <VBtn
@@ -49,7 +27,6 @@
 
 <script setup lang="ts">
 import VModal from '@/components/ui/VModal.vue'
-import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import { Form } from 'vee-validate'
@@ -67,17 +44,11 @@ defineProps({
   },
 })
 
-const bonusError = ref<any>({})
-const bonusPaymentType = ref('')
-const indexBonus = ref<number | null>(null)
 const itemDate = ref<Record<string, any>>({})
 
-const openDialog = (val: any, index: number, item: DirectSaleDataItemType) => {
-  console.log(item);
-  bonusError.value = val
+const openDialog = (item: DirectSaleDataItemType) => {
   dialog.value = true
   itemDate.value = item
-  indexBonus.value = index
 }
 
 const closeDialog = () => {

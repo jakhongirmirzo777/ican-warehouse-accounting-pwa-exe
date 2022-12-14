@@ -54,5 +54,6 @@ export interface CheckBonusType {
 export interface PaymentsType {
   payment_type: string
   type: string
+  name?: string
   amount: string | number
 }

@@ -1,5 +1,8 @@
 <template>
   <VModal v-model="dialog" width="660" :title="$t('paymentDifferentWays')">
+    <h4 class="mb-20">
+      {{ $t('totalPayable') }}: <b class="total-price">{{ totalPrice }}</b>
+    </h4>
     <Form @submit="saveTypes" ref="typesRef">
       <div>
         <div
@@ -150,6 +153,7 @@ const saveTypes = () => {
       if (p.payment_type && p.amount) {
         resultArr.push({
           payment_type: p.payment_type,
+          name: p.name,
           amount:
             typeof p.amount === 'string' ? $clearNonDigits(p.amount) : p.amount,
           type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
@@ -182,5 +186,8 @@ defineExpose({ openDialog })
   margin-bottom: 20px;
   font-size: 14px;
   color: #f94e4f;
+}
+.total-price {
+  color: black;
 }
 </style>
