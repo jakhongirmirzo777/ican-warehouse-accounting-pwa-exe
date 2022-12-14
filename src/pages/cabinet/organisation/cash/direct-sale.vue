@@ -130,6 +130,13 @@
             />
           </div>
         </template>
+        <template #item.selling_price_sum="{ item }">
+          <div>
+            {{
+              $moneyFormatWithComma(+item.selling_price_sum * +item.sell_count)
+            }}
+          </div>
+        </template>
         <template #item.bonusOnSale="{ item, iy }">
           <div>
             <VCheckbox
@@ -440,12 +447,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    if (!fixedNumber(p.price)) form.value.products[i].sold = p.price
-    else
-      form.value.products[i].sold =
-        typeof p.price === 'string'
-          ? parseInt(p.price).toFixed(2)
-          : p.price.toFixed(2)
+    form.value.products[i].sold = fixedNumber(p.price)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
@@ -453,11 +455,15 @@ const submit = async () => {
       form.value.products[i].sold = 0
     }
   })
-  if (params.value.additional_amount_sum)
-    form.value.additional_amount_sum = $clearNonDigits(
-      params.value.additional_amount_sum
-    )
-  if (allCellingPrice.value) form.value.total_amount = allCellingPrice.value
+  const addition_sum = payments.value.find(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
+  )
+  if (addition_sum?.amount) {
+    const additional = $clearNonDigits(addition_sum.amount.toString())
+    form.value.additional_amount_sum = fixedNumber(additional)
+  }
+  if (allCellingPrice.value)
+    form.value.total_amount = fixedNumber(allCellingPrice.value)
   if (payments.value) form.value.payments = payments.value
   if (!Object.keys(validate).length) {
     try {
@@ -553,6 +559,7 @@ const fetchData = async () => {
     if (value.length > 1) isManyRes.value = true
     else if (value.length === 1) {
       let index = -1
+      let isBonus = false
       items.value.forEach((p, i) => {
         if (
           p.store_id === value[0].store_id &&
@@ -560,7 +567,19 @@ const fetchData = async () => {
         ) {
           index = i
         }
+        if (
+          p.store_id === value[0].store_id &&
+          p.product_id === value[0].product_id &&
+          p.bonus_id
+        ) {
+          isBonus = true
+        }
       })
+      if (isBonus) {
+        $errorMessage(t('selectedProductAvailableList'))
+        clearFilter()
+        return
+      }
       if (index > -1) {
         // items.value[index].sell_count++
         bonusOrNotRef.value.openDialog(value[0])
@@ -650,17 +669,11 @@ const bonusRepeatCodeBody = (
   additional_amount_sum?: number,
   payment_type?: string
 ) => {
-  items.value.forEach((p) => {
-    if (p.is_bonus) {
-      p.isBonus = 0
-      p.bonus_id = 0
-      p.is_bonus = false
-    }
-  })
   item.isBonus = item.product_id
   item.bonus_id = data.id
   item.is_bonus = true
   item.selling_price_sum = 0
+  item.sell_count = 1
   payments.value = []
   if (additional_amount_sum) directSaleBonusRef.value.closeDialog()
   if (payment_type && additional_amount_sum) {
@@ -669,29 +682,35 @@ const bonusRepeatCodeBody = (
       type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional,
       amount: additional_amount_sum,
     })
+    SET_PAYMENTS()
   }
 }
 
 const bonusStartCheckRepeatCode = (
   item: DirectSaleDataItemType,
-  additional_amount_sum?: number
+  additional_amount_sum?: number,
+  main = false
 ) => {
   let allPrice = 0
   if (items.value.length) {
     items.value.forEach((p) => {
-      if (!p.is_bonus) {
+      if (
+        (main && !p.is_bonus && p.product_id !== item.product_id) ||
+        (!main && !p.is_bonus)
+      ) {
         allPrice += +p.price
       }
     })
   }
+  allPrice = +fixedNumber(allPrice)
   const options: CheckBonusType = {
     all_amount: allPrice,
-    selling_price_sum: item.selling_price_sum,
+    selling_price_sum: fixedNumber(item.selling_price_sum),
     client_type: CLIENT_TYPES.individual,
   }
   if (additional_amount_sum) {
-    options.additional_amount_sum = additional_amount_sum
-    form.value.additional_amount_sum = additional_amount_sum
+    options.additional_amount_sum = form.value.additional_amount_sum =
+      fixedNumber(additional_amount_sum)
   }
   const currencyItem = currencyList.value.find((p) => p.key === currency.value)
   if (currencyItem && currencyItem.id) options.currency_id = currencyItem.id
@@ -713,7 +732,8 @@ const checkBonusProduct = async (
   if (changeAdditional || !item.is_bonus) {
     const { allPrice, options } = bonusStartCheckRepeatCode(
       item,
-      additional_amount_sum
+      additional_amount_sum,
+      true
     )
     try {
       if (allPrice) {
@@ -731,16 +751,14 @@ const checkBonusProduct = async (
           }, 200)
         }
       } else {
-        setTimeout(() => {
-          item.isBonus = 0
-          item.bonus_id = 0
-          item.is_bonus = false
-          const indexWithType = payments.value
-            .map((p) => p.type)
-            .indexOf(PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional)
+        item.isBonus = 0
+        item.bonus_id = 0
+        item.is_bonus = false
+        const indexWithType = payments.value
+          .map((p) => p.type)
+          .indexOf(PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional)
 
-          if (indexWithType > -1) payments.value.splice(indexWithType, 1)
-        }, 50)
+        if (indexWithType > -1) payments.value.splice(indexWithType, 1)
       }
     } catch (err: any) {
       const errors = err?.response?.data?.errors
@@ -783,7 +801,9 @@ const checkBonusWithSearch = async (
 ) => {
   const { options } = bonusStartCheckRepeatCode(item, additional_amount_sum)
   try {
-    const { data } = await checkBonus(options)
+    const {
+      data: { data },
+    } = await checkBonus(options)
     bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
     items.value.push(item)
     if (isManyRes.value) isManyRes.value = false
@@ -815,6 +835,8 @@ const deleteItem = (index: number) => {
   })
   items.value.splice(index, 1)
   $successMessage(t('notifications.deletedSuccessfully'))
+  payments.value = []
+  SET_PAYMENTS()
   changeSellPrice()
 }
 
@@ -874,10 +896,14 @@ const fixedNumber = (price: number | string) => {
     typeof price === 'string' ? parseInt(price).toFixed() : price.toFixed()
   const wholePartNumberLength = checkNumber.length
   const totalLengthPrice =
-    typeof price === 'string'
-      ? price.length - 1
-      : price.toString(price).length - 1
-  return totalLengthPrice - wholePartNumberLength > 2
+    typeof price === 'string' ? price.length - 1 : price.toString().length - 1
+  if (totalLengthPrice - wholePartNumberLength > 2) {
+    return typeof price === 'string'
+      ? parseInt(price).toFixed(2)
+      : price.toFixed(2)
+  } else {
+    return price
+  }
 }
 
 const useFetchData = async () => {

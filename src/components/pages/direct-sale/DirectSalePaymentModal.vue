@@ -35,8 +35,18 @@
         </div>
       </div>
       <div class="amount-exceeded">
-        <span v-if="errorMessage">{{ errorMessage }}</span>
-        <span v-if="errorMessageNonAmount">{{ errorMessageNonAmount }}</span>
+        <el-alert
+          v-if="errorMessage"
+          :title="errorMessage"
+          type="error"
+          :closable="false"
+        />
+        <el-alert
+          v-if="errorMessageNonAmount"
+          :title="errorMessageNonAmount"
+          type="error"
+          :closable="false"
+        />
       </div>
       <div>
         <VLine class="mb-24" />
@@ -70,6 +80,7 @@ import VCol from '@/components/ui/VCol.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VLine from '@/components/ui/VLine.vue'
 import { Form } from 'vee-validate'
+import { ElAlert } from 'element-plus'
 
 import { computed, ref, watch } from 'vue'
 import { $clearNonDigits } from '@/utils/pure-functions'
@@ -142,11 +153,18 @@ const openDialog = (
 
 const saveTypes = () => {
   let count = 0
+  let allPrice = 0
   paymentsTypes.value.forEach((p) => {
-    if (p.amount) count++
+    if (p.amount) {
+      count++
+      allPrice +=
+        typeof p.amount === 'string' ? +$clearNonDigits(p.amount) : +p.amount
+    }
   })
   if (!count) {
     errorMessageNonAmount.value = t('paymentAmountNotFilled')
+  } else if (allPrice < +$clearNonDigits(totalPrice.value)) {
+    errorMessageNonAmount.value = t('amountEnteredLessAmountDue')
   } else {
     const resultArr: Array<PaymentsType> = []
     paymentsTypes.value.forEach((p) => {
