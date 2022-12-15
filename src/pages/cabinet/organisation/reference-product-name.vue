@@ -270,6 +270,7 @@ const useFetchBarcode = async (id: number) => {
       data: { data },
     } = await fetchBarcode(id)
     barcodeSvg.value = data.svg
+    barcodeLoading.value[id] = false
     await handlePrint()
   } catch (err) {
     $setResponseErrors(err)
