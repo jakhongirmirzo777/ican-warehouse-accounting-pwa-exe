@@ -28,6 +28,6 @@ export interface ReferenceCoursesPageOptionsType {
 
 export interface CurrencyKeyList {
   name: string
-  id: number | null
-  key: string
+  id: number | string
+  key: string | number
 }

@@ -32,7 +32,7 @@ import VBtn from '@/components/ui/VBtn.vue'
 import { Form } from 'vee-validate'
 
 import { ref, defineExpose, defineProps } from 'vue'
-import type { DirectSaleDataItemType } from '@/types/cabinet/DirectSaleTypes'
+import type { DirectSaleDataItemType } from '@/types/cabinet/CashTypes'
 
 defineProps({
   currency: {

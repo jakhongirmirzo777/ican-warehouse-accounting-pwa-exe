@@ -85,7 +85,7 @@ import { ElAlert } from 'element-plus'
 import { computed, ref, watch } from 'vue'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import { useI18n } from 'vue-i18n'
-import type { PaymentsType } from '@/types/cabinet/DirectSaleTypes'
+import type { PaymentsType } from '@/types/cabinet/CashTypes'
 import { useNotificationService } from '@/plugins/notification-service'
 import { PAYMENT_TYPE_ADDITIONAL_OR_MAIN } from '@/utils/constants'
 

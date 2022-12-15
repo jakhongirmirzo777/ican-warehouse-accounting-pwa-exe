@@ -474,6 +474,15 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION],
         },
       },
+      {
+        path: 'entity-sell',
+        name: 'entity-sell',
+        component: () =>
+          import('@/pages/cabinet/organisation/cash/entity-sell.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION],
+        },
+      },
     ],
   },
   {
