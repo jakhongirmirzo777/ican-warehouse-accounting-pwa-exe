@@ -346,6 +346,7 @@ export default {
   selectedProductAvailableList: 'Выбранный продукт доступен в списке',
   additionalAmount: 'Дополнительная сумма',
   amountEnteredLessAmountDue: 'Введенная сумма меньше суммы к оплате',
+  entitySell: 'Продажа юридическому лицу',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

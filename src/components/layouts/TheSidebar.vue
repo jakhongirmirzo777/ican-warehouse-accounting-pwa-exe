@@ -306,6 +306,10 @@ const menus = computed(() => {
             name: t('directSale'),
             path: 'cash-register',
           },
+          {
+            name: t('entitySell'),
+            path: 'entity-sell',
+          },
         ],
       },
       {

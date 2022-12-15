@@ -14,6 +14,7 @@
       </span>
       <div class="mt-30">
         <VSelect
+          v-if="isPaymentType"
           :label="$t('paymentType')"
           :items="paymentTypeList"
           item-text="name"
@@ -55,7 +56,7 @@ import { Form } from 'vee-validate'
 
 import { ref, defineExpose, defineProps } from 'vue'
 import { CURRENCIES_LIST } from '@/utils/constants'
-import type { DirectSaleDataItemType } from '@/types/cabinet/DirectSaleTypes'
+import type { DirectSaleDataItemType } from '@/types/cabinet/CashTypes'
 
 defineProps({
   currency: {
@@ -64,6 +65,10 @@ defineProps({
   },
   paymentTypeList: {
     type: Array,
+  },
+  isPaymentType: {
+    type: Boolean,
+    default: true,
   },
 })
 

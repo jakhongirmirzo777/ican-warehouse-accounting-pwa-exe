@@ -1,11 +1,11 @@
 <template>
   <div class="direct-sale">
     <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('directSale') }}
-    </VText>
-    <VCard class="direct-sale__body">
-      <Form ref="cashRegisterRef">
+    <Form ref="cashRegisterRef" @submit="submit">
+      <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
+        {{ t('entitySell') }}
+      </VText>
+      <VCard class="direct-sale__body">
         <VRow>
           <VCol md="6">
             <form @submit.prevent="startFilter">
@@ -65,184 +65,172 @@
           <VCol md="6">
             <VRow>
               <VCol md="4">
-                <VInput
-                  :label="$t('fullNameClient')"
-                  v-model="form.full_name"
-                  clearable
-                />
-              </VCol>
-              <VCol md="4">
                 <VSelect
                   :label="$t('saleCurrency')"
                   :items="currencyList"
                   item-text="name"
                   item-value="key"
+                  @change="changeParams"
                   rules="required"
                   vid="currency_id"
-                  clearable
                   autocomplete
-                  v-model="currency"
+                  v-model="params.currency_id"
                 />
               </VCol>
               <VCol md="4">
                 <VSelect
-                  v-if="isOrganisation"
-                  :label="$t('employees')"
-                  :items="employeeList"
-                  item-text="full_name"
-                  item-value="user_id"
+                  :items="counterpartyList"
+                  item-text="company_name"
+                  item-value="id"
                   rules="required"
-                  vid="user_id"
-                  clearable
+                  vid="counterparty_id"
+                  @change="changeParams"
                   autocomplete
-                  v-model="form.user_id"
+                  :label="$t('counterparties')"
+                  v-model="params.counterparty_id"
+                  clearable
+                />
+              </VCol>
+              <VCol md="4">
+                <VSelect
+                  :label="$t('agreement')"
+                  :items="contractList"
+                  item-text="number"
+                  item-value="id"
+                  clearable
+                  @change="changeParams"
+                  rules="required"
+                  vid="contract_id"
+                  autocomplete
+                  v-model="params.contract_id"
                 />
               </VCol>
             </VRow>
           </VCol>
+          <VCol md="2">
+            <VSelect
+              :label="$t('invoice')"
+              :items="invoiceList"
+              item-text="number"
+              item-value="id"
+              clearable
+              @change="changeParams"
+              autocomplete
+              rules="required"
+              vid="invoice_id"
+              v-model="params.invoice_id"
+            />
+          </VCol>
+          <VCol md="2">
+            <VSelect
+              v-if="isOrganisation"
+              :label="$t('employees')"
+              :items="employeeList"
+              item-text="full_name"
+              item-value="user_id"
+              @change="changeParams"
+              rules="required"
+              vid="user_id"
+              clearable
+              autocomplete
+              v-model="params.user_id"
+            />
+          </VCol>
         </VRow>
-      </Form>
-      <VLine class="mb-20" />
-      <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item, iy }">
-          <VBtn
-            :class="['ml-2', { disabled: item.is_bonus }]"
-            small
-            @click="deleteItem(iy)"
-          >
-            <VIcon size="12" icon="delete" />
-          </VBtn>
-        </template>
-        <template #item.selling_price_input="{ item }">
-          <div class="d-flex align-center">
-            <VInput
-              v-model="item.selling_price_sum"
-              :rules="
-                !item.is_bonus
-                  ? `min_value:${item.selling_price_min[currency]}`
-                  : ''
-              "
-              :name="$t('price')"
+        <VLine class="mb-20" />
+        <VTable :headers="headers" :items="items">
+          <template #item.actions="{ item, iy }">
+            <VBtn
+              :class="['ml-2', { disabled: item.is_bonus }]"
+              small
+              @click="deleteItem(iy)"
+            >
+              <VIcon size="12" icon="delete" />
+            </VBtn>
+          </template>
+          <template #item.selling_price_input="{ item, iy }">
+            <div class="d-flex align-center">
+              <VInput
+                v-model="item.selling_price_sum"
+                :rules="
+                  !item.is_bonus
+                    ? `min_value:${item.selling_price_min[params.currency_id]}`
+                    : ''
+                "
+                :name="$t('price')"
+                @update:modelValue="changeSellPrice"
+                type="number"
+                :vid="`price-${iy}`"
+                class="mt-18"
+                :disabled="item.is_bonus"
+              />
+            </div>
+          </template>
+          <template #item.selling_price_sum="{ item }">
+            <div>
+              {{
+                $moneyFormatWithComma(
+                  +item.selling_price_sum * +item.sell_count
+                )
+              }}
+            </div>
+          </template>
+          <template #item.bonusOnSale="{ item, iy }">
+            <div>
+              <VCheckbox
+                v-model="item.isBonus"
+                :value="item.product_id"
+                @change="checkBonusProduct(item, iy)"
+                :true-value="item.product_id"
+                :false-value="0"
+                :class="{ disabled: availableBonus && !item.is_bonus }"
+                hide-details
+              />
+            </div>
+          </template>
+          <template #item.count="{ item }">
+            <VCounter
+              :class="{ disabled: item.is_bonus }"
+              v-model="item.sell_count"
               @update:modelValue="changeSellPrice"
-              type="number"
-              class="mt-18"
-              :disabled="item.is_bonus"
             />
-          </div>
-        </template>
-        <template #item.selling_price_sum="{ item }">
-          <div>
-            {{
-              $moneyFormatWithComma(+item.selling_price_sum * +item.sell_count)
-            }}
-          </div>
-        </template>
-        <template #item.bonusOnSale="{ item, iy }">
-          <div>
-            <VCheckbox
-              v-model="item.isBonus"
-              :value="item.product_id"
-              @change="checkBonusProduct(item, iy)"
-              :true-value="item.product_id"
-              :false-value="0"
-              :class="{ disabled: availableBonus && !item.is_bonus }"
-              hide-details
-            />
-          </div>
-        </template>
-        <template #item.count="{ item }">
-          <VCounter
-            :class="{ disabled: item.is_bonus }"
-            v-model="item.sell_count"
-            @update:modelValue="changeSellPrice"
-          />
-        </template>
-      </VTable>
-      <div class="mt-10 mb-15 direct-sale__body__payment-text">
-        {{ $t('totalPayable') }}:
-        <b class="direct-sale__body__payment-text__amount">{{
-          allPriceWithFormat
-        }}</b>
-      </div>
-      <VLine v-if="payments.length" class="mb-10" />
-      <div
-        v-for="(item, i) in payments"
-        :key="`payments-${i}`"
-        class="mb-10 direct-sale__body__payment-text"
-      >
-        <span v-if="item.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main">
-          {{ item.name }}:
-        </span>
-        <span v-else>{{ $t('additionalAmount') }}: </span>
-        <b class="direct-sale__body__payment-text__amount">{{
-          $moneyFormatWithComma(item.amount)
-        }}</b>
-      </div>
-      <VLine class="my-20" />
-      <VRow class="mt-5">
-        <VCol md="10">
-          <span>{{ $t('paymentType') }}</span>
-          <VBtn
-            :class="[{ 'ml-16': i === 0 }, 'mr-8']"
-            radius="12"
-            :color="
-              paymentTypeErrorMessage && !isMainPaid
-                ? 'danger'
-                : payment_type === item.type
-                ? 'success'
-                : ''
-            "
-            :outlined="paymentTypeErrorMessage && !isMainPaid"
-            :disabled="!items.length"
-            v-for="(item, i) in paymentTypeList"
-            :key="`payment-type-${i}`"
-            @click="selectPaymentType(item)"
-          >
-            {{ item.name }}
-          </VBtn>
-          <VBtn
-            :disabled="!items.length"
-            class="ml-16mr-8"
-            color="warning"
-            @click="
-              $refs.paymentTypeModalRef.openDialog(
-                paymentTypeList,
-                allPriceWithFormat
-              )
-            "
-          >
-            {{ $t('paymentDifferentWays') }}
-          </VBtn>
-        </VCol>
-        <VCol md="2" class="d-flex justify-end">
+          </template>
+        </VTable>
+        <div class="mt-10 mb-15 direct-sale__body__payment-text">
+          {{ $t('totalPayable') }}:
+          <b class="direct-sale__body__payment-text__amount">{{
+            allPriceWithFormat
+          }}</b>
+        </div>
+        <VLine v-if="additional_sum" class="mb-10" />
+        <div
+          v-if="additional_sum"
+          class="mb-10 direct-sale__body__payment-text"
+        >
+          <span>{{ $t('additionalAmount') }}: </span>
+          <b class="direct-sale__body__payment-text__amount">{{
+            $moneyFormatWithComma(additional_sum)
+          }}</b>
+        </div>
+        <VLine class="my-20" />
+        <div class="d-flex">
+          <VSpacer />
           <VBtn
             :disabled="!items.length"
             color="primary"
             radius="12"
             type="submit"
-            @click="submit"
           >
             {{ $t('makePayment') }}
           </VBtn>
-        </VCol>
-        <div
-          class="payment-type-error-message ml-10 mt-10"
-          v-if="paymentTypeErrorMessage && !payments.length"
-        >
-          <span class="payment-type-error-message__message">{{
-            paymentTypeErrorMessage
-          }}</span>
         </div>
-      </VRow>
-    </VCard>
-    <DirectSalePaymentModal
-      ref="paymentTypeModalRef"
-      @saved-payment-type-dialog="savedPaymentTypeDialog"
-    />
+      </VCard>
+    </Form>
     <DirectSaleBonusModal
       ref="directSaleBonusRef"
-      :currency="currency"
+      :currency="params.currency_id"
       :paymentTypeList="paymentTypeList"
+      :is-payment-type="false"
       @check-bonus-product="checkBonusProduct"
       @check-bonus-with-search="checkBonusWithSearch"
     />
@@ -269,22 +257,17 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
 import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
-import {
-  CLIENT_TYPES,
-  PAYMENT_TYPE_ADDITIONAL_OR_MAIN,
-  ROLES,
-} from '@/utils/constants'
+import { CLIENT_TYPES, ROLES } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import {
   checkBonus,
   fetchDirectSale,
   getPaymentTypes,
-  submitDirectSale,
+  submitEntitySell,
 } from '@/services/cabinet/CashService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
@@ -292,21 +275,26 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import type {
   DirectSaleDataItemType,
-  DirectSaleFormType,
+  EntitySellFormType,
   DirectSaleOptionsType,
   CheckBonusType,
-  PaymentsType,
 } from '@/types/cabinet/CashTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
+import type {
+  CounterpartyListWitContractType,
+  CounterpartyContractListType,
+} from '@/types/cabinet/CounterpertyContractsTypes'
+import type { InvoiceListType } from '@/types/cabinet/CounterpartyInvoiceTypes'
 import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
+import { $debounce, $moneyFormatWithComma } from '@/utils/pure-functions'
+import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
 import { useUserService } from '@/plugins/user-service'
 import {
-  $clearNonDigits,
-  $debounce,
-  $moneyFormatWithComma,
-} from '@/utils/pure-functions'
-import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
+  fetchCounterpartyContractList,
+  fetchCounterpartyWithContract,
+} from '@/services/cabinet/CounterpartyContractsServices'
+import { fetchInvoiceList } from '@/services/cabinet/CounterpartyInvoicesService'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -318,10 +306,10 @@ const { user } = useUserService()
 //static variables
 
 const FORM = {
-  currency_id: null,
-  full_name: '',
-  total_amount: '',
-  payments: [],
+  currency_id: '',
+  counterparty_id: '',
+  contract_id: '',
+  invoice_id: '',
   products: [
     {
       product_id: null,
@@ -334,22 +322,38 @@ const FORM = {
 }
 
 const CASH_REGISTER_KEY = 'CASH_REGISTER'
-const PAYMENTS = 'PAYMENTS'
 
 const queries = getQuery([
-  'page',
   'search',
   'store_id',
+  'counterparty_id',
+  'contract_id',
+  'invoice_id',
   'additional_amount_sum',
+  'currency_id',
+  'user_id',
 ])
-clearQuery(['page', 'search', 'store_id', 'additional_amount_sum'])
+clearQuery([
+  'search',
+  'store_id',
+  'counterparty_id',
+  'contract_id',
+  'invoice_id',
+  'additional_amount_sum',
+  'currency_id',
+  'user_id',
+])
 const { t } = useI18n()
 
 const params = ref<DirectSaleOptionsType>({
   search: queries.search || '',
-  page: +queries.page || 1,
   store_id: +queries.store_id || '',
+  counterparty_id: +queries.counterparty_id || '',
+  contract_id: +queries.contract_id || '',
+  invoice_id: +queries.invoice_id || '',
   additional_amount_sum: queries.additional_amount_sum || '',
+  currency_id: queries.currency_id || 'UZS',
+  user_id: queries.user_id || '',
 })
 
 const breadcrumbs = [
@@ -357,21 +361,23 @@ const breadcrumbs = [
     name: t('cashRegister'),
   },
   {
-    name: t('directSale'),
+    name: t('entitySell'),
   },
 ]
 
 const currencyList = ref<Array<CurrencyKeyList>>([])
 const paymentTypeList = ref<Array<Record<string, any>>>([])
 const storeList = ref<Array<Record<string, any>>>([])
-const form = ref<DirectSaleFormType>({ ...FORM })
+const form = ref<EntitySellFormType>({ ...FORM })
 const payment_type = ref('')
 const items = ref<DirectSaleDataItemType[]>([])
 const responseSearch = ref<DirectSaleDataItemType[]>([])
 const choseResponseSearch = ref<DirectSaleDataItemType[]>([])
-const payments = ref<Array<PaymentsType>>([])
+const counterpartyList = ref<Array<CounterpartyListWitContractType>>([])
+const contractList = ref<Array<CounterpartyContractListType>>([])
+const invoiceList = ref<Array<InvoiceListType>>([])
 const allCellingPrice = ref(0)
-const currency = ref('UZS')
+const additional_sum = ref<string | number>(0)
 const employeeList = ref<
   Array<{
     id: number
@@ -380,8 +386,6 @@ const employeeList = ref<
 >([])
 
 const isManyRes = ref(false)
-
-const paymentTypeErrorMessage = ref(null) as any
 
 //refs
 const cashRegisterRef = ref()
@@ -392,13 +396,6 @@ const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
 const allPriceWithFormat = computed(() =>
   $moneyFormatWithComma(allCellingPrice.value)
 )
-const isMainPaid = computed(() => {
-  let count = 0
-  payments.value.forEach((p) => {
-    if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main) count++
-  })
-  return count > 0
-})
 
 const availableBonus = computed(() => {
   let count = false
@@ -408,33 +405,18 @@ const availableBonus = computed(() => {
   return count
 })
 
+const changeParams = () => {
+  setTimeout(() => {
+    addQuery(params.value)
+  }, 200)
+}
+
 const submit = async () => {
   const { $setFormErrors } = useFormActions(cashRegisterRef.value)
-  const validate = {} as Record<string, string>
-  const currencyItem = currencyList.value.find((p) => p.key === currency.value)
-  if (currencyItem) form.value.currency_id = currencyItem.id
-  if (!form.value?.currency_id)
-    validate.currency_id = t('validation.required', {
-      field: t('saleCurrency'),
-    })
-  if (!form.value?.user_id) {
-    validate.user_id = t('validation.required', {
-      field: t('employees'),
-    })
-  }
-  const validateValues = Object.keys(validate)
-  if (validateValues.length) {
-    cashRegisterRef.value.setErrors(validate)
-  }
-  const isPayment = payments.value.filter(
-    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
+  const currencyItem = currencyList.value.find(
+    (p) => p.key === params.value.currency_id
   )
-  if (!payments.value.length || !isPayment.length) {
-    paymentTypeErrorMessage.value = t('validation.required', {
-      field: t('paymentType'),
-    })
-    return
-  }
+  if (currencyItem) form.value.currency_id = currencyItem.id
   items.value.forEach((p, i) => {
     if (!form.value?.products[i]) {
       form.value.products[i] = {
@@ -455,46 +437,38 @@ const submit = async () => {
       form.value.products[i].sold = 0
     }
   })
-  const addition_sum = payments.value.find(
-    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
-  )
-  if (addition_sum?.amount) {
-    const additional = $clearNonDigits(addition_sum.amount.toString())
-    form.value.additional_amount_sum = fixedNumber(additional)
-  }
   if (allCellingPrice.value)
     form.value.total_amount = fixedNumber(allCellingPrice.value)
-  if (payments.value) form.value.payments = payments.value
-  if (!Object.keys(validate).length) {
-    try {
-      await submitDirectSale(form.value)
-      form.value = { ...FORM }
-      items.value = []
-      params.value.additional_amount_sum = ''
-      payments.value = []
-      payment_type.value = ''
-      cancelChoseSearchResponse()
-      changeSellPrice()
-      cashRegisterRef.value.resetForm()
-      $successMessage(t('notifications.addedSuccessfully'))
-      payments.value = []
-      SET_PAYMENTS()
-    } catch (err) {
-      $setResponseErrors(err)
-      $setFormErrors(err)
-    }
+  if (additional_sum.value)
+    form.value.additional_amount_sum = additional_sum.value
+  if (params.value.contract_id)
+    form.value.contract_id = params.value.contract_id
+  if (params.value.counterparty_id)
+    form.value.counterparty_id = params.value.counterparty_id
+  if (params.value.invoice_id) form.value.invoice_id = params.value.invoice_id
+  try {
+    await submitEntitySell(form.value)
+    form.value = { ...FORM }
+    items.value = []
+    params.value.additional_amount_sum = ''
+    params.value.counterparty_id = ''
+    params.value.contract_id = ''
+    params.value.invoice_id = ''
+    params.value.user_id = ''
+    additional_sum.value = ''
+    payment_type.value = ''
+    cancelChoseSearchResponse()
+    changeSellPrice()
+    addQuery(params.value)
+    $successMessage(t('notifications.addedSuccessfully'))
+    cashRegisterRef.value.resetForm()
+  } catch (err) {
+    $setResponseErrors(err)
+    $setFormErrors(err)
   }
-}
-
-const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
-  clearMainPayments()
-  payments.value.push(...val)
-  payment_type.value = ''
-  SET_PAYMENTS()
 }
 
 const startFilter = async () => {
-  params.value.page = 1
   $showLoading()
   try {
     await fetchData()
@@ -534,7 +508,6 @@ const selectSearchedResponse = (item: DirectSaleDataItemType) => {
     isManyRes.value = false
   }
   clearFilter()
-  clearMainPayments()
   changeSellPrice()
 }
 
@@ -542,6 +515,33 @@ const cancelChoseSearchResponse = () => {
   isManyRes.value = false
   choseResponseSearch.value = []
   responseSearch.value = []
+}
+
+const getCounterPartyList = async (id: number | null) => {
+  try {
+    const { data } = await fetchCounterpartyWithContract(id)
+    counterpartyList.value = data
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
+
+const getInvoiceList = async () => {
+  try {
+    const { data } = await fetchInvoiceList()
+    invoiceList.value = data
+  } catch (err) {
+    $setResponseErrors(err)
+  }
+}
+
+const getCounterpartyContractList = async () => {
+  try {
+    const { data } = await fetchCounterpartyContractList()
+    contractList.value = data
+  } catch (err) {
+    $setResponseErrors(err)
+  }
 }
 
 const fetchData = async () => {
@@ -586,7 +586,6 @@ const fetchData = async () => {
         return
       } else {
         items.value.push(...value)
-        clearMainPayments()
       }
       $successMessage(t('notifications.addedSuccessfully'))
       changeSellPrice()
@@ -640,23 +639,11 @@ const fetchStoreList = async () => {
   }
 }
 
-const selectPaymentType = (item: Record<string, any>) => {
-  paymentTypeErrorMessage.value = null
-  payment_type.value = item.type
-  clearMainPayments()
-  payments.value.push({
-    payment_type: item.type,
-    name: item.name,
-    type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
-    amount: allCellingPrice.value,
-  })
-}
-
 const changeAdditionalBonusSum = $debounce(() => {
-  if (items.value) {
+  if (items.value && items.value.length) {
     items.value.forEach((p, i) => {
       if (p.is_bonus && p.isBonus) {
-        checkBonusProduct(p, i, true)
+        checkBonusProduct(p, i, true, params.value.additional_amount_sum)
       }
     })
     addQuery(params.value)
@@ -666,29 +653,22 @@ const changeAdditionalBonusSum = $debounce(() => {
 const bonusRepeatCodeBody = (
   item: DirectSaleDataItemType,
   data: any,
-  additional_amount_sum?: number,
-  payment_type?: string
+  additional_amount_sum?: number | string
 ) => {
   item.isBonus = item.product_id
   item.bonus_id = data.id
   item.is_bonus = true
   item.selling_price_sum = 0
   item.sell_count = 1
-  payments.value = []
   if (additional_amount_sum) directSaleBonusRef.value.closeDialog()
-  if (payment_type && additional_amount_sum) {
-    payments.value.push({
-      payment_type,
-      type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional,
-      amount: additional_amount_sum,
-    })
-    SET_PAYMENTS()
+  if (additional_amount_sum) {
+    additional_sum.value = additional_amount_sum
   }
 }
 
 const bonusStartCheckRepeatCode = (
   item: DirectSaleDataItemType,
-  additional_amount_sum?: number,
+  additional_amount_sum?: number | string,
   main = false
 ) => {
   let allPrice = 0
@@ -705,14 +685,22 @@ const bonusStartCheckRepeatCode = (
   allPrice = +fixedNumber(allPrice)
   const options: CheckBonusType = {
     all_amount: allPrice,
-    selling_price_sum: fixedNumber(item.selling_price_sum),
+    selling_price_sum:
+      fixedNumber(item.selling_price_sum) ?? fixedNumber(item.price),
     client_type: CLIENT_TYPES.individual,
   }
   if (additional_amount_sum) {
-    options.additional_amount_sum = form.value.additional_amount_sum =
-      fixedNumber(additional_amount_sum)
+    options.additional_amount_sum =
+      form.value.additional_amount_sum =
+      params.value.additional_amount_sum =
+      additional_sum.value =
+        fixedNumber(additional_amount_sum)
+
+    addQuery(params.value)
   }
-  const currencyItem = currencyList.value.find((p) => p.key === currency.value)
+  const currencyItem = currencyList.value.find(
+    (p) => p.key === params.value.currency_id
+  )
   if (currencyItem && currencyItem.id) options.currency_id = currencyItem.id
 
   return {
@@ -725,8 +713,7 @@ const checkBonusProduct = async (
   item: DirectSaleDataItemType,
   index: number,
   changeAdditional?: boolean,
-  additional_amount_sum?: number,
-  payment_type?: string
+  additional_amount_sum?: number | string
 ) => {
   $showLoading()
   if (changeAdditional || !item.is_bonus) {
@@ -741,7 +728,7 @@ const checkBonusProduct = async (
           data: { data },
         } = await checkBonus(options)
         if (!changeAdditional) {
-          bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
+          bonusRepeatCodeBody(item, data, additional_amount_sum)
         }
       } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
         $errorMessage(t('notifications.amountInsufficient'))
@@ -754,11 +741,6 @@ const checkBonusProduct = async (
         item.isBonus = 0
         item.bonus_id = 0
         item.is_bonus = false
-        const indexWithType = payments.value
-          .map((p) => p.type)
-          .indexOf(PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional)
-
-        if (indexWithType > -1) payments.value.splice(indexWithType, 1)
       }
     } catch (err: any) {
       const errors = err?.response?.data?.errors
@@ -788,6 +770,7 @@ const checkBonusProduct = async (
       item.isBonus = 0
       item.bonus_id = 0
       item.selling_price_sum = item.price
+      additional_sum.value = ''
     }
   }
   changeSellPrice()
@@ -796,15 +779,14 @@ const checkBonusProduct = async (
 
 const checkBonusWithSearch = async (
   item: DirectSaleDataItemType,
-  additional_amount_sum?: number,
-  payment_type?: string
+  additional_amount_sum?: number
 ) => {
   const { options } = bonusStartCheckRepeatCode(item, additional_amount_sum)
   try {
     const {
       data: { data },
     } = await checkBonus(options)
-    bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
+    bonusRepeatCodeBody(item, data, additional_amount_sum)
     items.value.push(item)
     if (isManyRes.value) isManyRes.value = false
     changeSellPrice()
@@ -835,15 +817,7 @@ const deleteItem = (index: number) => {
   })
   items.value.splice(index, 1)
   $successMessage(t('notifications.deletedSuccessfully'))
-  payments.value = []
-  SET_PAYMENTS()
   changeSellPrice()
-}
-
-const clearMainPayments = () => {
-  payments.value = payments.value.filter(
-    (p) => p.type !== PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
-  )
 }
 
 const changeSellPrice = $debounce(() => {
@@ -860,9 +834,7 @@ const changeSellPrice = $debounce(() => {
 
 onBeforeUnmount(() => {
   items.value = []
-  payments.value = []
   SET_ITEMS()
-  SET_PAYMENTS()
 })
 
 const SET_ITEMS = () => {
@@ -873,16 +845,6 @@ const GET_ITEMS = () => {
   const items = localStorage.getItem(CASH_REGISTER_KEY)
   if (items) return JSON.parse(items)
   return null
-}
-
-const SET_PAYMENTS = () => {
-  localStorage.setItem(PAYMENTS, JSON.stringify(payments.value))
-}
-
-const GET_PAYMENTS = () => {
-  const payments = localStorage.getItem(PAYMENTS)
-  if (payments) return JSON.parse(payments)
-  return []
 }
 
 const clearFilter = () => {
@@ -908,17 +870,17 @@ const fixedNumber = (price: number | string) => {
 
 const useFetchData = async () => {
   $showLoading()
-  if (GET_ITEMS()) {
-    items.value = GET_ITEMS()
-    changeSellPrice()
-  }
-  if (GET_PAYMENTS()) {
-    payments.value = GET_PAYMENTS()
-  }
   await fetchCurrencyList()
   await fetchStoreList()
   await getPaymentTypeList()
   await getEmployeeList()
+  await getInvoiceList()
+  await getCounterpartyContractList()
+  await getCounterPartyList(null)
+  if (GET_ITEMS()) {
+    items.value = GET_ITEMS()
+    changeSellPrice()
+  }
   if (params.value.additional_amount_sum) {
     changeAdditionalBonusSum()
   }
