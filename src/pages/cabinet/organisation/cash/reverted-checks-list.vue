@@ -1,12 +1,17 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('outcome') }}
+    {{ t('revertProduct') }}
   </VText>
   <VCard>
     <VRow>
       <VCol md="2">
-        <VBtn width="100%" color="primary" class="mb-20">
+        <VBtn
+          width="100%"
+          color="primary"
+          class="mb-20"
+          @click="$router.push($localePath('/cabinet/revert-check'))"
+        >
           {{ $t('issueRefund') }}
         </VBtn>
       </VCol>
@@ -92,7 +97,6 @@ import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VSelect from '@/components/ui/VSelect.vue'
 import VLine from '@/components/ui/VLine.vue'
-import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -109,11 +113,6 @@ import type {
   RevertedCheckOptionsType,
 } from '@/types/cabinet/RevertCheckTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
-import type {
-  CounterpartyContractListType,
-  CounterpartyListWitContractType,
-} from '@/types/cabinet/CounterpertyContractsTypes'
-import type { InvoiceListType } from '@/types/cabinet/CounterpartyInvoiceTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -168,22 +167,11 @@ const breadcrumbs = [
   },
 ]
 
-const counterpartyList = ref<Array<CounterpartyListWitContractType>>([])
-const settlementList = ref<Array<Record<string, any>>>([])
 const organisationList = ref<Array<MkoOrganisationListType>>([])
-const contractList = ref<Array<CounterpartyContractListType>>([])
-const invoiceList = ref<Array<InvoiceListType>>([])
 const employeeList = ref<
   Array<{
     id: number
     full_name: string
-  }>
->([])
-const incomeList = ref<
-  Array<{
-    name: string
-    id: number
-    organisation_id: number
   }>
 >([])
 

@@ -357,6 +357,7 @@ export default {
   products: 'Товары',
   revertAmount: 'Сумма возврата',
   issueRefund: 'Оформить возврат',
+  revertDecor: 'Оформление возврата',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

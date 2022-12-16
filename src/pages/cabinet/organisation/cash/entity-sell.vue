@@ -688,7 +688,7 @@ const bonusStartCheckRepeatCode = (
     all_amount: allPrice,
     selling_price_sum:
       fixedNumber(item.selling_price_sum) ?? fixedNumber(item.price),
-    client_type: CLIENT_TYPES.individual,
+    client_type: CLIENT_TYPES.entity,
   }
   if (additional_amount_sum) {
     options.additional_amount_sum =
