@@ -82,7 +82,7 @@
         </VCol>
         <VCol cols="12" md="6">
           <VSelect
-            :label="$t('typeIncome')"
+            :label="$t('typeExpenses')"
             :items="incomeList"
             item-text="name"
             item-value="id"
