@@ -1,4 +1,4 @@
-export interface FinancialSpendingFormTypes {
+export interface RevertedCheckFormTypes {
   id?: number
   organisation_id: number | null
   account_id: number | null
@@ -16,32 +16,30 @@ export interface FinancialSpendingFormTypes {
   _method?: string
 }
 
-export interface FinancialSpendingDataItemType {
+export interface RevertedCheckDataItemType {
   id: number
-  document_number: string
-  document_date: string
-  contract_number: string
-  invoice_number: string
-  amount: number
-  type_id: number
-  organisation_name: string
-  organisation_account: string
-  counterparty_name: string
-  counterparty_id: number
-  payment_purpose: string
-  status: string
-  comment: string
   index: number
+  check_number: string
+  client_type: string
+  seller_user_id: number | null
+  seller_name: string
+  sale_date: string
+  reverted_date: string
+  reverting_user_id: number | null
+  reverting_user_name: string
+  organisation_id: number | null
+  organisation_name: string
+  buyer: string
+  comment: string
+  returning_amount_sum: number | null
 }
 
-export interface FinancialSpendingOptionsType {
+export interface RevertedCheckOptionsType {
   search: string
   page?: number
-  counterparty_id: number | null
-  date: string
-  contract_id: number | null
-  type_id: number | null
-  account_id: number | null
-  invoice_id: number | null
-  organisation_ids: Array<any> | null
+  sale_date: string
+  reverted_date: string
+  reverting_user_id: number | string
+  seller_user_id: number | string
+  organisation_ids: Array<any> | []
 }

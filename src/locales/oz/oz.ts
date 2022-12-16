@@ -356,6 +356,7 @@ export default {
   revertReason: 'Причина возврата',
   products: 'Товары',
   revertAmount: 'Сумма возврата',
+  issueRefund: 'Оформить возврат',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
