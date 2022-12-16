@@ -347,6 +347,7 @@ export default {
   additionalAmount: 'Дополнительная сумма',
   amountEnteredLessAmountDue: 'Введенная сумма меньше суммы к оплате',
   entitySell: 'Продажа юридическому лицу',
+  dataNotFound: 'Информация не найдена',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

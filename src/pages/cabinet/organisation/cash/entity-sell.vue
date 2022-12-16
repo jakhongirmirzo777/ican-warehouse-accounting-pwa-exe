@@ -548,6 +548,7 @@ const getCounterpartyContractList = async () => {
 const fetchData = async () => {
   try {
     const { data } = await fetchDirectSale(params.value)
+    if (!data.length) return $errorMessage(t('dataNotFound'))
     const value = data.map((p: DirectSaleDataItemType, i: number) => {
       p.index = i + 1
       p.isBonus = 0
