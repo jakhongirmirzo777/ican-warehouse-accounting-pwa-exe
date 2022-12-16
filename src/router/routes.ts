@@ -471,7 +471,7 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/cash/direct-sale.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -480,7 +480,16 @@ const rawRoutes = [
         component: () =>
           import('@/pages/cabinet/organisation/cash/entity-sell.vue'),
         meta: {
-          roles: [ROLES.ORGANISATION],
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'reverted-checks',
+        name: 'reverted-checks',
+        component: () =>
+          import('@/pages/cabinet/organisation/cash/reverted-check.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
     ],

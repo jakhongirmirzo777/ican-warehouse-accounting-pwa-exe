@@ -310,6 +310,10 @@ const menus = computed(() => {
             name: t('entitySell'),
             path: 'entity-sell',
           },
+          {
+            name: t('revertProduct'),
+            path: 'reverted-checks',
+          },
         ],
       },
       {

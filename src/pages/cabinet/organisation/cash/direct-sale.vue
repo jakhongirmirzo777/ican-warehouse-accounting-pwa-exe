@@ -318,7 +318,7 @@ const { user } = useUserService()
 //static variables
 
 const FORM = {
-  currency_id: null,
+  currency_id: '',
   full_name: '',
   total_amount: '',
   payments: [],
@@ -336,18 +336,12 @@ const FORM = {
 const CASH_REGISTER_KEY = 'CASH_REGISTER'
 const PAYMENTS = 'PAYMENTS'
 
-const queries = getQuery([
-  'page',
-  'search',
-  'store_id',
-  'additional_amount_sum',
-])
-clearQuery(['page', 'search', 'store_id', 'additional_amount_sum'])
+const queries = getQuery(['search', 'store_id', 'additional_amount_sum'])
+clearQuery(['search', 'store_id', 'additional_amount_sum'])
 const { t } = useI18n()
 
 const params = ref<DirectSaleOptionsType>({
   search: queries.search || '',
-  page: +queries.page || 1,
   store_id: +queries.store_id || '',
   additional_amount_sum: queries.additional_amount_sum || '',
 })
@@ -471,6 +465,9 @@ const submit = async () => {
       form.value = { ...FORM }
       items.value = []
       params.value.additional_amount_sum = ''
+      params.value.search = ''
+      params.value.store_id = ''
+      addQuery(params.value)
       payments.value = []
       payment_type.value = ''
       cancelChoseSearchResponse()
@@ -494,7 +491,6 @@ const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
 }
 
 const startFilter = async () => {
-  params.value.page = 1
   $showLoading()
   try {
     await fetchData()
@@ -886,7 +882,6 @@ const GET_PAYMENTS = () => {
 }
 
 const clearFilter = () => {
-  params.value.store_id = ''
   params.value.search = ''
   addQuery(params.value)
 }
