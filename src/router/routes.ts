@@ -484,10 +484,19 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reverted-checks',
-        name: 'reverted-checks',
+        path: 'reverted-checks-list',
+        name: 'reverted-checks-list',
         component: () =>
           import('@/pages/cabinet/organisation/cash/reverted-checks-list.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'revert-check',
+        name: 'revert-check',
+        component: () =>
+          import('@/pages/cabinet/organisation/cash/revert-check.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },

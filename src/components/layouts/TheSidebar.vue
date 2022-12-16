@@ -312,7 +312,7 @@ const menus = computed(() => {
           },
           {
             name: t('revertProduct'),
-            path: 'reverted-checks',
+            path: 'reverted-checks-list',
           },
         ],
       },
