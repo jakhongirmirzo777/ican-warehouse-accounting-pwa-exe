@@ -18,7 +18,7 @@ export interface DirectSaleDataItemType {
 }
 
 export interface DirectSaleFormType {
-  currency_id: number | null
+  currency_id: number | string
   full_name?: string
   user_id?: number
   additional_amount_sum?: number | string
@@ -50,12 +50,12 @@ export interface DirectSaleFormProductType {
 export interface DirectSaleOptionsType {
   search: string
   store_id: number | string
-  contract_id: number | string
-  counterparty_id: number | string
-  invoice_id: number | string
+  contract_id?: number | string
+  counterparty_id?: number | string
+  invoice_id?: number | string
   additional_amount_sum: string | number
-  currency_id: string | number
-  user_id: string | number
+  currency_id?: string | number
+  user_id?: string | number
 }
 
 export interface CheckBonusType {

@@ -455,6 +455,7 @@ const submit = async () => {
     params.value.contract_id = ''
     params.value.invoice_id = ''
     params.value.user_id = ''
+    params.value.store_id = ''
     additional_sum.value = ''
     payment_type.value = ''
     cancelChoseSearchResponse()
@@ -848,7 +849,6 @@ const GET_ITEMS = () => {
 }
 
 const clearFilter = () => {
-  params.value.store_id = ''
   params.value.search = ''
   addQuery(params.value)
 }
