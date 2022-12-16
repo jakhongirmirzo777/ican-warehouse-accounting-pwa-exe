@@ -487,7 +487,7 @@ const rawRoutes = [
         path: 'reverted-checks',
         name: 'reverted-checks',
         component: () =>
-          import('@/pages/cabinet/organisation/cash/reverted-check.vue'),
+          import('@/pages/cabinet/organisation/cash/reverted-checks.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
