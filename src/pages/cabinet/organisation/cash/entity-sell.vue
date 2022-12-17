@@ -121,21 +121,6 @@
               v-model="params.invoice_id"
             />
           </VCol>
-          <VCol md="2">
-            <VSelect
-              v-if="isOrganisation"
-              :label="$t('employees')"
-              :items="employeeList"
-              item-text="full_name"
-              item-value="user_id"
-              @change="changeParams"
-              rules="required"
-              vid="user_id"
-              clearable
-              autocomplete
-              v-model="params.user_id"
-            />
-          </VCol>
         </VRow>
         <VLine class="mb-20" />
         <VTable :headers="headers" :items="items">
@@ -261,7 +246,6 @@ import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonus
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
-import { CLIENT_TYPES, ROLES } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import {
   checkBonus,
@@ -273,6 +257,15 @@ import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
+import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
+import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
+import { $debounce, $moneyFormatWithComma } from '@/utils/pure-functions'
+import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
+import {
+  fetchCounterpartyContractList,
+  fetchCounterpartyWithContract,
+} from '@/services/cabinet/CounterpartyContractsServices'
+import { fetchInvoiceList } from '@/services/cabinet/CounterpartyInvoicesService'
 import type {
   DirectSaleDataItemType,
   EntitySellFormType,
@@ -285,23 +278,13 @@ import type {
   CounterpartyContractListType,
 } from '@/types/cabinet/CounterpertyContractsTypes'
 import type { InvoiceListType } from '@/types/cabinet/CounterpartyInvoiceTypes'
-import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
-import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
-import { $debounce, $moneyFormatWithComma } from '@/utils/pure-functions'
-import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
-import { useUserService } from '@/plugins/user-service'
-import {
-  fetchCounterpartyContractList,
-  fetchCounterpartyWithContract,
-} from '@/services/cabinet/CounterpartyContractsServices'
-import { fetchInvoiceList } from '@/services/cabinet/CounterpartyInvoicesService'
+
+import { CLIENT_TYPES } from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
-
-const { user } = useUserService()
 
 //static variables
 
@@ -331,7 +314,6 @@ const queries = getQuery([
   'invoice_id',
   'additional_amount_sum',
   'currency_id',
-  'user_id',
 ])
 clearQuery([
   'search',
@@ -341,7 +323,6 @@ clearQuery([
   'invoice_id',
   'additional_amount_sum',
   'currency_id',
-  'user_id',
 ])
 const { t } = useI18n()
 
@@ -353,7 +334,6 @@ const params = ref<DirectSaleOptionsType>({
   invoice_id: +queries.invoice_id || '',
   additional_amount_sum: queries.additional_amount_sum || '',
   currency_id: queries.currency_id || 'UZS',
-  user_id: queries.user_id || '',
 })
 
 const breadcrumbs = [
@@ -392,7 +372,6 @@ const cashRegisterRef = ref()
 const directSaleBonusRef = ref()
 const bonusOrNotRef = ref()
 
-const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
 const allPriceWithFormat = computed(() =>
   $moneyFormatWithComma(allCellingPrice.value)
 )
@@ -412,6 +391,7 @@ const changeParams = () => {
 }
 
 const submit = async () => {
+  $showLoading()
   const { $setFormErrors } = useFormActions(cashRegisterRef.value)
   const currencyItem = currencyList.value.find(
     (p) => p.key === params.value.currency_id
@@ -454,7 +434,6 @@ const submit = async () => {
     params.value.counterparty_id = ''
     params.value.contract_id = ''
     params.value.invoice_id = ''
-    params.value.user_id = ''
     params.value.store_id = ''
     additional_sum.value = ''
     payment_type.value = ''
@@ -466,6 +445,8 @@ const submit = async () => {
   } catch (err) {
     $setResponseErrors(err)
     $setFormErrors(err)
+  } finally {
+    $clearLoading()
   }
 }
 
@@ -689,7 +670,7 @@ const bonusStartCheckRepeatCode = (
     all_amount: allPrice,
     selling_price_sum:
       fixedNumber(item.selling_price_sum) ?? fixedNumber(item.price),
-    client_type: CLIENT_TYPES.individual,
+    client_type: CLIENT_TYPES.entity,
   }
   if (additional_amount_sum) {
     options.additional_amount_sum =

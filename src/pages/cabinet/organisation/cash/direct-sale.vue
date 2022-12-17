@@ -290,14 +290,6 @@ import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
-import type {
-  DirectSaleDataItemType,
-  DirectSaleFormType,
-  DirectSaleOptionsType,
-  CheckBonusType,
-  PaymentsType,
-} from '@/types/cabinet/CashTypes'
-import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import { useUserService } from '@/plugins/user-service'
@@ -307,6 +299,14 @@ import {
   $moneyFormatWithComma,
 } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
+import type {
+  DirectSaleDataItemType,
+  DirectSaleFormType,
+  DirectSaleOptionsType,
+  CheckBonusType,
+  PaymentsType,
+} from '@/types/cabinet/CashTypes'
+import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -403,6 +403,7 @@ const availableBonus = computed(() => {
 })
 
 const submit = async () => {
+  $showLoading()
   const { $setFormErrors } = useFormActions(cashRegisterRef.value)
   const validate = {} as Record<string, string>
   const currencyItem = currencyList.value.find((p) => p.key === currency.value)
@@ -467,18 +468,21 @@ const submit = async () => {
       params.value.additional_amount_sum = ''
       params.value.search = ''
       params.value.store_id = ''
-      addQuery(params.value)
       payments.value = []
       payment_type.value = ''
+      paymentTypeErrorMessage.value = null
+      addQuery(params.value)
       cancelChoseSearchResponse()
+      $successMessage(t('notifications.addedSuccessfully'))
       changeSellPrice()
       cashRegisterRef.value.resetForm()
-      $successMessage(t('notifications.addedSuccessfully'))
       payments.value = []
       SET_PAYMENTS()
     } catch (err) {
       $setResponseErrors(err)
       $setFormErrors(err)
+    } finally {
+      $clearLoading()
     }
   }
 }
