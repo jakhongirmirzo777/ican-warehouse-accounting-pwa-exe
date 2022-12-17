@@ -372,6 +372,7 @@ export default {
     forwardedSuccessfully: 'Успешно переведен',
     canceledSuccessfully: 'Успешно отменен',
     amountInsufficient: 'Сумма недостаточна',
+    successRevert: 'Возврат успешно завершен',
   },
   validation: uzValidate.messages,
   $dates: uzDate,
