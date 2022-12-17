@@ -160,10 +160,10 @@ const pageOptions = ref<{
 
 const breadcrumbs = [
   {
-    name: t('financialAccounting'),
+    name: t('cashRegister'),
   },
   {
-    name: t('outcome'),
+    name: t('revertProduct'),
   },
 ]
 

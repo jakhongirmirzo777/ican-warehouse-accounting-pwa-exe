@@ -25,6 +25,7 @@
           @update:modelValue="$emit('update:modelValue', $event)"
           @focus="open"
           @blur="isOpen = false"
+          :disabled="disabled"
           :model-value="modelValue"
           :clearable="clearable"
           :format="format"
@@ -75,6 +76,7 @@ const props = defineProps({
   label: { type: String, default: 'Date' },
   hideTime: { type: Boolean, default: false },
   hideDetails: { type: Boolean, default: false },
+  disabled: { type: Boolean, default: false },
   rules: { type: String, default: '' },
   vid: { type: String, default: '' },
   name: { type: String, default: '' },

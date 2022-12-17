@@ -358,6 +358,10 @@ export default {
   revertAmount: 'Сумма возврата',
   issueRefund: 'Оформить возврат',
   revertDecor: 'Оформление возврата',
+  qtySold: 'Кол-во(продано)',
+  qtyReverted: 'Кол-во (возвращено)',
+  salesBonus: 'Бонус к продаже',
+  unit: 'Ед.изм',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
