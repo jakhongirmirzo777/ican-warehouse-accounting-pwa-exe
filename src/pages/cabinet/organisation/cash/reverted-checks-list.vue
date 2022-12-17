@@ -72,7 +72,25 @@
       </VCol>
     </VRow>
     <VLine class="mb-20" />
-    <VTable :headers="headers" :items="items" />
+    <VTable :headers="headers" :items="items">
+      <template #item.products="{ item }">
+        <VBtn
+          color="primary"
+          @click="
+            $router.push(
+              $localePath(`/cabinet/reverted-check-products/${item.id}`)
+            )
+          "
+          >{{ $t('open') }}</VBtn
+        >
+      </template>
+      <template #item.returning_amount_sum="{ item }">
+        {{ $moneyFormatWithComma(item.returning_amount_sum) }}
+      </template>
+      <template #item.client_type="{ item }">
+        {{ $t(`${item.client_type}`) }}
+      </template>
+    </VTable>
     <VPagination
       v-if="pageOptions.lastPage > 1"
       v-model="params.page"

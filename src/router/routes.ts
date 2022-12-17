@@ -501,6 +501,17 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
+      {
+        path: 'reverted-check-products/:id',
+        name: 'reverted-check-products',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/cash/reverted-check-products.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
     ],
   },
   {

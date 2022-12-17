@@ -1,11 +1,13 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-  <VBackBtn class="mb-10" />
-  <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('revertDecor') }}
-  </VText>
+  <div class="d-flex align-center">
+    <VBackBtn class="mb-10" />
+    <VText class="mb-10 ml-16" tag="h2" weight="600" color="#0E1E56">
+      {{ t('revertDecor') }}
+    </VText>
+  </div>
   <VCard>
-    <Form @submit="submit">
+    <Form @submit="submit" ref="revertFormRef">
       <VRow>
         <VCol md="5">
           <form @submit.prevent="searchCheck">
@@ -25,6 +27,7 @@
                 <VInput
                   :label="$t('checkNumber')"
                   v-model="form.check_number"
+                  type="number"
                   clearable
                 />
               </VCol>
@@ -53,7 +56,7 @@
                 clearable
                 disabled
                 autocomplete
-                v-model="form.user_id"
+                v-model="seller_id"
               />
             </VCol>
             <VCol md="4">
@@ -77,8 +80,30 @@
             </VCol>
           </VRow>
         </VCol>
+        <VCol md="3">
+          <VInput
+            :disabled="true"
+            :label="$t('additionalAmountForBonus')"
+            v-model="additional_amount_sum"
+            type="money"
+          />
+        </VCol>
         <VCol md="6" :class="{ disabled: !items.length }">
           <VArea v-model="form.comment" :label="$t('revertReason')" rows="1" />
+        </VCol>
+        <VCol md="3">
+          <VSelect
+            v-if="isOrganisation"
+            :label="$t('employees')"
+            :items="employeeList"
+            item-text="full_name"
+            item-value="user_id"
+            rules="required"
+            vid="user_id"
+            clearable
+            autocomplete
+            v-model="form.user_id"
+          />
         </VCol>
       </VRow>
       <div class="d-flex align-center justify-between mt-10">
@@ -136,9 +161,6 @@
     </Form>
     <VLine class="my-15" />
     <VTable :headers="headers" :items="items">
-      <template #item.amount="{ item }">
-        {{ +item.all_sold_sum * +item.sell_count }}
-      </template>
       <template #item.is_bonus="{ item }">
         <VCheckbox
           class="disabled"
@@ -146,6 +168,18 @@
           :true-value="true"
           :false-value="false"
         />
+      </template>
+      <template #item.sold_sum="{ item }">
+        <span v-if="item.sold_sum && item.sold_sum !== '0'">{{
+          $moneyFormatWithComma(item.sold_sum)
+        }}</span>
+        <span v-else> - </span>
+      </template>
+      <template #item.all_sold_sum="{ item }">
+        <span v-if="item.all_sold_sum && item.sold_sum !== '0'">{{
+          $moneyFormatWithComma(item.all_sold_sum)
+        }}</span>
+        <span v-else> - </span>
       </template>
     </VTable>
     <DirectSalePaymentModal
@@ -170,9 +204,11 @@ import VArea from '@/components/ui/VArea.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
+import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
+import VBackBtn from '@/components/ui/VBackBtn.vue'
 import { Form } from 'vee-validate'
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions } from '@/composables/set-errors'
@@ -186,19 +222,19 @@ import {
   revertCheck,
   searchCheckWith,
 } from '@/services/cabinet/RevertCheckServices'
+import { useUserService } from '@/plugins/user-service'
 import type {
   RevertedCheckDataItemType,
   RevertedCheckFormType,
 } from '@/types/cabinet/RevertCheckTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
-import { CLIENT_TYPES } from '@/utils/constants'
-import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
 import type { PaymentsType } from '@/types/cabinet/CashTypes'
-import VBackBtn from "@/components/ui/VBackBtn.vue";
+import { CLIENT_TYPES, ROLES } from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage } = useNotificationService()
+const { user } = useUserService()
 
 const FORM = {
   check_number: '',
@@ -218,6 +254,8 @@ const form = ref<RevertedCheckFormType>({
 
 const salesDate = ref('')
 const organisation_id = ref('')
+const seller_id = ref('')
+const additional_amount_sum = ref('')
 
 const salesTypeList = ref<
   Array<{
@@ -250,6 +288,12 @@ const employeeList = ref<
   }>
 >([])
 
+const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
+
+//refs
+
+const revertFormRef = ref()
+
 const searchCheck = async () => {
   $showLoading()
   try {
@@ -257,7 +301,9 @@ const searchCheck = async () => {
     items.value = data.products
     salesDate.value = data.sale_date
     organisation_id.value = data.organisation_id
-    form.value.user_id = data.seller_user_id
+    seller_id.value = data.seller_user_id
+    if (data.additional_amount_sum)
+      additional_amount_sum.value = data.additional_amount_sum
     allPriceWithFormat.value = $moneyFormatWithComma(data.total_amount_sum)
   } catch (err) {
     $setResponseErrors(err)
@@ -302,7 +348,10 @@ const submit = async () => {
     allPriceWithFormat.value = ''
     organisation_id.value = ''
     salesDate.value = ''
+    seller_id.value = ''
+    additional_amount_sum.value = ''
     items.value = []
+    revertFormRef.value.resetForm()
     $successMessage(t('notifications.successRevert'))
   } catch (err) {
     $setResponseErrors(err)
@@ -345,8 +394,8 @@ const headers = ref([
   { text: t('qtySold'), value: 'sell_count' },
   { text: t('qtyReverted'), value: 'returned_count' },
   { text: t('salesBonus'), value: 'is_bonus' },
-  { text: t('price'), value: 'all_sold_sum' },
-  { text: t('amount'), value: 'amount' },
+  { text: t('price'), value: 'sold_sum' },
+  { text: t('amount'), value: 'all_sold_sum' },
   { text: t('unit'), value: 'unit_name' },
 ])
 </script>
