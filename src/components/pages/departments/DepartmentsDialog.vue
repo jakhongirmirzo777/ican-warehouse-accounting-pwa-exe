@@ -8,6 +8,16 @@
     <Form @submit="onSubmit" ref="formObj">
       <VRow>
         <VCol>
+          <VSelect
+            vid="organisation_id"
+            :label="t('organisation')"
+            rules="required"
+            item-text="name"
+            :items="organisations"
+            v-model="formData.organisation_id"
+          />
+        </VCol>
+        <VCol>
           <VInput
             vid="name"
             :label="t('name')"
@@ -50,6 +60,7 @@ import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
+import VSelect from '@/components/ui/VSelect.vue'
 
 import { ref, watch } from 'vue'
 import {
@@ -66,6 +77,7 @@ const { t } = useI18n()
 const FORM_DATA = {
   id: null,
   name: null,
+  organisation_id: null,
 }
 
 const props = defineProps({
@@ -80,6 +92,10 @@ const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
+  },
+  organisations: {
+    type: Array,
+    default: () => [],
   },
 })
 
@@ -98,6 +114,7 @@ watch(
     } else if (val && props.isUpdate) {
       formData.value.id = props.data.id || null
       formData.value.name = props.data.name || null
+      formData.value.organisation_id = props.data.organisation_id || null
     }
   }
 )
