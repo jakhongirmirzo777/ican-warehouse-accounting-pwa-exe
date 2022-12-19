@@ -108,6 +108,7 @@
           <VInput
             vid="course"
             type="money"
+            :disabled="isUZS"
             :label="t('systemCourse')"
             rules="required|max:255"
             v-model="formData.course"
@@ -251,6 +252,22 @@ const invoices = computed(() => {
     )?.invoices || []
   )
 })
+
+const isUZS = computed(() => {
+  const currency: any = props.currencies.find(
+    (item: any) => formData.value.currency_id === item.id
+  )
+  return !!(currency && currency.key === 'UZS')
+})
+
+watch(
+  () => isUZS.value,
+  (val) => {
+    if (val) {
+      formData.value.course = '1'
+    }
+  }
+)
 
 watch(
   () => props.modelValue,
