@@ -371,6 +371,7 @@ export default {
     'Сумма бонуса недостаточна для товара, необходимо произвести доплату для получения товара',
   productPrice: 'Цена продукта',
   checkList: 'Список чеков',
+  chooseProductForBonus: 'Выберите продукт для бонуса',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

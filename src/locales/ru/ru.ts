@@ -369,6 +369,7 @@ export default {
   saleInBonus: 'Продожа в бонус',
   clientType: 'Тип клента',
   productSelection: 'Выберите продукт',
+  chooseProductForBonus: 'Выберите продукт для бонуса',
   needPayGetProductWarningText:
     'Сумма бонуса недостаточна для товара, необходимо произвести доплату для получения товара',
   productPrice: 'Цена продукта',

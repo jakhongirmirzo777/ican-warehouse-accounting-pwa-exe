@@ -1,10 +1,12 @@
 <template>
   <div class="direct-sale">
     <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-    <div class="d-flex align-center">
-      <VBackBtn class="mb-10" />
+    <div class="d-flex align-center mb-15">
+      <VBtn @click="clearAllAndBack" min-width="32px">
+        <VIcon color="#868EAA" size="16" icon="arrow-left" />
+      </VBtn>
       <VText class="mb-10 ml-16" tag="h2" weight="600" color="#0E1E56">
-        {{ t('directSale') }}
+        {{ t('chooseProductForBonus') }}
       </VText>
     </div>
     <VCard class="direct-sale__body">
@@ -318,7 +320,10 @@ const breadcrumbs = [
     name: t('cashRegister'),
   },
   {
-    name: t('directSale'),
+    name: t('saleInBonus'),
+  },
+  {
+    name: t('chooseProductForBonus'),
   },
 ]
 
@@ -449,6 +454,13 @@ const submit = async () => {
       $clearLoading()
     }
   }
+}
+
+const clearAllAndBack = () => {
+  localStorage.removeItem(PAYMENTS)
+  localStorage.removeItem(CASH_REGISTER_KEY)
+  localStorage.removeItem(GIVE_BONUS)
+  router.go(-1)
 }
 
 const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
