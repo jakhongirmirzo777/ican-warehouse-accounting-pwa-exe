@@ -5,7 +5,7 @@ import type {
   RevertedCheckFormType,
 } from '@/types/cabinet/RevertCheckTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
-import type {RouteParamValue} from "vue-router";
+import type { RouteParamValue } from 'vue-router'
 const BASE_URL_ADDITIONAL = 'organisation'
 
 export const fetchRevertedChecks = async (params: RevertedCheckOptionsType) => {
