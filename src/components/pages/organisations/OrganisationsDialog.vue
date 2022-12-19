@@ -58,18 +58,6 @@
           />
         </VCol>
         <VCol md="4">
-          <VSelect
-            vid="change_price_type"
-            localize
-            :label="t('changePriceType')"
-            rules="required"
-            v-model="formData.change_price_type"
-            :items="PRICE_CHANGE_INDEXED"
-            item-text="text"
-            item-value="value"
-          />
-        </VCol>
-        <VCol md="4">
           <VInput
             vid="min_margin_percent"
             type="number"
@@ -226,7 +214,6 @@ import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
-import VSelect from '@/components/ui/VSelect.vue'
 import VUpload from '@/components/ui/VUpload.vue'
 import VSwitch from '@/components/ui/VSwitch.vue'
 import VIcon from '@/components/ui/VIcon.vue'
@@ -237,7 +224,6 @@ import {
   changePassword,
 } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
-import { PRICE_CHANGE_INDEXED } from '@/utils/constants'
 import { $getValuesByKey, $clearNonDigits } from '@/utils/pure-functions'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
@@ -248,7 +234,6 @@ const FORM_DATA = {
   name: null,
   company_name: null,
   system_course: 0,
-  change_price_type: null,
   min_margin_percent: null,
   inn: null,
   mfo: null,

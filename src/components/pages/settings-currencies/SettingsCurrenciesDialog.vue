@@ -18,6 +18,7 @@
         </VCol>
         <VCol>
           <VInput
+            :disabled="isUZS"
             vid="amount"
             type="money"
             :label="t('amount')"
@@ -62,7 +63,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { createOrUpdateCurrency } from '@/services/cabinet/SettingsCurrenciesService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { $clearNonDigits } from '@/utils/pure-functions'
@@ -101,6 +102,21 @@ const emits = defineEmits(['update:modelValue', 'submit'])
 const formObj = ref<any>(null)
 const loading = ref(false)
 const formData = ref<Record<string, any>>({ ...FORM_DATA })
+const isUZS = computed(() => {
+  const currency: any = props.currencyTypes.find(
+    (item: any) => formData.value.currency_id === item.id
+  )
+  return !!(currency && currency.key === 'UZS')
+})
+
+watch(
+  () => isUZS.value,
+  (val) => {
+    if (val) {
+      formData.value.amount = '1'
+    }
+  }
+)
 
 watch(
   () => props.modelValue,
