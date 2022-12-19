@@ -45,10 +45,9 @@
     "vue-tsc": "^0.38.8"
   },
   "lint-staged": {
-    "*./(js|jsx|ts|tsx|vue)$/": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": "eslint --fix",
+    "*.ts": "eslint --fix",
+    "*.vue": "eslint --fix"
   },
   "validate-branch-name": {
     "pattern": "^(main|master|dev){1}$|^(feature|fix|bug)\\/.+",
