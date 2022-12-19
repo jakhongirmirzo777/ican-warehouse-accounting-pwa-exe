@@ -5,6 +5,7 @@ import type {
   DirectSaleFormType,
   CheckBonusType,
   EntitySellFormType,
+  GiveBonusParamsType,
 } from '@/types/cabinet/CashTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
@@ -59,6 +60,32 @@ export const checkBonus = async (form: CheckBonusType) => {
     const data = await http.get(`${BASE_URL_ADDITIONAL}/cash-box/check-bonus`, {
       params: { ...form },
     })
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const searchCheck = async (params: GiveBonusParamsType) => {
+  try {
+    const { data } = await http.get(
+      `${BASE_URL_ADDITIONAL}/cash-box/search-check`,
+      {
+        params: { ...params },
+      }
+    )
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const submitGiveBonus = async (form: DirectSaleFormType) => {
+  try {
+    const { data } = await http.post(
+      `${BASE_URL_ADDITIONAL}/cash-box/give-bonus`,
+      form
+    )
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)

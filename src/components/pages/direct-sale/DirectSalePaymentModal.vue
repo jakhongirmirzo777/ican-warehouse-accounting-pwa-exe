@@ -1,7 +1,15 @@
 <template>
   <VModal v-model="dialog" width="660" :title="$t('paymentDifferentWays')">
+    <div v-if="isGiveBonus" class="mb-15">
+      <ElAlert
+        :title="$t('needPayGetProductWarningText')"
+        type="warning"
+        :closable="false"
+      />
+    </div>
     <h4 class="mb-20">
-      {{ $t('totalPayable') }}: <b class="total-price">{{ totalPrice }}</b>
+      {{ $t('totalPayable') }}:
+      <b class="total-price">{{ $moneyFormatWithComma(totalPrice) }}</b>
     </h4>
     <Form @submit="saveTypes" ref="typesRef">
       <div>
@@ -83,7 +91,7 @@ import { Form } from 'vee-validate'
 import { ElAlert } from 'element-plus'
 
 import { computed, ref, watch } from 'vue'
-import { $clearNonDigits } from '@/utils/pure-functions'
+import { $clearNonDigits, $moneyFormatWithComma } from '@/utils/pure-functions'
 import { useI18n } from 'vue-i18n'
 import type { PaymentsType } from '@/types/cabinet/CashTypes'
 import { useNotificationService } from '@/plugins/notification-service'
@@ -93,7 +101,7 @@ const { $successMessage } = useNotificationService()
 
 const { t } = useI18n()
 
-const emits = defineEmits(['saved-payment-type-dialog'])
+const emits = defineEmits(['saved-payment-type-dialog', 'closed-dialog'])
 
 const dialog = ref(false)
 const totalPrice = ref('')
@@ -104,10 +112,18 @@ const errorMessageNonAmount = ref('')
 
 const typesRef = ref()
 
+defineProps({
+  isGiveBonus: {
+    type: Boolean,
+    default: false,
+  },
+})
+
 watch(dialog, (val) => {
   if (!val) {
     paymentsTypes.value = []
     totalPrice.value = ''
+    emits('closed-dialog')
   }
 })
 
@@ -147,7 +163,7 @@ const openDialog = (
   allPrice: string
 ) => {
   paymentsTypes.value = JSON.parse(JSON.stringify(paymentTypeList))
-  totalPrice.value = allPrice
+  totalPrice.value = $moneyFormatWithComma(allPrice)
   dialog.value = true
 }
 
@@ -190,8 +206,11 @@ const errorMessage = computed(() => {
     if (p && typeof p.amount === 'string') amount += +$clearNonDigits(p.amount)
     else if (p && typeof p.amount === 'number') amount += +p.amount
   })
-  if (amount > +$clearNonDigits(totalPrice.value))
-    return t('exceedsErrorMessage')
+  const total =
+    typeof totalPrice.value === 'number'
+      ? totalPrice.value
+      : +$clearNonDigits(totalPrice.value)
+  if (amount > total) return t('exceedsErrorMessage')
   return null
 })
 

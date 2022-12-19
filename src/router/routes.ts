@@ -502,6 +502,26 @@ const rawRoutes = [
         },
       },
       {
+        path: 'give-bonus',
+        name: 'give-bonus',
+        component: () =>
+          import('@/pages/cabinet/organisation/cash/give-bonus.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'give-bonus-choose-product',
+        name: 'give-bonus-choose-product',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/cash/give-bonus-choose-product.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
         path: 'reverted-check-products/:id',
         name: 'reverted-check-products',
         component: () =>
