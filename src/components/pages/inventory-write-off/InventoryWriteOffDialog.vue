@@ -101,6 +101,8 @@ import {
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
+import { $localePath } from '@/plugins/i18n'
+import { useRouter } from 'vue-router'
 
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
@@ -133,6 +135,7 @@ const props = defineProps({
   },
 })
 
+const router = useRouter()
 const emits = defineEmits(['update:modelValue', 'submit', 're-fetch-warehouse'])
 const warehousesDialog = ref(false)
 const formObj = ref<any>(null)
@@ -180,7 +183,14 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   try {
     loading.value = true
     const newFormData = { ...formData.value }
-    if (!props.isUpdate) await createWriteOff(newFormData)
+    if (!props.isUpdate) {
+      const {
+        data: { data },
+      } = await createWriteOff(newFormData)
+      await router.push(
+        $localePath(`/cabinet/inventory-write-off-item/${data.id}`)
+      )
+    }
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {

@@ -13,14 +13,19 @@
         />
       </template>
       <template #item.counterparty="{ item }">
-        <span v-if="item.counterparty">{{
-          item.counterparty.company_name
-        }}</span>
+        <span v-if="item.counterparty">
+          {{ item.counterparty.company_name }}
+        </span>
         <span v-else>-</span>
       </template>
       <template #item.position="{ item }">
         <span v-if="item.position">{{ POSITION[item.position] }}</span>
         <span v-else>-</span>
+      </template>
+      <template #item.url="{ item }">
+        <a class="color-light-green" :href="item.url" target="_blank">{{
+          item.url
+        }}</a>
       </template>
       <template #item.type="{ item }">
         <span v-if="item.type">{{ TYPE[item.type] }}</span>

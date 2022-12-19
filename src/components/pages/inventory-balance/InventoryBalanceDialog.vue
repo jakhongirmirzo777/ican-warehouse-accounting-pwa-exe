@@ -181,6 +181,8 @@ import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
 import { $clearNonDigits } from '@/utils/pure-functions'
+import { useRouter } from 'vue-router'
+import { $localePath } from '@/plugins/i18n'
 
 const { $setResponseErrors } = useErrorActions()
 const { t } = useI18n()
@@ -225,6 +227,7 @@ const props = defineProps({
   },
 })
 
+const router = useRouter()
 const emits = defineEmits(['update:modelValue', 'submit', 're-fetch'])
 const counterpartiesDialog = ref(false)
 const contractsDialog = ref(false)
@@ -332,8 +335,14 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     loading.value = true
     const newFormData = { ...formData.value }
     newFormData.course = $clearNonDigits(newFormData.course)
-    if (!props.isUpdate) await createIncome(newFormData)
-    else await editIncome(newFormData)
+    if (!props.isUpdate) {
+      const {
+        data: { data },
+      } = await createIncome(newFormData)
+      await router.push(
+        $localePath(`/cabinet/inventory-balance-item/${data.id}`)
+      )
+    } else await editIncome(newFormData)
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {
