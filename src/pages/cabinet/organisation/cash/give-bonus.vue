@@ -189,6 +189,9 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VText from '@/components/ui/VText.vue'
+import VCardAction from '@/components/ui/VCardAction.vue'
+import VCheckbox from '@/components/ui/VCheckbox.vue'
+import VTransition from '@/components/ui/VTransition.vue'
 
 import { computed, ref, onBeforeUnmount, defineProps } from 'vue'
 import { CLIENT_TYPES, GIVE_BONUS } from '@/utils/constants'
@@ -201,20 +204,19 @@ import { useQuery } from '@/composables/router-query'
 import { $moneyFormatWithComma } from '@/utils/pure-functions'
 import { $localePath } from '@/plugins/i18n'
 import { useRouter } from 'vue-router'
+import { useStorageService } from '@/plugins/storage-service'
 import type {
   GiveBonusParamsType,
   GiveBonusDataTypes,
 } from '@/types/cabinet/CashTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
 import { fetchCounterpartyWithContract } from '@/services/cabinet/CounterpartyContractsServices'
-import VCardAction from '@/components/ui/VCardAction.vue'
-import VCheckbox from '@/components/ui/VCheckbox.vue'
-import VTransition from '@/components/ui/VTransition.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
+const { set, get } = useStorageService()
 const router = useRouter()
 
 const { t } = useI18n()
@@ -304,26 +306,25 @@ const isDisabled = computed(() => {
   if (
     params.value.client_type === CLIENT_TYPES.individual &&
     params.value.check_number
-  ) {
+  )
     return false
-  } else if (
+  else if (
     params.value.client_type === CLIENT_TYPES.entity &&
     params.value.counterparty_id
-  ) {
+  )
     return false
-  } else if (
+  else if (
     params.value.client_type === CLIENT_TYPES.credit &&
     params.value.client_type_credit === CLIENT_TYPES.entity &&
     params.value.counterparty_id
-  ) {
+  )
     return false
-  } else if (
+  else if (
     params.value.client_type === CLIENT_TYPES.credit &&
     params.value.client_type_credit === CLIENT_TYPES.individual &&
     params.value.check_number
-  ) {
+  )
     return false
-  }
   return true
 })
 
@@ -438,13 +439,13 @@ const SET_ITEMS = async () => {
   if (params.value.pnfl) result.pnfl = params.value.pnfl
   if (check_numbers.length) result.check_numbers = check_numbers
   if (full_name.value) result.full_name = full_name.value
-  localStorage.setItem(GIVE_BONUS, JSON.stringify(result))
+  set(GIVE_BONUS, JSON.stringify(result))
 }
 
 const useFetchData = async () => {
   $showLoading()
   await getCounterPartyList(null)
-  const data = localStorage.getItem(GIVE_BONUS)
+  const data = get(GIVE_BONUS)
   if (data) {
     const dataItem = JSON.parse(data)
     items.value = dataItem?.products

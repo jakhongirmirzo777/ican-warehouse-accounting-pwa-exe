@@ -236,7 +236,6 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
-import VBackBtn from '@/components/ui/VBackBtn.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import router from '@/router'
@@ -275,11 +274,13 @@ import type {
   PaymentsType,
 } from '@/types/cabinet/CashTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
+import { useStorageService } from '@/plugins/storage-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
+const { set, get, remove } = useStorageService()
 
 const { user } = useUserService()
 
@@ -443,9 +444,7 @@ const submit = async () => {
     try {
       await submitGiveBonus(form.value)
       $successMessage(t('notifications.addedSuccessfully'))
-      localStorage.removeItem(PAYMENTS)
-      localStorage.removeItem(CASH_REGISTER_KEY)
-      localStorage.removeItem(GIVE_BONUS)
+      removeStorageItems()
       await router.push($localePath('/cabinet/give-bonus'))
     } catch (err) {
       $setResponseErrors(err)
@@ -457,10 +456,14 @@ const submit = async () => {
 }
 
 const clearAllAndBack = () => {
-  localStorage.removeItem(PAYMENTS)
-  localStorage.removeItem(CASH_REGISTER_KEY)
-  localStorage.removeItem(GIVE_BONUS)
+  removeStorageItems()
   router.go(-1)
+}
+
+const removeStorageItems = () => {
+  remove(PAYMENTS)
+  remove(CASH_REGISTER_KEY)
+  remove(GIVE_BONUS)
 }
 
 const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
