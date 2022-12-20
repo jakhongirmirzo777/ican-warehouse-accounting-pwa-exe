@@ -44,7 +44,7 @@
     "vue-tsc": "^0.38.8"
   },
   "validate-branch-name": {
-    "pattern": "^(main|master|dev){1}$|^(feature|fix|bug)\\/.+",
+    "pattern": "^(master|dev){1}$|^(feature|fix|bug)\\/.+",
     "errorMsg": "The branch name should be master|dev or it should start with feature|fix|bug. For example, feature/{branch-name}"
   }
 }
