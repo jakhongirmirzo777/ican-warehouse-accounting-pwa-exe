@@ -828,10 +828,10 @@ const SET_ITEMS = () => {
   set(CASH_REGISTER_KEY, items.value)
 }
 
-const GET_ITEMS = () => {
+const GET_ITEMS = (): any => {
   const items = get(CASH_REGISTER_KEY)
   if (items) return items
-  return null
+  return []
 }
 
 const clearFilter = () => {
