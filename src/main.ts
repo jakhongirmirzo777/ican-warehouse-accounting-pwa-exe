@@ -17,7 +17,7 @@ import '@/assets/styles/index.scss'
 const { $setResponseErrors } = useErrorActions()
 const tokenService = useTokenService()
 const userService = useUserService()
-const tests = ''
+
 ;(async () => {
   tokenService.checkExpire()
   const token = tokenService.getToken()

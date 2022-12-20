@@ -6,7 +6,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
-    "lint": "lint-staged",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --quiet --ignore-path .gitignore",
     "prepare": "husky install",
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down"
@@ -31,7 +31,6 @@
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
     "sass": "^1.52.3",
@@ -43,11 +42,6 @@
     "vite-plugin-pwa": "^0.12.0",
     "vite-svg-loader": "^3.4.0",
     "vue-tsc": "^0.38.8"
-  },
-  "lint-staged": {
-    "*.js": "eslint --fix",
-    "*.ts": "eslint --fix",
-    "*.vue": "eslint --fix"
   },
   "validate-branch-name": {
     "pattern": "^(main|master|dev){1}$|^(feature|fix|bug)\\/.+",
