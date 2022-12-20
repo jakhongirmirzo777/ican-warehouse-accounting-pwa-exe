@@ -70,5 +70,5 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/pages/finance-accounting.scss';
+@import '../../../assets/styles/pages/finance-accounting.scss';
 </style>

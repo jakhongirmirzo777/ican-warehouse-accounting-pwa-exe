@@ -481,5 +481,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/pages/direct-sale.scss';
+@import '../../../../assets/styles/pages/direct-sale.scss';
 </style>

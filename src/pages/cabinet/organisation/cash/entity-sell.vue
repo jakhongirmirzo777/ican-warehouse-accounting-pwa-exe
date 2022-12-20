@@ -280,12 +280,13 @@ import type {
 import type { InvoiceListType } from '@/types/cabinet/CounterpartyInvoiceTypes'
 
 import { CLIENT_TYPES } from '@/utils/constants'
+import { useStorageService } from '@/plugins/storage-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
-
+const { get, set } = useStorageService()
 //static variables
 
 const FORM = {
@@ -821,11 +822,11 @@ onBeforeUnmount(() => {
 })
 
 const SET_ITEMS = () => {
-  localStorage.setItem(CASH_REGISTER_KEY, JSON.stringify(items.value))
+  set(CASH_REGISTER_KEY, items.value)
 }
 
 const GET_ITEMS = () => {
-  const items = localStorage.getItem(CASH_REGISTER_KEY)
+  const items = get(CASH_REGISTER_KEY)
   if (items) return JSON.parse(items)
   return null
 }
@@ -910,5 +911,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/pages/direct-sale.scss';
+@import '../../../../assets/styles/pages/direct-sale.scss';
 </style>

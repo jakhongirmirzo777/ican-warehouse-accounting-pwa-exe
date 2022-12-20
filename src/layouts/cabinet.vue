@@ -19,18 +19,20 @@
 import TheHeader from '@/components/layouts/TheHeader.vue'
 import TheSidebar from '@/components/layouts/TheSidebar.vue'
 import { onMounted, ref } from 'vue'
+import { useStorageService } from '@/plugins/storage-service'
 
 const IS_MINI_KEY = 'SIDEBAR_MINI'
+const { get, set } = useStorageService()
 
 const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {
   windowWidth.value = window.innerWidth
-  isMini.value = localStorage.getItem(IS_MINI_KEY) === 'true'
+  isMini.value = get(IS_MINI_KEY) === 'true'
 })
 const toggleMini = () => {
   isMini.value = !isMini.value
-  localStorage.setItem(IS_MINI_KEY, `${isMini.value}`)
+  set(IS_MINI_KEY, isMini.value)
 }
 </script>
 

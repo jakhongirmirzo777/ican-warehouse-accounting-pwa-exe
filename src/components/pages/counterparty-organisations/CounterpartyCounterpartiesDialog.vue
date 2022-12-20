@@ -212,7 +212,7 @@ const submit = async (_: never, actions: ActionInterface) => {
   })
   try {
     loading.value = true
-    await createEditOrganisations(form.value)
+    await createEditOrganisations(form.value as any)
     emits('fetch-data')
     $successMessage(t('notifications.addedSuccessfully'))
     dialog.value = false

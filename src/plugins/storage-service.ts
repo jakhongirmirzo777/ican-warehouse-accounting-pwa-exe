@@ -1,10 +1,12 @@
 export function useStorageService() {
   const get = (key: string): string | null => {
-    return localStorage.getItem(key)
+    const value = localStorage.getItem(key)
+    if (value) return JSON.parse(value)
+    return null
   }
 
-  const set = (key: string, value: string): void => {
-    localStorage.setItem(key, value)
+  const set = (key: string, value: any): void => {
+    localStorage.setItem(key, JSON.stringify(value))
   }
 
   const remove = (key: string): void => {

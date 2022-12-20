@@ -658,21 +658,21 @@ onBeforeUnmount(() => {
 })
 
 const SET_ITEMS = () => {
-  localStorage.setItem(CASH_REGISTER_KEY, JSON.stringify(items.value))
+  set(CASH_REGISTER_KEY, items.value)
 }
 
 const GET_ITEMS = () => {
-  const items = localStorage.getItem(CASH_REGISTER_KEY)
+  const items = get(CASH_REGISTER_KEY)
   if (items) return JSON.parse(items)
   return null
 }
 
 const SET_PAYMENTS = () => {
-  localStorage.setItem(PAYMENTS, JSON.stringify(payments.value))
+  set(PAYMENTS, payments.value)
 }
 
 const GET_PAYMENTS = () => {
-  const payments = localStorage.getItem(PAYMENTS)
+  const payments = get(PAYMENTS)
   if (payments) return JSON.parse(payments)
   return []
 }
@@ -695,7 +695,7 @@ const useFetchData = async () => {
   await fetchStoreList()
   await getPaymentTypeList()
   await getEmployeeList()
-  const giveItem = localStorage.getItem(GIVE_BONUS)
+  const giveItem = get(GIVE_BONUS)
   if (giveItem) {
     STORAGE_ITEMS.value = JSON.parse(giveItem)
     if (STORAGE_ITEMS.value.full_name)
@@ -745,5 +745,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/pages/direct-sale.scss';
+@import '../../../../assets/styles/pages/direct-sale.scss';
 </style>

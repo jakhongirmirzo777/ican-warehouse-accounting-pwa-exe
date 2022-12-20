@@ -10,9 +10,9 @@
     <VTab href="remainders">
       {{ t('remainderOfProducts') }}
     </VTab>
-    <VTab href="consolidations">
-      {{ t('consolidatedReport') }}
-    </VTab>
+    <!--    <VTab href="consolidations">-->
+    <!--      {{ t('consolidatedReport') }}-->
+    <!--    </VTab>-->
     <VTab href="registers">
       {{ t('registerOfIncomes') }}
     </VTab>
@@ -32,9 +32,9 @@
         :categories="categories"
       />
     </VTabItem>
-    <VTabItem value="consolidations">
-      <ReportsStockConsolidations />
-    </VTabItem>
+    <!--    <VTabItem value="consolidations">-->
+    <!--      <ReportsStockConsolidations />-->
+    <!--    </VTabItem>-->
     <VTabItem value="registers">
       <ReportsStockRegisters :organisations="organisations" />
     </VTabItem>
@@ -50,8 +50,8 @@ import VTabsItems from '@/components/ui/VTabsItems.vue'
 import VTabItem from '@/components/ui/VTabItem.vue'
 import ReportsStockIncomes from '@/components/pages/reports-stock/ReportsStockIncomes.vue'
 import ReportsStockRemainders from '@/components/pages/reports-stock/ReportsStockRemainders.vue'
-import ReportsStockConsolidations from '@/components/pages/reports-stock/ReportsStockConsolidations.vue'
 import ReportsStockRegisters from '@/components/pages/reports-stock/ReportsStockRegisters.vue'
+// import ReportsStockConsolidations from '@/components/pages/reports-stock/ReportsStockConsolidations.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
