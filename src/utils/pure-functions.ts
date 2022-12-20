@@ -183,3 +183,18 @@ export const $printScreen = (id: string, innerHtml: string) => {
     }
   }
 }
+
+export const $fixedNumber = (price: number | string) => {
+  const checkNumber =
+    typeof price === 'string' ? parseInt(price).toFixed() : price.toFixed()
+  const wholePartNumberLength = checkNumber.length
+  const totalLengthPrice =
+    typeof price === 'string' ? price.length - 1 : price.toString().length - 1
+  if (totalLengthPrice - wholePartNumberLength > 2) {
+    return typeof price === 'string'
+      ? parseInt(price).toFixed(2)
+      : price.toFixed(2)
+  } else {
+    return price
+  }
+}

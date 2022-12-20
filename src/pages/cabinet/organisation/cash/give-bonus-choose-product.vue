@@ -1,9 +1,14 @@
 <template>
   <div class="direct-sale">
     <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-    <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-      {{ t('directSale') }}
-    </VText>
+    <div class="d-flex align-center mb-15">
+      <VBtn @click="clearAllAndBack" min-width="32px">
+        <VIcon color="#868EAA" size="16" icon="arrow-left" />
+      </VBtn>
+      <VText class="mb-10 ml-16" tag="h2" weight="600" color="#0E1E56">
+        {{ t('chooseProductForBonus') }}
+      </VText>
+    </div>
     <VCard class="direct-sale__body">
       <Form ref="cashRegisterRef">
         <VRow>
@@ -16,6 +21,7 @@
                     :items="storeList"
                     item-text="name"
                     item-value="id"
+                    :disabled="items?.length >= 1"
                     clearable
                     autocomplete
                     v-model="params.store_id"
@@ -44,6 +50,7 @@
                   <VInput
                     :label="$t('search')"
                     v-model="params.search"
+                    :disabled="items?.length >= 1"
                     clearable
                   />
                 </VCol>
@@ -54,7 +61,9 @@
                     color="primary"
                     class="mb-20 mb-md-0 justify-center align-center"
                     type="submit"
-                    :disabled="!params.search || !params.store_id"
+                    :disabled="
+                      !params.search || !params.store_id || items?.length >= 1
+                    "
                   >
                     <VIcon size="24" icon="search-solid" />
                   </VBtn>
@@ -104,12 +113,8 @@
       </Form>
       <VLine class="mb-20" />
       <VTable :headers="headers" :items="items">
-        <template #item.actions="{ item, iy }">
-          <VBtn
-            :class="['ml-2', { disabled: item.is_bonus }]"
-            small
-            @click="deleteItem(iy)"
-          >
+        <template #item.actions="{ iy }">
+          <VBtn :class="['ml-2']" small @click="deleteItem(iy)">
             <VIcon size="12" icon="delete" />
           </VBtn>
         </template>
@@ -158,7 +163,10 @@
           />
         </template>
       </VTable>
-      <div class="mt-10 mb-15 direct-sale__body__payment-text">
+      <div
+        v-if="payments.length"
+        class="mt-10 mb-15 direct-sale__body__payment-text"
+      >
         {{ $t('totalPayable') }}:
         <b class="direct-sale__body__payment-text__amount">{{
           allPriceWithFormat
@@ -180,40 +188,7 @@
       </div>
       <VLine class="my-20" />
       <VRow class="mt-5">
-        <VCol md="10">
-          <span>{{ $t('paymentType') }}</span>
-          <VBtn
-            :class="[{ 'ml-16': i === 0 }, 'mr-8']"
-            radius="12"
-            :color="
-              paymentTypeErrorMessage && !isMainPaid
-                ? 'danger'
-                : payment_type === item.type
-                ? 'success'
-                : ''
-            "
-            :outlined="paymentTypeErrorMessage && !isMainPaid"
-            :disabled="!items.length"
-            v-for="(item, i) in paymentTypeList"
-            :key="`payment-type-${i}`"
-            @click="selectPaymentType(item)"
-          >
-            {{ item.name }}
-          </VBtn>
-          <VBtn
-            :disabled="!items.length"
-            class="ml-16mr-8"
-            color="warning"
-            @click="
-              $refs.paymentTypeModalRef.openDialog(
-                paymentTypeList,
-                allPriceWithFormat
-              )
-            "
-          >
-            {{ $t('paymentDifferentWays') }}
-          </VBtn>
-        </VCol>
+        <VSpacer />
         <VCol md="2" class="d-flex justify-end">
           <VBtn
             :disabled="!items.length"
@@ -237,18 +212,9 @@
     </VCard>
     <DirectSalePaymentModal
       ref="paymentTypeModalRef"
+      is-give-bonus
       @saved-payment-type-dialog="savedPaymentTypeDialog"
-    />
-    <DirectSaleBonusModal
-      ref="directSaleBonusRef"
-      :currency="currency"
-      :paymentTypeList="paymentTypeList"
-      @check-bonus-product="checkBonusProduct"
-      @check-bonus-with-search="checkBonusWithSearch"
-    />
-    <BonusOrNotModal
-      ref="bonusOrNotRef"
-      @check-bonus-product="checkBonusWithSearch"
+      @closed-dialog="closedDialog"
     />
   </div>
 </template>
@@ -270,21 +236,21 @@ import VIcon from '@/components/ui/VIcon.vue'
 import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
-import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
-import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
+import router from '@/router'
 import {
-  CLIENT_TYPES,
+  GIVE_BONUS,
   PAYMENT_TYPE_ADDITIONAL_OR_MAIN,
   ROLES,
 } from '@/utils/constants'
+import { $localePath } from '@/plugins/i18n'
 import { useI18n } from 'vue-i18n'
 import {
   checkBonus,
   fetchDirectSale,
   getPaymentTypes,
-  submitDirectSale,
+  submitGiveBonus,
 } from '@/services/cabinet/CashService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
@@ -297,21 +263,24 @@ import {
   $clearNonDigits,
   $debounce,
   $moneyFormatWithComma,
+  $fixedNumber,
 } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
 import type {
-  DirectSaleDataItemType,
-  DirectSaleFormType,
-  DirectSaleOptionsType,
   CheckBonusType,
+  DirectSaleDataItemType,
+  DirectSaleOptionsType,
+  GiveBonusFormType,
   PaymentsType,
 } from '@/types/cabinet/CashTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
+import { useStorageService } from '@/plugins/storage-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
+const { set, get, remove } = useStorageService()
 
 const { user } = useUserService()
 
@@ -321,7 +290,8 @@ const FORM = {
   currency_id: '',
   full_name: '',
   total_amount: '',
-  payments: [],
+  client_type: '',
+  check_numbers: [],
   products: [
     {
       product_id: null,
@@ -351,14 +321,17 @@ const breadcrumbs = [
     name: t('cashRegister'),
   },
   {
-    name: t('directSale'),
+    name: t('saleInBonus'),
+  },
+  {
+    name: t('chooseProductForBonus'),
   },
 ]
 
 const currencyList = ref<Array<CurrencyKeyList>>([])
 const paymentTypeList = ref<Array<Record<string, any>>>([])
 const storeList = ref<Array<Record<string, any>>>([])
-const form = ref<DirectSaleFormType>({ ...FORM })
+const form = ref<GiveBonusFormType>({ ...FORM })
 const payment_type = ref('')
 const items = ref<DirectSaleDataItemType[]>([])
 const responseSearch = ref<DirectSaleDataItemType[]>([])
@@ -366,6 +339,7 @@ const choseResponseSearch = ref<DirectSaleDataItemType[]>([])
 const payments = ref<Array<PaymentsType>>([])
 const allCellingPrice = ref(0)
 const currency = ref('UZS')
+const STORAGE_ITEMS = ref<Record<string, any>>({})
 const employeeList = ref<
   Array<{
     id: number
@@ -379,19 +353,17 @@ const paymentTypeErrorMessage = ref(null) as any
 
 //refs
 const cashRegisterRef = ref()
-const directSaleBonusRef = ref()
-const bonusOrNotRef = ref()
+const paymentTypeModalRef = ref()
 
 const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
-const allPriceWithFormat = computed(() =>
-  $moneyFormatWithComma(allCellingPrice.value)
-)
-const isMainPaid = computed(() => {
-  let count = 0
+const allPriceWithFormat = computed(() => {
+  let price = 0
   payments.value.forEach((p) => {
-    if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main) count++
+    const amount =
+      typeof p.amount === 'string' ? +$clearNonDigits(p.amount) : p.amount
+    price += amount
   })
-  return count > 0
+  return $moneyFormatWithComma(price)
 })
 
 const availableBonus = computed(() => {
@@ -420,15 +392,6 @@ const submit = async () => {
   if (validateValues.length) {
     cashRegisterRef.value.setErrors(validate)
   }
-  const isPayment = payments.value.filter(
-    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
-  )
-  if (!payments.value.length || !isPayment.length) {
-    paymentTypeErrorMessage.value = t('validation.required', {
-      field: t('paymentType'),
-    })
-    return
-  }
   items.value.forEach((p, i) => {
     if (!form.value?.products[i]) {
       form.value.products[i] = {
@@ -441,7 +404,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    form.value.products[i].sold = fixedNumber(p.price)
+    form.value.products[i].sold = $fixedNumber(p.price)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
@@ -449,35 +412,40 @@ const submit = async () => {
       form.value.products[i].sold = 0
     }
   })
-  const addition_sum = payments.value.find(
-    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
-  )
-  if (addition_sum?.amount) {
-    const additional = $clearNonDigits(addition_sum.amount.toString())
-    form.value.additional_amount_sum = fixedNumber(additional)
+  if (allPriceWithFormat.value) {
+    const additional = $clearNonDigits(allPriceWithFormat.value.toString())
+    form.value.additional_amount_sum = $fixedNumber(additional)
   }
   if (allCellingPrice.value)
-    form.value.total_amount = fixedNumber(allCellingPrice.value)
-  if (payments.value) form.value.payments = payments.value
+    form.value.total_amount = $fixedNumber(allCellingPrice.value)
+  if (payments.value && payments.value.length)
+    form.value.payments = payments.value.map((p) => {
+      return {
+        payment_type: p.payment_type,
+        amount: p.amount,
+      }
+    })
+  if (STORAGE_ITEMS.value?.check_numbers?.length)
+    form.value.check_numbers = STORAGE_ITEMS.value.check_numbers
+  if (STORAGE_ITEMS.value?.client_type)
+    form.value.client_type = STORAGE_ITEMS.value.client_type
+  if (STORAGE_ITEMS.value?.counterparty_id)
+    form.value.counterparty_id = STORAGE_ITEMS.value.counterparty_id
+  if (STORAGE_ITEMS.value?.pnfl) form.value.pnfl = STORAGE_ITEMS.value.pnfl
+  if (STORAGE_ITEMS.value?.total_amount)
+    form.value.total_amount = $fixedNumber(
+      $clearNonDigits(STORAGE_ITEMS.value.total_amount)
+    )
+  if (form.value.payments && !form.value.payments.length) {
+    delete form.value.payments
+  }
   if (!Object.keys(validate).length) {
     $showLoading()
     try {
-      await submitDirectSale(form.value)
-      form.value = { ...FORM }
-      items.value = []
-      params.value.additional_amount_sum = ''
-      params.value.search = ''
-      params.value.store_id = ''
-      payments.value = []
-      payment_type.value = ''
-      paymentTypeErrorMessage.value = null
-      addQuery(params.value)
-      cancelChoseSearchResponse()
+      await submitGiveBonus(form.value)
       $successMessage(t('notifications.addedSuccessfully'))
-      changeSellPrice()
-      cashRegisterRef.value.resetForm()
-      payments.value = []
-      SET_PAYMENTS()
+      removeStorageItems()
+      await router.push($localePath('/cabinet/give-bonus'))
     } catch (err) {
       $setResponseErrors(err)
       $setFormErrors(err)
@@ -487,11 +455,27 @@ const submit = async () => {
   }
 }
 
+const clearAllAndBack = () => {
+  removeStorageItems()
+  router.go(-1)
+}
+
+const removeStorageItems = () => {
+  remove(PAYMENTS)
+  remove(CASH_REGISTER_KEY)
+  remove(GIVE_BONUS)
+}
+
 const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
   clearMainPayments()
   payments.value.push(...val)
   payment_type.value = ''
+  if (items.value.length) checkBonusProduct(items.value[0])
   SET_PAYMENTS()
+}
+
+const closedDialog = () => {
+  if (!payments.value.length) items.value = []
 }
 
 const startFilter = async () => {
@@ -507,35 +491,16 @@ const startFilter = async () => {
 }
 
 const selectSearchedResponse = (item: DirectSaleDataItemType) => {
-  let index = -1
-  let isBonus = false
-  items.value.forEach((p, i) => {
-    if (
-      p.store_id === item.store_id &&
-      p.product_id === item.product_id &&
-      !p.is_bonus
-    ) {
-      index = i
-    } else if (
-      p.store_id === item.store_id &&
-      p.product_id === item.product_id &&
-      p.is_bonus
-    ) {
-      isBonus = true
-    }
-  })
-  if (isBonus) {
-    $errorMessage(t('selectedProductAvailableList'))
-    return
-  }
-  if (index > -1 && !isBonus) bonusOrNotRef.value.openDialog(item)
-  else {
-    items.value.push(item)
-    isManyRes.value = false
-  }
+  addItemForTable(item)
+  isManyRes.value = false
   clearFilter()
   clearMainPayments()
   changeSellPrice()
+}
+
+const addItemForTable = (item: DirectSaleDataItemType) => {
+  checkBonusProduct(item)
+  items.value.push(item)
 }
 
 const cancelChoseSearchResponse = () => {
@@ -559,37 +524,8 @@ const fetchData = async () => {
     responseSearch.value = value
     if (value.length > 1) isManyRes.value = true
     else if (value.length === 1) {
-      let index = -1
-      let isBonus = false
-      items.value.forEach((p, i) => {
-        if (
-          p.store_id === value[0].store_id &&
-          p.product_id === value[0].product_id
-        ) {
-          index = i
-        }
-        if (
-          p.store_id === value[0].store_id &&
-          p.product_id === value[0].product_id &&
-          p.bonus_id
-        ) {
-          isBonus = true
-        }
-      })
-      if (isBonus) {
-        $errorMessage(t('selectedProductAvailableList'))
-        clearFilter()
-        return
-      }
-      if (index > -1) {
-        // items.value[index].sell_count++
-        bonusOrNotRef.value.openDialog(value[0])
-        return
-      } else {
-        items.value.push(...value)
-        clearMainPayments()
-      }
-      $successMessage(t('notifications.addedSuccessfully'))
+      if (value && value.length) addItemForTable(value[0])
+      clearMainPayments()
       changeSellPrice()
       clearFilter()
     }
@@ -641,199 +577,54 @@ const fetchStoreList = async () => {
   }
 }
 
-const selectPaymentType = (item: Record<string, any>) => {
-  paymentTypeErrorMessage.value = null
-  payment_type.value = item.type
-  clearMainPayments()
-  payments.value.push({
-    payment_type: item.type,
-    name: item.name,
-    type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
-    amount: allCellingPrice.value,
-  })
-}
-
-const changeAdditionalBonusSum = $debounce(() => {
-  if (items.value) {
-    items.value.forEach((p, i) => {
-      if (p.is_bonus && p.isBonus) {
-        checkBonusProduct(p, i, true)
-      }
-    })
-    addQuery(params.value)
-  }
-}, 500)
-
-const bonusRepeatCodeBody = (
-  item: DirectSaleDataItemType,
-  data: any,
-  additional_amount_sum?: number,
-  payment_type?: string
-) => {
-  item.isBonus = item.product_id
-  item.bonus_id = data.id
-  item.is_bonus = true
-  item.selling_price_sum = 0
-  item.sell_count = 1
-  payments.value = []
-  if (additional_amount_sum) directSaleBonusRef.value.closeDialog()
-  if (payment_type && additional_amount_sum) {
-    payments.value.push({
-      payment_type,
-      type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional,
-      amount: additional_amount_sum,
-    })
-    SET_PAYMENTS()
-  }
-}
-
-const bonusStartCheckRepeatCode = (
-  item: DirectSaleDataItemType,
-  additional_amount_sum?: number,
-  main = false
-) => {
-  let allPrice = 0
-  if (items.value.length) {
-    items.value.forEach((p) => {
-      if (
-        (main && !p.is_bonus && p.product_id !== item.product_id) ||
-        (!main && !p.is_bonus)
-      ) {
-        allPrice += +p.price
-      }
-    })
-  }
-  allPrice = +fixedNumber(allPrice)
+const checkBonusProduct = async (item: DirectSaleDataItemType) => {
+  $showLoading()
   const options: CheckBonusType = {
-    all_amount: allPrice,
-    selling_price_sum: fixedNumber(item.selling_price_sum),
-    client_type: CLIENT_TYPES.individual,
-  }
-  if (additional_amount_sum) {
-    options.additional_amount_sum = form.value.additional_amount_sum =
-      fixedNumber(additional_amount_sum)
+    all_amount: +$clearNonDigits(STORAGE_ITEMS.value.total_amount),
+    selling_price_sum: item.selling_price_sum,
+    client_type: STORAGE_ITEMS.value.client_type,
   }
   const currencyItem = currencyList.value.find((p) => p.key === currency.value)
   if (currencyItem && currencyItem.id) options.currency_id = currencyItem.id
-
-  return {
-    allPrice,
-    options,
-  }
-}
-
-const checkBonusProduct = async (
-  item: DirectSaleDataItemType,
-  index: number,
-  changeAdditional?: boolean,
-  additional_amount_sum?: number,
-  payment_type?: string
-) => {
-  $showLoading()
-  if (changeAdditional || !item.is_bonus) {
-    const { allPrice, options } = bonusStartCheckRepeatCode(
-      item,
-      additional_amount_sum,
-      true
-    )
-    try {
-      if (allPrice) {
-        const {
-          data: { data },
-        } = await checkBonus(options)
-        if (!changeAdditional) {
-          bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
-        }
-      } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
-        $errorMessage(t('notifications.amountInsufficient'))
-        if (!changeAdditional) {
-          setTimeout(() => {
-            items.value[index].isBonus = 0
-          }, 200)
-        }
-      } else {
-        item.isBonus = 0
-        item.bonus_id = 0
-        item.is_bonus = false
-        const indexWithType = payments.value
-          .map((p) => p.type)
-          .indexOf(PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional)
-
-        if (indexWithType > -1) payments.value.splice(indexWithType, 1)
-      }
-    } catch (err: any) {
-      const errors = err?.response?.data?.errors
-      if (errors && errors.additional_amount && errors.bonus_amount) {
-        directSaleBonusRef.value.openDialog(
-          err.response.data.errors,
-          index,
-          item
-        )
-        items.value[index].isBonus = 0
-      } else {
-        directSaleBonusRef.value.closeDialog()
-      }
-      $setResponseErrors(err)
-    }
-  } else if (item.is_bonus) {
-    let count = 0
-    items.value.forEach((p) => {
-      if (p.product_id === item.product_id) {
-        count++
-      }
+  let additionalAmount = 0
+  if (payments.value.length) {
+    payments.value.forEach((p) => {
+      additionalAmount += +p.amount
     })
-    if (count > 1) {
-      items.value.splice(index, 1)
-    } else {
-      item.is_bonus = false
-      item.isBonus = 0
-      item.bonus_id = 0
-      item.selling_price_sum = item.price
+  }
+  if (additionalAmount) options.additional_amount_sum = additionalAmount
+  try {
+    const {
+      data: { data },
+    } = await checkBonus(options)
+    if (items.value?.length) {
+      items.value[0].isBonus = items.value[0].product_id
+      items.value[0].bonus_id = data.id
+      items.value[0].is_bonus = true
+      items.value[0].sell_count = 1
     }
+  } catch (err: any) {
+    const errors = err?.response?.data?.errors
+    if (errors && errors.additional_amount && errors.bonus_amount) {
+      paymentTypeModalRef.value.openDialog(
+        paymentTypeList.value,
+        errors.additional_amount
+      )
+    }
+    if (items.value.length) {
+      items.value = items.value.map((p) => {
+        p.isBonus = 0
+        p.is_bonus = false
+        return p
+      })
+    }
+    $setResponseErrors(err)
   }
   changeSellPrice()
   $clearLoading()
 }
 
-const checkBonusWithSearch = async (
-  item: DirectSaleDataItemType,
-  additional_amount_sum?: number,
-  payment_type?: string
-) => {
-  const { options } = bonusStartCheckRepeatCode(item, additional_amount_sum)
-  try {
-    const {
-      data: { data },
-    } = await checkBonus(options)
-    bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
-    items.value.push(item)
-    if (isManyRes.value) isManyRes.value = false
-    changeSellPrice()
-    bonusOrNotRef.value.closeDialog()
-    clearFilter()
-  } catch (err: any) {
-    bonusOrNotRef.value.closeDialog()
-    const errors = err?.response?.data?.errors
-    if (errors && errors.additional_amount && errors.bonus_amount) {
-      directSaleBonusRef.value.openDialog(
-        err.response.data.errors,
-        0,
-        item,
-        true
-      )
-    } else {
-      directSaleBonusRef.value.closeDialog()
-    }
-    $setResponseErrors(err)
-  }
-}
-
 const deleteItem = (index: number) => {
-  items.value.forEach((p, i) => {
-    if (p.is_bonus && p.bonus_id && index !== i) {
-      checkBonusProduct(p, i)
-    }
-  })
   items.value.splice(index, 1)
   $successMessage(t('notifications.deletedSuccessfully'))
   payments.value = []
@@ -891,21 +682,6 @@ const clearFilter = () => {
   addQuery(params.value)
 }
 
-const fixedNumber = (price: number | string) => {
-  const checkNumber =
-    typeof price === 'string' ? parseInt(price).toFixed() : price.toFixed()
-  const wholePartNumberLength = checkNumber.length
-  const totalLengthPrice =
-    typeof price === 'string' ? price.length - 1 : price.toString().length - 1
-  if (totalLengthPrice - wholePartNumberLength > 2) {
-    return typeof price === 'string'
-      ? parseInt(price).toFixed(2)
-      : price.toFixed(2)
-  } else {
-    return price
-  }
-}
-
 const useFetchData = async () => {
   $showLoading()
   if (GET_ITEMS()) {
@@ -919,8 +695,11 @@ const useFetchData = async () => {
   await fetchStoreList()
   await getPaymentTypeList()
   await getEmployeeList()
-  if (params.value.additional_amount_sum) {
-    changeAdditionalBonusSum()
+  const giveItem = localStorage.getItem(GIVE_BONUS)
+  if (giveItem) {
+    STORAGE_ITEMS.value = JSON.parse(giveItem)
+    if (STORAGE_ITEMS.value.full_name)
+      form.value.full_name = STORAGE_ITEMS.value.full_name
   }
   $clearLoading()
 }
