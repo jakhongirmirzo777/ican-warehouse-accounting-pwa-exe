@@ -1,6 +1,8 @@
 export const TOKEN_KEY = 'Authorization'
 export const EXPIRE_KEY = 'Expire'
 export const APP_LANG_KEY = 'Lang'
+export const GIVE_BONUS = 'GIVE_BONUS'
+export const PAYMENTS = 'PAYMENTS'
 export const NOTIFICATION_DEFAULT_DELAY = 2000
 export const MINI_MENU_MEDIA_WIDTH = 750
 

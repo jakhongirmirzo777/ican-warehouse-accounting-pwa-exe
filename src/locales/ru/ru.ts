@@ -327,7 +327,7 @@ export default {
   cost: 'Стоимость',
   totalPayable: 'Итого к оплате',
   paymentCard: 'Платежная карта',
-  choose: 'Выбирать',
+  choose: 'Выбрать',
   productIsAvailable: 'Этот продукт доступен в выборе',
   additionalAmountForBonus: 'Доплата к бонусу',
   paymentDifferentWays: 'Оплата разными способами',
@@ -343,6 +343,7 @@ export default {
   acceptBonusProduct:
     'Товар есть в наличии, хотите добавить товар в качестве бонуса?',
   selectedProductAvailableList: 'Выбранный продукт доступен в списке',
+  selectedCheckAvailableList: 'Выбранный чек доступен в списке',
   additionalAmount: 'Дополнительная сумма',
   amountEnteredLessAmountDue: 'Введенная сумма меньше суммы к оплате',
   entitySell: 'Продажа юридическому лицу',
@@ -365,6 +366,14 @@ export default {
   qtyReverted: 'Кол-во (возвращено)',
   salesBonus: 'Бонус к продаже',
   unit: 'Ед.изм',
+  saleInBonus: 'Продожа в бонус',
+  clientType: 'Тип клента',
+  productSelection: 'Выберите продукт',
+  chooseProductForBonus: 'Выберите продукт для бонуса',
+  needPayGetProductWarningText:
+    'Сумма бонуса недостаточна для товара, необходимо произвести доплату для получения товара',
+  productPrice: 'Цена продукта',
+  checkList: 'Список чеков',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

@@ -314,6 +314,10 @@ const menus = computed(() => {
             name: t('revertProduct'),
             path: 'reverted-checks-list',
           },
+          {
+            name: t('saleInBonus'),
+            path: 'give-bonus',
+          },
         ],
       },
       {

@@ -391,7 +391,6 @@ const changeParams = () => {
 }
 
 const submit = async () => {
-  $showLoading()
   const { $setFormErrors } = useFormActions(cashRegisterRef.value)
   const currencyItem = currencyList.value.find(
     (p) => p.key === params.value.currency_id
@@ -426,6 +425,7 @@ const submit = async () => {
   if (params.value.counterparty_id)
     form.value.counterparty_id = params.value.counterparty_id
   if (params.value.invoice_id) form.value.invoice_id = params.value.invoice_id
+  $showLoading()
   try {
     await submitEntitySell(form.value)
     form.value = { ...FORM }
