@@ -286,7 +286,7 @@ const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
-const { get, set } = useStorageService()
+const { get, set, remove } = useStorageService()
 //static variables
 
 const FORM = {
@@ -737,6 +737,10 @@ const checkBonusProduct = async (
         items.value[index].isBonus = 0
       } else {
         directSaleBonusRef.value.closeDialog()
+        item.is_bonus = false
+        item.isBonus = 0
+        item.bonus_id = 0
+        item.selling_price_sum = item.price
       }
       $setResponseErrors(err)
     }
@@ -817,8 +821,7 @@ const changeSellPrice = $debounce(() => {
 }, 300)
 
 onBeforeUnmount(() => {
-  items.value = []
-  SET_ITEMS()
+  remove(CASH_REGISTER_KEY)
 })
 
 const SET_ITEMS = () => {
@@ -827,7 +830,7 @@ const SET_ITEMS = () => {
 
 const GET_ITEMS = () => {
   const items = get(CASH_REGISTER_KEY)
-  if (items) return JSON.parse(items)
+  if (items) return items
   return null
 }
 
