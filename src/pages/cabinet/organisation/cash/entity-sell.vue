@@ -260,7 +260,7 @@ import { useQuery } from '@/composables/router-query'
 import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import { $debounce, $moneyFormatWithComma } from '@/utils/pure-functions'
-import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
+import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import {
   fetchCounterpartyContractList,
   fetchCounterpartyWithContract,

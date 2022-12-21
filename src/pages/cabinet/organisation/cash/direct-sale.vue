@@ -298,7 +298,7 @@ import {
   $debounce,
   $moneyFormatWithComma,
 } from '@/utils/pure-functions'
-import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
+import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import type {
   DirectSaleDataItemType,
   DirectSaleFormType,
@@ -874,7 +874,7 @@ const SET_ITEMS = () => {
   set(CASH_REGISTER_KEY, items.value)
 }
 
-const GET_ITEMS = () => {
+const GET_ITEMS = (): any => {
   const items = get(CASH_REGISTER_KEY)
   if (items) return items
   return null
@@ -884,7 +884,7 @@ const SET_PAYMENTS = () => {
   set(PAYMENTS, payments.value)
 }
 
-const GET_PAYMENTS = () => {
+const GET_PAYMENTS = (): any => {
   const payments = get(PAYMENTS)
   if (payments) return payments
   return []

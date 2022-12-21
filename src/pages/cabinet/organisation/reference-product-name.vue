@@ -112,9 +112,9 @@ import {
   fetchBarcode,
   fetchCategories,
   fetchProducts,
-  fetchUnits,
   deleteProduct,
 } from '@/services/cabinet/ReferenceProductNameService'
+import { fetchUnits } from '@/services/cabinet/ResourcesServices'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'

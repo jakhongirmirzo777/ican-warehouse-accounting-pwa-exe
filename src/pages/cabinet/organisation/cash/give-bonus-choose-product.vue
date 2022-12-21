@@ -265,7 +265,7 @@ import {
   $moneyFormatWithComma,
   $fixedNumber,
 } from '@/utils/pure-functions'
-import { getCurrencyList } from '@/services/cabinet/ReferenceCurrenciesService'
+import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import type {
   CheckBonusType,
   DirectSaleDataItemType,
