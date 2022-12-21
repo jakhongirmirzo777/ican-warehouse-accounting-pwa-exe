@@ -701,7 +701,7 @@ const bonusStartCheckRepeatCode = (
         (main && !p.is_bonus && p.product_id !== item.product_id) ||
         (!main && !p.is_bonus)
       ) {
-        allPrice += +p.price
+        allPrice += +p.price * +p.sell_count
       }
     })
   }
