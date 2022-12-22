@@ -106,6 +106,19 @@
     <template #item.sold_amount_sum="{ item }">
       <span>{{ $moneyFormatWithComma(item.sold_amount_sum) }}</span>
     </template>
+    <template #item.payment_types="{ item }">
+      <div>
+        <div v-for="(p, i) in item.payments" :key="`payments-${i}`">
+          <div class="mb-5 text-no-wrap">
+            {{ p.payment_type_name }}:
+            <b
+              >{{ $moneyFormatWithComma(p.amount_sum) }}
+              {{ item.currency_symbol }}</b
+            >
+          </div>
+        </div>
+      </div>
+    </template>
   </VTable>
   <VPagination
     v-if="pageOptions.lastPage > 1"
@@ -210,7 +223,7 @@ const headers = [
   },
   {
     text: t('paymentType'),
-    value: 'category_name',
+    value: 'payment_types',
   },
   {
     text: t('sold'),

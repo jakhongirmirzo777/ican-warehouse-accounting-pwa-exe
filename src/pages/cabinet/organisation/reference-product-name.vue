@@ -244,9 +244,7 @@ const useFetchCategories = async () => {
 
 const useFetchUnits = async () => {
   try {
-    const {
-      data: { data },
-    } = await fetchUnits()
+    const { data } = await fetchUnits()
     units.value = data
   } catch (err) {
     return Promise.reject(err)

@@ -108,7 +108,7 @@ const headers = ref([
   { text: t('salesBonus'), value: 'is_bonus' },
   { text: t('price'), value: 'sold_sum' },
   { text: t('amount'), value: 'amount' },
-  { text: t('unit'), value: 'unit_name' },
+  { text: t('unit'), value: 'unit' },
 ])
 </script>
 

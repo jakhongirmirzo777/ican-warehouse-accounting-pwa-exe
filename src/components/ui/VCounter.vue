@@ -1,12 +1,16 @@
 <template>
   <div class="v-counter">
-    <button @click="onMinus" class="v-counter__minus v-counter__btn">
+    <button
+      @click="onMinus"
+      class="v-counter__minus v-counter__btn"
+      type="reset"
+    >
       <VIcon size="16" icon="minus-circle" />
     </button>
     <div class="v-counter__index v-counter__btn">
       {{ modelValue }}
     </div>
-    <button @click="onPlus" class="v-counter__plus v-counter__btn">
+    <button @click="onPlus" class="v-counter__plus v-counter__btn" type="reset">
       <VIcon size="16" icon="plus-circle" />
     </button>
   </div>
