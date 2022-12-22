@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol md="1">
+          <VCol v-if="$can('organisation.contracts.create')" md="1">
             <VBtn
               width="100%"
               color="primary"
@@ -84,7 +84,12 @@
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
-        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+        <VTableActions
+          update="organisation.contracts.update"
+          delete="organisation.contracts.destroy"
+          @edit="openDialog(item)"
+          @delete="deleteItem(item.id)"
+        />
       </template>
       <template #item.counterparty="{ item }">
         <span v-if="item.counterparty">{{

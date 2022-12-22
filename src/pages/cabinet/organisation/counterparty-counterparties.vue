@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('counterparty.create')" md="1">
         <VBtn class="mb-20" color="primary" width="100%" @click="openDialog">
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
@@ -43,7 +43,12 @@
         <template v-else> - </template>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+        <VTableActions
+          update="counterparty.update"
+          delete="counterparty.destroy"
+          @edit="openDialog(item)"
+          @delete="deleteItem(item.id)"
+        />
       </template>
     </VTable>
     <VPagination

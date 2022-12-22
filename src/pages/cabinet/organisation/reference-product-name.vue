@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('organisation.products.create')" md="1">
         <VBtn
           class="mb-20"
           color="primary"
@@ -64,6 +64,8 @@
       </template>
       <template #item.actions="{ item }">
         <VTableActions
+          update="organisation.products.update"
+          delete="organisation.products.destroy"
           @edit="editProduct(item)"
           @delete="handleDelete(item.id)"
         />

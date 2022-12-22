@@ -16,6 +16,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="organisation.update"
           :actions="{ view: false, edit: true, delete: false, title: null }"
           @edit="editOrganisation(item)"
         />

@@ -2,7 +2,7 @@
   <VModal
     :title="form.id ? t('editOutcome') : t('addOutcome')"
     v-model="dialog"
-    width="742"
+    width="800"
   >
     <Form @submit="submit" ref="formRef">
       <VRow>
@@ -118,10 +118,9 @@
             v-model="form.invoice_id"
           />
         </VCol>
-
         <VCol cols="12" md="6">
           <VRow>
-            <VCol md="8">
+            <VCol dense md="8">
               <VInput
                 :label="$t('amount')"
                 rules="required"
@@ -131,7 +130,7 @@
                 v-model="form.amount"
               />
             </VCol>
-            <VCol md="4">
+            <VCol dense md="4">
               <VSelect
                 :label="$t('currency')"
                 :items="coursesList"

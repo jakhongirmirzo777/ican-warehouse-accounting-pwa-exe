@@ -21,7 +21,10 @@
         {{ t('createFinancialEntry') }}
       </VBtn>
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status"
+        v-if="
+          INVENTORY_DOCUMENTS_STATUS_VALUE.HELD === document.status &&
+          $can('organisation.documents.cancel.forward')
+        "
         class="w-100 w-md-unset"
         outlined
         color="danger"
@@ -31,7 +34,10 @@
         <span>{{ t('cancel') }}</span>
       </VBtn>
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
+        v-if="
+          INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status &&
+          $can('organisation.documents.forward.store')
+        "
         class="w-100 w-md-unset"
         outlined
         color="primary"

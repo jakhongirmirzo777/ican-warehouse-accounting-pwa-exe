@@ -51,17 +51,17 @@ const rawRoutes = [
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
-      {
-        path: 'reference-characteristics',
-        name: 'reference-characteristics',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/reference-characteristics/index.vue'
-          ),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
+      // {
+      //   path: 'reference-characteristics',
+      //   name: 'reference-characteristics',
+      //   component: () =>
+      //     import(
+      //       '@/pages/cabinet/organisation/reference-characteristics/index.vue'
+      //     ),
+      //   meta: {
+      //     roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+      //   },
+      // },
       {
         path: 'reference-characteristics-item/:id?',
         name: 'reference-characteristics-item',
@@ -318,9 +318,7 @@ const rawRoutes = [
         path: 'reports-sales-product/:id',
         name: 'reports-sales-product',
         component: () =>
-          import(
-            '@/pages/cabinet/organisation/report-sale-product.vue'
-          ),
+          import('@/pages/cabinet/organisation/report-sale-product.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },

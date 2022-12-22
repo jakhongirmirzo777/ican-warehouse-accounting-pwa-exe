@@ -163,7 +163,7 @@ export const $parseQueryStatus = (status: string | undefined | null) => {
   return +status
 }
 
-export const $printScreen = (id: string, innerHtml: string) => {
+export const $printScreen = (id: string, innerHtml?: string) => {
   const prtContent = document.getElementById(id)
   if (prtContent) {
     if (innerHtml) {

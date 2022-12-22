@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol md="1">
+          <VCol v-if="$can('organisation.entering-products.create')" md="1">
             <VBtn
               class="mb-20"
               color="primary"
@@ -144,6 +144,9 @@
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VTableActions
+            view="organisation.entering-products.view"
+            update="organisation.entering-products.update"
+            delete="organisation.entering-products.delete"
             :actions="{
               view: true,
               edit: item.status === INVENTORY_DOCUMENTS_STATUS_VALUE.NEW,

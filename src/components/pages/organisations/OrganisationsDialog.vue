@@ -147,6 +147,7 @@
           {{ t('edit') }}
         </VBtn>
         <VBtn
+          v-if="$can('organisation.change.password')"
           type="button"
           color="primary"
           width="160px"

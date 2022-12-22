@@ -326,7 +326,7 @@ const menus = computed(() => {
         children: [
           { name: t('incomeAndOutcome'), path: 'reference-income-outcome' },
           { name: t('categoryProducts'), path: 'reference-category-products' },
-          { name: t('characteristics'), path: 'reference-characteristics' },
+          // { name: t('characteristics'), path: 'reference-characteristics' },
           { name: t('productName'), path: 'reference-product-name' },
         ],
       },

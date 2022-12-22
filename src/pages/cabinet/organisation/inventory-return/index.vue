@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol md="1">
+          <VCol v-if="$can('organisation.returns.create')" md="1">
             <VBtn
               class="mb-20"
               color="primary"
@@ -105,6 +105,7 @@
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VTableActions
+            view="organisation.returns.view"
             :actions="{
               view: true,
               edit: false,
