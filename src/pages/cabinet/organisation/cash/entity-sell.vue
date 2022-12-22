@@ -121,6 +121,20 @@
               v-model="params.invoice_id"
             />
           </VCol>
+          <VCol md="2">
+            <VSelect
+              v-if="isOrganisation"
+              :label="$t('employees')"
+              :items="employeeList"
+              item-text="full_name"
+              item-value="user_id"
+              rules="required"
+              vid="user_id"
+              clearable
+              autocomplete
+              v-model="form.user_id"
+            />
+          </VCol>
         </VRow>
         <VLine class="mb-20" />
         <VTable :headers="headers" :items="items">
@@ -279,8 +293,9 @@ import type {
 } from '@/types/cabinet/CounterpertyContractsTypes'
 import type { InvoiceListType } from '@/types/cabinet/CounterpartyInvoiceTypes'
 
-import { CLIENT_TYPES } from '@/utils/constants'
+import { CLIENT_TYPES, ROLES } from '@/utils/constants'
 import { useStorageService } from '@/plugins/storage-service'
+import { useUserService } from '@/plugins/user-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -288,6 +303,8 @@ const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
 const { get, set, remove } = useStorageService()
 //static variables
+
+const { user } = useUserService()
 
 const FORM = {
   currency_id: '',
@@ -377,6 +394,8 @@ const allPriceWithFormat = computed(() =>
   $moneyFormatWithComma(allCellingPrice.value)
 )
 
+const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
+
 const availableBonus = computed(() => {
   let count = false
   items.value.forEach((p) => {
@@ -409,7 +428,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    form.value.products[i].sold = fixedNumber(p.price)
+    form.value.products[i].sold = fixedNumber(p.selling_price_sum)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true

@@ -343,7 +343,10 @@ const menus = computed(() => {
       {
         name: t('reports'),
         icon: 'list',
-        children: [{ name: t('reportsByStock'), path: 'reports-stock' }],
+        children: [
+          { name: t('reportsByStock'), path: 'reports-stock' },
+          { name: t('salesReport'), path: 'reports-sales' },
+        ],
       },
       {
         name: t('workersControlling'),
