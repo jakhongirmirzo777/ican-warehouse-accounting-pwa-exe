@@ -236,7 +236,7 @@ export const fetchCategories = async () => {
 
 export const fetchUnits = async () => {
   try {
-    const data = await http.get('/admin/units/list')
+    const data = await http.get('/organisation/resources/units-list')
     return Promise.resolve(data)
   } catch (err) {
     return Promise.reject(err)
