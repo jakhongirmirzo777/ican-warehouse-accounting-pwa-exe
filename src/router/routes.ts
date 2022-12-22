@@ -306,6 +306,26 @@ const rawRoutes = [
         },
       },
       {
+        path: 'reports-sales',
+        name: 'reports-sales',
+        component: () =>
+          import('@/pages/cabinet/organisation/report-sales.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'reports-sales-product/:id',
+        name: 'reports-sales-product',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/report-sale-product.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),

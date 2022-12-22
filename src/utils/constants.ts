@@ -233,6 +233,21 @@ export const INVENTORY_DOCUMENTS_STATUS = {
   '10': 'heldFinRecord',
 }
 
+export const REPORT_SALES_STATUS = {
+  '1': {
+    text: 'new',
+    color: 'warning',
+  },
+  '10': {
+    text: 'confirmed',
+    color: 'success',
+  },
+  '0': {
+    text: 'canceled',
+    color: 'danger',
+  },
+}
+
 export const INVENTORY_DOCUMENTS_STATUS_INDEXED = Object.entries(
   INVENTORY_DOCUMENTS_STATUS
 ).reduce((acc: Array<Record<string, string | number>>, [key, val]) => {

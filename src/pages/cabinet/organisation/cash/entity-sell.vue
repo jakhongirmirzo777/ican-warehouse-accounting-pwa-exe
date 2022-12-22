@@ -409,7 +409,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    form.value.products[i].sold = fixedNumber(p.price)
+    form.value.products[i].sold = fixedNumber(p.selling_price_sum)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
