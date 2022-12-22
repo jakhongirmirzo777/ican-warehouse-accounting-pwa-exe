@@ -317,7 +317,7 @@ export default {
   stock: 'Склад',
   all: 'Все',
   shouldAdd: 'Добавить?',
-  barcodeGenerate: 'Генерировать штрих-код',
+  barcodeGenerate: 'Распечатать штрих код',
   directSale: 'Прямая продажа',
   cashRegister: 'Касса',
   saleCurrency: 'Валюта продажи',
