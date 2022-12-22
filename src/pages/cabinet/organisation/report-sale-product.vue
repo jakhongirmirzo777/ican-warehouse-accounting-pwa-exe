@@ -17,10 +17,10 @@
         />
       </template>
       <template #item.amount="{ item }">
-        {{ $moneyFormatWithComma(item.sold_sum * item.count) }}
+        {{ $moneyFormat(item.sold_sum * item.count) }}
       </template>
       <template #item.sold_sum="{ item }">
-        {{ $moneyFormatWithComma(item.sold_sum) }}
+        {{ $moneyFormat(item.sold_sum) }}
       </template>
     </VTable>
   </VCard>

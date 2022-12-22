@@ -5,7 +5,7 @@
         <VCol md="3">
           <VInput clearable :label="t('search')" v-model="options.search" />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             clearable
             autocomplete
@@ -15,7 +15,7 @@
             v-model="options.organisation_ids"
           />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             clearable
             autocomplete
@@ -24,18 +24,7 @@
             v-model="options.store_id"
           />
         </VCol>
-        <VCol md="2">
-          <VSelect
-            clearable
-            autocomplete
-            :label="t('status')"
-            item-text="text"
-            item-value="value"
-            :items="statusList"
-            v-model="options.status"
-          />
-        </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <div class="d-flex flex-column flex-md-row">
             <VFilterActions
               class="mr-md-8 mb-8 mb-md-0"
@@ -51,7 +40,7 @@
     </template>
     <template #bottom>
       <VRow>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             :label="$t('paymentType')"
             :items="paymentTypeList"
@@ -62,10 +51,21 @@
             v-model="options.payment_type"
           />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
+          <VSelect
+            clearable
+            autocomplete
+            :label="t('status')"
+            item-text="text"
+            item-value="value"
+            :items="statusList"
+            v-model="options.status"
+          />
+        </VCol>
+        <VCol md="3">
           <VDatepicker :label="$t('fromDate')" v-model="options.date_from" />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VDatepicker :label="$t('toDate')" v-model="options.date_to" />
         </VCol>
       </VRow>
@@ -93,7 +93,16 @@
       </VBtn>
     </template>
     <template #item.sold_amount_sum="{ item }">
-      <span>{{ $moneyFormatWithComma(item.sold_amount_sum) }}</span>
+      <span
+        >{{ $moneyFormat(item.sold_amount_sum) }}
+        {{ item.currency_symbol }}</span
+      >
+    </template>
+    <template #item.invoice>
+      <VBtn color="primary" flat>
+        <VIcon icon="print" color="#17bdc0" size="16" class="mr-10" />
+        {{ $t('print') }}
+      </VBtn>
     </template>
   </VTable>
   <VPagination
@@ -117,7 +126,10 @@ import VExcel from '@/components/ui/VExcel.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
+import VDatepicker from '@/components/ui/VDatepicker.vue'
+import VIcon from '@/components/ui/VIcon.vue'
 
+import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
 import { REPORT_SALES_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
@@ -125,9 +137,7 @@ import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { fetchReportSales } from '@/services/cabinet/ReportSaleServices'
-import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
 import { getPaymentTypes } from '@/services/cabinet/CashService'
-import VDatepicker from '@/components/ui/VDatepicker.vue'
 import { $parseQueryArray } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
@@ -195,19 +205,19 @@ const headers = [
   },
   {
     text: t('contractNumber'),
-    value: 'created_at',
+    value: 'contract_number',
   },
   {
-    text: t('agreementDate'),
-    value: 'date',
+    text: t('invoice'),
+    value: 'invoice',
+  },
+  {
+    text: t('counterpart'),
+    value: 'counterparty_id',
   },
   {
     text: t('sold'),
     value: 'seller_username',
-  },
-  {
-    text: t('buyer'),
-    value: 'buyer',
   },
   {
     text: t('products'),
@@ -216,10 +226,6 @@ const headers = [
   {
     text: t('status'),
     value: 'status',
-  },
-  {
-    text: t('invoice'),
-    value: 'invoice',
   },
   {
     text: t('amount'),

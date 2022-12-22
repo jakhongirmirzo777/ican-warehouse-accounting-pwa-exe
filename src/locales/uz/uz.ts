@@ -393,6 +393,7 @@ export default {
   agreementDate: 'Дата договора',
   itemsOnSales: 'Товары по продажам',
   goodsForSaleLegalEntities: 'Товары по продажи юр.лицам',
+  print: 'Распечатать',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

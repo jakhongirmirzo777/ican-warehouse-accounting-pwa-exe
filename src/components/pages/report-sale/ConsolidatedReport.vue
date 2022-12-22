@@ -5,7 +5,7 @@
         <VCol md="3">
           <VInput clearable :label="t('search')" v-model="options.search" />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             clearable
             autocomplete
@@ -15,7 +15,7 @@
             v-model="options.organisation_ids"
           />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             clearable
             autocomplete
@@ -24,18 +24,7 @@
             v-model="options.store_id"
           />
         </VCol>
-        <VCol md="2">
-          <VSelect
-            clearable
-            autocomplete
-            :label="t('status')"
-            item-text="text"
-            item-value="value"
-            :items="statusList"
-            v-model="options.status"
-          />
-        </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <div class="d-flex flex-column flex-md-row">
             <VFilterActions
               class="mr-md-8 mb-8 mb-md-0"
@@ -51,7 +40,7 @@
     </template>
     <template #bottom>
       <VRow>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             :label="$t('clientType')"
             :items="clientTypeList"
@@ -62,7 +51,7 @@
             v-model="options.client_type"
           />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VSelect
             :label="$t('paymentType')"
             :items="paymentTypeList"
@@ -73,10 +62,21 @@
             v-model="options.payment_type"
           />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
+          <VSelect
+            clearable
+            autocomplete
+            :label="t('status')"
+            item-text="text"
+            item-value="value"
+            :items="statusList"
+            v-model="options.status"
+          />
+        </VCol>
+        <VCol md="3">
           <VDatepicker :label="$t('fromDate')" v-model="options.date_from" />
         </VCol>
-        <VCol md="2">
+        <VCol md="3">
           <VDatepicker :label="$t('toDate')" v-model="options.date_to" />
         </VCol>
       </VRow>
@@ -104,20 +104,16 @@
       </VBtn>
     </template>
     <template #item.sold_amount_sum="{ item }">
-      <span>{{ $moneyFormatWithComma(item.sold_amount_sum) }}</span>
+      <span class="text-no-wrap"
+        >{{ $moneyFormat(item.sold_amount_sum) }}
+        {{ item.currency_symbol }}</span
+      >
     </template>
     <template #item.payment_types="{ item }">
-      <div>
-        <div v-for="(p, i) in item.payments" :key="`payments-${i}`">
-          <div class="mb-5 text-no-wrap">
-            {{ p.payment_type_name }}:
-            <b
-              >{{ $moneyFormatWithComma(p.amount_sum) }}
-              {{ item.currency_symbol }}</b
-            >
-          </div>
-        </div>
-      </div>
+      <ReportPaymentTypeTexts :item="item" />
+    </template>
+    <template #item.client_type="{ item }">
+      {{ $t(item.client_type) }}
     </template>
   </VTable>
   <VPagination
@@ -141,17 +137,18 @@ import VExcel from '@/components/ui/VExcel.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
+import ReportPaymentTypeTexts from '@/components/pages/report-sale/ReportPaymentTypeTexts.vue'
+import VDatepicker from '@/components/ui/VDatepicker.vue'
 
+import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
 import { CLIENT_TYPES, REPORT_SALES_STATUS } from '@/utils/constants'
-import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { fetchReportSales } from '@/services/cabinet/ReportSaleServices'
-import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
 import { getPaymentTypes } from '@/services/cabinet/CashService'
-import VDatepicker from '@/components/ui/VDatepicker.vue'
 import { $parseQueryArray } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
@@ -226,36 +223,32 @@ const headers = [
     value: 'payment_types',
   },
   {
-    text: t('sold'),
-    value: 'seller_username',
-  },
-  {
-    text: t('amount'),
-    value: 'sold_amount_sum',
-  },
-  {
     text: t('salesDate'),
     value: 'created_at',
-  },
-  {
-    text: t('organisation'),
-    value: 'organisation_name',
-  },
-  {
-    text: t('warehouse'),
-    value: 'available_count',
-  },
-  {
-    text: t('status'),
-    value: 'status',
   },
   {
     text: t('buyer'),
     value: 'buyer',
   },
   {
+    text: t('sold'),
+    value: 'seller_username',
+  },
+  {
+    text: t('organisation'),
+    value: 'organisation_name',
+  },
+  {
     text: t('products'),
     value: 'products',
+  },
+  {
+    text: t('status'),
+    value: 'status',
+  },
+  {
+    text: t('amount'),
+    value: 'sold_amount_sum',
   },
 ]
 
