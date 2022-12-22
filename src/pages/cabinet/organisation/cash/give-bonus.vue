@@ -439,7 +439,7 @@ const SET_ITEMS = async () => {
   if (params.value.pnfl) result.pnfl = params.value.pnfl
   if (check_numbers.length) result.check_numbers = check_numbers
   if (full_name.value) result.full_name = full_name.value
-  set(GIVE_BONUS, JSON.stringify(result))
+  set(GIVE_BONUS, result)
 }
 
 const useFetchData = async () => {
@@ -447,8 +447,7 @@ const useFetchData = async () => {
   await getCounterPartyList(null)
   const data = get(GIVE_BONUS)
   if (data) {
-    const dataItem = JSON.parse(data)
-    items.value = dataItem?.products
+    items.value = data?.products
   }
   $clearLoading()
 }

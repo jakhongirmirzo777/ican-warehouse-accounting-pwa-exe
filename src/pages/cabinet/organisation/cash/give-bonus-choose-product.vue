@@ -662,9 +662,7 @@ const SET_ITEMS = () => {
 }
 
 const GET_ITEMS = () => {
-  const items = get(CASH_REGISTER_KEY)
-  if (items) return JSON.parse(items)
-  return null
+  return get(CASH_REGISTER_KEY)
 }
 
 const SET_PAYMENTS = () => {
@@ -673,7 +671,7 @@ const SET_PAYMENTS = () => {
 
 const GET_PAYMENTS = () => {
   const payments = get(PAYMENTS)
-  if (payments) return JSON.parse(payments)
+  if (payments) return payments
   return []
 }
 
@@ -697,7 +695,7 @@ const useFetchData = async () => {
   await getEmployeeList()
   const giveItem = get(GIVE_BONUS)
   if (giveItem) {
-    STORAGE_ITEMS.value = JSON.parse(giveItem)
+    STORAGE_ITEMS.value = giveItem
     if (STORAGE_ITEMS.value.full_name)
       form.value.full_name = STORAGE_ITEMS.value.full_name
   }

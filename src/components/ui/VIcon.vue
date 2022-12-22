@@ -21,8 +21,9 @@ const props = defineProps({
 })
 
 const currentIcon = computed(() => {
-  const path = `../../assets/icons/${props.icon}.svg`
-  return defineAsyncComponent(() => import(path))
+  return defineAsyncComponent(
+    () => import(`../../assets/icons/${props.icon}.svg`)
+  )
 })
 const styles = computed(() => {
   const styles: Record<string, string> = {}
