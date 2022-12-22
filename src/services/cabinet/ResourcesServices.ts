@@ -14,7 +14,7 @@ export const fetchUnits = async () => {
 
 export const getCurrencyList = async () => {
   try {
-    const { data } = await http.delete(
+    const { data } = await http.get(
       `${BASE_URL_ADDITIONAL}/resources/currencies-list`
     )
     return Promise.resolve(data)
