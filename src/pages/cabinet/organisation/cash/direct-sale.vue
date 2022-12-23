@@ -1,6 +1,9 @@
 <template>
   <div class="direct-sale">
     <VBreadcrumb class="mb-18" :list="breadcrumbs" />
+    <pre>
+      {{ payments }}
+    </pre>
     <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
       {{ t('directSale') }}
     </VText>
@@ -153,13 +156,13 @@
           </div>
         </template>
         <template #item.sell_count="{ item }">
-          {{ item.sell_count }}
           <VCounter
             :class="{ disabled: item.is_bonus }"
             v-model="item.sell_count"
             :disabled-plus="item.sell_count >= item.count"
             :disabled-minus="item.sell_count < 2"
             :disabled="false"
+            :mask-length="item.count.toString().length"
             :min="1"
             :max="item.count"
             @update:modelValue="changeAdditionalBonusSum"
@@ -664,10 +667,15 @@ const selectPaymentType = (item: Record<string, any>) => {
 }
 
 const changeAdditionalBonusSum = $debounce(() => {
+  const addition_sum = payments.value.find(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
+  )
+  let amount = 0
+  if (addition_sum && addition_sum.amount) amount = +addition_sum.amount | 0
   if (items.value) {
     items.value.forEach((p, i) => {
       if (p.is_bonus && p.isBonus) {
-        checkBonusProduct(p, i, true)
+        checkBonusProduct(p, i, true, amount, '', 0, true)
       }
     })
     addQuery(params.value)
@@ -700,7 +708,8 @@ const bonusRepeatCodeBody = (
 const bonusStartCheckRepeatCode = (
   item: DirectSaleDataItemType,
   additional_amount_sum?: number,
-  main = false
+  main = false,
+  recheck?: boolean
 ) => {
   let allPrice = 0
   if (items.value.length) {
@@ -716,7 +725,9 @@ const bonusStartCheckRepeatCode = (
   allPrice = +fixedNumber(allPrice)
   const options: CheckBonusType = {
     all_amount: allPrice,
-    selling_price_sum: fixedNumber(item.selling_price_sum),
+    selling_price_sum: recheck
+      ? item.price
+      : fixedNumber(item.selling_price_sum),
     client_type: CLIENT_TYPES.individual,
   }
   if (additional_amount_sum) {
@@ -738,14 +749,16 @@ const checkBonusProduct = async (
   changeAdditional?: boolean,
   additional_amount_sum?: number,
   payment_type?: string,
-  $event?: number
+  $event?: number,
+  recheck?: boolean
 ) => {
   $showLoading()
   if (changeAdditional || !item.is_bonus) {
     const { allPrice, options } = bonusStartCheckRepeatCode(
       item,
       additional_amount_sum,
-      true
+      true,
+      recheck
     )
     try {
       if (allPrice) {
@@ -806,7 +819,7 @@ const checkBonusProduct = async (
       item.selling_price_sum = item.price
     }
   }
-  if ($event === 0 && payments.value.length) {
+  if ($event === 0 && payments.value.length && !recheck) {
     let additionalIndex = -1
     payments.value.forEach((p, i) => {
       if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional) {
@@ -853,10 +866,15 @@ const checkBonusWithSearch = async (
 }
 
 const deleteItem = (index: number) => {
+  const addition_sum = payments.value.find(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
+  )
+  let amount = 0
+  if (addition_sum && addition_sum.amount) amount = +addition_sum.amount | 0
   items.value.splice(index, 1)
   items.value.forEach((p, i) => {
     if (p.is_bonus && p.bonus_id && index !== i) {
-      checkBonusProduct(p, i, true)
+      checkBonusProduct(p, i, true, amount, '', 0, true)
     }
   })
   $successMessage(t('notifications.deletedSuccessfully'))

@@ -10,8 +10,9 @@
     </button>
     <input
       :value="modelValue"
-      @input="changeInput"
       :class="['v-counter__input v-counter__btn mx-8', { disabled: disabled }]"
+      v-maska="maska"
+      @input="changeInput"
     />
     <button
       @click="onPlus"
@@ -26,6 +27,7 @@
 
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -52,9 +54,23 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  maskLength: {
+    type: Number,
+    default: 0,
+  },
 })
 
 const emit = defineEmits(['update:modelValue', 'minus', 'plus'])
+
+const maska = computed(() => {
+  let result = ''
+  if (props.maskLength > 0) {
+    for (let i = 0; i < props.maskLength; i++) {
+      result += '#'
+    }
+  }
+  return result
+})
 
 const onMinus = () => {
   if (props.min < props.modelValue) {
