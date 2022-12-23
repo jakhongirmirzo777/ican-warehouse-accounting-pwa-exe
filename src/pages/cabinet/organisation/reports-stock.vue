@@ -4,16 +4,16 @@
     {{ t('reportsByStock') }}
   </VText>
   <VTabs v-model="tab">
-    <VTab href="incomes">
+    <VTab v-if="$can('reports.stock.organisation.products')" href="incomes">
       {{ t('incomeOfProducts') }}
     </VTab>
-    <VTab href="remainders">
+    <VTab v-if="$can('reports.stock.available.products')" href="remainders">
       {{ t('remainderOfProducts') }}
     </VTab>
-    <!--    <VTab href="consolidations">-->
+    <!--    <VTab v-if="$can('reports.stock.consolidate.report')" href="consolidations">-->
     <!--      {{ t('consolidatedReport') }}-->
     <!--    </VTab>-->
-    <VTab href="registers">
+    <VTab v-if="$can('reports.stock.document.register')" href="registers">
       {{ t('registerOfIncomes') }}
     </VTab>
   </VTabs>

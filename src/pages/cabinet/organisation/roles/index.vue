@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('organisation.roles.create')" md="1">
         <VBtn
           width="100%"
           color="primary"
@@ -27,6 +27,8 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="organisation.roles.update"
+          delete="organisation.roles.delete"
           @edit="$router.push($localePath(`/cabinet/roles-item/${item.id}`))"
           @delete="deleteItem(item.id)"
         />

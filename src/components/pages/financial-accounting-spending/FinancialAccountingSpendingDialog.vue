@@ -118,9 +118,9 @@
             v-model="form.invoice_id"
           />
         </VCol>
-        <VCol cols="12" md="6">
+        <VCol dense cols="12" md="6">
           <VRow>
-            <VCol dense md="8">
+            <VCol md="8">
               <VInput
                 :label="$t('amount')"
                 rules="required"
@@ -130,7 +130,7 @@
                 v-model="form.amount"
               />
             </VCol>
-            <VCol dense md="4">
+            <VCol md="4">
               <VSelect
                 :label="$t('currency')"
                 :items="coursesList"

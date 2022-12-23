@@ -309,7 +309,7 @@ const rawRoutes = [
         path: 'reports-sales',
         name: 'reports-sales',
         component: () =>
-          import('@/pages/cabinet/organisation/report-sales.vue'),
+          import('@/pages/cabinet/organisation/reports-sales.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
@@ -318,7 +318,7 @@ const rawRoutes = [
         path: 'reports-sales-product/:id',
         name: 'reports-sales-product',
         component: () =>
-          import('@/pages/cabinet/organisation/report-sale-product.vue'),
+          import('@/pages/cabinet/organisation/reports-sale-product.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },

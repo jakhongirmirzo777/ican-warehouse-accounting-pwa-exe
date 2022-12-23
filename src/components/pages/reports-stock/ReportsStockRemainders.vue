@@ -76,7 +76,7 @@
           {{ $moneyFormat(item.count_stock) }} {{ item.unit_name }}
         </span>
         <VIcon
-          v-if="item.count_stock"
+          v-if="item.count_stock && $can('reports.stock.move.product')"
           class="cursor-pointer"
           icon="pencil"
           size="15"
@@ -96,7 +96,7 @@
           {{ $moneyFormat(item.count_showcase) }} {{ item.unit_name }}
         </span>
         <VIcon
-          v-if="item.count_showcase"
+          v-if="item.count_showcase && $can('reports.stock.move.product')"
           class="cursor-pointer"
           icon="pencil"
           size="15"
