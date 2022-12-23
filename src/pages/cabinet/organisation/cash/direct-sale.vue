@@ -1,12 +1,12 @@
 <template>
   <div class="direct-sale">
     <VBreadcrumb class="mb-18" :list="breadcrumbs" />
-    <pre>
-      {{ payments }}
-    </pre>
     <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
       {{ t('directSale') }}
     </VText>
+    <pre>
+      {{ payments }}
+    </pre>
     <VCard class="direct-sale__body">
       <Form ref="cashRegisterRef">
         <VRow>
@@ -261,6 +261,8 @@
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
+    <!--    <VBtn @click="$refs.checkRef.print()">Print</VBtn>-->
+    <!--    <Check ref="checkRef" />-->
   </div>
 </template>
 
@@ -283,6 +285,7 @@ import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
 import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
+// import Check from '@/components/pages/cash/Check.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import {
@@ -800,6 +803,7 @@ const checkBonusProduct = async (
         item.isBonus = 0
         item.bonus_id = 0
         item.selling_price_sum = item.price
+        checkPayments()
       }
       $setResponseErrors(err)
     }
@@ -817,19 +821,24 @@ const checkBonusProduct = async (
       item.isBonus = 0
       item.bonus_id = 0
       item.selling_price_sum = item.price
+      checkPayments()
     }
   }
   if ($event === 0 && payments.value.length && !recheck) {
-    let additionalIndex = -1
-    payments.value.forEach((p, i) => {
-      if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional) {
-        additionalIndex = i
-      }
-    })
-    if (additionalIndex > -1) payments.value.splice(additionalIndex, 1)
+    checkPayments()
   }
   changeSellPrice()
   $clearLoading()
+}
+
+const checkPayments = () => {
+  let additionalIndex = -1
+  payments.value.forEach((p, i) => {
+    if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional) {
+      additionalIndex = i
+    }
+  })
+  if (additionalIndex > -1) payments.value.splice(additionalIndex, 1)
 }
 
 const checkBonusWithSearch = async (
@@ -872,13 +881,22 @@ const deleteItem = (index: number) => {
   let amount = 0
   if (addition_sum && addition_sum.amount) amount = +addition_sum.amount | 0
   items.value.splice(index, 1)
-  items.value.forEach((p, i) => {
-    if (p.is_bonus && p.bonus_id && index !== i) {
-      checkBonusProduct(p, i, true, amount, '', 0, true)
-    }
-  })
+  if (items.value.length === 1 && items.value[0].is_bonus) {
+    items.value[0].is_bonus = false
+    items.value[0].bonus_id = 0
+    items.value[0].isBonus = 0
+    items.value[0].selling_price_sum = items.value[0].price
+    SET_ITEMS()
+    checkPayments()
+  } else {
+    items.value.forEach((p, i) => {
+      if (p.is_bonus && p.bonus_id) {
+        checkBonusProduct(p, i, true, amount, '', 0, true)
+      }
+    })
+  }
   $successMessage(t('notifications.deletedSuccessfully'))
-  payments.value = []
+  // payments.value = []
   SET_PAYMENTS()
   changeSellPrice()
 }
