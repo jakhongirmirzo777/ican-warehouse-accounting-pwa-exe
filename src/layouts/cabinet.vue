@@ -31,9 +31,10 @@ const { get, set } = useStorageService()
 const { user } = useUserService()
 const permissions = user.value?.permissions || []
 const permissionsFromMeta = route.meta.permissions || []
-const hasPermission = !!permissions.find((item) =>
-  permissionsFromMeta.some((innerItem) => item === innerItem)
-)
+const hasPermission =
+  !!permissions.find((item) =>
+    permissionsFromMeta.some((innerItem) => item === innerItem)
+  ) || true
 const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {

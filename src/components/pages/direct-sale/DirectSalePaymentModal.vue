@@ -34,6 +34,7 @@
             <VCol md="7">
               <VInput
                 type="money"
+                label=""
                 :name="`amount_${i}`"
                 v-model="item.amount"
                 @input="($event) => changesAmount($event, item)"
