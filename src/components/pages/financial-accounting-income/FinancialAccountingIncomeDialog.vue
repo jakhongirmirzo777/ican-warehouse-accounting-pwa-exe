@@ -135,7 +135,7 @@
               <VSelect
                 :label="$t('currency')"
                 :items="coursesList"
-                item-text="currency"
+                item-text="name"
                 item-value="id"
                 autocomplete
                 rules="required"
@@ -205,6 +205,8 @@ import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VArea from '@/components/ui/VArea.vue'
 import ReferenceIncomeDialog from '@/components/pages/reference-income-outcome/ReferenceIncomeDialog.vue'
 import FinancialAccountingAccountsDialog from '@/components/pages/financial-accounting-accounts/FinancialAccountingAccountsDialog.vue'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
+import CounterpartyCounterpartiesAccountDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesAccountDialog.vue'
 
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
@@ -214,12 +216,10 @@ import { createEditIncome } from '@/services/cabinet/FinancialAccountingIncomeSe
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $clearNonDigits } from '@/utils/pure-functions'
-import { fetchCurrencies } from '@/services/cabinet/SettingsCurrenciesService'
+import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import type { FinancialIncomeFormTypes } from '@/types/cabinet/FinancialIncomeTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
-import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
-import CounterpartyCounterpartiesAccountDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesAccountDialog.vue'
 
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
@@ -311,9 +311,7 @@ const submit = async (_: never, actions: ActionInterface) => {
 
 const getCoursesList = async () => {
   try {
-    const {
-      data: { data },
-    } = await fetchCurrencies()
+    const { data } = await getCurrencyList()
     coursesList.value = data
   } catch (err) {
     $setResponseErrors(err)
