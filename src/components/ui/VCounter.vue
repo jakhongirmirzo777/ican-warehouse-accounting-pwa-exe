@@ -4,13 +4,21 @@
       @click="onMinus"
       class="v-counter__minus v-counter__btn"
       type="reset"
+      :class="{ disabled: disabledMinus }"
     >
       <VIcon size="16" icon="minus-circle" />
     </button>
-    <div class="v-counter__index v-counter__btn">
-      {{ modelValue }}
-    </div>
-    <button @click="onPlus" class="v-counter__plus v-counter__btn" type="reset">
+    <input
+      :value="modelValue"
+      @input="changeInput"
+      :class="['v-counter__input v-counter__btn mx-8', { disabled: disabled }]"
+    />
+    <button
+      @click="onPlus"
+      class="v-counter__plus v-counter__btn"
+      type="reset"
+      :class="{ disabled: disabledPlus }"
+    >
       <VIcon size="16" icon="plus-circle" />
     </button>
   </div>
@@ -32,6 +40,18 @@ const props = defineProps({
     type: Number,
     default: 10,
   },
+  disabled: {
+    type: Boolean,
+    default: true,
+  },
+  disabledMinus: {
+    type: Boolean,
+    default: false,
+  },
+  disabledPlus: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:modelValue', 'minus', 'plus'])
@@ -50,6 +70,14 @@ const onPlus = () => {
     emit('update:modelValue', number)
     emit('plus', number)
   }
+}
+
+const changeInput = ($event: Event) => {
+  const target = $event.target as HTMLInputElement
+  const value = target.value
+  if (+value > props.max) return emit('update:modelValue', props.max)
+  if (+value < props.min) return emit('update:modelValue', props.min)
+  else emit('update:modelValue', value)
 }
 </script>
 

@@ -394,6 +394,7 @@ export default {
   itemsOnSales: 'Товары по продажам',
   goodsForSaleLegalEntities: 'Товары по продажи юр.лицам',
   print: 'Распечатать',
+  inStock: 'В наличии',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

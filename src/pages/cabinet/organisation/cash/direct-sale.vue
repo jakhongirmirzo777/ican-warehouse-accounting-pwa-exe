@@ -123,7 +123,7 @@
                   : ''
               "
               :name="$t('price')"
-              @update:modelValue="changeSellPrice"
+              @update:modelValue="changeAdditionalBonusSum"
               type="number"
               class="mt-18"
               :disabled="item.is_bonus"
@@ -142,7 +142,9 @@
             <VCheckbox
               v-model="item.isBonus"
               :value="item.product_id"
-              @change="checkBonusProduct(item, iy)"
+              @change="
+                ($event) => checkBonusProduct(item, iy, false, null, '', $event)
+              "
               :true-value="item.product_id"
               :false-value="0"
               :class="{ disabled: availableBonus && !item.is_bonus }"
@@ -150,11 +152,17 @@
             />
           </div>
         </template>
-        <template #item.count="{ item }">
+        <template #item.sell_count="{ item }">
+          {{ item.sell_count }}
           <VCounter
             :class="{ disabled: item.is_bonus }"
             v-model="item.sell_count"
-            @update:modelValue="changeSellPrice"
+            :disabled-plus="item.sell_count >= item.count"
+            :disabled-minus="item.sell_count < 2"
+            :disabled="false"
+            :min="1"
+            :max="item.count"
+            @update:modelValue="changeAdditionalBonusSum"
           />
         </template>
       </VTable>
@@ -413,7 +421,7 @@ const submit = async () => {
     validate.currency_id = t('validation.required', {
       field: t('saleCurrency'),
     })
-  if (!form.value?.user_id) {
+  if (!form.value?.user_id && isOrganisation.value) {
     validate.user_id = t('validation.required', {
       field: t('employees'),
     })
@@ -729,7 +737,8 @@ const checkBonusProduct = async (
   index: number,
   changeAdditional?: boolean,
   additional_amount_sum?: number,
-  payment_type?: string
+  payment_type?: string,
+  $event?: number
 ) => {
   $showLoading()
   if (changeAdditional || !item.is_bonus) {
@@ -797,6 +806,15 @@ const checkBonusProduct = async (
       item.selling_price_sum = item.price
     }
   }
+  if ($event === 0 && payments.value.length) {
+    let additionalIndex = -1
+    payments.value.forEach((p, i) => {
+      if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional) {
+        additionalIndex = i
+      }
+    })
+    if (additionalIndex > -1) payments.value.splice(additionalIndex, 1)
+  }
   changeSellPrice()
   $clearLoading()
 }
@@ -835,12 +853,12 @@ const checkBonusWithSearch = async (
 }
 
 const deleteItem = (index: number) => {
+  items.value.splice(index, 1)
   items.value.forEach((p, i) => {
     if (p.is_bonus && p.bonus_id && index !== i) {
-      checkBonusProduct(p, i)
+      checkBonusProduct(p, i, true)
     }
   })
-  items.value.splice(index, 1)
   $successMessage(t('notifications.deletedSuccessfully'))
   payments.value = []
   SET_PAYMENTS()
@@ -942,7 +960,8 @@ const headers = ref([
   { text: t('articule'), value: 'articule' },
   { text: t('price'), value: 'selling_price_input' },
   { text: t('bonusOnSale'), value: 'bonusOnSale' },
-  { text: t('quantity'), value: 'count' },
+  { text: t('quantity'), value: 'sell_count' },
+  { text: t('inStock'), value: 'count' },
   { text: t('cost'), value: 'selling_price_sum' },
   {
     text: t('delete'),
