@@ -4,9 +4,6 @@
     <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
       {{ t('directSale') }}
     </VText>
-    <pre>
-      {{ payments }}
-    </pre>
     <VCard class="direct-sale__body">
       <Form ref="cashRegisterRef">
         <VRow>
@@ -161,7 +158,7 @@
             v-model="item.sell_count"
             :disabled-plus="item.sell_count >= item.count"
             :disabled-minus="item.sell_count < 2"
-            :disabled="false"
+            :disabled="+item.count === 1"
             :mask-length="item.count.toString().length"
             :min="1"
             :max="item.count"
@@ -678,7 +675,15 @@ const changeAdditionalBonusSum = $debounce(() => {
   if (items.value) {
     items.value.forEach((p, i) => {
       if (p.is_bonus && p.isBonus) {
-        checkBonusProduct(p, i, true, amount, '', 0, true)
+        checkBonusProduct(
+          p,
+          i,
+          true,
+          amount,
+          addition_sum?.payment_type,
+          0,
+          true
+        )
       }
     })
     addQuery(params.value)
@@ -721,7 +726,7 @@ const bonusStartCheckRepeatCode = (
         (main && !p.is_bonus && p.product_id !== item.product_id) ||
         (!main && !p.is_bonus)
       ) {
-        allPrice += +p.price * +p.sell_count
+        allPrice += +p.selling_price_sum * +p.sell_count
       }
     })
   }
@@ -768,9 +773,7 @@ const checkBonusProduct = async (
         const {
           data: { data },
         } = await checkBonus(options)
-        if (!changeAdditional) {
-          bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
-        }
+        bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
       } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
         $errorMessage(t('notifications.amountInsufficient'))
         if (!changeAdditional) {

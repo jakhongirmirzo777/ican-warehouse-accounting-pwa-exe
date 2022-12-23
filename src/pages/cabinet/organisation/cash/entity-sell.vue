@@ -193,7 +193,7 @@
               v-model="item.sell_count"
               :disabled-plus="item.sell_count >= item.count"
               :disabled-minus="item.sell_count < 2"
-              :disabled="false"
+              :disabled="+item.count === 1"
               :mask-length="item.count.toString().length"
               :min="1"
               :max="item.count"
@@ -688,7 +688,7 @@ const bonusStartCheckRepeatCode = (
         (main && !p.is_bonus && p.product_id !== item.product_id) ||
         (!main && !p.is_bonus)
       ) {
-        allPrice += +p.price * +item.sell_count
+        allPrice += +p.selling_price_sum * +p.sell_count
       }
     })
   }
@@ -740,9 +740,7 @@ const checkBonusProduct = async (
         const {
           data: { data },
         } = await checkBonus(options)
-        if (!changeAdditional) {
-          bonusRepeatCodeBody(item, data, additional_amount_sum)
-        }
+        bonusRepeatCodeBody(item, data, additional_amount_sum)
       } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
         $errorMessage(t('notifications.amountInsufficient'))
         if (!changeAdditional) {
@@ -828,11 +826,20 @@ const checkBonusWithSearch = async (
 
 const deleteItem = (index: number) => {
   items.value.splice(index, 1)
-  items.value.forEach((p, i) => {
-    if (p.is_bonus && p.bonus_id && index !== i) {
-      checkBonusProduct(p, i, false, '', true)
-    }
-  })
+  if (items.value.length === 1 && items.value[0].is_bonus) {
+    items.value[0].is_bonus = false
+    items.value[0].bonus_id = 0
+    items.value[0].isBonus = 0
+    items.value[0].selling_price_sum = items.value[0].price
+    additional_sum.value = ''
+    SET_ITEMS()
+  } else {
+    items.value.forEach((p, i) => {
+      if (p.is_bonus && p.bonus_id) {
+        checkBonusProduct(p, i, true, 0, true)
+      }
+    })
+  }
   $successMessage(t('notifications.deletedSuccessfully'))
   changeSellPrice()
 }
