@@ -9,7 +9,12 @@
     </div>
     <div class="d-flex align-center wrap w-100 w-md-unset">
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.CANCELED !== document.status"
+        v-if="
+          INVENTORY_DOCUMENTS_STATUS_VALUE.CANCELED !== document.status &&
+          (INVENTORY_DOCUMENTS_STATUS_VALUE.HELD !== document.status
+            ? $can('organisation.inventory.cancel.forward')
+            : $can('organisation.inventory.cancel'))
+        "
         class="w-100 w-md-unset mr-md-10 mb-16 mb-md-0"
         outlined
         color="danger"
@@ -19,7 +24,10 @@
         <span>{{ t('cancel') }}</span>
       </VBtn>
       <VBtn
-        v-if="INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status"
+        v-if="
+          INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status &&
+          $can('organisation.inventory.forward.store')
+        "
         class="w-100 w-md-unset"
         outlined
         color="primary"

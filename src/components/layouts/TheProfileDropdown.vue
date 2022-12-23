@@ -63,5 +63,5 @@ const onMenuClick = (fn: () => unknown) => {
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/styles/layouts/profile-dropdown.scss';
+@import '../../assets/styles/layouts/the-profile-dropdown.scss';
 </style>

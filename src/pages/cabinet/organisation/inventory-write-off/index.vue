@@ -9,6 +9,7 @@
         <VRow>
           <VCol md="1">
             <VBtn
+              v-if="$can('organisation.write.off.create')"
               class="mb-20"
               color="primary"
               width="100%"
@@ -95,6 +96,7 @@
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VTableActions
+            view="organisation.write.off.view"
             :actions="{
               view: true,
               edit: false,

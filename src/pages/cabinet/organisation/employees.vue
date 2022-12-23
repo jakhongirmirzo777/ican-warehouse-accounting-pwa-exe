@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol xl="1" md="3">
+      <VCol v-if="$can('organisation.employee.create')" xl="1" md="3">
         <VBtn
           class="mb-20"
           color="primary"
@@ -58,7 +58,7 @@
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.role="{ item }">
-        {{ item.role.name }}
+        {{ item?.role?.name }}
       </template>
       <template #item.phone="{ item }">
         {{ $phoneFormat(item.phone) }}
@@ -75,6 +75,7 @@
       <template #item.actions="{ item }">
         <div class="d-flex align-center">
           <VBtn
+            v-if="$can('organisation.employee.change.password')"
             min-width="150px"
             height="32px"
             class="mr-10"
@@ -102,6 +103,8 @@
             </span>
           </VBtn>
           <VTableActions
+            update="organisation.employee.update"
+            delete="organisation.employee.delete"
             @edit="editEmployee(item)"
             @delete="handleDelete(item.id)"
           />

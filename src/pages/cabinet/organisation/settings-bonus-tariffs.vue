@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('bonuses.create')" md="1">
         <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
@@ -21,7 +21,12 @@
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
-        <VTableActions @edit="openDialog(item)" @delete="deleteItem(item.id)" />
+        <VTableActions
+          update="bonuses.update"
+          delete="bonuses.destroy"
+          @edit="openDialog(item)"
+          @delete="deleteItem(item.id)"
+        />
       </template>
     </VTable>
     <VPagination

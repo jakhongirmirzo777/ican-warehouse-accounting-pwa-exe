@@ -4,36 +4,48 @@
     {{ t('incomeAndOutcome') }}
   </VText>
   <VTabs v-model="tab" @update:modelValue="handleChangeTab">
-    <VTab href="income">
+    <VTab v-if="$can('reference.income.index')" href="income">
       {{ t('income') }}
     </VTab>
-    <VTab href="outcome">
+    <VTab v-if="$can('reference.expenses.index')" href="outcome">
       {{ t('outcome') }}
     </VTab>
   </VTabs>
   <VTabsItems v-model="tab">
-    <VRow class="mb-24">
-      <VCol md="1">
-        <VBtn
-          color="primary"
-          width="100%"
-          @click="
-            () => {
-              isUpdate = false
-              openDialog()
-            }
-          "
-        >
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ t('add') }}
-        </VBtn>
-      </VCol>
-    </VRow>
-    <VLine class="mb-20" />
+    <div
+      v-if="
+        tab === 'income'
+          ? $can('reference.income.create')
+          : tab === 'outcome'
+          ? $can('reference.expenses.create')
+          : false
+      "
+    >
+      <VRow class="mb-24">
+        <VCol md="1">
+          <VBtn
+            color="primary"
+            width="100%"
+            @click="
+              () => {
+                isUpdate = false
+                openDialog()
+              }
+            "
+          >
+            <VIcon class="mr-10" size="20" icon="circle-plus" />
+            {{ t('add') }}
+          </VBtn>
+        </VCol>
+      </VRow>
+      <VLine class="mb-20" />
+    </div>
     <VTabItem value="income">
       <VTable :headers="headers" :items="incomesList">
         <template #item.actions="{ item }">
           <VTableActions
+            update="reference.income.update"
+            delete="reference.income.destroy"
             @edit="editData(item)"
             @delete="handleDelete(item.id)"
           />
@@ -51,6 +63,8 @@
       <VTable :headers="headers" :items="outcomesList">
         <template #item.actions="{ item }">
           <VTableActions
+            update="reference.expenses.update"
+            delete="reference.expenses.destroy"
             @edit="editData(item)"
             @delete="handleDelete(item.id)"
           />

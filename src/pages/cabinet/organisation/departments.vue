@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('reference.department.create')" md="1">
         <VBtn
           class="mb-20"
           color="primary"
@@ -42,6 +42,8 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="reference.department.update"
+          delete="reference.department.destroy"
           @edit="editDepartment(item)"
           @delete="handleDelete(item.id)"
         />

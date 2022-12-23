@@ -116,6 +116,7 @@
         <template #item.selling_price_input="{ item }">
           <div class="d-flex align-center">
             <VInput
+              label=""
               v-model="item.selling_price_sum"
               :rules="
                 !item.is_bonus

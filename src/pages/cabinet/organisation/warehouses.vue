@@ -7,6 +7,7 @@
     <VRow>
       <VCol md="1">
         <VBtn
+          v-if="$can('organisation.stores.create')"
           class="mb-20"
           color="primary"
           width="100%"
@@ -42,6 +43,8 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="organisation.stores.update"
+          delete="organisation.stores.destroy"
           @edit="editWarehouse(item)"
           @delete="handleDelete(item.id)"
         />

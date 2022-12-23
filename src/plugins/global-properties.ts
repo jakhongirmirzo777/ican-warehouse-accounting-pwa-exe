@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 import { $changeLocale, $localePath } from '@/plugins/i18n'
+import { $can } from '@/plugins/permission-service'
 import {
   $phoneFormat,
   $moneyFormat,
@@ -15,6 +16,7 @@ const globalProperties = {
   $phoneFormat,
   $moneyFormat,
   $moneyFormatWithComma,
+  $can,
 }
 
 export default {
@@ -36,6 +38,8 @@ declare module '@vue/runtime-core' {
     $moneyFormat(val: number | string): string | number
 
     $moneyFormatWithComma(val: number | string): string | number
+
+    $can(permission: string): boolean
   }
 }
 /*eslint-enable */

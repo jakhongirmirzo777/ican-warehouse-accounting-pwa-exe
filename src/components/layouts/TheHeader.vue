@@ -47,7 +47,7 @@
       />
     </div>
     <TheHeaderLang is-header />
-    <ProfileDropdown
+    <TheProfileDropdown
       :theme="theme === THEME.DARK"
       class="header__profile-dropdown"
     />
@@ -58,7 +58,7 @@
 import VIcon from '@/components/ui/VIcon.vue'
 // import VInput from '@/components/ui/VInput.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
+import TheProfileDropdown from '@/components/layouts/TheProfileDropdown.vue'
 import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 
 import { useThemeService } from '@/plugins/theme-service'

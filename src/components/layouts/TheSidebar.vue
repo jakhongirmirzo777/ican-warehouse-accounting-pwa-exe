@@ -9,7 +9,7 @@
           class="mr-20 cursor-pointer"
           @click="$emit('toggleMini')"
         />
-        <ProfileDropdown class="sidebar__list__profile-dropdown" theme />
+        <TheProfileDropdown class="sidebar__list__profile-dropdown" theme />
         <VSpacer />
         <TheHeaderLang />
       </div>
@@ -96,7 +96,7 @@
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import ProfileDropdown from '@/components/layouts/ProfileDropdown.vue'
+import TheProfileDropdown from '@/components/layouts/TheProfileDropdown.vue'
 import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -326,7 +326,7 @@ const menus = computed(() => {
         children: [
           { name: t('incomeAndOutcome'), path: 'reference-income-outcome' },
           { name: t('categoryProducts'), path: 'reference-category-products' },
-          { name: t('characteristics'), path: 'reference-characteristics' },
+          // { name: t('characteristics'), path: 'reference-characteristics' },
           { name: t('productName'), path: 'reference-product-name' },
         ],
       },

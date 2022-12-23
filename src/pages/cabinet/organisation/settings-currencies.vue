@@ -6,7 +6,7 @@
   <VCard>
     <template v-if="items.length !== currencyTypes.length">
       <VRow>
-        <VCol md="1">
+        <VCol v-if="$can('organisation.courses.create')" md="1">
           <VBtn
             class="mb-20"
             color="primary"
@@ -28,6 +28,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="organisation.courses.create"
           :actions="{ view: false, edit: true, delete: false }"
           @edit="editCurrency(item)"
         />

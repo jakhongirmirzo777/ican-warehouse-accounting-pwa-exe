@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('organisation.categories.create')" md="1">
         <VBtn
           class="mb-20"
           color="primary"
@@ -41,6 +41,8 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="organisation.categories.update"
+          delete="organisation.categories.delete"
           @edit="editCategory(item)"
           @delete="handleDelete(item.id)"
         />

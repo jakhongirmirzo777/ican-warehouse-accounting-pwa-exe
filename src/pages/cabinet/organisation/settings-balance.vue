@@ -15,7 +15,7 @@
   </VRow>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('organisation.transactions.payment')" md="1">
         <VBtn class="mb-20" color="primary" width="100%" @click="dialog = true">
           <VIcon class="mr-10" size="20" icon="wallet" />
           {{ t('makePayment') }}

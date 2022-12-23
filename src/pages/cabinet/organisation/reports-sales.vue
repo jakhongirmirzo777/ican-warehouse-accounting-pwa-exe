@@ -4,13 +4,13 @@
     {{ t('sales') }}
   </VText>
   <VTabs v-model="tab">
-    <VTab href="consolidated">
+    <VTab v-if="$can('reports.sale.sale.reports')" href="consolidated">
       {{ t('consolidatedReport') }}
     </VTab>
     <VTab href="credit">
       {{ t('saleCredit') }}
     </VTab>
-    <VTab href="direct">
+    <VTab v-if="$can('reports.sale.individuals')" href="direct">
       {{ t('directSales') }}
     </VTab>
     <VTab href="entity">

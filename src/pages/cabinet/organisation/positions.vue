@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('reference.position.create')" md="1">
         <VBtn
           class="mb-20"
           color="primary"
@@ -32,6 +32,8 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="reference.position.update"
+          delete="reference.position.destroy"
           @edit="editPosition(item)"
           @delete="handleDelete(item.id)"
         />

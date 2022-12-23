@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="2">
+      <VCol v-if="$can('cash-box.revert.sell')" md="2">
         <VBtn
           width="100%"
           color="primary"

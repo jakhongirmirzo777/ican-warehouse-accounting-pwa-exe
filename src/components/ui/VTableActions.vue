@@ -1,13 +1,23 @@
 <template>
   <div class="v-table-actions">
-    <VBtn v-if="actions.view" class="mr-8" @click="$emit('view')" small>
+    <VBtn
+      v-if="actions.view && (props.view ? $can(props.view) : true)"
+      class="mr-8"
+      @click="$emit('view')"
+      small
+    >
       <VIcon size="14" color="#17BDC0" icon="eye" />
     </VBtn>
-    <VBtn v-if="actions.edit" small class="mr-8" @click="$emit('edit')">
+    <VBtn
+      v-if="actions.edit && (props.update ? $can(props.update) : true)"
+      small
+      class="mr-8"
+      @click="$emit('edit')"
+    >
       <VIcon size="16" icon="pencil" />
     </VBtn>
     <ElPopconfirm
-      v-if="actions.delete"
+      v-if="actions.delete && (props.delete ? $can(props.delete) : true)"
       hide-icon
       :title="title"
       cancel-button-type="primary"
@@ -36,6 +46,9 @@ import { computed } from 'vue'
 const { t } = useI18n()
 
 const props = defineProps({
+  view: {},
+  update: {},
+  delete: {},
   actions: {
     type: Object,
     default: () => {

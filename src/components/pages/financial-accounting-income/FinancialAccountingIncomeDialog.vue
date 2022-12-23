@@ -2,7 +2,7 @@
   <VModal
     :title="form.id ? t('editIncome') : t('addIncome')"
     v-model="dialog"
-    width="742"
+    width="800"
   >
     <Form @submit="submit" ref="formRef">
       <VRow>
@@ -22,7 +22,6 @@
             v-model="form.document_date"
           />
         </VCol>
-
         <VCol cols="12" md="6">
           <VSelect
             :items="organisationList"
@@ -118,8 +117,7 @@
             v-model="form.invoice_id"
           />
         </VCol>
-
-        <VCol cols="12" md="6">
+        <VCol dense cols="12" md="6">
           <VRow>
             <VCol md="8">
               <VInput
@@ -146,12 +144,16 @@
           </VRow>
         </VCol>
         <VCol cols="12" md="6">
-          <VInput
-            :label="$t('purposePayment')"
-            rules="required"
-            vid="payment_purpose"
-            v-model="form.payment_purpose"
-          />
+          <VRow>
+            <VCol>
+              <VInput
+                :label="$t('purposePayment')"
+                rules="required"
+                vid="payment_purpose"
+                v-model="form.payment_purpose"
+              />
+            </VCol>
+          </VRow>
         </VCol>
         <VCol cols="12">
           <VArea :label="$t('comment')" vid="comment" v-model="form.comment" />

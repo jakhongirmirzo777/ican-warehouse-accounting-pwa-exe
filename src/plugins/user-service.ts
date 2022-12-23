@@ -6,6 +6,17 @@ import { useTokenService } from '@/plugins/token-service'
 import { redirectToPages } from '@/middlewares/role-check'
 import type { LoginFormDataInterface } from '@/types/auth/LoginTypes'
 
+interface CoursesInterface {
+  amount: string
+  created_at: string
+  currency: string
+  currency_id: number
+  id: number
+  key: string
+  last_amount: string
+  symbol: string
+}
+
 interface UserDataInterface {
   id: number
   type: 'superAdmin' | 'organisation' | 'employer'
@@ -18,6 +29,7 @@ interface UserDataInterface {
   organisation_tariff: string
   organisation_tariff_amount: number
   permissions: string[]
+  courses: CoursesInterface[]
 }
 
 const tokenService = useTokenService()
