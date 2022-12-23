@@ -40,4 +40,10 @@
       background-color: var(--color-light-gray);
     }
   }
+
+  &__input {
+    height: 32px;
+    width: 37px;
+    text-align: center;
+  }
 }
