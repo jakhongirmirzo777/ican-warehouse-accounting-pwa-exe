@@ -7,19 +7,21 @@
     </VText>
   </div>
   <VCard>
-    <VRow>
-      <VCol md="2">
-        <VBtn
-          width="100%"
-          color="primary"
-          class="mb-20"
-          @click="$router.push($localePath('/cabinet/revert-check'))"
-        >
-          {{ $t('issueRefund') }}
-        </VBtn>
-      </VCol>
-    </VRow>
-    <VLine class="mb-20" />
+    <div v-if="$can('cash-box.revert.sell')">
+      <VRow>
+        <VCol md="2">
+          <VBtn
+            width="100%"
+            color="primary"
+            class="mb-20"
+            @click="$router.push($localePath('/cabinet/revert-check'))"
+          >
+            {{ $t('issueRefund') }}
+          </VBtn>
+        </VCol>
+      </VRow>
+      <VLine class="mb-20" />
+    </div>
     <VTable :headers="headers" :items="items">
       <template #item.is_bonus="{ item }">
         <VCheckbox

@@ -12,3 +12,11 @@ router.beforeEach(i18nCheck)
 router.beforeEach(roleCheck)
 
 export default router
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    public?: boolean
+    roles?: string[]
+    permissions?: string[]
+  }
+}

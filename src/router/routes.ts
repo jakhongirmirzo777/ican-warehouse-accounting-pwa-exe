@@ -24,306 +24,6 @@ const rawRoutes = [
     component: () => import('@/layouts/cabinet.vue'),
     children: [
       {
-        path: 'dashboard-organisation',
-        name: 'dashboard-organisation',
-        component: () => import('@/pages/cabinet/organisation/dashboard.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reference-income-outcome',
-        name: 'reference-income-outcome',
-        component: () =>
-          import('@/pages/cabinet/organisation/reference-income-outcome.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reference-category-products',
-        name: 'reference-category-products',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/reference-category-products.vue'
-          ),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      // {
-      //   path: 'reference-characteristics',
-      //   name: 'reference-characteristics',
-      //   component: () =>
-      //     import(
-      //       '@/pages/cabinet/organisation/reference-characteristics/index.vue'
-      //     ),
-      //   meta: {
-      //     roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-      //   },
-      // },
-      {
-        path: 'reference-characteristics-item/:id?',
-        name: 'reference-characteristics-item',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/reference-characteristics/item.vue'
-          ),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reference-product-name',
-        name: 'reference-product-name',
-        component: () =>
-          import('@/pages/cabinet/organisation/reference-product-name.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'departments',
-        name: 'departments',
-        component: () => import('@/pages/cabinet/organisation/departments.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'positions',
-        name: 'positions',
-        component: () => import('@/pages/cabinet/organisation/positions.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'counterparty-counterparties',
-        name: 'counterparty-counterparties',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/counterparty-counterparties.vue'
-          ),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'counterparty-invoices',
-        name: 'counterparty-invoices',
-        component: () =>
-          import('@/pages/cabinet/organisation/counterparty-invoices.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'organisations',
-        name: 'organisations',
-        component: () =>
-          import('@/pages/cabinet/organisation/organisations.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'counterparty-contracts',
-        name: 'counterparty-contracts',
-        component: () =>
-          import('@/pages/cabinet/organisation/counterparty-contracts.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'warehouses',
-        name: 'warehouses',
-        component: () => import('@/pages/cabinet/organisation/warehouses.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'settings-bonus-tariffs',
-        name: 'settings-bonus-tariffs',
-        component: () =>
-          import('@/pages/cabinet/organisation/settings-bonus-tariffs.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'settings-balance',
-        name: 'settings-balance',
-        component: () =>
-          import('@/pages/cabinet/organisation/settings-balance.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'settings-currencies',
-        name: 'settings-currencies',
-        component: () =>
-          import('@/pages/cabinet/organisation/settings-currencies.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'employees',
-        name: 'employees',
-        component: () => import('@/pages/cabinet/organisation/employees.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-income',
-        name: 'inventory-income',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-income/index.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-income-item/:id',
-        name: 'inventory-income-item',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-income/item.vue'),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-balance',
-        name: 'inventory-balance',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-balance/index.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-balance-item/:id',
-        name: 'inventory-balance-item',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-balance/item.vue'),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-revaluation',
-        name: 'inventory-revaluation',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/inventory-revaluation/index.vue'
-          ),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-revaluation-item/:id',
-        name: 'inventory-revaluation-item',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-revaluation/item.vue'),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-inventory',
-        name: 'inventory-inventory',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-inventory/index.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-inventory-item/:id',
-        name: 'inventory-inventory-item',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-inventory/item.vue'),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-return',
-        name: 'inventory-return',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-return/index.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-return-item/:id',
-        name: 'inventory-return-item',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-return/item.vue'),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-write-off',
-        name: 'inventory-write-off',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-write-off/index.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'inventory-write-off-item/:id',
-        name: 'inventory-write-off-item',
-        component: () =>
-          import('@/pages/cabinet/organisation/inventory-write-off/item.vue'),
-        props: true,
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reports-stock',
-        name: 'reports-stock',
-        component: () =>
-          import('@/pages/cabinet/organisation/reports-stock.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reports-sales',
-        name: 'reports-sales',
-        component: () =>
-          import('@/pages/cabinet/organisation/reports-sales.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reports-sales-product/:id',
-        name: 'reports-sales-product',
-        component: () =>
-          import('@/pages/cabinet/organisation/reports-sale-product.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
         path: 'dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
@@ -392,24 +92,9 @@ const rawRoutes = [
         path: 'roles-admin-item/:id?',
         name: 'roles-admin-item',
         component: () => import('@/pages/cabinet/admin/roles/item.vue'),
+        props: true,
         meta: {
           roles: [ROLES.SUPER_ADMIN],
-        },
-      },
-      {
-        path: 'roles',
-        name: 'roles',
-        component: () => import('@/pages/cabinet/organisation/roles/index.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'roles-item/:id?',
-        name: 'roles-item',
-        component: () => import('@/pages/cabinet/organisation/roles/item.vue'),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
         },
       },
       {
@@ -429,6 +114,363 @@ const rawRoutes = [
         },
       },
       {
+        path: 'dashboard-organisation',
+        name: 'dashboard-organisation',
+        component: () => import('@/pages/cabinet/organisation/dashboard.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'reference-income-outcome',
+        name: 'reference-income-outcome',
+        component: () =>
+          import('@/pages/cabinet/organisation/reference-income-outcome.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['reference.income.index', 'reference.expenses.index'],
+        },
+      },
+      {
+        path: 'reference-category-products',
+        name: 'reference-category-products',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/reference-category-products.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.categories.index'],
+        },
+      },
+      // {
+      //   path: 'reference-characteristics',
+      //   name: 'reference-characteristics',
+      //   component: () =>
+      //     import(
+      //       '@/pages/cabinet/organisation/reference-characteristics/index.vue'
+      //     ),
+      //   meta: {
+      //     roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+      //   },
+      // },
+      // {
+      //   path: 'reference-characteristics-item/:id?',
+      //   name: 'reference-characteristics-item',
+      //   component: () =>
+      //     import(
+      //       '@/pages/cabinet/organisation/reference-characteristics/item.vue'
+      //     ),
+      //   props: true,
+      //   meta: {
+      //     roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+      //   },
+      // },
+      {
+        path: 'reference-product-name',
+        name: 'reference-product-name',
+        component: () =>
+          import('@/pages/cabinet/organisation/reference-product-name.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.products.index'],
+        },
+      },
+      {
+        path: 'departments',
+        name: 'departments',
+        component: () => import('@/pages/cabinet/organisation/departments.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['reference.department.index'],
+        },
+      },
+      {
+        path: 'positions',
+        name: 'positions',
+        component: () => import('@/pages/cabinet/organisation/positions.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['reference.position.index'],
+        },
+      },
+      {
+        path: 'counterparty-counterparties',
+        name: 'counterparty-counterparties',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/counterparty-counterparties.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['counterparty.index'],
+        },
+      },
+      {
+        path: 'counterparty-invoices',
+        name: 'counterparty-invoices',
+        component: () =>
+          import('@/pages/cabinet/organisation/counterparty-invoices.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.invoices.index'],
+        },
+      },
+      {
+        path: 'organisations',
+        name: 'organisations',
+        component: () =>
+          import('@/pages/cabinet/organisation/organisations.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.index'],
+        },
+      },
+      {
+        path: 'counterparty-contracts',
+        name: 'counterparty-contracts',
+        component: () =>
+          import('@/pages/cabinet/organisation/counterparty-contracts.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.contracts.index'],
+        },
+      },
+      {
+        path: 'warehouses',
+        name: 'warehouses',
+        component: () => import('@/pages/cabinet/organisation/warehouses.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.stores.index'],
+        },
+      },
+      {
+        path: 'settings-bonus-tariffs',
+        name: 'settings-bonus-tariffs',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-bonus-tariffs.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['bonuses.index'],
+        },
+      },
+      {
+        path: 'settings-balance',
+        name: 'settings-balance',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-balance.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.transactions.index'],
+        },
+      },
+      {
+        path: 'settings-currencies',
+        name: 'settings-currencies',
+        component: () =>
+          import('@/pages/cabinet/organisation/settings-currencies.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.courses.index'],
+        },
+      },
+      {
+        path: 'employees',
+        name: 'employees',
+        component: () => import('@/pages/cabinet/organisation/employees.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.employee.index'],
+        },
+      },
+      {
+        path: 'inventory-income',
+        name: 'inventory-income',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-income/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.documents.index'],
+        },
+      },
+      {
+        path: 'inventory-income-item/:id',
+        name: 'inventory-income-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-income/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.documents.view'],
+        },
+      },
+      {
+        path: 'inventory-balance',
+        name: 'inventory-balance',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-balance/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.entering-products.index'],
+        },
+      },
+      {
+        path: 'inventory-balance-item/:id',
+        name: 'inventory-balance-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-balance/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.entering-products.view'],
+        },
+      },
+      {
+        path: 'inventory-revaluation',
+        name: 'inventory-revaluation',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/inventory-revaluation/index.vue'
+          ),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.revaluation.index'],
+        },
+      },
+      {
+        path: 'inventory-revaluation-item/:id',
+        name: 'inventory-revaluation-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-revaluation/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'inventory-inventory',
+        name: 'inventory-inventory',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-inventory/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.inventory.index'],
+        },
+      },
+      {
+        path: 'inventory-inventory-item/:id',
+        name: 'inventory-inventory-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-inventory/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+        },
+      },
+      {
+        path: 'inventory-return',
+        name: 'inventory-return',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-return/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.returns.index'],
+        },
+      },
+      {
+        path: 'inventory-return-item/:id',
+        name: 'inventory-return-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-return/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.returns.view'],
+        },
+      },
+      {
+        path: 'inventory-write-off',
+        name: 'inventory-write-off',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-write-off/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.write.off.index'],
+        },
+      },
+      {
+        path: 'inventory-write-off-item/:id',
+        name: 'inventory-write-off-item',
+        component: () =>
+          import('@/pages/cabinet/organisation/inventory-write-off/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.write.off.view'],
+        },
+      },
+      {
+        path: 'reports-stock',
+        name: 'reports-stock',
+        component: () =>
+          import('@/pages/cabinet/organisation/reports-stock.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: [
+            'reports.stock.organisation.products',
+            'reports.stock.available.products',
+            'reports.stock.document.register',
+          ],
+        },
+      },
+      {
+        path: 'reports-sales',
+        name: 'reports-sales',
+        component: () =>
+          import('@/pages/cabinet/organisation/reports-sales.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: [
+            'reports.sale.sale.reports',
+            'reports.sale.individuals',
+          ],
+        },
+      },
+      {
+        path: 'reports-sales-product/:id',
+        name: 'reports-sales-product',
+        component: () =>
+          import('@/pages/cabinet/organisation/reports-sale-product.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: [
+            'reports.sale.sale.reports',
+            'reports.sale.individuals',
+          ],
+        },
+      },
+      {
+        path: 'roles',
+        name: 'roles',
+        component: () => import('@/pages/cabinet/organisation/roles/index.vue'),
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.roles.index'],
+        },
+      },
+      {
+        path: 'roles-item/:id?',
+        name: 'roles-item',
+        component: () => import('@/pages/cabinet/organisation/roles/item.vue'),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.roles.view'],
+        },
+      },
+      {
         path: 'financial-accounting-accounts',
         name: 'financial-accounting-accounts',
         component: () =>
@@ -437,6 +479,7 @@ const rawRoutes = [
           ),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['account.index'],
         },
       },
       {
@@ -448,6 +491,7 @@ const rawRoutes = [
           ),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.income.index'],
         },
       },
       {
@@ -459,6 +503,7 @@ const rawRoutes = [
           ),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.spending.index'],
         },
       },
       {
@@ -470,6 +515,7 @@ const rawRoutes = [
           ),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['finance.accounting.index'],
         },
       },
       {
@@ -481,6 +527,7 @@ const rawRoutes = [
           ),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['finance.accounting.index'],
         },
       },
       {
@@ -490,6 +537,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/cash/direct-sale.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.sell'],
         },
       },
       {
@@ -499,6 +547,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/cash/entity-sell.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.entity.sell'],
         },
       },
       {
@@ -508,6 +557,20 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/cash/reverted-checks-list.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.reverted.checks'],
+        },
+      },
+      {
+        path: 'reverted-check-products/:id',
+        name: 'reverted-check-products',
+        component: () =>
+          import(
+            '@/pages/cabinet/organisation/cash/reverted-check-products.vue'
+          ),
+        props: true,
+        meta: {
+          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.reverted.checks'],
         },
       },
       {
@@ -517,6 +580,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/cash/revert-check.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.revert.sell'],
         },
       },
       {
@@ -526,6 +590,7 @@ const rawRoutes = [
           import('@/pages/cabinet/organisation/cash/give-bonus.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.give.bonus'],
         },
       },
       {
@@ -537,17 +602,7 @@ const rawRoutes = [
           ),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
-        },
-      },
-      {
-        path: 'reverted-check-products/:id',
-        name: 'reverted-check-products',
-        component: () =>
-          import(
-            '@/pages/cabinet/organisation/cash/reverted-check-products.vue'
-          ),
-        meta: {
-          roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['cash-box.give.bonus'],
         },
       },
     ],

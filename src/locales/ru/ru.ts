@@ -396,6 +396,8 @@ export default {
   goodsForSaleLegalEntities: 'Товары по продажи юр.лицам',
   print: 'Распечатать',
   inStock: 'В наличии',
+  youDontHaveRightPermission:
+    'Извините, у вас нет разрешения на доступ к этой странице',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

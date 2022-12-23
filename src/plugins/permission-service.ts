@@ -7,7 +7,9 @@ export const $can = (permission: string): boolean => {
   if (!permission) return false
   const permissions = user.value?.permissions || []
 
-  return permissions.some(
+  const hasPermission = permissions.find(
     (item) => item.toLowerCase() === permission.toLowerCase()
   )
+
+  return !!hasPermission
 }
