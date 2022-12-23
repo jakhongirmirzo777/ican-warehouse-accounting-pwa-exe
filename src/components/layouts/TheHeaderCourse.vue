@@ -4,7 +4,7 @@
       v-for="(course, index) in filteredCourses"
       :key="course.id || index"
       class="header__course__box"
-      :class="{ white: white }"
+      :class="{ white: white || theme === THEME.DARK }"
     >
       {{ course.symbol }} {{ course.amount }}
     </div>
@@ -14,7 +14,8 @@
 <script lang="ts" setup>
 import { useUserService, type CoursesInterface } from '@/plugins/user-service'
 import { computed } from 'vue'
-
+import { useThemeService } from '@/plugins/theme-service'
+const { theme, THEME } = useThemeService()
 defineProps({
   white: {
     type: Boolean,
