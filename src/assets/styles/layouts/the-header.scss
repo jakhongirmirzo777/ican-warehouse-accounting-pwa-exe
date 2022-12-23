@@ -23,16 +23,6 @@
     margin-right: 63px;
   }
 
-  &__search {
-    width: 263px;
-    display: flex;
-    align-items: center;
-  }
-
-  &__setting-icons {
-
-  }
-
   &__user-block {
     display: flex;
     align-items: center;
@@ -73,10 +63,6 @@
   .header {
     justify-content: space-between;
 
-    &__search {
-      display: none;
-    }
-
     &__setting {
       &-icons {
         &__setting {
@@ -86,6 +72,10 @@
     }
 
     &__profile-dropdown {
+      display: none;
+    }
+
+    &__course {
       display: none;
     }
 

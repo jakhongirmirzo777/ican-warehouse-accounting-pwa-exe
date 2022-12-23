@@ -6,7 +6,9 @@ import { useTokenService } from '@/plugins/token-service'
 import { redirectToPages } from '@/middlewares/role-check'
 import type { LoginFormDataInterface } from '@/types/auth/LoginTypes'
 
-interface CoursesInterface {
+export type UserType = 'superAdmin' | 'organisation' | 'employer'
+
+export interface CoursesInterface {
   amount: string
   created_at: string
   currency: string
@@ -17,9 +19,9 @@ interface CoursesInterface {
   symbol: string
 }
 
-interface UserDataInterface {
+export interface UserDataInterface {
   id: number
-  type: 'superAdmin' | 'organisation' | 'employer'
+  type: UserType
   username: string
   status: number
   status_text: string
@@ -36,9 +38,9 @@ const tokenService = useTokenService()
 const userData = ref<UserDataInterface | null>(null)
 
 export function useUserService() {
-  const user = computed(() => userData.value)
-  const role = computed(() => userData.value?.type || null)
-  const auth = computed(() => !!userData.value)
+  const user = computed<UserDataInterface | null>(() => userData.value)
+  const role = computed<UserType | null>(() => userData.value?.type || null)
+  const auth = computed<boolean>(() => !!userData.value)
 
   const clearUser = async () => {
     try {

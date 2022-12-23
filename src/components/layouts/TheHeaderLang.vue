@@ -8,8 +8,8 @@
     ]"
   >
     <template #title>
-      <div class="lang-menu__user-block">
-        <div class="lang-menu__user-block__info">
+      <div class="lang-menu__user-block" :class="{ white: white }">
+        <div class="lang-menu__user-block__info" :class="{ white: white }">
           {{ currentLang.title }}
         </div>
       </div>
@@ -47,6 +47,9 @@ interface LangType {
 
 defineProps({
   isHeader: {
+    type: Boolean,
+  },
+  white: {
     type: Boolean,
   },
 })

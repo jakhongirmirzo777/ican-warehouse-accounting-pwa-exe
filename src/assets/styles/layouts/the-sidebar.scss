@@ -58,6 +58,14 @@ $active-bg: #324071;
       padding: 0 20px;
     }
 
+    &__subheader {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 0 20px;
+    }
+
     //&:hover {
     //  width: $sidebar-width;
     //}
@@ -271,7 +279,7 @@ $active-bg: #324071;
       &--mini {
         transform: translateX(-100%);
       }
-      &__header {
+      &__header, &__subheader {
         display: flex !important;
       }
     }

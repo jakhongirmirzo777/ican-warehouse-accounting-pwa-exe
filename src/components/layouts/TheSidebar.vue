@@ -5,13 +5,30 @@
         <VIcon
           icon="x-mark"
           size="30"
-          color="#AFCBEF"
+          color="#fff"
           class="mr-20 cursor-pointer"
           @click="$emit('toggleMini')"
         />
         <TheProfileDropdown class="sidebar__list__profile-dropdown" theme />
         <VSpacer />
-        <TheHeaderLang />
+        <TheHeaderLang white class="sidebar__list__lang" />
+      </div>
+      <div class="sidebar__list__subheader">
+        <TheHeaderCourse white />
+        <VIcon
+          v-show="theme === THEME.LIGHT"
+          class="mr-3 header__setting-icons__setting cursor-pointer"
+          size="100%"
+          icon="theme-icon-white"
+          @click="toggleTheme"
+        />
+        <VIcon
+          v-show="theme === THEME.DARK"
+          class="mr-3 header__setting-icons__setting cursor-pointer"
+          size="100%"
+          icon="theme-icon-dark"
+          @click="toggleTheme"
+        />
       </div>
       <div
         v-for="(list, i) in listFrom"
@@ -97,6 +114,7 @@
 import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import TheProfileDropdown from '@/components/layouts/TheProfileDropdown.vue'
+import TheHeaderCourse from '@/components/layouts/TheHeaderCourse.vue'
 import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -105,7 +123,9 @@ import { useRoute } from 'vue-router'
 import { MINI_MENU_MEDIA_WIDTH, ROLES } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
+import { useThemeService } from '@/plugins/theme-service'
 
+const { theme, THEME, toggleTheme } = useThemeService()
 const { t, locale } = useI18n()
 const { user } = useUserService()
 const route = useRoute()

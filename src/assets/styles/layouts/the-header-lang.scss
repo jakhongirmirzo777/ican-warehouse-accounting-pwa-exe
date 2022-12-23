@@ -9,9 +9,17 @@
     &:active {
       transform: scale(0.93);
     }
+
+    &.white {
+      border-color: var(--color-white)
+    }
   }
 
   &.dark .lang-menu__user-block__info{
+    color: var(--color-white)
+  }
+
+  & .lang-menu__user-block__info.white {
     color: var(--color-white)
   }
 }

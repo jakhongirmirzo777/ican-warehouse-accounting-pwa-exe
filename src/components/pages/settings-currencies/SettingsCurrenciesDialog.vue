@@ -69,8 +69,10 @@ import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useI18n } from 'vue-i18n'
+import { useUserService } from '@/plugins/user-service'
 
 const { $setResponseErrors } = useErrorActions()
+const { fetchUser } = useUserService()
 const { t } = useI18n()
 
 const FORM_DATA = {
@@ -138,6 +140,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     const formDataCopy = { ...formData.value }
     formDataCopy.amount = +$clearNonDigits(formDataCopy.amount)
     await createOrUpdateCurrency(formDataCopy)
+    await fetchUser()
     await emits('submit')
     await emits('update:modelValue', false)
   } catch (err) {

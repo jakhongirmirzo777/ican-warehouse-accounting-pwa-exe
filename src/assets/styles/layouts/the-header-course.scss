@@ -1,0 +1,35 @@
+.header {
+  &__course {
+    display: flex;
+  }
+
+  &__course__box {
+    height: 40px;
+    width: 87px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #E7EFFA;
+    font-weight: 400;
+    font-size: 12px;
+
+    &.white {
+      color: var(--color-white) !important;
+      border-color: var(--color-white);
+    }
+  }
+
+  &__course__box:not(:last-child){
+    border-right: none;
+  }
+
+  &__course__box:first-child {
+    border-radius: 6px 0 0 6px;
+    color: var(--color-dark-red)
+  }
+
+  &__course__box:last-child {
+    border-radius: 0 6px 6px 0;
+    color: var(--color-light-green)
+  }
+}
