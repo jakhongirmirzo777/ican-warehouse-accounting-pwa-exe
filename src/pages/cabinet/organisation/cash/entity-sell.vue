@@ -650,12 +650,17 @@ const fetchStoreList = async () => {
 
 const changeAdditionalBonusSum = $debounce(() => {
   if (items.value && items.value.length) {
+    let counter = 0
     items.value.forEach((p, i) => {
       if (p.is_bonus && p.isBonus) {
+        counter++
         checkBonusProduct(p, i, true, params.value.additional_amount_sum, true)
       }
     })
     addQuery(params.value)
+    if (counter === 0) {
+      changeSellPrice()
+    }
   }
 }, 500)
 

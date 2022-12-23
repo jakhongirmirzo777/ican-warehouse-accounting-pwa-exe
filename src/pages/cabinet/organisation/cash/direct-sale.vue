@@ -672,9 +672,11 @@ const changeAdditionalBonusSum = $debounce(() => {
   )
   let amount = 0
   if (addition_sum && addition_sum.amount) amount = +addition_sum.amount | 0
+  let counter = 0
   if (items.value) {
     items.value.forEach((p, i) => {
       if (p.is_bonus && p.isBonus) {
+        counter++
         checkBonusProduct(
           p,
           i,
@@ -687,6 +689,9 @@ const changeAdditionalBonusSum = $debounce(() => {
       }
     })
     addQuery(params.value)
+    if (counter === 0) {
+      changeSellPrice()
+    }
   }
 }, 500)
 
