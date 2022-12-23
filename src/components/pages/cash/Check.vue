@@ -1,26 +1,66 @@
 <template>
-  <div class="check">
+  <div
+    class="check"
+    id="cashCheck"
+    style="width: 287px; background: white; padding: 20px"
+  >
     <template v-if="data">
-      <div class="check__logo">
+      <div
+        class="check__logo"
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          padding: 25px 0 35px 0;
+        "
+      >
         <img src="../../../assets/images/check_icon.svg" alt="" />
       </div>
-      <div class="mb-20">
-        <VText tag="div" size="13" class="mb-3 text-center" color="black"
+      <div class="mb-20" style="margin-bottom: 20px">
+        <VText
+          tag="div"
+          size="13"
+          class="mb-3 text-center"
+          color="black"
+          style="text-align: center"
           >{{ $t('check') }} №{{ data.check_number }}</VText
         >
-        <VText tag="div" size="13" class="mb-3 text-center" color="black">{{
-          $t('companyNameForCheck')
-        }}</VText>
-        <VText tag="div" class="text-center" size="13" color="black">{{
-          $t('addressForCheck')
-        }}</VText>
+        <VText
+          tag="div"
+          size="13"
+          class="mb-3 text-center"
+          style="margin-bottom: 3px; text-align: center"
+          color="black"
+        >
+          {{ $t('companyNameForCheck') }}</VText
+        >
+        <VText
+          tag="div"
+          class="text-center"
+          style="text-align: center"
+          size="13"
+          color="black"
+          >{{ $t('addressForCheck') }}</VText
+        >
       </div>
-      <div class="d-flex justify-between mb-5">
+      <div
+        class="d-flex justify-between mb-5"
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+        "
+      >
         <VText size="13" tag="div" color="black">{{ $t('dateAndTime') }}</VText>
         <VText size="13" tag="div" color="black">{{ data.sale_date }}</VText>
       </div>
       <div
         class="d-flex justify-between mb-5"
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+        "
         v-for="(payment, i) in data.payments"
         :key="`payment-${i}`"
       >
@@ -31,17 +71,49 @@
           payment.payment_type
         }}</VText>
       </div>
-      <div class="check__dashed-line my-15" />
+      <div
+        class="check__dashed-line my-15"
+        style="
+          border-bottom: 1px dashed #000;
+          margin-top: 15px;
+          margin-bottom: 15px;
+        "
+      />
       <div v-for="(product, i) in data.products" :key="`product-${i}`">
-        <div class="d-flex justify-between mb-8">
-          <VText size="13" tag="div" color="black" weight="bold">
+        <div
+          class="d-flex justify-between mb-8"
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+          "
+        >
+          <VText
+            size="13"
+            tag="div"
+            color="black"
+            weight="bold"
+            style="font-weight: bold"
+          >
             {{ $t('productRealName') }}:</VText
           >
-          <VText size="13" tag="div" color="black" weight="bold">{{
-            product.product_name
-          }}</VText>
+          <VText
+            size="13"
+            tag="div"
+            color="black"
+            weight="bold"
+            style="font-weight: bold"
+            >{{ product.product_name }}</VText
+          >
         </div>
-        <div class="d-flex justify-between mb-5">
+        <div
+          class="d-flex justify-between mb-5"
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+          "
+        >
           <VText size="13" tag="div" color="black">
             {{ $t('onePrice') }}:</VText
           >
@@ -49,7 +121,14 @@
             $moneyFormat(product.sold_sum)
           }}</VText>
         </div>
-        <div class="d-flex justify-between mb-5">
+        <div
+          class="d-flex justify-between mb-5"
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+          "
+        >
           <VText size="13" tag="div" color="black">
             {{ $t('onePrice') }}:</VText
           >
@@ -57,39 +136,83 @@
             $moneyFormat(product.sell_count)
           }}</VText>
         </div>
-        <div class="d-flex justify-between mb-5">
+        <div
+          class="d-flex justify-between mb-5"
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+          "
+        >
           <VText size="13" tag="div" color="black"> {{ $t('amount') }}:</VText>
           <VText size="13" tag="div" color="black">{{
             $moneyFormat(product.all_sold_sum)
           }}</VText>
         </div>
-        <div class="check__dashed-line my-15" />
+        <div
+          class="check__dashed-line my-15"
+          style="border-bottom: 1px dashed #000; margin-bottom: 15px"
+        />
       </div>
       <div>
         <div
           class="check__payments-info d-flex justify-between mb-5"
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+          "
           v-for="(payment, i) in data.payments"
           :key="`payment2-${i}`"
         >
-          <VText size="13" tag="div" color="black" weight="bold">
+          <VText
+            size="13"
+            tag="div"
+            color="black"
+            weight="bold"
+            style="font-weight: bold"
+          >
             {{ payment.payment_type }}:</VText
           >
-          <VText size="13" tag="div" color="black" weight="bold">{{
-            $moneyFormat(payment.amount_sum)
-          }}</VText>
+          <VText
+            size="13"
+            tag="div"
+            color="black"
+            weight="bold"
+            style="font-weight: bold"
+            >{{ $moneyFormat(payment.amount_sum) }}</VText
+          >
         </div>
       </div>
-      <div class="check__dashed-line my-15" />
-      <div class="text-center">
-        <VText tag="div" size="20" color="black" weight="bold">{{
-          $t('payment')
-        }}</VText>
-        <VText tag="div" size="20" color="black" weight="bold">{{
-          $moneyFormat(data.total_amount_sum)
-        }}</VText>
-        <VText tag="div" size="20" color="black" weight="bold">{{
-          $t('approved')
-        }}</VText>
+      <div
+        class="check__dashed-line my-15"
+        style="border-bottom: 1px dashed #000; margin-bottom: 15px"
+      />
+      <div class="text-center" style="text-align: center">
+        <VText
+          tag="div"
+          size="20"
+          color="black"
+          weight="bold"
+          style="font-weight: bold"
+          >{{ $t('payment') }}</VText
+        >
+        <VText
+          tag="div"
+          size="20"
+          color="black"
+          weight="bold"
+          style="font-weight: bold"
+          >{{ $moneyFormat(data.total_amount_sum) }}</VText
+        >
+        <VText
+          tag="div"
+          size="20"
+          color="black"
+          weight="bold"
+          style="font-weight: bold"
+          >{{ $t('approved') }}</VText
+        >
       </div>
     </template>
   </div>
@@ -97,11 +220,19 @@
 
 <script setup lang="ts">
 import VText from '@/components/ui/VText.vue'
-import { defineProps } from 'vue'
+import { defineProps, defineExpose } from 'vue'
+import { $printScreen } from '@/utils/pure-functions'
 
 defineProps({
   item: {},
 })
+
+const print = () => {
+  const html = document.getElementById('cashCheck')
+  if (html) $printScreen('cashCheck', html.innerHTML)
+}
+
+defineExpose({ print })
 
 const data = {
   id: 87,

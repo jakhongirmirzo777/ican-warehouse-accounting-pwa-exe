@@ -123,7 +123,7 @@
                   : ''
               "
               :name="$t('price')"
-              @update:modelValue="changeSellPrice"
+              @update:modelValue="changeAdditionalBonusSum"
               type="number"
               class="mt-18"
               :disabled="item.is_bonus"
@@ -142,7 +142,9 @@
             <VCheckbox
               v-model="item.isBonus"
               :value="item.product_id"
-              @change="checkBonusProduct(item, iy)"
+              @change="
+                ($event) => checkBonusProduct(item, iy, false, null, '', $event)
+              "
               :true-value="item.product_id"
               :false-value="0"
               :class="{ disabled: availableBonus && !item.is_bonus }"
@@ -150,11 +152,17 @@
             />
           </div>
         </template>
-        <template #item.count="{ item }">
+        <template #item.sell_count="{ item }">
           <VCounter
             :class="{ disabled: item.is_bonus }"
             v-model="item.sell_count"
-            @update:modelValue="changeSellPrice"
+            :disabled-plus="item.sell_count >= item.count"
+            :disabled-minus="item.sell_count < 2"
+            :disabled="+item.count === 1"
+            :mask-length="item.count.toString().length"
+            :min="1"
+            :max="item.count"
+            @update:modelValue="changeAdditionalBonusSum"
           />
         </template>
       </VTable>
@@ -250,6 +258,8 @@
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
+    <!--    <VBtn @click="$refs.checkRef.print()">Print</VBtn>-->
+    <!--    <Check ref="checkRef" />-->
   </div>
 </template>
 
@@ -272,6 +282,7 @@ import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
 import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
+// import Check from '@/components/pages/cash/Check.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import {
@@ -413,7 +424,7 @@ const submit = async () => {
     validate.currency_id = t('validation.required', {
       field: t('saleCurrency'),
     })
-  if (!form.value?.user_id) {
+  if (!form.value?.user_id && isOrganisation.value) {
     validate.user_id = t('validation.required', {
       field: t('employees'),
     })
@@ -656,10 +667,23 @@ const selectPaymentType = (item: Record<string, any>) => {
 }
 
 const changeAdditionalBonusSum = $debounce(() => {
+  const addition_sum = payments.value.find(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
+  )
+  let amount = 0
+  if (addition_sum && addition_sum.amount) amount = +addition_sum.amount | 0
   if (items.value) {
     items.value.forEach((p, i) => {
       if (p.is_bonus && p.isBonus) {
-        checkBonusProduct(p, i, true)
+        checkBonusProduct(
+          p,
+          i,
+          true,
+          amount,
+          addition_sum?.payment_type,
+          0,
+          true
+        )
       }
     })
     addQuery(params.value)
@@ -692,7 +716,8 @@ const bonusRepeatCodeBody = (
 const bonusStartCheckRepeatCode = (
   item: DirectSaleDataItemType,
   additional_amount_sum?: number,
-  main = false
+  main = false,
+  recheck?: boolean
 ) => {
   let allPrice = 0
   if (items.value.length) {
@@ -701,14 +726,16 @@ const bonusStartCheckRepeatCode = (
         (main && !p.is_bonus && p.product_id !== item.product_id) ||
         (!main && !p.is_bonus)
       ) {
-        allPrice += +p.price * +p.sell_count
+        allPrice += +p.selling_price_sum * +p.sell_count
       }
     })
   }
   allPrice = +fixedNumber(allPrice)
   const options: CheckBonusType = {
     all_amount: allPrice,
-    selling_price_sum: fixedNumber(item.selling_price_sum),
+    selling_price_sum: recheck
+      ? item.price
+      : fixedNumber(item.selling_price_sum),
     client_type: CLIENT_TYPES.individual,
   }
   if (additional_amount_sum) {
@@ -729,23 +756,24 @@ const checkBonusProduct = async (
   index: number,
   changeAdditional?: boolean,
   additional_amount_sum?: number,
-  payment_type?: string
+  payment_type?: string,
+  $event?: number,
+  recheck?: boolean
 ) => {
   $showLoading()
   if (changeAdditional || !item.is_bonus) {
     const { allPrice, options } = bonusStartCheckRepeatCode(
       item,
       additional_amount_sum,
-      true
+      true,
+      recheck
     )
     try {
       if (allPrice) {
         const {
           data: { data },
         } = await checkBonus(options)
-        if (!changeAdditional) {
-          bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
-        }
+        bonusRepeatCodeBody(item, data, additional_amount_sum, payment_type)
       } else if ((!allPrice || allPrice < 1) && !item.is_bonus) {
         $errorMessage(t('notifications.amountInsufficient'))
         if (!changeAdditional) {
@@ -778,6 +806,7 @@ const checkBonusProduct = async (
         item.isBonus = 0
         item.bonus_id = 0
         item.selling_price_sum = item.price
+        checkPayments()
       }
       $setResponseErrors(err)
     }
@@ -795,10 +824,24 @@ const checkBonusProduct = async (
       item.isBonus = 0
       item.bonus_id = 0
       item.selling_price_sum = item.price
+      checkPayments()
     }
+  }
+  if ($event === 0 && payments.value.length && !recheck) {
+    checkPayments()
   }
   changeSellPrice()
   $clearLoading()
+}
+
+const checkPayments = () => {
+  let additionalIndex = -1
+  payments.value.forEach((p, i) => {
+    if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional) {
+      additionalIndex = i
+    }
+  })
+  if (additionalIndex > -1) payments.value.splice(additionalIndex, 1)
 }
 
 const checkBonusWithSearch = async (
@@ -835,14 +878,28 @@ const checkBonusWithSearch = async (
 }
 
 const deleteItem = (index: number) => {
-  items.value.forEach((p, i) => {
-    if (p.is_bonus && p.bonus_id && index !== i) {
-      checkBonusProduct(p, i)
-    }
-  })
+  const addition_sum = payments.value.find(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
+  )
+  let amount = 0
+  if (addition_sum && addition_sum.amount) amount = +addition_sum.amount | 0
   items.value.splice(index, 1)
+  if (items.value.length === 1 && items.value[0].is_bonus) {
+    items.value[0].is_bonus = false
+    items.value[0].bonus_id = 0
+    items.value[0].isBonus = 0
+    items.value[0].selling_price_sum = items.value[0].price
+    SET_ITEMS()
+    checkPayments()
+  } else {
+    items.value.forEach((p, i) => {
+      if (p.is_bonus && p.bonus_id) {
+        checkBonusProduct(p, i, true, amount, '', 0, true)
+      }
+    })
+  }
   $successMessage(t('notifications.deletedSuccessfully'))
-  payments.value = []
+  // payments.value = []
   SET_PAYMENTS()
   changeSellPrice()
 }
@@ -942,7 +999,8 @@ const headers = ref([
   { text: t('articule'), value: 'articule' },
   { text: t('price'), value: 'selling_price_input' },
   { text: t('bonusOnSale'), value: 'bonusOnSale' },
-  { text: t('quantity'), value: 'count' },
+  { text: t('quantity'), value: 'sell_count' },
+  { text: t('inStock'), value: 'count' },
   { text: t('cost'), value: 'selling_price_sum' },
   {
     text: t('delete'),

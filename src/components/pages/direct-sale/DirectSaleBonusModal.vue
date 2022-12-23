@@ -54,7 +54,7 @@ import VLine from '@/components/ui/VLine.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import { Form } from 'vee-validate'
 
-import { ref, defineExpose, defineProps } from 'vue'
+import { ref, defineExpose, defineProps, watch } from 'vue'
 import { CURRENCIES_LIST } from '@/utils/constants'
 import type { DirectSaleDataItemType } from '@/types/cabinet/CashTypes'
 
@@ -79,6 +79,7 @@ const bonusPaymentType = ref('')
 const indexBonus = ref<number | null>(null)
 const itemDate = ref<Record<string, any>>({})
 const isSearchCheck = ref(false)
+const dialog = ref(false)
 
 const submit = () => {
   if (isSearchCheck.value)
@@ -93,7 +94,7 @@ const submit = () => {
       'check-bonus-product',
       itemDate.value,
       indexBonus.value,
-      false,
+      true,
       bonusError.value.additional_amount,
       bonusPaymentType.value
     )
@@ -116,7 +117,11 @@ const closeDialog = () => {
   dialog.value = false
 }
 
-const dialog = ref(false)
+watch(dialog, (val) => {
+  if (!val) {
+    bonusPaymentType.value = ''
+  }
+})
 
 defineExpose({ openDialog, closeDialog })
 </script>

@@ -213,7 +213,7 @@ const headers = [
   },
   {
     text: t('counterpart'),
-    value: 'counterparty_id',
+    value: 'counterparty_name',
   },
   {
     text: t('sold'),
