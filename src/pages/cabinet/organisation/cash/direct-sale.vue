@@ -259,8 +259,7 @@
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
-    <!--    <VBtn @click="$refs.checkRef.print()">Print</VBtn>-->
-    <!--    <Check ref="checkRef" />-->
+    <Check ref="checkRef" :data="checkData" />
   </div>
 </template>
 
@@ -283,7 +282,7 @@ import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
 import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
-// import Check from '@/components/pages/cash/Check.vue'
+import Check from '@/components/pages/cash/Check.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import {
@@ -391,10 +390,13 @@ const isManyRes = ref(false)
 
 const paymentTypeErrorMessage = ref(null) as any
 
+const checkData = ref<Record<string, any>>({})
+
 //refs
 const cashRegisterRef = ref()
 const directSaleBonusRef = ref()
 const bonusOrNotRef = ref()
+const checkRef = ref()
 
 const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
 const allPriceWithFormat = computed(() =>
@@ -476,7 +478,13 @@ const submit = async () => {
   if (!Object.keys(validate).length) {
     $showLoading()
     try {
-      await submitDirectSale(form.value)
+      const { data } = await submitDirectSale(form.value)
+      Object.entries(data).forEach(([key, value]) => {
+        checkData.value[key] = value
+      })
+      setTimeout(() => {
+        checkRef.value.print()
+      }, 200)
       form.value = { ...FORM }
       items.value = []
       params.value.additional_amount_sum = ''
