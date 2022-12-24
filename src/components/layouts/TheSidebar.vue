@@ -13,7 +13,7 @@
         <VSpacer />
         <TheHeaderLang white class="sidebar__list__lang" />
       </div>
-      <div class="sidebar__list__subheader">
+      <div v-if="role !== ROLES.SUPER_ADMIN" class="sidebar__list__subheader">
         <TheHeaderCourse white />
         <VIcon
           v-show="theme === THEME.LIGHT"
@@ -143,7 +143,7 @@ import { useThemeService } from '@/plugins/theme-service'
 
 const { theme, THEME, toggleTheme } = useThemeService()
 const { t, locale } = useI18n()
-const { user } = useUserService()
+const { user, role } = useUserService()
 const route = useRoute()
 
 const props = defineProps({

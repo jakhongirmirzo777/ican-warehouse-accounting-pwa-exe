@@ -60,7 +60,14 @@
       <VLine class="mt-12" />
       <VCardAction class="mt-24">
         <VSpacer />
-        <VBtn color="primary" type="submit" class="ml-16" :loading="loading"
+        <VBtn
+          v-if="
+            form.id ? $can('admin.roles.update') : $can('admin.roles.create')
+          "
+          color="primary"
+          type="submit"
+          class="ml-16"
+          :loading="loading"
           >{{ form.id ? $t('edit') : $t('add') }}
         </VBtn>
       </VCardAction>

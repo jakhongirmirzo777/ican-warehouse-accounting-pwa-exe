@@ -12,8 +12,8 @@
       <VIcon v-show="theme === THEME.DARK" size="100%" icon="logo-dark" />
     </div>
     <VSpacer class="header__spacer" />
-    <TheHeaderCourse class="mr-10" />
-    <div class="header__setting-icons mr-10">
+    <TheHeaderCourse v-if="role !== ROLES.SUPER_ADMIN" class="mr-10" />
+    <div v-if="role === ROLES.SUPER_ADMIN" class="header__setting-icons mr-10">
       <VIcon
         v-show="theme === THEME.LIGHT"
         class="mr-3 header__setting-icons__setting cursor-pointer"
@@ -24,6 +24,22 @@
       <VIcon
         v-show="theme === THEME.DARK"
         class="mr-3 header__setting-icons__setting cursor-pointer"
+        size="100%"
+        icon="theme-icon-dark"
+        @click="toggleTheme"
+      />
+    </div>
+    <div v-else class="header__setting-icons mr-10">
+      <VIcon
+        v-show="theme === THEME.LIGHT"
+        class="mr-3 header__setting-icons__setting hide cursor-pointer"
+        size="100%"
+        icon="theme-icon-light"
+        @click="toggleTheme"
+      />
+      <VIcon
+        v-show="theme === THEME.DARK"
+        class="mr-3 header__setting-icons__setting hide cursor-pointer"
         size="100%"
         icon="theme-icon-dark"
         @click="toggleTheme"
@@ -51,8 +67,11 @@ import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 import TheHeaderCourse from '@/components/layouts/TheHeaderCourse.vue'
 
 import { useThemeService } from '@/plugins/theme-service'
+import { useUserService } from '@/plugins/user-service'
+import { ROLES } from '@/utils/constants'
 
 const { theme, THEME, toggleTheme } = useThemeService()
+const { role } = useUserService()
 </script>
 
 <style lang="scss" scoped>

@@ -4,6 +4,7 @@ const rawRoutes = [
   {
     path: '/',
     redirect: { name: 'login' },
+    public: true,
   },
   {
     path: '/auth',
@@ -29,6 +30,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          public: true,
         },
       },
       {
@@ -129,6 +131,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/organisation/dashboard.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          public: true,
         },
       },
       {
