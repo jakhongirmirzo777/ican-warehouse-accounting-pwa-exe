@@ -30,7 +30,7 @@ export interface UserDataInterface {
   organisation_name: string
   organisation_tariff: string
   organisation_tariff_amount: number
-  permissions: string[]
+  permissions: Record<string, boolean>
   courses: CoursesInterface[]
 }
 
@@ -67,6 +67,15 @@ export function useUserService() {
       const {
         data: { data },
       } = await http.post('/admin/auth/me')
+      const permissions =
+        data?.permissions?.reduce(
+          (acc: Record<string, boolean>, cur: string) => {
+            acc[cur.toLowerCase()] = true
+            return acc
+          },
+          {}
+        ) || {}
+      if (data && data.permissions) data.permissions = permissions
       userData.value = data
       return Promise.resolve(data)
     } catch (err) {

@@ -29,12 +29,10 @@ const route = useRoute()
 const IS_MINI_KEY = 'SIDEBAR_MINI'
 const { get, set } = useStorageService()
 const { user } = useUserService()
-const permissions = user.value?.permissions || []
+const permissions = user.value?.permissions || {}
 const permissionsFromMeta = route.meta.permissions || []
 const hasPermission =
-  !!permissions.find((item) =>
-    permissionsFromMeta.some((innerItem) => item === innerItem)
-  ) || true
+  permissionsFromMeta.some((item) => permissions[item.toLowerCase()]) || true
 const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {
