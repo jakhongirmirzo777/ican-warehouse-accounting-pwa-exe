@@ -256,7 +256,7 @@ const useFetchUnits = async () => {
 const handlePrint = async () => {
   try {
     if (barcodeSvg.value) {
-      await $printScreen('reference-product-name-print', '', barcodeSvg.value)
+      await $printScreen('reference-product-name-print', barcodeSvg.value)
     }
   } catch (err) {
     $setResponseErrors(err)

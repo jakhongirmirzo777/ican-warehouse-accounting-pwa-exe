@@ -203,7 +203,7 @@ defineProps({
 })
 
 const print = () => {
-  $printScreen('cashCheck', '')
+  $printScreen('cashCheck')
 }
 
 defineExpose({ print })
