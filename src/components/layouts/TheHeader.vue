@@ -4,7 +4,7 @@
       <VIcon
         :color="theme === THEME.DARK ? '#fff' : ''"
         icon="menu-list"
-        @click="$emit('toggleMini')"
+        @click="$emit('toggle-mini')"
       />
     </div>
     <div class="header__logo">

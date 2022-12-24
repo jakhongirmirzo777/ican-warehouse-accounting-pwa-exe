@@ -1,5 +1,5 @@
 <template>
-  <TheHeader />
+  <TheHeader @toggle-mini="toggleMini" />
   <TheSidebar
     :windowWidth="windowWidth"
     :isMini="isMini"
@@ -38,9 +38,7 @@ onMounted(() => {
   windowWidth.value = window.innerWidth
   isMini.value = windowWidth.value < MEDIUM_MENU_MEDIA_WIDTH
 })
-const toggleMini = () => {
-  isMini.value = !isMini.value
-}
+const toggleMini = () => (isMini.value = !isMini.value)
 </script>
 
 <style lang="scss" scoped>
