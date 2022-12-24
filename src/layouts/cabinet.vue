@@ -23,16 +23,17 @@ import ThePermissionChecker from '@/components/layouts/ThePermissionChecker.vue'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStorageService } from '@/plugins/storage-service'
-import { useUserService } from '@/plugins/user-service'
+import { $can } from '@/plugins/permission-service'
 
 const route = useRoute()
 const IS_MINI_KEY = 'SIDEBAR_MINI'
 const { get, set } = useStorageService()
-const { user } = useUserService()
-const permissions = user.value?.permissions || {}
 const permissionsFromMeta = route.meta.permissions || []
-const hasPermission =
-  permissionsFromMeta.some((item) => permissions[item.toLowerCase()]) || true
+//1) If there is no "permissions" key in the meta, the return value of hasPermission should be true.
+//2) If there is "permissions" key in the meta, the return value of hasPermission should depend on permission check.
+const hasPermission = Array.isArray(route.meta.permissions)
+  ? $can(permissionsFromMeta)
+  : true
 const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {

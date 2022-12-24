@@ -36,6 +36,7 @@
         class="sidebar__list__block"
       >
         <component
+          v-if="list.permission ? $can(list.permission) : true"
           :is="
             list.path && (!list.children || !list.children.length)
               ? 'router-link'
@@ -79,24 +80,26 @@
           ]"
           :ref="`menuItemRef${i}`"
         >
-          <router-link
-            class="sidebar__list__block__children__link"
-            v-for="(child, childIndex) in list.children"
-            :key="`child-${childIndex}`"
-            :to="{ name: child.path, params: { locale } }"
-            active-class="sidebar__list__block__children__link--active"
-          >
-            <img
-              class="mr-7"
-              width="10"
-              height="10"
-              src="../../assets/icons/circle.svg"
-              alt=""
-            />
-            <span class="sidebar__list__block__children__link__text">{{
-              child.name
-            }}</span>
-          </router-link>
+          <template v-if="list.permission ? $can(list.permission) : true">
+            <router-link
+              class="sidebar__list__block__children__link"
+              v-for="(child, childIndex) in list.children"
+              :key="`child-${childIndex}`"
+              :to="{ name: child.path, params: { locale } }"
+              active-class="sidebar__list__block__children__link--active"
+            >
+              <img
+                class="mr-7"
+                width="10"
+                height="10"
+                src="../../assets/icons/circle.svg"
+                alt=""
+              />
+              <span class="sidebar__list__block__children__link__text">
+                {{ child.name }}
+              </span>
+            </router-link>
+          </template>
         </div>
       </div>
     </div>
@@ -271,120 +274,268 @@ const menus = computed(() => {
       {
         name: t('inventoryControl'),
         icon: 'document',
+        permission: [
+          'organisation.documents.index',
+          'organisation.entering-products.index',
+          'organisation.revaluation.index',
+          'organisation.inventory.index',
+          'organisation.returns.index',
+          'organisation.write.off.index',
+        ],
         children: [
-          { name: t('incoming'), path: 'inventory-income' },
-          { name: t('enteringBalances'), path: 'inventory-balance' },
-          { name: t('rePricing'), path: 'inventory-revaluation' },
-          { name: t('inventory'), path: 'inventory-inventory' },
-          { name: t('returnToSupplier'), path: 'inventory-return' },
-          { name: t('writeOff'), path: 'inventory-write-off' },
+          {
+            name: t('incoming'),
+            path: 'inventory-income',
+            permission: 'organisation.documents.index',
+          },
+          {
+            name: t('enteringBalances'),
+            path: 'inventory-balance',
+            permission: 'organisation.entering-products.index',
+          },
+          {
+            name: t('rePricing'),
+            path: 'inventory-revaluation',
+            permission: 'organisation.revaluation.index',
+          },
+          {
+            name: t('inventory'),
+            path: 'inventory-inventory',
+            permission: 'organisation.inventory.index',
+          },
+          {
+            name: t('returnToSupplier'),
+            path: 'inventory-return',
+            permission: 'organisation.returns.index',
+          },
+          {
+            name: t('writeOff'),
+            path: 'inventory-write-off',
+            permission: 'organisation.write.off.index',
+          },
         ],
       },
-      // {
-      //   name: 'Учет основных средств',
-      //   icon: 'graph',
-      //   children: [
-      //     { name: 'Приход', path: 'dashboard-admin' },
-      //     { name: 'Ввод остатков', path: 'credits-admin' },
-      //   ],
-      // },
       {
         name: t('organisationsAndWarehouse'),
         icon: 'home',
+        permission: ['organisation.index', 'organisation.stores.index'],
         children: [
-          { name: t('organisations'), path: 'organisations' },
-          { name: t('warehouses'), path: 'warehouses' },
+          {
+            name: t('organisations'),
+            path: 'organisations',
+            permission: 'organisation.index',
+          },
+          {
+            name: t('warehouses'),
+            path: 'warehouses',
+            permission: 'organisation.stores.index',
+          },
         ],
       },
       {
         name: t('financialAccounting'),
         icon: 'financial-accounting',
+        permission: [
+          'account.index',
+          'organisation.income.index',
+          'organisation.spending.index',
+          'finance.accounting.index',
+        ],
         children: [
           {
             name: t('counterpartyAccounts'),
             path: 'financial-accounting-accounts',
+            permission: 'account.index',
           },
           {
             name: t('income'),
             path: 'financial-accounting-income',
+            permission: 'organisation.income.index',
           },
           {
             name: t('outcome'),
             path: 'financial-accounting-spending',
+            permission: 'organisation.spending.index',
           },
           {
             name: t('mutualSettlements'),
             path: 'financial-accounting-settlements',
+            permission: 'finance.accounting.index',
           },
         ],
       },
       {
         name: t('cashRegister'),
         icon: 'cash',
+        permission: [
+          'cash-box.sell',
+          'cash-box.entity.sell',
+          'cash-box.reverted.checks',
+          'cash-box.give.bonus',
+        ],
         children: [
           {
             name: t('directSale'),
             path: 'cash-register',
+            permission: 'cash-box.sell',
           },
           {
             name: t('entitySell'),
             path: 'entity-sell',
+            permission: 'cash-box.entity.sell',
           },
           {
             name: t('revertProduct'),
             path: 'reverted-checks-list',
+            permission: 'cash-box.reverted.checks',
           },
           {
             name: t('saleInBonus'),
             path: 'give-bonus',
+            permission: 'cash-box.give.bonus',
           },
         ],
       },
       {
         name: t('reference'),
         icon: 'info-square',
+        permission: [
+          'reference.income.index',
+          'reference.expenses.index',
+          'organisation.categories.index',
+          'organisation.products.index',
+        ],
         children: [
-          { name: t('incomeAndOutcome'), path: 'reference-income-outcome' },
-          { name: t('categoryProducts'), path: 'reference-category-products' },
+          {
+            name: t('incomeAndOutcome'),
+            path: 'reference-income-outcome',
+            permission: ['reference.income.index', 'reference.expenses.index'],
+          },
+          {
+            name: t('categoryProducts'),
+            path: 'reference-category-products',
+            permission: 'organisation.categories.index',
+          },
           // { name: t('characteristics'), path: 'reference-characteristics' },
-          { name: t('productName'), path: 'reference-product-name' },
+          {
+            name: t('productName'),
+            path: 'reference-product-name',
+            permission: 'organisation.products.index',
+          },
         ],
       },
       {
         name: t('counterparties'),
         icon: 'work',
+        permission: [
+          'counterparty.index',
+          'organisation.contracts.index',
+          'organisation.invoices.index',
+        ],
         children: [
-          { name: t('counterparties'), path: 'counterparty-counterparties' },
-          { name: t('agreements'), path: 'counterparty-contracts' },
-          { name: t('invoices'), path: 'counterparty-invoices' },
-          // { name: 'Ввод остатков', path: 'credits-admin' },
+          {
+            name: t('counterparties'),
+            path: 'counterparty-counterparties',
+            permission: 'counterparty.index',
+          },
+          {
+            name: t('agreements'),
+            path: 'counterparty-contracts',
+            permission: 'organisation.contracts.index',
+          },
+          {
+            name: t('invoices'),
+            path: 'counterparty-invoices',
+            permission: 'organisation.invoices.index',
+          },
         ],
       },
       {
         name: t('reports'),
         icon: 'list',
+        permission: [
+          'reports.stock.organisation.products',
+          'reports.stock.available.products',
+          'reports.stock.document.register',
+          'reports.sale.sale.reports',
+          'reports.sale.individuals',
+        ],
         children: [
-          { name: t('reportsByStock'), path: 'reports-stock' },
-          { name: t('salesReport'), path: 'reports-sales' },
+          {
+            name: t('reportsByStock'),
+            path: 'reports-stock',
+            permission: [
+              'reports.stock.organisation.products',
+              'reports.stock.available.products',
+              'reports.stock.document.register',
+            ],
+          },
+          {
+            name: t('salesReport'),
+            path: 'reports-sales',
+            permission: [
+              'reports.sale.sale.reports',
+              'reports.sale.individuals',
+            ],
+          },
         ],
       },
       {
         name: t('workersControlling'),
         icon: 'users',
+        permission: [
+          'organisation.roles.index',
+          'reference.position.index',
+          'reference.department.index',
+          'organisation.employee.index',
+        ],
         children: [
-          { name: t('roles'), path: 'roles' },
-          { name: t('positions'), path: 'positions' },
-          { name: t('departments'), path: 'departments' },
-          { name: t('employees'), path: 'employees' },
+          {
+            name: t('roles'),
+            path: 'roles',
+            permission: 'organisation.roles.index',
+          },
+          {
+            name: t('positions'),
+            path: 'positions',
+            permission: 'reference.position.index',
+          },
+          {
+            name: t('departments'),
+            path: 'departments',
+            permission: 'reference.department.index',
+          },
+          {
+            name: t('employees'),
+            path: 'employees',
+            permission: 'organisation.employee.index',
+          },
         ],
       },
       {
         name: t('setting'),
         icon: 'setting-icon',
+        permission: [
+          'bonuses.index',
+          'organisation.transactions.index',
+          'organisation.courses.index',
+        ],
         children: [
-          { name: t('bonusTariff'), path: 'settings-bonus-tariffs' },
-          { name: t('balance'), path: 'settings-balance' },
-          { name: t('systemCourse'), path: 'settings-currencies' },
+          {
+            name: t('bonusTariff'),
+            path: 'settings-bonus-tariffs',
+            permission: 'bonuses.index',
+          },
+          {
+            name: t('balance'),
+            path: 'settings-balance',
+            permission: 'organisation.transactions.index',
+          },
+          {
+            name: t('systemCourse'),
+            path: 'settings-currencies',
+            permission: 'organisation.courses.index',
+          },
         ],
       },
     ]
