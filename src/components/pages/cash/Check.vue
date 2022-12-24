@@ -229,7 +229,7 @@ defineProps({
 
 const print = () => {
   const html = document.getElementById('cashCheck')
-  if (html) $printScreen('cashCheck', html.innerHTML)
+  if (html) $printScreen('cashCheck', '', html.innerHTML)
 }
 
 defineExpose({ print })
