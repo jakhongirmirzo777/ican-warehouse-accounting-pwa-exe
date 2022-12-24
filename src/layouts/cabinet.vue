@@ -1,9 +1,9 @@
 <template>
-  <TheHeader @toggleMini="toggleMini" />
+  <TheHeader />
   <TheSidebar
     :windowWidth="windowWidth"
     :isMini="isMini"
-    @toggleMini="toggleMini"
+    @toggle-mini="toggleMini"
   >
     <RouterView v-if="hasPermission" v-slot="{ Component, route }">
       <transition name="page" mode="out-in">
@@ -22,12 +22,10 @@ import TheSidebar from '@/components/layouts/TheSidebar.vue'
 import ThePermissionChecker from '@/components/layouts/ThePermissionChecker.vue'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStorageService } from '@/plugins/storage-service'
 import { $can } from '@/plugins/permission-service'
+import { MEDIUM_MENU_MEDIA_WIDTH } from '@/utils/constants'
 
 const route = useRoute()
-const IS_MINI_KEY = 'SIDEBAR_MINI'
-const { get, set } = useStorageService()
 const permissionsFromMeta = route.meta.permissions || []
 //1) If there is no "permissions" key in the meta, the return value of hasPermission should be true.
 //2) If there is "permissions" key in the meta, the return value of hasPermission should depend on permission check.
@@ -38,11 +36,10 @@ const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {
   windowWidth.value = window.innerWidth
-  isMini.value = get(IS_MINI_KEY) === 'true'
+  isMini.value = windowWidth.value < MEDIUM_MENU_MEDIA_WIDTH
 })
 const toggleMini = () => {
   isMini.value = !isMini.value
-  set(IS_MINI_KEY, isMini.value)
 }
 </script>
 

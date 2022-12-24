@@ -7,7 +7,7 @@
           size="30"
           color="#fff"
           class="mr-20 cursor-pointer"
-          @click="$emit('toggleMini')"
+          @click="$emit('toggle-mini')"
         />
         <TheProfileDropdown class="sidebar__list__profile-dropdown" theme />
         <VSpacer />
@@ -95,7 +95,10 @@
                 src="../../assets/icons/circle.svg"
                 alt=""
               />
-              <span class="sidebar__list__block__children__link__text">
+              <span
+                v-if="nameIsVisible"
+                class="sidebar__list__block__children__link__text"
+              >
                 {{ child.name }}
               </span>
             </router-link>
@@ -107,7 +110,7 @@
       <slot />
     </div>
     <span
-      @click="$emit('toggleMini')"
+      @click="$emit('toggle-mini')"
       :class="[{ 'sidebar__shadow--active': !isMini }, 'sidebar__shadow']"
     />
   </div>
@@ -123,7 +126,11 @@ import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { ListTypes } from '@/types/components/ListTypes'
 import { useRoute } from 'vue-router'
-import { MINI_MENU_MEDIA_WIDTH, ROLES } from '@/utils/constants'
+import {
+  MINI_MENU_MEDIA_WIDTH,
+  MEDIUM_MENU_MEDIA_WIDTH,
+  ROLES,
+} from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
 import { useThemeService } from '@/plugins/theme-service'
@@ -139,30 +146,38 @@ const props = defineProps({
 })
 const listFrom: any = ref([])
 const miniIsMini = ref(false)
+const nameIsVisible = ref(true)
 const oldRef = ref([]) as any
 
-watch(props, (val) => {
-  if (val.isMini) {
-    miniIsMini.value = val.isMini
-    if (oldRef.value && oldRef.value.length) {
-      oldRef.value[0].style.height = 0
+watch(
+  () => props.isMini,
+  (val) => {
+    if (val) {
+      miniIsMini.value = val
+      if (oldRef.value && oldRef.value.length) {
+        oldRef.value[0].style.height = 0
+      }
+    } else {
+      setTimeout(() => {
+        nameIsVisible.value = true
+        miniIsMini.value = val
+        closeAndAddIsOpen()
+      }, 150)
     }
-  } else {
-    setTimeout(() => {
-      miniIsMini.value = val.isMini
+  }
+)
+
+watch(
+  () => route.path,
+  () => {
+    if (props.windowWidth < MEDIUM_MENU_MEDIA_WIDTH) {
+      emits('toggle-mini')
       closeAndAddIsOpen()
-    }, 150)
+    }
   }
-})
+)
 
-watch(route, () => {
-  if (props.windowWidth < MINI_MENU_MEDIA_WIDTH) {
-    emits('toggleMini')
-    closeAndAddIsOpen()
-  }
-})
-
-const emits = defineEmits(['toggleMini'])
+const emits = defineEmits(['toggle-mini'])
 onMounted(() => {
   closeAndAddIsOpen()
 })
@@ -181,7 +196,8 @@ const childToggleMenu = (list: ListTypes, refs: any) => {
     })
   }
   if (props.isMini && props.windowWidth > MINI_MENU_MEDIA_WIDTH) {
-    emits('toggleMini')
+    nameIsVisible.value = false
+    miniIsMini.value = false
     closeAndAddIsOpen()
   }
   if (oldRef.value && oldRef.value.length) {
