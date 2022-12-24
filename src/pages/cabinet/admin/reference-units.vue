@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('admin.unites.create')" md="1">
         <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
@@ -22,6 +22,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="admin.unites.update"
           @edit="openDialog(item)"
           @delete="deleteItem(item.id)"
           :actions="{ view: false, edit: true, delete: false }"

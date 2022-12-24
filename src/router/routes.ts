@@ -4,6 +4,7 @@ const rawRoutes = [
   {
     path: '/',
     redirect: { name: 'login' },
+    public: true,
   },
   {
     path: '/auth',
@@ -29,6 +30,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/dashboard.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          public: true,
         },
       },
       {
@@ -37,6 +39,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/reference-units.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.unites.index'],
         },
       },
       {
@@ -45,6 +48,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/locations.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.locations.index'],
         },
       },
       {
@@ -53,6 +57,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/reference-courses.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.system.courses.index'],
         },
       },
       {
@@ -61,6 +66,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/organisations.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.organisation.index'],
         },
       },
       {
@@ -70,6 +76,7 @@ const rawRoutes = [
           import('@/pages/cabinet/admin/reference-currencies.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.currencies.index'],
         },
       },
       {
@@ -78,6 +85,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/tariffs.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.tariffs.index'],
         },
       },
       {
@@ -86,6 +94,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/roles/index.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.roles.index'],
         },
       },
       {
@@ -95,6 +104,7 @@ const rawRoutes = [
         props: true,
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.roles.view'],
         },
       },
       {
@@ -103,6 +113,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/payments.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.organisation.transactions.index'],
         },
       },
       {
@@ -111,6 +122,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/admin/users.vue'),
         meta: {
           roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.employee.index'],
         },
       },
       {
@@ -119,6 +131,7 @@ const rawRoutes = [
         component: () => import('@/pages/cabinet/organisation/dashboard.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          public: true,
         },
       },
       {

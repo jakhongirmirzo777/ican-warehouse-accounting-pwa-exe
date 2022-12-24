@@ -7,6 +7,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          :edit="['admin.currencies.create', 'admin.currencies.update']"
           :actions="{ view: false, edit: true, delete: false }"
           @edit="openDialog(item)"
           @delete="deleteItem(item.id)"

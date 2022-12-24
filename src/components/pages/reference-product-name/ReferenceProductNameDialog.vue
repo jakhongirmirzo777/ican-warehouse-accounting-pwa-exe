@@ -264,7 +264,7 @@ const handlePrint = async () => {
       await useGenerateBarcode()
     }
     if (barcodeSvg.value) {
-      await $printScreen('reference-product-name-print', '', barcodeSvg.value)
+      await $printScreen('reference-product-name-print', barcodeSvg.value)
     }
   } catch (err) {
     $setResponseErrors(err)

@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol v-if="$can('admin.employee.create')" md="1">
         <VBtn
           class="mb-20"
           color="primary"
@@ -59,6 +59,7 @@
       <template #item.actions="{ item }">
         <div class="d-flex align-center">
           <VBtn
+            v-if="$can('admin.employee.change.status')"
             min-width="150px"
             height="32px"
             class="mr-10"
@@ -86,6 +87,8 @@
             </span>
           </VBtn>
           <VTableActions
+            update="admin.employee.update"
+            delete="admin.employee.delete"
             @edit="editUser(item)"
             @delete="handleDelete(item.id)"
           />

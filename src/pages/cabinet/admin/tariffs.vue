@@ -4,20 +4,24 @@
     {{ t('tariffs') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol md="1">
-        <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ $t('add') }}
-        </VBtn>
-      </VCol>
-    </VRow>
-    <VLine class="mb-20" />
+    <div v-if="$can('admin.tariffs.create')">
+      <VRow>
+        <VCol md="1">
+          <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
+            <VIcon class="mr-10" size="20" icon="circle-plus" />
+            {{ $t('add') }}
+          </VBtn>
+        </VCol>
+      </VRow>
+      <VLine class="mb-20" />
+    </div>
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="admin.tariffs.update"
+          delete="admin.tariffs.destroy"
           @edit="openDialog(item)"
-          :actions="{ view: false, edit: true, delete: false }"
+          @delete="handleDelete(item.id)"
         />
       </template>
     </VTable>
@@ -48,7 +52,7 @@ import TariffsDialog from '@/components/pages/tariffs/TariffsDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchTariffs } from '@/services/cabinet/TariffsService'
+import { fetchTariffs, deleteTariff } from '@/services/cabinet/TariffsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
@@ -57,7 +61,10 @@ import type {
   TariffPageOptionsType,
   TariffFormTypes,
 } from '@/types/cabinet/TariffsTypes'
+import { $isPageExists } from '@/utils/pure-functions'
+import { useNotificationService } from '@/plugins/notification-service'
 
+const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { addQuery, getQuery, clearQuery } = useQuery()
@@ -102,6 +109,30 @@ const fetchData = async () => {
     })
   } catch (err) {
     $setResponseErrors(err)
+  }
+}
+
+const handleDelete = async (id: number) => {
+  try {
+    $showLoading()
+    await deleteTariff(id)
+    if (
+      pageOptions.value &&
+      pageOptions.value.total &&
+      pageOptions.value.perPage &&
+      $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
+    ) {
+      params.value.page = 1
+      addQuery({
+        page: 1,
+      })
+    }
+    await fetchData()
+    $successMessage(t('notifications.deletedSuccessfully'))
+  } catch (err) {
+    $setResponseErrors(err)
+  } finally {
+    $clearLoading()
   }
 }
 

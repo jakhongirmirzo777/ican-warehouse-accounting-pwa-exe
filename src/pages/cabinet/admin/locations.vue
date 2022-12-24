@@ -4,28 +4,38 @@
       {{ t('placeList') }}
     </VText>
     <VCard>
-      <VRow>
-        <VCol md="1">
-          <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
-            <VIcon class="mr-10" size="20" icon="circle-plus" />
-            {{ $t('add') }}
-          </VBtn>
-        </VCol>
-      </VRow>
-      <VLine class="mb-20" />
+      <div v-if="$can('admin.locations.create')">
+        <VRow>
+          <VCol md="1">
+            <VBtn
+              width="100%"
+              color="primary"
+              class="mb-20"
+              @click="openDialog"
+            >
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ $t('add') }}
+            </VBtn>
+          </VCol>
+        </VRow>
+        <VLine class="mb-20" />
+      </div>
       <VTable :headers="headers" :items="items">
         <template #item.actions="{ item }">
           <VTableActions
+            update="admin.locations.update"
+            delete="admin.locations.delete"
             @edit="openDialog(item)"
             @delete="deleteItem(item.id)"
           />
         </template>
         <template #item.status="{ item }">
           <div class="d-flex align-center">
-            <VBtn :color="LOCATIONS_STATUSES[item.status].color" text>{{
-              $t(LOCATIONS_STATUSES[item.status].title)
-            }}</VBtn>
+            <VBtn :color="LOCATIONS_STATUSES[item.status].color" text>
+              {{ $t(LOCATIONS_STATUSES[item.status].title) }}
+            </VBtn>
             <ElPopconfirm
+              v-if="$can('admin.locations.update')"
               hide-icon
               :title="$t(LOCATIONS_STATUSES[item.status].confirmTitle)"
               cancel-button-type="primary"

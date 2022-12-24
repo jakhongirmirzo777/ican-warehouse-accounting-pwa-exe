@@ -163,71 +163,23 @@ export const $parseQueryStatus = (status: string | undefined | null) => {
   return +status
 }
 
-const $createWindowPrint = (prtContent: string) => {
-  const winPrint = window.open(
-    '',
-    '',
-    'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0'
-  )
-  if (winPrint) {
-    winPrint.document.write(prtContent)
-    winPrint.print()
-    winPrint.close()
-  }
-}
-
-const $createContent = (innerHtml: string, styles = '') => {
-  return `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Document</title>
-          <style>
-           * {
-            font-family: "Arial", sans-serif !important;
-           }
-           ${styles}
-          </style>
-        </head>
-        <body>
-          ${innerHtml}
-        </body>
-      </html>
-    `
-}
-
-export const $printScreen = async (
-  id: string,
-  stylePath?: string,
-  innerHtml?: string
-) => {
+export const $printScreen = async (id: string, innerHtml?: string) => {
   const prtContent = document.getElementById(id)
   if (!prtContent) return
-  if (!stylePath) {
-    if (innerHtml) prtContent.innerHTML = $createContent(innerHtml)
-    else prtContent.innerHTML = $createContent(prtContent.innerHTML)
-    $createWindowPrint(prtContent.innerHTML)
-  } else if (stylePath) {
-    const parsedStylePath = stylePath.replace(/^(@\/|~\/)/, '') || ''
-    const module = {
-      getStyles: () => import(`../${parsedStylePath}`),
+  if (prtContent) {
+    if (innerHtml) {
+      prtContent.innerHTML = innerHtml
     }
-    module.getStyles().then((res) => {
-      if (prtContent) {
-        if (innerHtml) {
-          prtContent.innerHTML = $createContent(innerHtml, res.default)
-        } else {
-          prtContent.innerHTML = $createContent(
-            prtContent.innerHTML,
-            res.default
-          )
-        }
-        $createWindowPrint(prtContent.innerHTML)
-      }
-    })
+    const winPrint = window.open(
+      '',
+      '',
+      'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0'
+    )
+    if (winPrint) {
+      winPrint.document.write(prtContent.innerHTML)
+      winPrint.print()
+      winPrint.close()
+    }
   }
 }
 

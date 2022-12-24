@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol xl="1" md="3">
+      <VCol v-if="$can('admin.organisation.create')" xl="1" md="3">
         <VBtn
           class="mb-20"
           color="primary"
@@ -61,6 +61,8 @@
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="admin.organisation.update"
+          delete="admin.organisation.delete"
           @edit="editOrganisation(item.id)"
           @delete="handleDelete(item.id)"
         />
@@ -82,6 +84,7 @@
             {{ t(MKO_STATUSES[item.status]) }}
           </VStatus>
           <ElPopconfirm
+            v-if="$can('admin.organisation.change.status')"
             hide-icon
             :title="t('changeStatus')"
             cancel-button-type="primary"

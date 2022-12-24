@@ -84,7 +84,7 @@
           {{ !isUpdate ? t('add') : t('edit') }}
         </VBtn>
         <VBtn
-          v-if="formData.id"
+          v-if="formData.id && $can('admin.employee.change.password')"
           type="button"
           color="primary"
           width="160px"

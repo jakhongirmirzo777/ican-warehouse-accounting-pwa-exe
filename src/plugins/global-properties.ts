@@ -39,7 +39,7 @@ declare module '@vue/runtime-core' {
 
     $moneyFormatWithComma(val: number | string): string | number
 
-    $can(permission: string): boolean
+    $can(permission: string | string[]): boolean
   }
 }
 /*eslint-enable */

@@ -20,18 +20,20 @@
 import TheHeader from '@/components/layouts/TheHeader.vue'
 import TheSidebar from '@/components/layouts/TheSidebar.vue'
 import ThePermissionChecker from '@/components/layouts/ThePermissionChecker.vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { $can } from '@/plugins/permission-service'
 import { MEDIUM_MENU_MEDIA_WIDTH } from '@/utils/constants'
 
 const route = useRoute()
-const permissionsFromMeta = route.meta.permissions || []
 //1) If there is no "permissions" key in the meta, the return value of hasPermission should be true.
 //2) If there is "permissions" key in the meta, the return value of hasPermission should depend on permission check.
-const hasPermission = Array.isArray(route.meta.permissions)
-  ? $can(permissionsFromMeta)
-  : true
+const hasPermission = computed(() => {
+  if (route.meta.public) return true
+  return Array.isArray(route.meta.permissions)
+    ? $can(route.meta.permissions)
+    : true
+})
 const isMini = ref(false)
 const windowWidth = ref(0)
 onMounted(() => {
