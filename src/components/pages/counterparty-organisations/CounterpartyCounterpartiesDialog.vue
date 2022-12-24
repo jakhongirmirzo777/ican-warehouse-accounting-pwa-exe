@@ -193,7 +193,7 @@ watch(dialog, (val) => {
   }
 })
 
-const openDialog = (item: OrganizationsCounterpartyTypesFetch) => {
+const openDialog = (item?: OrganizationsCounterpartyTypesFetch) => {
   if (item && item.id) {
     form.value = { ...item }
     item.phones.length

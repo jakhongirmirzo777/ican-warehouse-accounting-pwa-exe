@@ -135,7 +135,7 @@ watch(dialog, (val) => {
   }
 })
 
-const openDialog = (item: CounterpartyInvoiceFormTypes) => {
+const openDialog = (item?: CounterpartyInvoiceFormTypes) => {
   if (item && item.id) {
     form.value = { ...item }
   }

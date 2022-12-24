@@ -83,6 +83,8 @@
                   item-text="company_name"
                   item-value="id"
                   rules="required"
+                  can-add
+                  @add="$refs.organizationDialogRef.openDialog()"
                   vid="counterparty_id"
                   @change="changeParams"
                   autocomplete
@@ -98,6 +100,8 @@
                   item-text="number"
                   item-value="id"
                   clearable
+                  can-add
+                  @add="$refs.organizationContractDialogRef.openDialog()"
                   @change="changeParams"
                   rules="required"
                   vid="contract_id"
@@ -114,6 +118,8 @@
               item-text="number"
               item-value="id"
               clearable
+              can-add
+              @add="$refs.organizationInvoiceDialogRef.openDialog()"
               @change="changeParams"
               autocomplete
               rules="required"
@@ -244,6 +250,20 @@
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
+    <CounterpartyCounterpartiesDialog
+      @fetchData="getCounterPartyList"
+      ref="organizationDialogRef"
+    />
+    <CounterpartyInvoicesDialog
+      ref="organizationInvoiceDialogRef"
+      :counterpartyList="counterpartyList"
+      @fetchData="getInvoiceList"
+    />
+    <CounterpartyContractsDialog
+      ref="organizationContractDialogRef"
+      :counterpartyList="counterpartyList"
+      @fetchData="getCounterpartyContractList"
+    />
   </div>
 </template>
 
@@ -265,6 +285,9 @@ import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
+import CounterpartyInvoicesDialog from '@/components/pages/counterparty-invoices/CounterpartyInvoicesDialog.vue'
+import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -478,6 +501,7 @@ const submit = async () => {
 }
 
 const startFilter = async () => {
+  debugger
   $showLoading()
   try {
     await fetchData()
