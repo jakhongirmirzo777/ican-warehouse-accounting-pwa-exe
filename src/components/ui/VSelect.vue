@@ -50,9 +50,9 @@
           :label="!localize ? item[itemText] : t(item[itemText])"
           :value="item[itemValue]"
         />
-        <template v-if="canAdd" #empty>
+        <template v-if="canAdd">
           <p
-            class="el-select-dropdown__empty cursor-pointer"
+            class="el-select-dropdown__empty cursor-pointer v-select__v-select-block__add"
             @click="onClickEmpty"
           >
             {{ t('add') }}
