@@ -36,7 +36,9 @@
         class="sidebar__list__block"
       >
         <component
-          v-if="list.permission ? $can(list.permission) : true"
+          v-if="
+            list.hasOwnProperty('permission') ? $can(list.permission) : true
+          "
           :is="
             list.path && (!list.children || !list.children.length)
               ? 'router-link'
@@ -80,10 +82,14 @@
           ]"
           :ref="`menuItemRef${i}`"
         >
-          <template v-if="list.permission ? $can(list.permission) : true">
+          <template v-for="(child, childIndex) in list.children">
             <router-link
+              v-if="
+                child.hasOwnProperty('permission')
+                  ? $can(child.permission)
+                  : true
+              "
               class="sidebar__list__block__children__link"
-              v-for="(child, childIndex) in list.children"
               :key="`child-${childIndex}`"
               :to="{ name: child.path, params: { locale } }"
               active-class="sidebar__list__block__children__link--active"
@@ -244,36 +250,82 @@ const menus = computed(() => {
         name: t('placeList'),
         icon: 'location',
         path: 'locations',
+        permission: 'admin.locations.index',
       },
       {
         name: t('clientControlling'),
         icon: 'clients',
+        permission: [
+          'admin.organisation.index',
+          'admin.organisation.transactions.index',
+        ],
         children: [
-          { name: t('organisations'), path: 'organisations-admin' },
-          { name: t('payments'), path: 'payments' },
+          {
+            name: t('organisations'),
+            path: 'organisations-admin',
+            permission: 'admin.organisation.index',
+          },
+          {
+            name: t('payments'),
+            path: 'payments',
+            permission: 'admin.organisation.transactions.index',
+          },
         ],
       },
       {
         name: t('reference'),
         icon: 'info-square',
+        permission: [
+          'admin.currencies.index',
+          'admin.system.courses.index',
+          'admin.unites.index',
+        ],
         children: [
-          { name: t('currencies'), path: 'reference-currencies' },
-          { name: t('systemCourse'), path: 'reference-courses' },
-          { name: t('units'), path: 'reference-units' },
+          {
+            name: t('currencies'),
+            path: 'reference-currencies',
+            permission: 'admin.currencies.index',
+          },
+          {
+            name: t('systemCourse'),
+            path: 'reference-courses',
+            permission: 'admin.system.courses.index',
+          },
+          {
+            name: t('units'),
+            path: 'reference-units',
+            permission: 'admin.unites.index',
+          },
         ],
       },
       {
         name: t('employees'),
         icon: 'employees',
+        permission: ['admin.roles.index', 'admin.employee.index'],
         children: [
-          { name: t('roles'), path: 'roles-admin' },
-          { name: t('users'), path: 'users' },
+          {
+            name: t('roles'),
+            path: 'roles-admin',
+            permission: 'admin.roles.index',
+          },
+          {
+            name: t('users'),
+            path: 'users',
+            permission: 'admin.employee.index',
+          },
         ],
       },
       {
         name: t('setting'),
         icon: 'setting-icon',
-        children: [{ name: t('tariffs'), path: 'tariffs' }],
+        permission: ['admin.tariffs.index'],
+        children: [
+          {
+            name: t('tariffs'),
+            path: 'tariffs',
+            permission: 'admin.tariffs.index',
+          },
+        ],
       },
     ]
   }

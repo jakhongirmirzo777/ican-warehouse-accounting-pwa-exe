@@ -5,7 +5,11 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol xl="1" md="3">
+      <VCol
+        v-if="$can('admin.organisation.transactions.payment')"
+        xl="1"
+        md="3"
+      >
         <VBtn
           class="mb-20"
           color="primary"
@@ -78,7 +82,10 @@
       </template>
       <template #item.actions="{ item }">
         <VBtn
-          v-if="PAYMENT_STATUSES_VALUE.CANCELED !== item.status"
+          v-if="
+            PAYMENT_STATUSES_VALUE.CANCELED !== item.status &&
+            $can('admin.organisation.transactions.revert')
+          "
           @click="handleCancel(item.id)"
         >
           <div class="d-flex align-center">

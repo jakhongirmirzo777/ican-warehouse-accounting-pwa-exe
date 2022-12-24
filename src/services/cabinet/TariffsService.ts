@@ -21,6 +21,15 @@ export const fetchTariffs = async (params: TariffPageOptionsType) => {
   }
 }
 
+export const deleteTariff = async (id: number) => {
+  try {
+    const data = await http.delete(`${BASE_URL_ADDITIONAL}/tariffs/${id}`)
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const createEditTariffs = async (form: TariffFormTypes) => {
   try {
     let data
