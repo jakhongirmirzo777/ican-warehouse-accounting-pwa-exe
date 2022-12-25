@@ -102,6 +102,8 @@
             item-text="number"
             item-value="id"
             clearable
+            can-add
+            @add="$refs.organizationContractDialogRef.openDialog()"
             vid="contract_id"
             v-model="form.contract_id"
           />
@@ -168,7 +170,7 @@
       </VCardAction>
     </Form>
     <CounterpartyCounterpartiesDialog
-      @fetchData="$emit('get-counter-party-list')"
+      @fetch-data="$emit('get-counter-party-list', null, form.counterparty_id)"
       ref="organizationDialogRef"
     />
     <SettlementReferenceUnitsDialog
@@ -184,8 +186,13 @@
     />
     <CounterpartyCounterpartiesAccountDialog
       ref="CounterpartyCounterpartiesAccountDialogRef"
-      @fetch-data="$emit('get-counter-party-list')"
+      @fetch-data="$emit('get-counter-party-list', null, form.counterparty_id)"
       :counterparty-list="counterpartyList"
+    />
+    <CounterpartyContractsDialog
+      ref="organizationContractDialogRef"
+      :counterpartyList="counterpartyList"
+      @fetch-data="$emit('get-counter-party-list', null, form.counterparty_id)"
     />
   </VModal>
 </template>
@@ -206,6 +213,7 @@ import SettlementReferenceUnitsDialog from '@/components/pages/financial-account
 import ReferenceOutcomeDialog from '@/components/pages/reference-income-outcome/ReferenceOutcomeDialog.vue'
 import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 import CounterpartyCounterpartiesAccountDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesAccountDialog.vue'
+import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
 
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
@@ -334,7 +342,7 @@ const changeOrganisation = (e: number) => {
 }
 
 getCoursesList()
-defineExpose({ openDialog })
+defineExpose({ openDialog, changeCounterparty })
 </script>
 
 <style scoped></style>

@@ -318,10 +318,16 @@ const fetchData = async () => {
   }
 }
 
-const getCounterPartyList = async (id: number | null) => {
+const getCounterPartyList = async (
+  id: number | null,
+  counterparty_id?: number
+) => {
   try {
     const { data } = await fetchCounterpartyWithContract(id)
     counterpartyList.value = data
+    setTimeout(() => {
+      organizationDialogRef.value.changeCounterparty(counterparty_id)
+    }, 200)
   } catch (err) {
     $setResponseErrors(err)
   }
