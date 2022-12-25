@@ -96,11 +96,11 @@ import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['search', 'parent_id', 'page'])
-clearQuery(['search', 'parent_id', 'page'])
+const queries = $getQuery(['search', 'parent_id', 'page'])
+$clearQuery(['search', 'parent_id', 'page'])
 
 const breadcrumbs = [
   {
@@ -211,7 +211,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -251,7 +251,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchCategories()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       parent_id: options.value.parent_id,
@@ -270,7 +270,7 @@ const clearFilter = async () => {
     options.value.parent_id = null
     options.value.search = null
     await useFetchCategories()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       parent_id: options.value.parent_id,
@@ -286,7 +286,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchCategories()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

@@ -167,9 +167,9 @@ import {
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { t } = useI18n()
-const queries = getQuery([
+const queries = $getQuery([
   'search',
   'organisation_id',
   'status',
@@ -177,7 +177,7 @@ const queries = getQuery([
   'date',
   'page',
 ])
-clearQuery(['search', 'organisation_id', 'status', 'store_id', 'date', 'page'])
+$clearQuery(['search', 'organisation_id', 'status', 'store_id', 'date', 'page'])
 
 const breadcrumbs = [
   {
@@ -318,7 +318,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchRevaluaitons()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       organisation_id: options.value.organisation_id,
@@ -343,7 +343,7 @@ const clearFilter = async () => {
     options.value.store_id = null
     options.value.date = null
     await useFetchRevaluaitons()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       organisation_id: options.value.organisation_id,
@@ -362,7 +362,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchRevaluaitons()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

@@ -67,13 +67,13 @@ import { useNotificationService } from '@/plugins/notification-service'
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref<TariffDataItemType[]>([])
 const { t } = useI18n()
 const dialogRef = ref()
-const queries = getQuery(['page'])
-clearQuery(['page'])
+const queries = $getQuery(['page'])
+$clearQuery(['page'])
 
 const breadcrumbs = [
   {
@@ -123,7 +123,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
     ) {
       params.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -145,7 +145,7 @@ const useFetchData = async () => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

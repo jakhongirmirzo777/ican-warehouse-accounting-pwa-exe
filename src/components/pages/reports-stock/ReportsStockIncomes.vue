@@ -124,8 +124,8 @@ import { $parseQueryArray } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { t } = useI18n()
-const { getQuery, addQuery, clearQuery } = useQuery()
-const queries = getQuery([
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
+const queries = $getQuery([
   'page',
   'search',
   'store_id',
@@ -134,7 +134,7 @@ const queries = getQuery([
   'parent_category_id',
   'child_category_id',
 ])
-clearQuery([
+$clearQuery([
   'tab',
   'page',
   'search',
@@ -288,7 +288,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       store_id: options.value.store_id,
@@ -315,7 +315,7 @@ const clearFilter = async () => {
     options.value.parent_category_id = null
     options.value.child_category_id = null
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       store_id: options.value.store_id,
@@ -335,7 +335,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {
@@ -345,7 +345,7 @@ const paginate = async () => {
   }
 }
 
-addQuery({
+$addQuery({
   tab: 'incomes',
   page: '1',
 })

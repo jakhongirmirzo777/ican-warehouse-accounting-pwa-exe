@@ -79,12 +79,12 @@ import type {
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage } = useNotificationService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref<SettingBonusDataItemType[]>([])
 const { t } = useI18n()
 const organizationDialogRef = ref()
-const queries = getQuery([
+const queries = $getQuery([
   'page',
   'search',
   'counterparty_id',
@@ -92,7 +92,7 @@ const queries = getQuery([
   'position',
   'type',
 ])
-clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
+$clearQuery(['page', 'search', 'counterparty_id', 'date', 'position', 'type'])
 
 const breadcrumbs = [
   {
@@ -122,7 +122,7 @@ const startFilter = async () => {
   $showLoading()
   try {
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -136,7 +136,7 @@ const clearFilter = async () => {
     params.value.search = ''
     params.value.page = 1
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -174,7 +174,7 @@ const deleteItem = async (id: number) => {
       $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
     ) {
       params.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -190,7 +190,7 @@ const deleteItem = async (id: number) => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

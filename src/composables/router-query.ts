@@ -5,7 +5,7 @@ export function useQuery() {
   const route = useRoute()
   const router = useRouter()
 
-  const getQuery = (model: string[]) => {
+  const $getQuery = (model: string[]) => {
     const queries = route.query as Record<string, string>
     return model.reduce((acc: Record<string, string>, cur) => {
       if (queries[cur]) acc[cur] = queries[cur]
@@ -13,7 +13,7 @@ export function useQuery() {
     }, {})
   }
 
-  const addQuery = (queries: Record<string, any>) => {
+  const $addQuery = (queries: Record<string, any>) => {
     const allQueries = {
       ...route.query,
       ...queries,
@@ -29,7 +29,7 @@ export function useQuery() {
     router.replace({ query: filteredQueries }).then()
   }
 
-  const clearQuery = (model: string[]) => {
+  const $clearQuery = (model: string[]) => {
     const queries = route.query as Record<string, string>
     const rightQueries = model.reduce((acc: Record<string, string>, cur) => {
       if (queries[cur]) acc[cur] = queries[cur]
@@ -39,8 +39,8 @@ export function useQuery() {
   }
 
   return {
-    getQuery,
-    addQuery,
-    clearQuery,
+    $getQuery,
+    $addQuery,
+    $clearQuery,
   }
 }

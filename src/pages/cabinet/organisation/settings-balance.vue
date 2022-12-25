@@ -95,14 +95,14 @@ import {
 import { useQuery } from '@/composables/router-query'
 import { $parseQueryStatus } from '@/utils/pure-functions'
 import { useUserService } from '@/plugins/user-service'
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 
 const { user } = useUserService()
 const { t } = useI18n()
-const queries = getQuery(['from', 'to', 'status'])
-clearQuery(['from', 'to', 'status'])
+const queries = $getQuery(['from', 'to', 'status'])
+$clearQuery(['from', 'to', 'status'])
 
 const breadcrumbs = [
   {
@@ -191,7 +191,7 @@ const filterData = async () => {
   try {
     $showLoading()
     await useFetchBalance()
-    await addQuery({
+    await $addQuery({
       from: options.value.from,
       to: options.value.to,
       status: options.value.status,
@@ -210,7 +210,7 @@ const clearFilter = async () => {
     options.value.to = null
     options.value.status = null
     await useFetchBalance()
-    await addQuery({
+    await $addQuery({
       from: options.value.from,
       to: options.value.to,
       status: options.value.status,

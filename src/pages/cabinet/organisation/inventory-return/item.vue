@@ -277,12 +277,12 @@ import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const route = useRoute()
 const { t } = useI18n()
-const queries = getQuery(['page'])
-clearQuery(['page'])
+const queries = $getQuery(['page'])
+$clearQuery(['page'])
 
 const breadcrumbs = [
   {
@@ -540,7 +540,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -617,7 +617,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchProduct()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

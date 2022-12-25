@@ -152,11 +152,11 @@ import {
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['search', 'status', 'page'])
-clearQuery(['search', 'status', 'page'])
+const queries = $getQuery(['search', 'status', 'page'])
+$clearQuery(['search', 'status', 'page'])
 
 const breadcrumbs = [
   {
@@ -276,7 +276,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -329,7 +329,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchUsers()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -348,7 +348,7 @@ const clearFilter = async () => {
     options.value.status = null
     options.value.search = null
     await useFetchUsers()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -364,7 +364,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchUsers()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

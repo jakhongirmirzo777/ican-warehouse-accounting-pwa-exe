@@ -143,8 +143,8 @@ import { $parseQueryArray } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { t } = useI18n()
-const { getQuery, addQuery, clearQuery } = useQuery()
-const queries = getQuery([
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
+const queries = $getQuery([
   'tab',
   'page',
   'search',
@@ -156,7 +156,7 @@ const queries = getQuery([
   'date_to',
   'store_id',
 ])
-clearQuery([
+$clearQuery([
   'tab',
   'page',
   'search',
@@ -295,7 +295,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchIncomes()
-    await addQuery(options.value)
+    await $addQuery(options.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -316,7 +316,7 @@ const clearFilter = async () => {
     options.value.date_to = ''
     options.value.store_id = null
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -338,7 +338,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {
@@ -348,7 +348,7 @@ const paginate = async () => {
   }
 }
 
-addQuery({
+$addQuery({
   tab: 'entity',
   page: '1',
 })

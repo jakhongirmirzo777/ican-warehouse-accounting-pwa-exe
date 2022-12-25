@@ -91,13 +91,13 @@ import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTy
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage } = useNotificationService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref<SettlementDataItemType[]>([])
 const { t } = useI18n()
 const organizationDialogRef = ref()
-const queries = getQuery(['page', 'organisation_ids'])
-clearQuery(['page', 'organisation_ids'])
+const queries = $getQuery(['page', 'organisation_ids'])
+$clearQuery(['page', 'organisation_ids'])
 
 const breadcrumbs = [
   {
@@ -130,7 +130,7 @@ const startFilter = async () => {
   $showLoading()
   try {
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -144,7 +144,7 @@ const clearFilter = async () => {
     params.value.organisation_ids = []
     params.value.page = 1
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -192,7 +192,7 @@ const deleteItem = async (id: number) => {
       $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
     ) {
       params.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -208,7 +208,7 @@ const deleteItem = async (id: number) => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

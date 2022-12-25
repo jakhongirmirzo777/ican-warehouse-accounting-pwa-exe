@@ -98,10 +98,10 @@ import { useNotificationService } from '@/plugins/notification-service'
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { t } = useI18n()
-const queries = getQuery(['search', 'category_ids', 'page'])
-clearQuery(['search', 'category_ids', 'page'])
+const queries = $getQuery(['search', 'category_ids', 'page'])
+$clearQuery(['search', 'category_ids', 'page'])
 
 const breadcrumbs = [
   {
@@ -216,7 +216,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -235,7 +235,7 @@ const filterData = async () => {
     options.value.page = 1
     await useFetchCharacteristics()
 
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       category_ids: options.value.category_ids,
@@ -253,7 +253,7 @@ const clearFilter = async () => {
     options.value.category_ids = []
     options.value.search = null
     await useFetchCharacteristics()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       category_ids: options.value.category_ids,
@@ -269,7 +269,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchCharacteristics()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

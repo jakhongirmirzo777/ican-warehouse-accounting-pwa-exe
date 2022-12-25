@@ -141,17 +141,17 @@ import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpa
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref<FinanceAccountDataItemType[]>([])
 const { t } = useI18n()
-const queries = getQuery([
+const queries = $getQuery([
   'page',
   'organisation_ids',
   'counterparty_id',
   'from',
 ])
-clearQuery(['page', 'organisation_ids', 'counterparty_id', 'from'])
+$clearQuery(['page', 'organisation_ids', 'counterparty_id', 'from'])
 
 const breadcrumbs = [
   {
@@ -188,7 +188,7 @@ const startFilter = async () => {
   $showLoading()
   try {
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -204,7 +204,7 @@ const clearFilter = async () => {
     params.value.counterparty_id = ''
     params.value.from = ''
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -256,7 +256,7 @@ const useFetchData = async () => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

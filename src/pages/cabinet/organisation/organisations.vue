@@ -86,10 +86,10 @@ import { $parseQueryStatus } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { t } = useI18n()
-const queries = getQuery(['search', 'status', 'page'])
-clearQuery(['search', 'status', 'page'])
+const queries = $getQuery(['search', 'status', 'page'])
+$clearQuery(['search', 'status', 'page'])
 
 const breadcrumbs = [
   {
@@ -227,7 +227,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchOrganisations()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -246,7 +246,7 @@ const clearFilter = async () => {
     options.value.status = null
     options.value.search = null
     await useFetchOrganisations()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -262,7 +262,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchOrganisations()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

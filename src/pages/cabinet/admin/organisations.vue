@@ -162,11 +162,11 @@ import type { MkoOrganisation } from '@/types/cabinet/MkoOrganisationsAdminTypes
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['search', 'status', 'name', 'inn', 'company_name'])
-clearQuery(['search', 'status', 'name', 'inn', 'company_name'])
+const queries = $getQuery(['search', 'status', 'name', 'inn', 'company_name'])
+$clearQuery(['search', 'status', 'name', 'inn', 'company_name'])
 
 const breadcrumbs = [
   {
@@ -295,7 +295,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -329,7 +329,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchOrganisations()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -354,7 +354,7 @@ const clearFilter = async () => {
     options.value.inn = null
     options.value.company_name = null
     await useFetchOrganisations()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -373,7 +373,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchOrganisations()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

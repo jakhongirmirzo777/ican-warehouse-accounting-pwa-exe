@@ -51,13 +51,13 @@ import type {
 import type { ItemsValue } from '@/types/globals/FetchDataTypes'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref([]) as ItemsValue<ReferencePartySystemCoursesDataItemType>
 const { t } = useI18n()
 const organizationDialogRef = ref()
-const queries = getQuery(['page'])
-clearQuery(['page'])
+const queries = $getQuery(['page'])
+$clearQuery(['page'])
 
 const breadcrumbs = [
   {
@@ -107,7 +107,7 @@ const useFetchData = async () => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

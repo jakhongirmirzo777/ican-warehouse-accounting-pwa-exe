@@ -130,8 +130,8 @@ import { $parseQueryArray } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { t } = useI18n()
-const { getQuery, addQuery, clearQuery } = useQuery()
-const queries = getQuery([
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
+const queries = $getQuery([
   'page',
   'search',
   'counterparty_id',
@@ -139,7 +139,7 @@ const queries = getQuery([
   'date_to',
   'organisation_ids',
 ])
-clearQuery([
+$clearQuery([
   'tab',
   'page',
   'search',
@@ -281,7 +281,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchRegisters()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       counterparty_id: options.value.counterparty_id,
@@ -306,7 +306,7 @@ const clearFilter = async () => {
     options.value.date_to = null
     options.value.organisation_ids = null
     await useFetchRegisters()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       counterparty_id: options.value.counterparty_id,
@@ -325,7 +325,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchRegisters()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {
@@ -335,7 +335,7 @@ const paginate = async () => {
   }
 }
 
-addQuery({
+$addQuery({
   tab: 'registers',
   page: '1',
 })
