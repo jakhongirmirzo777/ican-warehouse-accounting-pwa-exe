@@ -4,8 +4,8 @@ import { useTokenService } from '@/plugins/token-service'
 import { getAppLocale } from '@/plugins/i18n'
 import { BASE_URL } from '@/utils/urls'
 
-const tokenService = useTokenService()
-const userService = useUserService()
+const { $getToken } = useTokenService()
+const { $clearUser } = useUserService()
 
 const http = axios.create({
   baseURL: BASE_URL,
@@ -18,7 +18,7 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     const APP_LOCALE = getAppLocale()
-    const token = tokenService.getToken()
+    const token = $getToken()
     if (!config.headers) return config
     if (token) config.headers['Authorization'] = `Bearer ${token}`
     config.headers['Language'] = APP_LOCALE
@@ -31,7 +31,7 @@ http.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error?.response?.status === 401) {
-      userService.clearUser().then()
+      $clearUser().then()
     }
     return Promise.reject(error)
   }

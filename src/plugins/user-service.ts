@@ -34,7 +34,7 @@ export interface UserDataInterface {
   courses: CoursesInterface[]
 }
 
-const tokenService = useTokenService()
+const { $removeToken } = useTokenService()
 const userData = ref<UserDataInterface | null>(null)
 
 export function useUserService() {
@@ -42,9 +42,9 @@ export function useUserService() {
   const role = computed<UserType | null>(() => userData.value?.type || null)
   const auth = computed<boolean>(() => !!userData.value)
 
-  const clearUser = async () => {
+  const $clearUser = async () => {
     try {
-      await tokenService.removeToken()
+      await $removeToken()
       userData.value = null
       await router.replace({ path: $localePath('/auth') })
       return Promise.resolve('Successfully cleared user data')
@@ -53,7 +53,7 @@ export function useUserService() {
     }
   }
 
-  const loginUser = async (formData: LoginFormDataInterface) => {
+  const $loginUser = async (formData: LoginFormDataInterface) => {
     try {
       const data = await http.post('/admin/auth/login', formData)
       return Promise.resolve(data)
@@ -62,7 +62,7 @@ export function useUserService() {
     }
   }
 
-  const fetchUser = async () => {
+  const $fetchUser = async () => {
     try {
       const {
         data: { data },
@@ -83,17 +83,17 @@ export function useUserService() {
     }
   }
 
-  const logoutUser = async () => {
+  const $logoutUser = async () => {
     try {
       await http.post('/admin/auth/logout')
-      await clearUser()
+      await $clearUser()
       return Promise.resolve('Successfully logged out')
     } catch (err) {
       return Promise.reject(err)
     }
   }
 
-  const refreshToken = async () => {
+  const $refreshToken = async () => {
     try {
       const data = await http.post('/admin/auth/refresh')
       return Promise.resolve(data)
@@ -102,7 +102,7 @@ export function useUserService() {
     }
   }
 
-  const redirectToCabinet = async () => {
+  const $redirectToCabinet = async () => {
     try {
       const userPath = redirectToPages[role.value as string].path
       await router.push({ path: userPath })
@@ -113,12 +113,12 @@ export function useUserService() {
   }
 
   return {
-    refreshToken,
-    loginUser,
-    fetchUser,
-    logoutUser,
-    clearUser,
-    redirectToCabinet,
+    $refreshToken,
+    $loginUser,
+    $fetchUser,
+    $logoutUser,
+    $clearUser,
+    $redirectToCabinet,
     user,
     role,
     auth,

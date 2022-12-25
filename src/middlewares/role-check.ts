@@ -26,15 +26,15 @@ export const redirectToPages = {
   },
 }
 
-const userService = useUserService()
+const { auth, role } = useUserService()
 
 const roleCheck = (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const userRole = userService.role.value
-  const isAuthenticated = userService.auth.value
+  const userRole = role.value
+  const isAuthenticated = auth.value
   const canAccess =
     (to.meta.roles as string[])?.includes(userRole as string) || false
   const isLoginPage = to.name === 'login'

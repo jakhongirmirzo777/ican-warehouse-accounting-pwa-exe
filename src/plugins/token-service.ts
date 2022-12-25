@@ -10,13 +10,13 @@ interface CredentialsInterface {
 }
 
 const { $get, $set, $remove } = useStorageService()
-const userService = useUserService()
+const { $refreshToken } = useUserService()
 let timeoutId: any
 
 export function useTokenService() {
-  const getToken = () => $get(TOKEN_KEY)
+  const $getToken = () => $get(TOKEN_KEY)
 
-  const setToken = (data: CredentialsInterface) => {
+  const $setToken = (data: CredentialsInterface) => {
     if (data.access_token) {
       $set(TOKEN_KEY, data.access_token)
       http.defaults.headers.common[
@@ -29,35 +29,35 @@ export function useTokenService() {
     }
   }
 
-  const removeToken = () => {
+  const $removeToken = () => {
     $remove(TOKEN_KEY)
     $remove(EXPIRE_KEY)
   }
 
-  const checkExpire = (): void => {
+  const $checkExpire = (): void => {
     const expire = $get(EXPIRE_KEY)
     const currentTime = new Date().getTime()
     const expireTime = (expire && new Date(+expire).getTime()) || 0
-    if (expireTime <= currentTime) removeToken()
+    if (expireTime <= currentTime) $removeToken()
   }
 
-  const setTimeOutRefreshToken = () => {
+  const $setTimeOutRefreshToken = () => {
     const expire = $get(EXPIRE_KEY)
-    if (!expire || typeof parseInt(expire) !== 'number') return removeToken()
+    if (!expire || typeof parseInt(expire) !== 'number') return $removeToken()
     const currentTime = new Date().getTime()
     const expireTime = new Date(+expire).getTime()
     const offsetTime = 1000 * 60
     const differenceTime = expireTime - offsetTime - currentTime
     const timeOut = differenceTime > 0 ? differenceTime : 0
-    clearTimeOutRefreshToken()
+    $clearTimeOutRefreshToken()
     timeoutId = setTimeout(() => {
       refreshToken().then(() => {
-        setTimeOutRefreshToken()
+        $setTimeOutRefreshToken()
       })
     }, timeOut)
   }
 
-  const clearTimeOutRefreshToken = () => {
+  const $clearTimeOutRefreshToken = () => {
     clearTimeout(timeoutId)
   }
 
@@ -65,19 +65,19 @@ export function useTokenService() {
     try {
       const {
         data: { data },
-      } = await userService.refreshToken()
-      await setToken(data)
+      } = await $refreshToken()
+      await $setToken(data)
     } catch (err) {
       console.error('Could not refresh token ', err)
     }
   }
 
   return {
-    getToken,
-    setToken,
-    removeToken,
-    checkExpire,
-    setTimeOutRefreshToken,
-    clearTimeOutRefreshToken,
+    $getToken,
+    $setToken,
+    $removeToken,
+    $checkExpire,
+    $setTimeOutRefreshToken,
+    $clearTimeOutRefreshToken,
   }
 }

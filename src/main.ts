@@ -15,16 +15,16 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/assets/styles/index.scss'
 
 const { $setResponseErrors } = useErrorActions()
-const tokenService = useTokenService()
-const userService = useUserService()
+const { $checkExpire, $getToken, $setTimeOutRefreshToken } = useTokenService()
+const { $fetchUser } = useUserService()
 
 ;(async () => {
-  tokenService.checkExpire()
-  const token = tokenService.getToken()
+  $checkExpire()
+  const token = $getToken()
   if (token) {
     try {
-      await userService.fetchUser()
-      await tokenService.setTimeOutRefreshToken()
+      await $fetchUser()
+      await $setTimeOutRefreshToken()
     } catch (err) {
       await $setResponseErrors(err)
     }

@@ -8,7 +8,7 @@ const { $get, $set } = useStorageService()
 const theme = ref($get(THEME.key) || THEME.LIGHT)
 
 export function useThemeService() {
-  const setBodyColor = () => {
+  const $setBodyColor = () => {
     const html = document.querySelector('html')
     const body = document.querySelector('body')
     if (body && html) {
@@ -22,16 +22,16 @@ export function useThemeService() {
     }
   }
 
-  const toggleTheme = () => {
+  const $toggleTheme = () => {
     theme.value = theme.value === THEME.LIGHT ? THEME.DARK : THEME.LIGHT
     $set(THEME.key, theme.value)
-    setBodyColor()
+    $setBodyColor()
   }
 
   return {
     THEME,
     theme,
-    setBodyColor,
-    toggleTheme,
+    $setBodyColor,
+    $toggleTheme,
   }
 }

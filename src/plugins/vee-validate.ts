@@ -38,7 +38,9 @@ configure({
     return $translate(`validation.${ruleName}`, {
       field,
       params: params[0],
+      min: params[0],
       max: params[0],
+      min_value: params[0],
       max_value: params[0],
     })
   },

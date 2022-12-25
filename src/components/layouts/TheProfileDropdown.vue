@@ -44,7 +44,7 @@ import { ref } from 'vue'
 import { useUserService } from '@/plugins/user-service'
 import { useI18n } from 'vue-i18n'
 
-const { logoutUser, user } = useUserService()
+const { $logoutUser, user } = useUserService()
 const { t } = useI18n()
 
 defineProps({
@@ -58,7 +58,7 @@ const options = ref([{ title: t('logout'), value: 'logout' }])
 
 const onMenuClick = (fn: () => unknown) => {
   fn()
-  logoutUser()
+  $logoutUser()
 }
 </script>
 

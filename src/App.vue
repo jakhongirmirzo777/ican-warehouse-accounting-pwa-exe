@@ -14,9 +14,9 @@ import { useThemeService } from '@/plugins/theme-service'
 import { useResizeWindow } from '@/composables/resize-window'
 import { useI18n } from 'vue-i18n'
 
-const { setBodyColor } = useThemeService()
+const { $setBodyColor } = useThemeService()
 const { locale } = useI18n()
 
-setBodyColor()
+$setBodyColor()
 useResizeWindow()
 </script>

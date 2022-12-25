@@ -3,15 +3,15 @@ import { useUserService } from '@/plugins/user-service'
 import { SUPPORTED_LOCALES, APP_LOCALE, $changeLocale } from '@/plugins/i18n'
 import { redirectToPages } from '@/middlewares/role-check'
 
-const userService = useUserService()
+const { role, auth } = useUserService()
 let IS_FIRST_LOAD = true
 
 const redirectRouteLocale = (
   to: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const userRole = userService.role.value
-  const isAuthenticated = userService.auth.value
+  const userRole = role.value
+  const isAuthenticated = auth.value
   const userPath = redirectToPages[userRole as string]?.path
   if (!isAuthenticated) return next(redirectToPages.login.path)
   if (isAuthenticated) return next(userPath)

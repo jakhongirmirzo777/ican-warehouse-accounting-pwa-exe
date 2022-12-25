@@ -19,14 +19,14 @@
         class="mr-3 header__setting-icons__setting cursor-pointer"
         size="100%"
         icon="theme-icon-light"
-        @click="toggleTheme"
+        @click="$toggleTheme"
       />
       <VIcon
         v-show="theme === THEME.DARK"
         class="mr-3 header__setting-icons__setting cursor-pointer"
         size="100%"
         icon="theme-icon-dark"
-        @click="toggleTheme"
+        @click="$toggleTheme"
       />
     </div>
     <div v-else class="header__setting-icons mr-10">
@@ -35,14 +35,14 @@
         class="mr-3 header__setting-icons__setting hide cursor-pointer"
         size="100%"
         icon="theme-icon-light"
-        @click="toggleTheme"
+        @click="$toggleTheme"
       />
       <VIcon
         v-show="theme === THEME.DARK"
         class="mr-3 header__setting-icons__setting hide cursor-pointer"
         size="100%"
         icon="theme-icon-dark"
-        @click="toggleTheme"
+        @click="$toggleTheme"
       />
       <VIcon
         :color="theme === THEME.DARK ? '#fff' : ''"
@@ -70,7 +70,7 @@ import { useThemeService } from '@/plugins/theme-service'
 import { useUserService } from '@/plugins/user-service'
 import { ROLES } from '@/utils/constants'
 
-const { theme, THEME, toggleTheme } = useThemeService()
+const { theme, THEME, $toggleTheme } = useThemeService()
 const { role } = useUserService()
 </script>
 

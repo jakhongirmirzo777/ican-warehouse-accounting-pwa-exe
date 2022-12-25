@@ -20,14 +20,14 @@
           class="mr-3 header__setting-icons__setting cursor-pointer"
           size="100%"
           icon="theme-icon-white"
-          @click="toggleTheme"
+          @click="$toggleTheme"
         />
         <VIcon
           v-show="theme === THEME.DARK"
           class="mr-3 header__setting-icons__setting cursor-pointer"
           size="100%"
           icon="theme-icon-dark"
-          @click="toggleTheme"
+          @click="$toggleTheme"
         />
       </div>
       <div
@@ -141,7 +141,7 @@ import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
 import { useThemeService } from '@/plugins/theme-service'
 
-const { theme, THEME, toggleTheme } = useThemeService()
+const { theme, THEME, $toggleTheme } = useThemeService()
 const { t, locale } = useI18n()
 const { user, role } = useUserService()
 const route = useRoute()
