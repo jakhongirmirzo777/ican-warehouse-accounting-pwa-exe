@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol md="1">
+          <VCol md="2">
             <VBtn
               v-if="$can('organisation.write.off.create')"
               class="mb-20"
@@ -22,17 +22,8 @@
           <VCol md="3">
             <VInput clearable :label="t('search')" v-model="options.search" />
           </VCol>
-          <VCol md="2">
-            <VDatepicker clearable :label="t('date')" v-model="options.date" />
-          </VCol>
           <VCol md="3">
-            <VSelect
-              clearable
-              autocomplete
-              :label="t('organisation')"
-              :items="organisations"
-              v-model="options.organisation_id"
-            />
+            <VDatepicker clearable :label="t('date')" v-model="options.date" />
           </VCol>
           <VCol md="3">
             <div class="d-flex flex-column flex-md-row">
@@ -50,7 +41,16 @@
       </template>
       <template #bottom>
         <VRow>
-          <VCol md="3">
+          <VCol md="4">
+            <VSelect
+              clearable
+              autocomplete
+              :label="t('organisation')"
+              :items="organisations"
+              v-model="options.organisation_id"
+            />
+          </VCol>
+          <VCol md="4">
             <VSelect
               clearable
               autocomplete
@@ -59,7 +59,7 @@
               v-model="options.store_id"
             />
           </VCol>
-          <VCol md="3">
+          <VCol md="4">
             <VSelect
               clearable
               localize

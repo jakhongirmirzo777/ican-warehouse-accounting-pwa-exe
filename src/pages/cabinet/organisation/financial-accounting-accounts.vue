@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol v-if="$can('account.create')" md="1">
+      <VCol v-if="$can('account.create')" md="2">
         <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}
@@ -23,7 +23,7 @@
           v-model="params.organisation_ids"
         />
       </VCol>
-      <VCol md="1">
+      <VCol md="3">
         <VFilterActions @filter="startFilter" @clear="clearFilter" />
       </VCol>
     </VRow>

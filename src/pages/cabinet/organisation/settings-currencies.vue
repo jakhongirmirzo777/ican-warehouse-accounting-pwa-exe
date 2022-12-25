@@ -6,7 +6,7 @@
   <VCard>
     <template v-if="items.length !== currencyTypes.length">
       <VRow>
-        <VCol v-if="$can('organisation.courses.create')" md="1">
+        <VCol v-if="$can('organisation.courses.create')" md="2">
           <VBtn
             class="mb-20"
             color="primary"

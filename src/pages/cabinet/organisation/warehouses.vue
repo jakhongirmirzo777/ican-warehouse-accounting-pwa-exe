@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol md="1">
+      <VCol md="2">
         <VBtn
           v-if="$can('organisation.stores.create')"
           class="mb-20"
@@ -35,7 +35,7 @@
           v-model="options.organisation_ids"
         />
       </VCol>
-      <VCol md="2">
+      <VCol md="3">
         <VFilterActions @filter="filterData" @clear="clearFilter" />
       </VCol>
     </VRow>

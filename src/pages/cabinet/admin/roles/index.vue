@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol v-if="$can('admin.roles.create')" md="1">
+      <VCol v-if="$can('admin.roles.create')" md="2">
         <VBtn
           width="100%"
           color="primary"

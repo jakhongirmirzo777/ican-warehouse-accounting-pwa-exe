@@ -4,73 +4,86 @@
     {{ t('revertProduct') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol v-if="$can('cash-box.revert.sell')" md="2">
-        <VBtn
-          width="100%"
-          color="primary"
-          class="mb-20"
-          @click="$router.push($localePath('/cabinet/revert-check'))"
-        >
-          {{ $t('issueRefund') }}
-        </VBtn>
-      </VCol>
-      <VCol md="2">
-        <VInput :label="$t('search')" v-model="params.search" clearable />
-      </VCol>
-      <VCol md="2">
-        <VDatepicker
-          :label="$t('salesDate')"
-          v-model="params.sale_date"
-          clearable
-        />
-      </VCol>
-      <VCol md="2">
-        <VDatepicker
-          :label="$t('revertDate')"
-          v-model="params.reverted_date"
-          clearable
-        />
-      </VCol>
-      <VCol md="2">
-        <VSelect
-          :label="$t('sold')"
-          :items="employeeList"
-          item-text="full_name"
-          item-value="user_id"
-          clearable
-          autocomplete
-          v-model="params.seller_user_id"
-        />
-      </VCol>
-      <VCol md="2">
-        <VSelect
-          :label="$t('issuedRevert')"
-          :items="employeeList"
-          item-text="full_name"
-          item-value="user_id"
-          clearable
-          autocomplete
-          v-model="params.reverting_user_id"
-        />
-      </VCol>
-      <VCol md="2">
-        <VSelect
-          :items="organisationList"
-          item-value="id"
-          item-text="name"
-          clearable
-          autocomplete
-          multiple
-          :label="$t('organisation')"
-          vid="organisation_id"
-          v-model="params.organisation_ids"
-        />
-      </VCol>
-      <VCol md="2">
-        <VFilterActions @filter="startFilter" @clear="clearFilter" />
-      </VCol>
-    </VRow>
+    <VFilterCollapse>
+      <template #top="{ toggle }">
+        <VRow>
+          <VCol v-if="$can('cash-box.revert.sell')" md="2">
+            <VBtn
+              width="100%"
+              color="primary"
+              class="mb-20"
+              @click="$router.push($localePath('/cabinet/revert-check'))"
+            >
+              {{ $t('issueRefund') }}
+            </VBtn>
+          </VCol>
+          <VCol md="4">
+            <VInput :label="$t('search')" v-model="params.search" clearable />
+          </VCol>
+          <VCol md="3">
+            <VDatepicker
+              :label="$t('salesDate')"
+              v-model="params.sale_date"
+              clearable
+            />
+          </VCol>
+          <VCol md="3">
+            <VFilterActions
+              collapse
+              @collapse="toggle"
+              @filter="startFilter"
+              @clear="clearFilter"
+            />
+          </VCol>
+        </VRow>
+      </template>
+      <template #bottom>
+        <VRow>
+          <VCol md="3">
+            <VDatepicker
+              :label="$t('revertDate')"
+              v-model="params.reverted_date"
+              clearable
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :label="$t('sold')"
+              :items="employeeList"
+              item-text="full_name"
+              item-value="user_id"
+              clearable
+              autocomplete
+              v-model="params.seller_user_id"
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :label="$t('issuedRevert')"
+              :items="employeeList"
+              item-text="full_name"
+              item-value="user_id"
+              clearable
+              autocomplete
+              v-model="params.reverting_user_id"
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :items="organisationList"
+              item-value="id"
+              item-text="name"
+              clearable
+              autocomplete
+              multiple
+              :label="$t('organisation')"
+              vid="organisation_id"
+              v-model="params.organisation_ids"
+            />
+          </VCol>
+        </VRow>
+      </template>
+    </VFilterCollapse>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.products="{ item }">
@@ -131,6 +144,7 @@ import type {
   RevertedCheckOptionsType,
 } from '@/types/cabinet/RevertCheckTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

@@ -10,7 +10,7 @@
           <VCol md="12">
             <form @submit.prevent="startFilter">
               <VRow>
-                <VCol md="2" class="direct-sale__search">
+                <VCol md="3" class="direct-sale__search">
                   <VSelect
                     :label="$t('clientType')"
                     :items="clientTypeList"
@@ -123,12 +123,12 @@
                 >
                   <VInput :label="$t('fio')" v-model="full_name" clearable />
                 </VCol>
-                <VCol md="1">
+                <VCol sm="12" md="1">
                   <VBtn
                     style="display: flex"
                     min-width="40px"
                     color="primary"
-                    class="mb-20 mb-md-0 justify-center align-center"
+                    class="mb-20 mb-md-0 justify-center align-center w-100"
                     type="submit"
                     :disabled="isDisabled"
                   >

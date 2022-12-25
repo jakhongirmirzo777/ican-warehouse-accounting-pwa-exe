@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol v-if="$can('organisation.contracts.create')" md="1">
+          <VCol v-if="$can('organisation.contracts.create')" md="2">
             <VBtn
               width="100%"
               color="primary"
@@ -18,20 +18,13 @@
               {{ $t('add') }}
             </VBtn>
           </VCol>
-          <VCol md="3">
+          <VCol md="4">
             <VInput :label="$t('search')" v-model="params.search" clearable />
           </VCol>
           <VCol md="3">
             <VDatepicker
               :label="$t('startDate')"
               v-model="params.start_date"
-              clearable
-            />
-          </VCol>
-          <VCol md="3">
-            <VDatepicker
-              :label="$t('finishDate')"
-              v-model="params.finish_date"
               clearable
             />
           </VCol>
@@ -47,6 +40,13 @@
       </template>
       <template #bottom>
         <VRow>
+          <VCol md="3">
+            <VDatepicker
+              :label="$t('finishDate')"
+              v-model="params.finish_date"
+              clearable
+            />
+          </VCol>
           <VCol md="3">
             <VSelect
               :items="counterpartyList"
