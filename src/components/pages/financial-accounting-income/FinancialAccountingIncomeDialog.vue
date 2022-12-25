@@ -100,6 +100,9 @@
             :items="counterpartyAccountList.contracts"
             item-text="number"
             item-value="id"
+            autocomplete
+            can-add
+            @add="$refs.organizationContractDialogRef.openDialog()"
             clearable
             vid="contract_id"
             v-model="form.contract_id"
@@ -171,7 +174,7 @@
       </VCardAction>
     </Form>
     <CounterpartyCounterpartiesDialog
-      @fetchData="$emit('get-counter-party-list')"
+      @fetchData="$emit('get-counter-party-list', null, form.counterparty_id)"
       ref="organizationDialogRef"
     />
     <FinancialAccountingAccountsDialog
@@ -187,8 +190,13 @@
     />
     <CounterpartyCounterpartiesAccountDialog
       ref="CounterpartyCounterpartiesAccountDialogRef"
-      @fetchData="$emit('get-counter-party-list')"
+      @fetchData="$emit('get-counter-party-list', null, form.counterparty_id)"
       :counterparty-list="counterpartyList"
+    />
+    <CounterpartyContractsDialog
+      ref="organizationContractDialogRef"
+      :counterpartyList="counterpartyList"
+      @fetchData="$emit('get-counter-party-list', null, form.counterparty_id)"
     />
   </VModal>
 </template>
@@ -209,6 +217,7 @@ import ReferenceIncomeDialog from '@/components/pages/reference-income-outcome/R
 import FinancialAccountingAccountsDialog from '@/components/pages/financial-accounting-accounts/FinancialAccountingAccountsDialog.vue'
 import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 import CounterpartyCounterpartiesAccountDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesAccountDialog.vue'
+import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
 
 import { Form } from 'vee-validate'
 import { ref, watch } from 'vue'
@@ -320,7 +329,7 @@ const getCoursesList = async () => {
   }
 }
 
-const changeCounterparty = (val: number) => {
+const changeCounterparty = (val?: number) => {
   counterpartyAccountList.value = props.counterpartyList?.find(
     (p: CounterpartyListWitContractType) => p.id === val
   ) ?? { id: null }
@@ -337,7 +346,7 @@ const changeOrganisation = (e: number) => {
 }
 
 getCoursesList()
-defineExpose({ openDialog })
+defineExpose({ openDialog, changeCounterparty })
 </script>
 
 <style scoped></style>

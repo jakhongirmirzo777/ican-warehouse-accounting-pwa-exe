@@ -7,7 +7,7 @@
       </VText>
       <VCard class="direct-sale__body">
         <VRow>
-          <VCol md="6">
+          <VCol md="12">
             <form @submit.prevent="startFilter">
               <VRow>
                 <VCol md="4" class="direct-sale__search">
@@ -40,14 +40,14 @@
                     </VCardAction>
                   </v-card>
                 </VCol>
-                <VCol md="6">
+                <VCol md="4">
                   <VInput
                     :label="$t('search')"
                     v-model="params.search"
                     clearable
                   />
                 </VCol>
-                <VCol md="2">
+                <VCol md="1">
                   <VBtn
                     style="display: flex"
                     min-width="40px"
@@ -59,61 +59,48 @@
                     <VIcon size="24" icon="search-solid" />
                   </VBtn>
                 </VCol>
+                <VCol md="3">
+                  <VSelect
+                    :label="$t('saleCurrency')"
+                    :items="currencyList"
+                    item-text="name"
+                    item-value="key"
+                    @change="changeParams"
+                    rules="required"
+                    hide-details
+                    vid="currency_id"
+                    autocomplete
+                    v-model="params.currency_id"
+                  />
+                </VCol>
               </VRow>
             </form>
           </VCol>
-          <VCol md="6">
-            <VRow>
-              <VCol md="4">
-                <VSelect
-                  :label="$t('saleCurrency')"
-                  :items="currencyList"
-                  item-text="name"
-                  item-value="key"
-                  @change="changeParams"
-                  rules="required"
-                  vid="currency_id"
-                  autocomplete
-                  v-model="params.currency_id"
-                />
-              </VCol>
-              <VCol md="4">
-                <VSelect
-                  :items="counterpartyList"
-                  item-text="company_name"
-                  item-value="id"
-                  rules="required"
-                  vid="counterparty_id"
-                  @change="changeParams"
-                  autocomplete
-                  :label="$t('counterparties')"
-                  v-model="params.counterparty_id"
-                  clearable
-                />
-              </VCol>
-              <VCol md="4">
-                <VSelect
-                  :label="$t('agreement')"
-                  :items="contractList"
-                  item-text="number"
-                  item-value="id"
-                  clearable
-                  @change="changeParams"
-                  rules="required"
-                  vid="contract_id"
-                  autocomplete
-                  v-model="params.contract_id"
-                />
-              </VCol>
-            </VRow>
+          <VCol md="3">
+            <VSelect
+              :items="counterpartyList"
+              item-text="company_name"
+              item-value="id"
+              rules="required"
+              can-add
+              @add="$refs.organizationDialogRef.openDialog()"
+              vid="counterparty_id"
+              @change="changeParams"
+              autocomplete
+              :label="$t('counterparties')"
+              v-model="params.counterparty_id"
+              clearable
+            />
           </VCol>
-          <VCol md="2">
+          <VCol md="3">
             <VSelect
               :label="$t('invoice')"
               :items="invoiceList"
               item-text="number"
               item-value="id"
               clearable
+              can-add
+              @add="$refs.organizationInvoiceDialogRef.openDialog()"
               @change="changeParams"
               autocomplete
               rules="required"
@@ -121,7 +108,7 @@
               v-model="params.invoice_id"
             />
           </VCol>
-          <VCol md="2">
+          <VCol md="3">
             <VSelect
               v-if="isOrganisation"
               :label="$t('employees')"
@@ -133,6 +120,22 @@
               clearable
               autocomplete
               v-model="form.user_id"
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :label="$t('agreement')"
+              :items="contractList"
+              item-text="number"
+              item-value="id"
+              clearable
+              can-add
+              @add="$refs.organizationContractDialogRef.openDialog()"
+              @change="changeParams"
+              rules="required"
+              vid="contract_id"
+              autocomplete
+              v-model="params.contract_id"
             />
           </VCol>
         </VRow>
@@ -244,6 +247,21 @@
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
+    <CounterpartyCounterpartiesDialog
+      @fetchData="getCounterPartyList"
+      ref="organizationDialogRef"
+    />
+    <CounterpartyInvoicesDialog
+      ref="organizationInvoiceDialogRef"
+      :counterpartyList="counterpartyList"
+      @fetchData="getInvoiceList"
+    />
+    <CounterpartyContractsDialog
+      ref="organizationContractDialogRef"
+      :counterpartyList="counterpartyList"
+      @fetchData="getCounterpartyContractList"
+    />
+    <Check ref="checkRef" :data="checkData" />
   </div>
 </template>
 
@@ -265,6 +283,10 @@ import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
 import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
 import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
+import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
+import CounterpartyInvoicesDialog from '@/components/pages/counterparty-invoices/CounterpartyInvoicesDialog.vue'
+import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
+import Check from '@/components/pages/cash/Check.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -381,6 +403,7 @@ const choseResponseSearch = ref<DirectSaleDataItemType[]>([])
 const counterpartyList = ref<Array<CounterpartyListWitContractType>>([])
 const contractList = ref<Array<CounterpartyContractListType>>([])
 const invoiceList = ref<Array<InvoiceListType>>([])
+const checkData = ref<Record<string, any>>({})
 const allCellingPrice = ref(0)
 const additional_sum = ref<string | number>(0)
 const employeeList = ref<
@@ -396,6 +419,7 @@ const isManyRes = ref(false)
 const cashRegisterRef = ref()
 const directSaleBonusRef = ref()
 const bonusOrNotRef = ref()
+const checkRef = ref()
 
 const allPriceWithFormat = computed(() =>
   $moneyFormatWithComma(allCellingPrice.value)
@@ -454,7 +478,11 @@ const submit = async () => {
   if (params.value.invoice_id) form.value.invoice_id = params.value.invoice_id
   $showLoading()
   try {
-    await submitEntitySell(form.value)
+    const { data } = await submitEntitySell(form.value)
+    checkData.value = data
+    setTimeout(() => {
+      checkRef.value.print()
+    }, 200)
     form.value = { ...FORM }
     items.value = []
     params.value.additional_amount_sum = ''

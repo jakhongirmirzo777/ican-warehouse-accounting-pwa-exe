@@ -2,6 +2,12 @@
   &__v-select-block {
     position: relative;
 
+    &__add {
+      &:hover {
+        background: #f5f7fa;
+      }
+    }
+
     &__label {
       position: absolute;
       z-index: 1000;
