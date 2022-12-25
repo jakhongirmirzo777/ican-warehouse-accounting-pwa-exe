@@ -1,6 +1,10 @@
 <template>
   <VLoading v-if="loading" type="linear" />
-  <div v-else v-bind="$attrs" class="v-table__container">
+  <div
+    v-if="!loading && items.length"
+    v-bind="$attrs"
+    class="v-table__container"
+  >
     <table class="v-table" :class="{ dark: theme === THEME.DARK }">
       <thead class="v-table__head">
         <slot name="head.prepend" />
@@ -51,10 +55,14 @@
       </tfoot>
     </table>
   </div>
+  <VText v-if="!loading && !items.length" tag="h2" class="text-center">
+    {{ $t('notFoundRecords') }}
+  </VText>
 </template>
 
 <script lang="ts" setup>
 import VLoading from '@/components/ui/VLoading.vue'
+import VText from '@/components/ui/VText.vue'
 
 import type { PropType } from 'vue'
 import { $clearExtension } from '@/utils/pure-functions'

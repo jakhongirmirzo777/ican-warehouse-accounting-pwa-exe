@@ -10,8 +10,11 @@
     @click.stop="onClick"
     :to="$localePath(to)"
   >
-    <span v-if="loading" class="v-btn__loading"></span>
-    <div class="d-flex justify-center align-center h-100" v-else>
+    <span class="v-btn__loading" :class="{ loading: loading }" />
+    <div
+      class="v-btn__content d-flex justify-center align-center h-100"
+      :class="{ loading: loading }"
+    >
       <slot />
     </div>
   </component>

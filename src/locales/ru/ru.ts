@@ -398,6 +398,7 @@ export default {
   inStock: 'В наличии',
   youDontHaveRightPermission:
     'Извините, у вас нет разрешения на доступ к этой странице',
+  notFoundRecords: 'Записи не найдены',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

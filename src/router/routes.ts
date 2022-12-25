@@ -628,7 +628,13 @@ const rawRoutes = [
       public: true,
     },
   },
-  { path: '/:catchAll(.*)', redirect: { name: 'error' } },
+  {
+    path: '/:catchAll(.*)',
+    meta: {
+      public: true,
+    },
+    redirect: { name: 'error' },
+  },
 ]
 
 const generateLocaleSupportedRoutes = () => {

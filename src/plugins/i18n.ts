@@ -4,13 +4,13 @@ import type { I18n, Composer } from 'vue-i18n'
 import { useStorageService } from '@/plugins/storage-service'
 import { APP_LANG_KEY } from '@/utils/constants'
 
-const storageService = useStorageService()
+const { $get, $set } = useStorageService()
 export const SUPPORTED_LOCALES = ['ru', 'oz', 'uz']
 export const APP_LOCALE = getAppLocale()
 
 export function getAppLocale() {
   const FALLBACK_LOCALE = 'ru'
-  const DEFAULT_LOCALE = storageService.get(APP_LANG_KEY) || FALLBACK_LOCALE
+  const DEFAULT_LOCALE = $get(APP_LANG_KEY) || FALLBACK_LOCALE
   return SUPPORTED_LOCALES.includes(DEFAULT_LOCALE)
     ? DEFAULT_LOCALE
     : FALLBACK_LOCALE
@@ -69,7 +69,7 @@ export function $translate(
 }
 
 export async function $changeLocale(locale: string): Promise<void> {
-  await storageService.set(APP_LANG_KEY, locale)
+  await $set(APP_LANG_KEY, locale)
   await loadLocaleMessages(i18n, locale)
   await setI18nLanguage(i18n, locale)
 }

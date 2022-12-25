@@ -9,40 +9,40 @@ interface CredentialsInterface {
   token_type: string
 }
 
-const storageService = useStorageService()
+const { $get, $set, $remove } = useStorageService()
 const userService = useUserService()
 let timeoutId: any
 
 export function useTokenService() {
-  const getToken = () => storageService.get(TOKEN_KEY)
+  const getToken = () => $get(TOKEN_KEY)
 
   const setToken = (data: CredentialsInterface) => {
     if (data.access_token) {
-      storageService.set(TOKEN_KEY, data.access_token)
+      $set(TOKEN_KEY, data.access_token)
       http.defaults.headers.common[
         'Authorization'
       ] = `${data.token_type} ${data.access_token}`
     }
     if (data.expires_in) {
       const expireTime = new Date().getTime() + +data.expires_in
-      storageService.set(EXPIRE_KEY, expireTime.toString())
+      $set(EXPIRE_KEY, expireTime.toString())
     }
   }
 
   const removeToken = () => {
-    storageService.remove(TOKEN_KEY)
-    storageService.remove(EXPIRE_KEY)
+    $remove(TOKEN_KEY)
+    $remove(EXPIRE_KEY)
   }
 
   const checkExpire = (): void => {
-    const expire = storageService.get(EXPIRE_KEY)
+    const expire = $get(EXPIRE_KEY)
     const currentTime = new Date().getTime()
     const expireTime = (expire && new Date(+expire).getTime()) || 0
     if (expireTime <= currentTime) removeToken()
   }
 
   const setTimeOutRefreshToken = () => {
-    const expire = storageService.get(EXPIRE_KEY)
+    const expire = $get(EXPIRE_KEY)
     if (!expire || typeof parseInt(expire) !== 'number') return removeToken()
     const currentTime = new Date().getTime()
     const expireTime = new Date(+expire).getTime()

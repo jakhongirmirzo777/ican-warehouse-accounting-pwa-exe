@@ -216,7 +216,7 @@ const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
-const { set, get } = useStorageService()
+const { $set, $get } = useStorageService()
 const router = useRouter()
 
 const { t } = useI18n()
@@ -439,13 +439,13 @@ const SET_ITEMS = async () => {
   if (params.value.pnfl) result.pnfl = params.value.pnfl
   if (check_numbers.length) result.check_numbers = check_numbers
   if (full_name.value) result.full_name = full_name.value
-  set(GIVE_BONUS, result)
+  $set(GIVE_BONUS, result)
 }
 
 const useFetchData = async () => {
   $showLoading()
   await getCounterPartyList(null)
-  const data = get(GIVE_BONUS)
+  const data = $get(GIVE_BONUS)
   if (data) {
     items.value = data?.products
   }

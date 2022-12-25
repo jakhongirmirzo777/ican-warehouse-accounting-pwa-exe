@@ -324,7 +324,7 @@ const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
-const { get, set, remove } = useStorageService()
+const { $get, $set, $remove } = useStorageService('sessionStorage')
 
 const { user } = useUserService()
 
@@ -937,26 +937,26 @@ const changeSellPrice = $debounce(() => {
 }, 300)
 
 onBeforeUnmount(() => {
-  remove(CASH_REGISTER_KEY)
-  remove(PAYMENTS)
+  $remove(CASH_REGISTER_KEY)
+  $remove(PAYMENTS)
 })
 
 const SET_ITEMS = () => {
-  set(CASH_REGISTER_KEY, items.value)
+  $set(CASH_REGISTER_KEY, items.value)
 }
 
 const GET_ITEMS = (): any => {
-  const items = get(CASH_REGISTER_KEY)
+  const items = $get(CASH_REGISTER_KEY)
   if (items) return items
   return null
 }
 
 const SET_PAYMENTS = () => {
-  set(PAYMENTS, payments.value)
+  $set(PAYMENTS, payments.value)
 }
 
 const GET_PAYMENTS = (): any => {
-  const payments = get(PAYMENTS)
+  const payments = $get(PAYMENTS)
   if (payments) return payments
   return []
 }

@@ -281,7 +281,7 @@ const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { addQuery, getQuery, clearQuery } = useQuery()
-const { set, get, remove } = useStorageService()
+const { $set, $get, $remove } = useStorageService('sessionStorage')
 
 const { user } = useUserService()
 
@@ -462,9 +462,9 @@ const clearAllAndBack = () => {
 }
 
 const removeStorageItems = () => {
-  remove(PAYMENTS)
-  remove(CASH_REGISTER_KEY)
-  remove(GIVE_BONUS)
+  $remove(PAYMENTS)
+  $remove(CASH_REGISTER_KEY)
+  $remove(GIVE_BONUS)
 }
 
 const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
@@ -659,19 +659,19 @@ onBeforeUnmount(() => {
 })
 
 const SET_ITEMS = () => {
-  set(CASH_REGISTER_KEY, items.value)
+  $set(CASH_REGISTER_KEY, items.value)
 }
 
 const GET_ITEMS = () => {
-  return get(CASH_REGISTER_KEY)
+  return $get(CASH_REGISTER_KEY)
 }
 
 const SET_PAYMENTS = () => {
-  set(PAYMENTS, payments.value)
+  $set(PAYMENTS, payments.value)
 }
 
 const GET_PAYMENTS = () => {
-  const payments = get(PAYMENTS)
+  const payments = $get(PAYMENTS)
   if (payments) return payments
   return []
 }
@@ -694,7 +694,7 @@ const useFetchData = async () => {
   await fetchStoreList()
   await getPaymentTypeList()
   await getEmployeeList()
-  const giveItem = get(GIVE_BONUS)
+  const giveItem = $get(GIVE_BONUS)
   if (giveItem) {
     STORAGE_ITEMS.value = giveItem
     if (STORAGE_ITEMS.value.full_name)

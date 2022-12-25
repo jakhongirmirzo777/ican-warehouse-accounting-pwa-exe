@@ -4,8 +4,8 @@ import { useStorageService } from '@/plugins/storage-service'
 
 const $bgColorLight = '#EFF7FF'
 const $bgColorDark = '#3a3f5c'
-const storageService = useStorageService()
-const theme = ref(storageService.get(THEME.key) || THEME.LIGHT)
+const { $get, $set } = useStorageService()
+const theme = ref($get(THEME.key) || THEME.LIGHT)
 
 export function useThemeService() {
   const setBodyColor = () => {
@@ -24,7 +24,7 @@ export function useThemeService() {
 
   const toggleTheme = () => {
     theme.value = theme.value === THEME.LIGHT ? THEME.DARK : THEME.LIGHT
-    storageService.set(THEME.key, theme.value)
+    $set(THEME.key, theme.value)
     setBodyColor()
   }
 
