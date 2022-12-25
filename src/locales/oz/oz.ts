@@ -397,6 +397,7 @@ export default {
   youDontHaveRightPermission:
     'Извините, у вас нет разрешения на доступ к этой странице',
   notFoundRecords: 'Записи не найдены',
+  thankYouForYourPurchase: 'Спасибо за покупку!',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
