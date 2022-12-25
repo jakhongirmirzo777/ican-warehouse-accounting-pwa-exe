@@ -63,9 +63,9 @@ import {
 } from '@/services/cabinet/ReportsStockService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
-const { getQuery } = useQuery()
+const { $getQuery } = useQuery()
 const { t } = useI18n()
-const queries = getQuery(['tab'])
+const queries = $getQuery(['tab'])
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 

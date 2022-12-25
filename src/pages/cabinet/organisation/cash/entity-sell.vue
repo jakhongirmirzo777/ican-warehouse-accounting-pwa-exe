@@ -329,7 +329,7 @@ import { useUserService } from '@/plugins/user-service'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 const { $get, $set, $remove } = useStorageService('sessionStorage')
 //static variables
 
@@ -353,7 +353,7 @@ const FORM = {
 
 const CASH_REGISTER_KEY = 'CASH_REGISTER'
 
-const queries = getQuery([
+const queries = $getQuery([
   'search',
   'store_id',
   'counterparty_id',
@@ -362,7 +362,7 @@ const queries = getQuery([
   'additional_amount_sum',
   'currency_id',
 ])
-clearQuery([
+$clearQuery([
   'search',
   'store_id',
   'counterparty_id',
@@ -437,7 +437,7 @@ const availableBonus = computed(() => {
 
 const changeParams = () => {
   setTimeout(() => {
-    addQuery(params.value)
+    $addQuery(params.value)
   }, 200)
 }
 
@@ -494,7 +494,7 @@ const submit = async () => {
     payment_type.value = ''
     cancelChoseSearchResponse()
     changeSellPrice()
-    addQuery(params.value)
+    $addQuery(params.value)
     $successMessage(t('notifications.addedSuccessfully'))
     cashRegisterRef.value.resetForm()
   } catch (err) {
@@ -509,7 +509,7 @@ const startFilter = async () => {
   $showLoading()
   try {
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -686,7 +686,7 @@ const changeAdditionalBonusSum = $debounce(() => {
         checkBonusProduct(p, i, true, params.value.additional_amount_sum, true)
       }
     })
-    addQuery(params.value)
+    $addQuery(params.value)
     if (counter === 0) {
       changeSellPrice()
     }
@@ -741,7 +741,7 @@ const bonusStartCheckRepeatCode = (
       additional_sum.value =
         fixedNumber(additional_amount_sum)
 
-    addQuery(params.value)
+    $addQuery(params.value)
   }
   const currencyItem = currencyList.value.find(
     (p) => p.key === params.value.currency_id
@@ -906,7 +906,7 @@ const GET_ITEMS = (): any => {
 
 const clearFilter = () => {
   params.value.search = ''
-  addQuery(params.value)
+  $addQuery(params.value)
 }
 
 const fixedNumber = (price: number | string) => {

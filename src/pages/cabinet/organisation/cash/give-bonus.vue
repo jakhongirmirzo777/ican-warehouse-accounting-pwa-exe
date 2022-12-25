@@ -215,20 +215,20 @@ import { fetchCounterpartyWithContract } from '@/services/cabinet/CounterpartyCo
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 const { $set, $get } = useStorageService()
 const router = useRouter()
 
 const { t } = useI18n()
 
-clearQuery([
+$clearQuery([
   'client_type',
   'check_number',
   'counterparty_id',
   'pnfl',
   'client_type_credit',
 ])
-const queries = getQuery([
+const queries = $getQuery([
   'client_type',
   'check_number',
   'counterparty_id',
@@ -334,7 +334,7 @@ const startFilter = async () => {
     await fetchData()
     if (params.value.client_type === CLIENT_TYPES.individual)
       params.value.check_number = null
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -415,7 +415,7 @@ const changeClientType = () => {
   items.value = []
   checkChooseList.value = []
   selectedChecks.value = []
-  addQuery(params.value)
+  $addQuery(params.value)
 }
 
 onBeforeUnmount(() => {

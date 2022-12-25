@@ -139,16 +139,16 @@ import { $parseQueryStatus } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { t } = useI18n()
-const queries = getQuery([
+const queries = $getQuery([
   'from',
   'to',
   'status',
   'organisation_id',
   'payment_type',
 ])
-clearQuery(['from', 'to', 'status', 'organisation_id', 'payment_type'])
+$clearQuery(['from', 'to', 'status', 'organisation_id', 'payment_type'])
 
 const breadcrumbs = [
   {
@@ -269,7 +269,7 @@ const filterData = async () => {
   try {
     $showLoading()
     await useFetchPayments()
-    await addQuery(options.value)
+    await $addQuery(options.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -286,7 +286,7 @@ const clearFilter = async () => {
     options.value.organisation_id = null
     options.value.payment_type = null
     await useFetchPayments()
-    await addQuery(options.value)
+    await $addQuery(options.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {

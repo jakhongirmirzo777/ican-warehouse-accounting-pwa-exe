@@ -47,9 +47,9 @@ import { useQuery } from '@/composables/router-query'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { params } = useRoute()
-const { getQuery } = useQuery()
+const { $getQuery } = useQuery()
 
-const query = getQuery(['type', 'title'])
+const query = $getQuery(['type', 'title'])
 
 const items = ref<RevertedCheckDataItemType[]>([])
 const { t } = useI18n()

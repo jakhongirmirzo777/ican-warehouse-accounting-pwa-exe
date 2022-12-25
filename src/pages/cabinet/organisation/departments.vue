@@ -97,11 +97,11 @@ import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists, $parseQueryArray } from '@/utils/pure-functions'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery(['name', 'organisation_ids', 'page'])
-clearQuery(['name', 'organisation_ids', 'page'])
+const queries = $getQuery(['name', 'organisation_ids', 'page'])
+$clearQuery(['name', 'organisation_ids', 'page'])
 
 const breadcrumbs = [
   {
@@ -207,7 +207,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -247,7 +247,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchDepartments()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       name: options.value.name,
       organisation_ids: options.value.organisation_ids,
@@ -266,7 +266,7 @@ const clearFilter = async () => {
     options.value.organisation_ids = null
     options.value.name = null
     await useFetchDepartments()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       name: options.value.name,
       organisation_ids: options.value.organisation_ids,
@@ -282,7 +282,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchDepartments()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

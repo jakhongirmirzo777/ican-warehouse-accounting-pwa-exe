@@ -134,11 +134,11 @@ import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTy
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref<RevertedCheckDataItemType[]>([])
 const { t } = useI18n()
-const queries = getQuery([
+const queries = $getQuery([
   'page',
   'search',
   'organisation_ids',
@@ -147,7 +147,7 @@ const queries = getQuery([
   'reverting_user_id',
   'seller_user_id',
 ])
-clearQuery([
+$clearQuery([
   'page',
   'search',
   'organisation_ids',
@@ -198,7 +198,7 @@ const startFilter = async () => {
   $showLoading()
   try {
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -217,7 +217,7 @@ const clearFilter = async () => {
     params.value.seller_user_id = ''
     params.value.organisation_ids = []
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -271,7 +271,7 @@ const useFetchData = async () => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

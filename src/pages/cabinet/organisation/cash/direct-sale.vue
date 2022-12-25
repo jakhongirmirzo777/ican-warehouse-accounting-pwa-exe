@@ -323,7 +323,7 @@ import { useStorageService } from '@/plugins/storage-service'
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 const { $get, $set, $remove } = useStorageService('sessionStorage')
 
 const { user } = useUserService()
@@ -349,8 +349,8 @@ const FORM = {
 const CASH_REGISTER_KEY = 'CASH_REGISTER'
 const PAYMENTS = 'PAYMENTS'
 
-const queries = getQuery(['search', 'store_id', 'additional_amount_sum'])
-clearQuery(['search', 'store_id', 'additional_amount_sum'])
+const queries = $getQuery(['search', 'store_id', 'additional_amount_sum'])
+$clearQuery(['search', 'store_id', 'additional_amount_sum'])
 const { t } = useI18n()
 
 const params = ref<DirectSaleOptionsType>({
@@ -491,7 +491,7 @@ const submit = async () => {
       payments.value = []
       payment_type.value = ''
       paymentTypeErrorMessage.value = null
-      addQuery(params.value)
+      $addQuery(params.value)
       cancelChoseSearchResponse()
       $successMessage(t('notifications.addedSuccessfully'))
       changeSellPrice()
@@ -518,7 +518,7 @@ const startFilter = async () => {
   $showLoading()
   try {
     await fetchData()
-    addQuery(params.value)
+    $addQuery(params.value)
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -695,7 +695,7 @@ const changeAdditionalBonusSum = $debounce(() => {
         )
       }
     })
-    addQuery(params.value)
+    $addQuery(params.value)
     if (counter === 0) {
       changeSellPrice()
     }
@@ -961,7 +961,7 @@ const GET_PAYMENTS = (): any => {
 
 const clearFilter = () => {
   params.value.search = ''
-  addQuery(params.value)
+  $addQuery(params.value)
 }
 
 const fixedNumber = (price: number | string) => {

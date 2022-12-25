@@ -75,13 +75,13 @@ import type {
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage } = useNotificationService()
-const { addQuery, getQuery, clearQuery } = useQuery()
+const { $addQuery, $getQuery, $clearQuery } = useQuery()
 
 const items = ref<ReferencePartyCoursesDataItemType[]>([])
 const { t } = useI18n()
 const organizationDialogRef = ref()
-const queries = getQuery(['page', 'search'])
-clearQuery(['page', 'search'])
+const queries = $getQuery(['page', 'search'])
+$clearQuery(['page', 'search'])
 
 const breadcrumbs = [
   {
@@ -145,7 +145,7 @@ const deleteItem = async (id: number) => {
       $isPageExists(pageOptions.value.total, pageOptions.value.perPage)
     ) {
       params.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -161,7 +161,7 @@ const deleteItem = async (id: number) => {
 const changePage = async () => {
   try {
     $showLoading()
-    addQuery({ page: params.value.page })
+    $addQuery({ page: params.value.page })
     await fetchData()
   } catch (err) {
     $setResponseErrors(err)

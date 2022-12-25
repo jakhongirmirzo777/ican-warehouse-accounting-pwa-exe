@@ -227,10 +227,10 @@ import {
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery([
+const queries = $getQuery([
   'search',
   'organisation_id',
   'counterparty_id',
@@ -240,7 +240,7 @@ const queries = getQuery([
   'date',
   'page',
 ])
-clearQuery([
+$clearQuery([
   'search',
   'organisation_id',
   'counterparty_id',
@@ -467,7 +467,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -513,7 +513,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       organisation_id: options.value.organisation_id,
@@ -542,7 +542,7 @@ const clearFilter = async () => {
     options.value.store_id = null
     options.value.date = null
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       organisation_id: options.value.organisation_id,
@@ -563,7 +563,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchIncomes()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

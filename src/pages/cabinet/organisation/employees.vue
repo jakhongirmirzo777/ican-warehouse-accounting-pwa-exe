@@ -172,17 +172,17 @@ import {
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { t } = useI18n()
-const queries = getQuery([
+const queries = $getQuery([
   'search',
   'status',
   'department_id',
   'position_id',
   'page',
 ])
-clearQuery(['search', 'status', 'department_id', 'position_id', 'page'])
+$clearQuery(['search', 'status', 'department_id', 'position_id', 'page'])
 
 const breadcrumbs = [
   {
@@ -338,7 +338,7 @@ const handleDelete = async (id: number) => {
       $isPageExists(options.value.total, options.value.perPage)
     ) {
       options.value.page = 1
-      addQuery({
+      $addQuery({
         page: 1,
       })
     }
@@ -395,7 +395,7 @@ const filterData = async () => {
     $showLoading()
     options.value.page = 1
     await useFetchEmployees()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -418,7 +418,7 @@ const clearFilter = async () => {
     options.value.department_id = null
     options.value.position_id = null
     await useFetchEmployees()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
       search: options.value.search,
       status: options.value.status,
@@ -436,7 +436,7 @@ const paginate = async () => {
   try {
     $showLoading()
     await useFetchEmployees()
-    await addQuery({
+    await $addQuery({
       page: options.value.page,
     })
   } catch (err) {

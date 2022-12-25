@@ -173,10 +173,10 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const { t } = useI18n()
-const { getQuery } = useQuery()
+const { $getQuery } = useQuery()
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
-const queries = getQuery(['organisation_id', 'store_id'])
+const queries = $getQuery(['organisation_id', 'store_id'])
 const options = ref({
   page: 1,
   lastPage: 1,

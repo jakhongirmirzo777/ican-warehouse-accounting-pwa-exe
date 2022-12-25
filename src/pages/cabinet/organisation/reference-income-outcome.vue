@@ -126,12 +126,12 @@ import { useNotificationService } from '@/plugins/notification-service'
 import { $isPageExists } from '@/utils/pure-functions'
 const { $successMessage } = useNotificationService()
 const { $setResponseErrors } = useErrorActions()
-const { getQuery, addQuery, clearQuery } = useQuery()
+const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { t } = useI18n()
 
-clearQuery(['tab', 'page'])
-const queries = getQuery(['tab', 'page'])
+$clearQuery(['tab', 'page'])
+const queries = $getQuery(['tab', 'page'])
 const tab = ref(queries.tab || 'income')
 const incomeDialog = ref(false)
 const outcomeDialog = ref(false)
@@ -246,10 +246,10 @@ const paginate = async () => {
     $showLoading()
     if (tab.value === 'income') {
       await useFetchIncome()
-      await addQuery({ page: optionsIncome.value.page })
+      await $addQuery({ page: optionsIncome.value.page })
     } else {
       await useFetchOutcome()
-      await addQuery({ page: optionsOutcome.value.page })
+      await $addQuery({ page: optionsOutcome.value.page })
     }
   } catch (err) {
     $setResponseErrors(err)
@@ -259,7 +259,7 @@ const paginate = async () => {
 }
 
 const handleChangeTab = (val: string) => {
-  addQuery({ tab: val, page: 1 })
+  $addQuery({ tab: val, page: 1 })
   if (tab.value === 'income') optionsIncome.value.page = 1
   else optionsOutcome.value.page = 1
   paginate()
@@ -277,12 +277,12 @@ const handleDelete = async (id: number) => {
         $isPageExists(optionsIncome.value.total, optionsIncome.value.perPage)
       ) {
         optionsIncome.value.page = 1
-        addQuery({
+        $addQuery({
           page: 1,
         })
       }
       await useFetchIncome()
-      addQuery({ page: optionsIncome.value.page })
+      $addQuery({ page: optionsIncome.value.page })
     } else {
       await deleteOutcome(id)
       if (
@@ -292,7 +292,7 @@ const handleDelete = async (id: number) => {
         $isPageExists(optionsOutcome.value.total, optionsOutcome.value.perPage)
       ) {
         optionsOutcome.value.page = 1
-        addQuery({
+        $addQuery({
           page: 1,
         })
       }
