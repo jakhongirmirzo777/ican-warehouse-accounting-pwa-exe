@@ -419,6 +419,7 @@ const isManyRes = ref(false)
 const cashRegisterRef = ref()
 const directSaleBonusRef = ref()
 const bonusOrNotRef = ref()
+const checkRef = ref()
 
 const allPriceWithFormat = computed(() =>
   $moneyFormatWithComma(allCellingPrice.value)
@@ -479,6 +480,9 @@ const submit = async () => {
   try {
     const { data } = await submitEntitySell(form.value)
     checkData.value = data
+    setTimeout(() => {
+      checkRef.value.print()
+    }, 200)
     form.value = { ...FORM }
     items.value = []
     params.value.additional_amount_sum = ''
