@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol v-if="$can('counterparty.create')" md="1">
+      <VCol v-if="$can('counterparty.create')" md="2">
         <VBtn class="mb-20" color="primary" width="100%" @click="openDialog">
           <VIcon class="mr-10" size="20" icon="circle-plus" />
           {{ $t('add') }}

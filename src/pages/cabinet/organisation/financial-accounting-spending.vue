@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol v-if="$can('organisation.spending.create')" md="1">
+          <VCol v-if="$can('organisation.spending.create')" md="2">
             <VBtn
               width="100%"
               color="primary"
@@ -18,37 +18,14 @@
               {{ $t('add') }}
             </VBtn>
           </VCol>
-          <VCol md="3">
+          <VCol md="4">
             <VInput :label="$t('search')" v-model="params.search" clearable />
           </VCol>
-          <VCol md="2">
+          <VCol md="3">
             <VDatepicker
               :label="$t('date')"
               v-model="params.start_date"
               clearable
-            />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              :label="$t('agreement')"
-              :items="contractList"
-              item-text="number"
-              item-value="id"
-              clearable
-              autocomplete
-              v-model="params.contract_id"
-            />
-          </VCol>
-          <VCol md="2">
-            <VSelect
-              :label="$t('invoice')"
-              :items="invoiceList"
-              item-text="number"
-              clearable
-              item-value="id"
-              autocomplete
-              vid="invoice_id"
-              v-model="params.invoice_id"
             />
           </VCol>
           <VCol md="2">
@@ -63,7 +40,30 @@
       </template>
       <template #bottom>
         <VRow>
-          <VCol md="2">
+          <VCol md="3">
+            <VSelect
+              :label="$t('agreement')"
+              :items="contractList"
+              item-text="number"
+              item-value="id"
+              clearable
+              autocomplete
+              v-model="params.contract_id"
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :label="$t('invoice')"
+              :items="invoiceList"
+              item-text="number"
+              clearable
+              item-value="id"
+              autocomplete
+              vid="invoice_id"
+              v-model="params.invoice_id"
+            />
+          </VCol>
+          <VCol md="3">
             <VSelect
               :label="$t('typeIncome')"
               :items="incomeList"
@@ -74,7 +74,7 @@
               v-model="params.type_id"
             />
           </VCol>
-          <VCol md="2">
+          <VCol md="3">
             <VSelect
               :items="organisationList"
               item-value="id"
@@ -87,7 +87,7 @@
               v-model="params.organisation_ids"
             />
           </VCol>
-          <VCol md="2">
+          <VCol md="3">
             <VSelect
               :items="counterpartyList"
               item-text="company_name"
@@ -98,7 +98,7 @@
               clearable
             />
           </VCol>
-          <VCol md="2">
+          <VCol md="3">
             <VSelect
               :label="$t('organisationAccount')"
               :items="settlementList"

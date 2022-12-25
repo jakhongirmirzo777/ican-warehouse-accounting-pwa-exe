@@ -52,7 +52,7 @@
                     style="display: flex"
                     min-width="40px"
                     color="primary"
-                    class="mb-20 mb-md-0 justify-center align-center"
+                    class="mb-20 mb-md-0 justify-center align-center w-100"
                     type="submit"
                     :disabled="!params.search || !params.store_id"
                   >

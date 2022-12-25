@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol v-if="$can('organisation.products.create')" md="1">
+      <VCol v-if="$can('organisation.products.create')" xl="2" md="3">
         <VBtn
           class="mb-20"
           color="primary"
@@ -21,10 +21,10 @@
           {{ t('add') }}
         </VBtn>
       </VCol>
-      <VCol md="3">
+      <VCol xl="3" md="3">
         <VInput clearable :label="t('search')" v-model="options.search" />
       </VCol>
-      <VCol md="3">
+      <VCol xl="3" md="3">
         <VSelect
           clearable
           autocomplete
@@ -33,7 +33,7 @@
           v-model="options.parent_category_id"
         />
       </VCol>
-      <VCol md="3">
+      <VCol xl="3" md="3">
         <VSelect
           clearable
           autocomplete
@@ -43,7 +43,7 @@
           v-model="options.child_category_id"
         />
       </VCol>
-      <VCol md="2">
+      <VCol xl="1" md="3">
         <VFilterActions @filter="filterData" @clear="clearFilter" />
       </VCol>
     </VRow>

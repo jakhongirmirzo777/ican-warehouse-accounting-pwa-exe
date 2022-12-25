@@ -398,6 +398,8 @@ export default {
     'Извините, у вас нет разрешения на доступ к этой странице',
   notFoundRecords: 'Записи не найдены',
   thankYouForYourPurchase: 'Спасибо за покупку!',
+  currencyUz: 'сум',
+  month: 'мес',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

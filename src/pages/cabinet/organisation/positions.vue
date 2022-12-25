@@ -5,7 +5,7 @@
   </VText>
   <VCard>
     <VRow>
-      <VCol v-if="$can('reference.position.create')" md="1">
+      <VCol v-if="$can('reference.position.create')" md="2">
         <VBtn
           class="mb-20"
           color="primary"

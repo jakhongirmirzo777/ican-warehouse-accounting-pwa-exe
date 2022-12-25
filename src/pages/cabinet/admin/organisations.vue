@@ -4,59 +4,72 @@
     {{ t('organisations') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol v-if="$can('admin.organisation.create')" xl="1" md="3">
-        <VBtn
-          class="mb-20"
-          color="primary"
-          width="100%"
-          @click="
-            () => {
-              editValue.id = null
-              dialog = true
-            }
-          "
-        >
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ t('add') }}
-        </VBtn>
-      </VCol>
-      <VCol xl="2" md="3">
-        <VInput clearable :label="t('search')" v-model="options.search" />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          localize
-          clearable
-          :label="t('status')"
-          :items="MKO_STATUSES_INDEXED"
-          v-model="options.status"
-          item-text="text"
-          item-value="value"
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VInput
-          only="number"
-          clearable
-          :label="t('tin')"
-          v-model="options.inn"
-        />
-      </VCol>
-      <VCol xl="2" md="4">
-        <VInput clearable :label="t('name')" v-model="options.name" />
-      </VCol>
-      <VCol xl="2" md="4">
-        <VInput
-          clearable
-          :label="t('companyName')"
-          v-model="options.company_name"
-        />
-      </VCol>
-      <VCol xl="1" md="4">
-        <VFilterActions @filter="filterData" @clear="clearFilter" />
-      </VCol>
-    </VRow>
+    <VFilterCollapse>
+      <template #top="{ toggle }">
+        <VRow>
+          <VCol v-if="$can('admin.organisation.create')" md="2">
+            <VBtn
+              class="mb-20"
+              color="primary"
+              width="100%"
+              @click="
+                () => {
+                  editValue.id = null
+                  dialog = true
+                }
+              "
+            >
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol md="4">
+            <VInput clearable :label="t('search')" v-model="options.search" />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              localize
+              clearable
+              :label="t('status')"
+              :items="MKO_STATUSES_INDEXED"
+              v-model="options.status"
+              item-text="text"
+              item-value="value"
+            />
+          </VCol>
+          <VCol md="3">
+            <VFilterActions
+              collapse
+              @collapse="toggle"
+              @filter="filterData"
+              @clear="clearFilter"
+            />
+          </VCol>
+        </VRow>
+      </template>
+      <template #bottom>
+        <VRow>
+          <VCol md="4">
+            <VInput
+              only="number"
+              clearable
+              :label="t('tin')"
+              v-model="options.inn"
+            />
+          </VCol>
+          <VCol md="4">
+            <VInput clearable :label="t('name')" v-model="options.name" />
+          </VCol>
+          <VCol md="4">
+            <VInput
+              clearable
+              :label="t('companyName')"
+              v-model="options.company_name"
+            />
+          </VCol>
+        </VRow>
+      </template>
+    </VFilterCollapse>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
@@ -159,6 +172,7 @@ import {
 } from '@/utils/constants'
 import { $isPageExists, $parseQueryStatus } from '@/utils/pure-functions'
 import type { MkoOrganisation } from '@/types/cabinet/MkoOrganisationsAdminTypes'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

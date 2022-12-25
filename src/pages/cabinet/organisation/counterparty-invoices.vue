@@ -4,54 +4,72 @@
     {{ t('invoices') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol v-if="$can('organisation.invoices.create')" xl="1" md="3">
-        <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ $t('add') }}
-        </VBtn>
-      </VCol>
-      <VCol xl="2" md="3">
-        <VInput :label="$t('search')" v-model="params.search" clearable />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VDatepicker :label="$t('date')" v-model="params.date" clearable />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          :items="counterpartyList"
-          item-text="company_name"
-          item-value="id"
-          :label="$t('counterparties')"
-          v-model="params.counterparty_id"
-          clearable
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          localize
-          :items="POSITIONS_INDEXED"
-          item-value="value"
-          item-text="text"
-          :label="$t('position')"
-          v-model="params.position"
-          clearable
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          :items="typeList"
-          item-value="value"
-          item-text="text"
-          :label="$t('type')"
-          v-model="params.type"
-          clearable
-        />
-      </VCol>
-      <VCol xl="1" md="3">
-        <VFilterActions @filter="startFilter" @clear="clearFilter" />
-      </VCol>
-    </VRow>
+    <VFilterCollapse>
+      <template #top="{ toggle }">
+        <VRow>
+          <VCol v-if="$can('organisation.invoices.create')" md="2">
+            <VBtn
+              width="100%"
+              color="primary"
+              class="mb-20"
+              @click="openDialog"
+            >
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ $t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol md="4">
+            <VInput :label="$t('search')" v-model="params.search" clearable />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              :items="typeList"
+              item-value="value"
+              item-text="text"
+              :label="$t('type')"
+              v-model="params.type"
+              clearable
+            />
+          </VCol>
+          <VCol md="3">
+            <VFilterActions
+              collapse
+              @collapse="toggle"
+              @filter="startFilter"
+              @clear="clearFilter"
+            />
+          </VCol>
+        </VRow>
+      </template>
+      <template #bottom>
+        <VRow>
+          <VCol md="4">
+            <VDatepicker :label="$t('date')" v-model="params.date" clearable />
+          </VCol>
+          <VCol md="4">
+            <VSelect
+              :items="counterpartyList"
+              item-text="company_name"
+              item-value="id"
+              :label="$t('counterparties')"
+              v-model="params.counterparty_id"
+              clearable
+            />
+          </VCol>
+          <VCol md="4">
+            <VSelect
+              localize
+              :items="POSITIONS_INDEXED"
+              item-value="value"
+              item-text="text"
+              :label="$t('position')"
+              v-model="params.position"
+              clearable
+            />
+          </VCol>
+        </VRow>
+      </template>
+    </VFilterCollapse>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
@@ -129,6 +147,7 @@ import type {
 } from '@/types/cabinet/CounterpartyInvoiceTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 import { POSITIONS_INDEXED } from '@/utils/constants'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 interface ValueType<T> {
   value: T

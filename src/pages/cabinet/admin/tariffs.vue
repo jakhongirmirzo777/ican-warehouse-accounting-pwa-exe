@@ -6,7 +6,7 @@
   <VCard>
     <div v-if="$can('admin.tariffs.create')">
       <VRow>
-        <VCol md="1">
+        <VCol md="2">
           <VBtn width="100%" color="primary" class="mb-20" @click="openDialog">
             <VIcon class="mr-10" size="20" icon="circle-plus" />
             {{ $t('add') }}

@@ -8,23 +8,25 @@
       <VCard>
         <VText class="mb-10" tag="p" size="14px">{{ t('tariff') }}:</VText>
         <VText color="#17BDC0" tag="h4" weight="600" size="16px">
-          {{ $moneyFormat(user?.organisation_tariff_amount) }} сум\мес
+          {{ $moneyFormat(tariffAmount) }} {{ t('currencyUz') }}\{{
+            t('month')
+          }}
         </VText>
       </VCard>
     </VCol>
   </VRow>
   <VCard>
     <VRow>
-      <VCol v-if="$can('organisation.transactions.payment')" md="1">
+      <VCol v-if="$can('organisation.transactions.payment')" md="3" xl="2">
         <VBtn class="mb-20" color="primary" width="100%" @click="dialog = true">
           <VIcon class="mr-10" size="20" icon="wallet" />
           {{ t('makePayment') }}
         </VBtn>
       </VCol>
-      <VCol md="3">
+      <VCol md="2">
         <VDatepicker clearable :label="t('fromDate')" v-model="options.from" />
       </VCol>
-      <VCol md="3">
+      <VCol md="2">
         <VDatepicker clearable :label="t('toDate')" v-model="options.to" />
       </VCol>
       <VCol md="3">
@@ -83,7 +85,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import SettingsBalanceDialog from '@/components/pages/settings-balance/SettingsBalanceDialog.vue'
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { fetchBalance } from '@/services/cabinet/SettingsBalanceService'
 import { useErrorActions } from '@/composables/set-errors'
@@ -103,7 +105,9 @@ const { user } = useUserService()
 const { t } = useI18n()
 const queries = $getQuery(['from', 'to', 'status'])
 $clearQuery(['from', 'to', 'status'])
-
+const tariffAmount = computed(() => {
+  return user?.value?.organisation_tariff_amount
+})
 const breadcrumbs = [
   {
     name: t('setting'),

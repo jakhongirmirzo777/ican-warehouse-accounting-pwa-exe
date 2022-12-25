@@ -4,57 +4,69 @@
     {{ t('employees') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol v-if="$can('organisation.employee.create')" xl="1" md="3">
-        <VBtn
-          class="mb-20"
-          color="primary"
-          width="100%"
-          @click="
-            () => {
-              isUpdate = false
-              dialog = true
-            }
-          "
-        >
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ t('add') }}
-        </VBtn>
-      </VCol>
-      <VCol xl="2" md="3">
-        <VInput clearable :label="t('search')" v-model="options.search" />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          clearable
-          localize
-          item-text="text"
-          item-value="value"
-          :label="t('status')"
-          :items="USER_STATUS_INDEXED"
-          v-model="options.status"
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          clearable
-          :label="t('departments')"
-          :items="departments"
-          v-model="options.department_id"
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          clearable
-          :label="t('positions')"
-          :items="positions"
-          v-model="options.position_id"
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VFilterActions @filter="filterData" @clear="clearFilter" />
-      </VCol>
-    </VRow>
+    <VFilterCollapse>
+      <template #top="{ toggle }">
+        <VRow>
+          <VCol v-if="$can('organisation.employee.create')" md="2">
+            <VBtn
+              class="mb-20"
+              color="primary"
+              width="100%"
+              @click="
+                () => {
+                  isUpdate = false
+                  dialog = true
+                }
+              "
+            >
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol md="4">
+            <VInput clearable :label="t('search')" v-model="options.search" />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              clearable
+              localize
+              item-text="text"
+              item-value="value"
+              :label="t('status')"
+              :items="USER_STATUS_INDEXED"
+              v-model="options.status"
+            />
+          </VCol>
+          <VCol md="3">
+            <VFilterActions
+              collapse
+              @collapse="toggle"
+              @filter="filterData"
+              @clear="clearFilter"
+            />
+          </VCol>
+        </VRow>
+      </template>
+      <template #bottom>
+        <VRow>
+          <VCol md="3">
+            <VSelect
+              clearable
+              :label="t('departments')"
+              :items="departments"
+              v-model="options.department_id"
+            />
+          </VCol>
+          <VCol md="3">
+            <VSelect
+              clearable
+              :label="t('positions')"
+              :items="positions"
+              v-model="options.position_id"
+            /> </VCol
+        ></VRow>
+      </template>
+    </VFilterCollapse>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.role="{ item }">
@@ -169,6 +181,7 @@ import {
   USER_STATUS_VALUE,
   USER_STATUS,
 } from '@/utils/constants'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

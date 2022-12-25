@@ -4,68 +4,81 @@
     {{ t('payments') }}
   </VText>
   <VCard>
-    <VRow>
-      <VCol
-        v-if="$can('admin.organisation.transactions.payment')"
-        xl="1"
-        md="3"
-      >
-        <VBtn
-          class="mb-20"
-          color="primary"
-          width="100%"
-          @click="
-            () => {
-              id = null
-              dialog = true
-            }
-          "
-        >
-          <VIcon class="mr-10" size="20" icon="circle-plus" />
-          {{ t('add') }}
-        </VBtn>
-      </VCol>
-      <VCol xl="2" md="3">
-        <VDatepicker clearable :label="t('fromDate')" v-model="options.from" />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VDatepicker clearable :label="t('toDate')" v-model="options.to" />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          localize
-          clearable
-          :label="t('status')"
-          item-text="text"
-          item-value="value"
-          :items="PAYMENT_STATUSES_INDEXED"
-          v-model="options.status"
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          autocomplete
-          clearable
-          :label="t('organisation')"
-          :items="organisations"
-          v-model="options.organisation_id"
-        />
-      </VCol>
-      <VCol xl="2" md="3">
-        <VSelect
-          localize
-          clearable
-          :label="t('paymentType')"
-          item-text="text"
-          item-value="value"
-          :items="PAYMENT_TYPES_INDEXED"
-          v-model="options.payment_type"
-        />
-      </VCol>
-      <VCol xl="1" md="3">
-        <VFilterActions @filter="filterData" @clear="clearFilter" />
-      </VCol>
-    </VRow>
+    <VFilterCollapse>
+      <template #top="{ toggle }">
+        <VRow>
+          <VCol v-if="$can('admin.organisation.transactions.payment')" md="2">
+            <VBtn
+              class="mb-20"
+              color="primary"
+              width="100%"
+              @click="
+                () => {
+                  id = null
+                  dialog = true
+                }
+              "
+            >
+              <VIcon class="mr-10" size="20" icon="circle-plus" />
+              {{ t('add') }}
+            </VBtn>
+          </VCol>
+          <VCol md="3">
+            <VDatepicker
+              clearable
+              :label="t('fromDate')"
+              v-model="options.from"
+            />
+          </VCol>
+          <VCol md="3">
+            <VDatepicker clearable :label="t('toDate')" v-model="options.to" />
+          </VCol>
+          <VCol md="3">
+            <VFilterActions
+              collapse
+              @collapse="toggle"
+              @filter="filterData"
+              @clear="clearFilter"
+            />
+          </VCol>
+        </VRow>
+      </template>
+      <template #bottom>
+        <VRow>
+          <VCol md="4">
+            <VSelect
+              localize
+              clearable
+              :label="t('status')"
+              item-text="text"
+              item-value="value"
+              :items="PAYMENT_STATUSES_INDEXED"
+              v-model="options.status"
+            />
+          </VCol>
+          <VCol md="4">
+            <VSelect
+              autocomplete
+              clearable
+              :label="t('organisation')"
+              :items="organisations"
+              v-model="options.organisation_id"
+            />
+          </VCol>
+          <VCol md="4">
+            <VSelect
+              localize
+              clearable
+              :label="t('paymentType')"
+              item-text="text"
+              item-value="value"
+              :items="PAYMENT_TYPES_INDEXED"
+              v-model="options.payment_type"
+            />
+          </VCol>
+        </VRow>
+      </template>
+    </VFilterCollapse>
     <VLine class="mb-20" />
     <VTable :headers="headers" :items="items">
       <template #item.amount="{ item }">
@@ -136,6 +149,7 @@ import {
 } from '@/utils/constants'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import { $parseQueryStatus } from '@/utils/pure-functions'
+import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

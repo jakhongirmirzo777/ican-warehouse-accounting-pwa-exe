@@ -6,7 +6,7 @@
     <VCard>
       <div v-if="$can('admin.locations.create')">
         <VRow>
-          <VCol md="1">
+          <VCol md="2">
             <VBtn
               width="100%"
               color="primary"

@@ -7,7 +7,7 @@
     <VFilterCollapse>
       <template #top="{ toggle }">
         <VRow>
-          <VCol v-if="$can('organisation.revaluation.create')" md="1">
+          <VCol v-if="$can('organisation.revaluation.create')" md="2">
             <VBtn
               class="mb-20"
               color="primary"
@@ -24,16 +24,7 @@
           <VCol md="2">
             <VDatepicker clearable :label="t('date')" v-model="options.date" />
           </VCol>
-          <VCol md="3">
-            <VSelect
-              clearable
-              autocomplete
-              :label="t('organisation')"
-              :items="organisations"
-              v-model="options.organisation_id"
-            />
-          </VCol>
-          <VCol md="3">
+          <VCol md="4">
             <div class="d-flex flex-column flex-md-row">
               <VFilterActions
                 class="mr-md-8 mb-8 mb-md-0"
@@ -49,7 +40,16 @@
       </template>
       <template #bottom>
         <VRow>
-          <VCol md="3">
+          <VCol md="4">
+            <VSelect
+              clearable
+              autocomplete
+              :label="t('organisation')"
+              :items="organisations"
+              v-model="options.organisation_id"
+            />
+          </VCol>
+          <VCol md="4">
             <VSelect
               clearable
               autocomplete
@@ -58,7 +58,7 @@
               v-model="options.store_id"
             />
           </VCol>
-          <VCol md="3">
+          <VCol md="4">
             <VSelect
               clearable
               localize
