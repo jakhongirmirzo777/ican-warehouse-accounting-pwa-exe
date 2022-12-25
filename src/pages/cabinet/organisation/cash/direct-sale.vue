@@ -479,9 +479,7 @@ const submit = async () => {
     $showLoading()
     try {
       const { data } = await submitDirectSale(form.value)
-      Object.entries(data).forEach(([key, value]) => {
-        checkData.value[key] = value
-      })
+      checkData.value = data
       setTimeout(() => {
         checkRef.value.print()
       }, 200)

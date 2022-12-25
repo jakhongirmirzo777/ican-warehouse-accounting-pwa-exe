@@ -261,6 +261,7 @@
       :counterpartyList="counterpartyList"
       @fetchData="getCounterpartyContractList"
     />
+    <Check ref="checkRef" :data="checkData" />
   </div>
 </template>
 
@@ -285,6 +286,7 @@ import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
 import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 import CounterpartyInvoicesDialog from '@/components/pages/counterparty-invoices/CounterpartyInvoicesDialog.vue'
 import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
+import Check from '@/components/pages/cash/Check.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -401,6 +403,7 @@ const choseResponseSearch = ref<DirectSaleDataItemType[]>([])
 const counterpartyList = ref<Array<CounterpartyListWitContractType>>([])
 const contractList = ref<Array<CounterpartyContractListType>>([])
 const invoiceList = ref<Array<InvoiceListType>>([])
+const checkData = ref<Record<string, any>>({})
 const allCellingPrice = ref(0)
 const additional_sum = ref<string | number>(0)
 const employeeList = ref<
@@ -474,7 +477,8 @@ const submit = async () => {
   if (params.value.invoice_id) form.value.invoice_id = params.value.invoice_id
   $showLoading()
   try {
-    await submitEntitySell(form.value)
+    const { data } = await submitEntitySell(form.value)
+    checkData.value = data
     form.value = { ...FORM }
     items.value = []
     params.value.additional_amount_sum = ''
@@ -498,7 +502,6 @@ const submit = async () => {
 }
 
 const startFilter = async () => {
-  debugger
   $showLoading()
   try {
     await fetchData()
