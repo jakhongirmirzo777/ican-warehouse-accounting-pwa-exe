@@ -72,14 +72,20 @@
           </VCol>
           <VCol md="2">
             <VInput
+              disabled
               vid="count_stock_before"
               type="number"
-              :rules="{
-                required:
-                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-              }"
               :label="t('countStockBefore')"
-              v-model="formData.count_stock_before"
+              :model-value="productInfo.count_stock"
+            />
+          </VCol>
+          <VCol md="2">
+            <VInput
+              disabled
+              vid="count_showcase_before"
+              type="number"
+              :label="t('countShowcaseBefore')"
+              :model-value="productInfo.count_showcase"
             />
           </VCol>
           <VCol md="2">
@@ -92,18 +98,6 @@
               }"
               :label="t('countStockAfter')"
               v-model="formData.count_stock_after"
-            />
-          </VCol>
-          <VCol md="2">
-            <VInput
-              vid="count_showcase_before"
-              type="number"
-              :rules="{
-                required:
-                  INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-              }"
-              :label="t('countShowcaseBefore')"
-              v-model="formData.count_showcase_before"
             />
           </VCol>
           <VCol md="2">
@@ -255,7 +249,7 @@ import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 import InventoryInventoryProductsAdd from '@/components/pages/inventory-inventory/InventoryInventoryProductsAdd.vue'
 
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchProductSearch,
@@ -382,8 +376,8 @@ const formData = ref<{
   id: null | number
   product_id: null | number
   count_stock_before: null | number
-  count_stock_after: null | number
   count_showcase_before: null | number
+  count_stock_after: null | number
   count_showcase_after: null | number
 }>({
   ...FORM_DATA,
@@ -402,8 +396,21 @@ const productInfo = computed(() => {
     category_name: null,
     articule: null,
     unit_name: null,
+    count_stock: null,
+    count_showcase: null,
   }
 })
+
+watch(
+  () => productInfo.value.count_stock,
+  () => (formData.value.count_stock_before = productInfo.value.count_stock)
+)
+
+watch(
+  () => productInfo.value.count_showcase,
+  () =>
+    (formData.value.count_showcase_before = productInfo.value.count_showcase)
+)
 
 const useForwardToStore = async () => {
   try {
@@ -517,18 +524,16 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
   try {
     const newFormData: Record<string, any> = { ...formData.value }
     if (
-      !newFormData.count_stock_before ||
-      !newFormData.count_stock_after ||
-      !newFormData.count_showcase_before ||
-      !newFormData.count_showcase_after
+      typeof newFormData.count_stock_after === 'object' ||
+      typeof newFormData.count_showcase_after === 'object'
     ) {
       return
     }
     newFormData.count_stock_before = Math.round(+newFormData.count_stock_before)
-    newFormData.count_stock_after = Math.round(+newFormData.count_stock_after)
     newFormData.count_showcase_before = Math.round(
       +newFormData.count_showcase_before
     )
+    newFormData.count_stock_after = Math.round(+newFormData.count_stock_after)
     newFormData.count_showcase_after = Math.round(
       +newFormData.count_showcase_after
     )

@@ -58,17 +58,17 @@
         <template #item.index="{ item }">
           {{ item.index + 1 }}
         </template>
-        <template #item.count_stock_before="{ item }">
-          <VInput
-            :vid="`count_stock_before-${item.index}`"
-            type="number"
-            :rules="{
-              required: formData[item.index].is_checked,
-            }"
-            :label="t('countStockBefore')"
-            v-model="formData[item.index].count_stock_before"
-          />
-        </template>
+        <!--        <template #item.count_stock_before="{ item }">-->
+        <!--          <VInput-->
+        <!--            :vid="`count_stock_before-${item.index}`"-->
+        <!--            type="number"-->
+        <!--            :rules="{-->
+        <!--              required: formData[item.index].is_checked,-->
+        <!--            }"-->
+        <!--            :label="t('countStockBefore')"-->
+        <!--            v-model="formData[item.index].count_stock_before"-->
+        <!--          />-->
+        <!--        </template>-->
         <template #item.count_stock_after="{ item }">
           <VInput
             :vid="`count_stock_after-${item.index}`"
@@ -80,17 +80,17 @@
             v-model="formData[item.index].count_stock_after"
           />
         </template>
-        <template #item.count_showcase_before="{ item }">
-          <VInput
-            :vid="`count_showcase_before-${item.index}`"
-            type="number"
-            :rules="{
-              required: formData[item.index].is_checked,
-            }"
-            :label="t('countShowcaseBefore')"
-            v-model="formData[item.index].count_showcase_before"
-          />
-        </template>
+        <!--        <template #item.count_showcase_before="{ item }">-->
+        <!--          <VInput-->
+        <!--            :vid="`count_showcase_before-${item.index}`"-->
+        <!--            type="number"-->
+        <!--            :rules="{-->
+        <!--              required: formData[item.index].is_checked,-->
+        <!--            }"-->
+        <!--            :label="t('countShowcaseBefore')"-->
+        <!--            v-model="formData[item.index].count_showcase_before"-->
+        <!--          />-->
+        <!--        </template>-->
         <template #item.count_showcase_after="{ item }">
           <VInput
             :vid="`count_showcase_after-${item.index}`"
@@ -180,7 +180,7 @@ const queries = getQuery(['organisation_id', 'store_id'])
 const options = ref({
   page: 1,
   lastPage: 1,
-  perPage: 3,
+  perPage: 15,
   total: 1,
 })
 
@@ -212,17 +212,17 @@ const headers = [
   },
   {
     text: t('countStockBefore'),
-    value: 'count_stock_before',
+    value: 'count_stock',
+    width: '250px',
+  },
+  {
+    text: t('countShowcaseBefore'),
+    value: 'count_showcase',
     width: '250px',
   },
   {
     text: t('countStockAfter'),
     value: 'count_stock_after',
-    width: '250px',
-  },
-  {
-    text: t('countShowcaseBefore'),
-    value: 'count_showcase_before',
     width: '250px',
   },
   {
@@ -237,9 +237,11 @@ const headers = [
 ]
 
 interface IFormData {
-  count_stock_before: null | string
+  count_stock: number | string
+  count_showcase: number | string
+  count_stock_before: number | string
+  count_showcase_before: number | string
   count_stock_after: null | string
-  count_showcase_before: null | string
   count_showcase_after: null | string
   product_id: null | number
   is_checked: boolean
@@ -274,9 +276,9 @@ const useFetchProductSearchAll = async () => {
       type.value
     )
     formData.value = data.map((item: IFormData, i: number) => ({
-      count_stock_before: null,
+      count_stock_before: +item.count_stock,
+      count_showcase_before: +item.count_showcase,
       count_stock_after: null,
-      count_showcase_before: null,
       count_showcase_after: null,
       product_id: item.product_id,
       is_checked: false,
@@ -302,14 +304,13 @@ const onSubmit = async () => {
     btnLoading.value = true
     const data = JSON.parse(JSON.stringify(formData.value))
     const filteredData = data.filter((item: IFormData) => item.is_checked)
-    const isInValid = filteredData.find(
-      (item: IFormData) =>
+    const isInValid = filteredData.find((item: IFormData) => {
+      return (
         item.is_checked &&
-        !item.count_stock_before &&
-        !item.count_stock_after &&
-        !item.count_showcase_before &&
-        !item.count_showcase_after
-    )
+        typeof item.count_stock_after === 'object' &&
+        typeof item.count_showcase_after === 'object'
+      )
+    })
     if (isInValid && btnIsClicked.value) {
       options.value.page = isInValid.page
     }
@@ -317,10 +318,8 @@ const onSubmit = async () => {
       const apiCalls = filteredData.map((item: IFormData) => {
         if (
           id.value &&
-          item.count_stock_before &&
-          item.count_stock_after &&
-          item.count_showcase_before &&
-          item.count_showcase_after
+          typeof item.count_stock_after !== 'object' &&
+          typeof item.count_showcase_after !== 'object'
         )
           return createProduct(+id.value, {
             count_stock_before: Math.round(+item.count_stock_before),
