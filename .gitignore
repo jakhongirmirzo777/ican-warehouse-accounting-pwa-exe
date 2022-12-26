@@ -27,5 +27,3 @@ coverage
 *.sln
 *.sw?
 
-# Docker
-Dockerfile
