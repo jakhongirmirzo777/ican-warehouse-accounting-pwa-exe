@@ -46,4 +46,9 @@
     width: 37px;
     text-align: center;
   }
+
+  &__input.dark {
+    background-color: var(--color-dark-blue);
+    border-color: var(--color-white);
+  }
 }

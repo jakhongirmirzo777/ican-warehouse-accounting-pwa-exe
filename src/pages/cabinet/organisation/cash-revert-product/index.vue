@@ -12,7 +12,9 @@
               width="100%"
               color="primary"
               class="mb-20"
-              @click="$router.push($localePath('/cabinet/revert-check'))"
+              @click="
+                $router.push($localePath('/cabinet/cash-revert-product-item'))
+              "
             >
               {{ $t('issueRefund') }}
             </VBtn>
@@ -91,7 +93,7 @@
           color="primary"
           @click="
             $router.push(
-              $localePath(`/cabinet/reverted-check-products/${item.id}`)
+              $localePath(`/cabinet/cash-revert-product-reverted/${item.id}`)
             )
           "
           >{{ $t('open') }}</VBtn
@@ -131,7 +133,7 @@ import VLine from '@/components/ui/VLine.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { fetchRevertedChecks } from '@/services/cabinet/RevertCheckServices'
+import { fetchRevertedChecks } from '@/services/cabinet/CashRevertProductServices'
 import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -142,8 +144,8 @@ import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import type {
   RevertedCheckDataItemType,
   RevertedCheckOptionsType,
-} from '@/types/cabinet/RevertCheckTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/CashRevertProductTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 const { $setResponseErrors } = useErrorActions()
@@ -315,5 +317,3 @@ const headers = ref([
   { text: t('revertAmount'), value: 'returning_amount_sum' },
 ])
 </script>
-
-<style scoped></style>

@@ -78,16 +78,13 @@
         {{ $t(REPORT_SALES_STATUS[item.status].text) }}
       </VBtn>
     </template>
-    <template #item.sold_amount_sum="{ item }">
-      <span>{{ $moneyFormat(item.sold_amount_sum) }}</span>
-    </template>
     <template #item.products="{ item }">
       <VBtn
         color="primary"
         @click="
           $router.push(
             $localePath(
-              `/cabinet/reports-sales-product/${item.id}?type=credit&title=itemsOnSales`
+              `/cabinet/reports-sale-item/${item.id}?type=salesLegalEntities&title=goodsForSaleLegalEntities`
             )
           )
         "
@@ -95,8 +92,11 @@
         {{ $t('open') }}
       </VBtn>
     </template>
-    <template #item.payments="{ item }">
-      <ReportPaymentTypeTexts :item="item" />
+    <template #item.sold_amount_sum="{ item }">
+      <span
+        >{{ $moneyFormat(item.sold_amount_sum) }}
+        {{ item.currency_symbol }}</span
+      >
     </template>
     <template #item.invoice>
       <VBtn color="primary" flat>
@@ -127,18 +127,17 @@ import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
-import ReportPaymentTypeTexts from '@/components/pages/report-sale/ReportPaymentTypeTexts.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 
-import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
+import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSaleTypes'
 import { REPORT_SALES_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
-import { fetchReportSales } from '@/services/cabinet/ReportSaleServices'
-import { getPaymentTypes } from '@/services/cabinet/CashService'
+import { fetchReportSales } from '@/services/cabinet/ReportSaleService'
+import { getPaymentTypes } from '@/services/cabinet/CashSaleService'
 import { $parseQueryArray } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
@@ -175,7 +174,7 @@ const options = ref<ReportSalesTypesConsolidateParamsTypes>({
   search: queries.search || '',
   status: +queries.status || null,
   organisation_ids: $parseQueryArray(queries.organisation_ids) as number[],
-  client_type: 'credit',
+  client_type: 'entity',
   payment_type: queries.payment_type || '',
   date_from: queries.date_from || '',
   date_to: queries.date_to || '',
@@ -209,16 +208,16 @@ const headers = [
     value: 'contract_number',
   },
   {
-    text: t('agreementDate'),
-    value: 'created_at',
+    text: t('invoice'),
+    value: 'invoice',
+  },
+  {
+    text: t('counterpart'),
+    value: 'counterparty_name',
   },
   {
     text: t('sold'),
     value: 'seller_username',
-  },
-  {
-    text: t('buyer'),
-    value: 'buyer',
   },
   {
     text: t('products'),
@@ -227,10 +226,6 @@ const headers = [
   {
     text: t('status'),
     value: 'status',
-  },
-  {
-    text: t('invoice'),
-    value: 'invoice',
   },
   {
     text: t('amount'),
@@ -354,7 +349,7 @@ const paginate = async () => {
 }
 
 $addQuery({
-  tab: 'credit',
+  tab: 'entity',
   page: '1',
 })
 useFetchData()

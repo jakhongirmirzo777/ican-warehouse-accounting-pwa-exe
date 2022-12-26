@@ -59,7 +59,7 @@
                     style="display: flex"
                     min-width="40px"
                     color="primary"
-                    class="mb-20 mb-md-0 justify-center align-center"
+                    class="mb-20 mb-md-0 justify-center align-center w-100"
                     type="submit"
                     :disabled="
                       !params.search || !params.store_id || items?.length >= 1
@@ -211,7 +211,7 @@
         </div>
       </VRow>
     </VCard>
-    <DirectSalePaymentModal
+    <CashDirectSalePaymentDialog
       ref="paymentTypeModalRef"
       is-give-bonus
       @saved-payment-type-dialog="savedPaymentTypeDialog"
@@ -236,7 +236,7 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
+import CashDirectSalePaymentDialog from '@/components/pages/cash-direct-sale/CashDirectSalePaymentDialog.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
 import router from '@/router'
@@ -252,7 +252,7 @@ import {
   fetchDirectSale,
   getPaymentTypes,
   submitGiveBonus,
-} from '@/services/cabinet/CashService'
+} from '@/services/cabinet/CashSaleService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -273,7 +273,7 @@ import type {
   DirectSaleOptionsType,
   GiveBonusFormType,
   PaymentsType,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import { useStorageService } from '@/plugins/storage-service'
 
@@ -446,7 +446,7 @@ const submit = async () => {
       await submitGiveBonus(form.value)
       $successMessage(t('notifications.addedSuccessfully'))
       removeStorageItems()
-      await router.push($localePath('/cabinet/give-bonus'))
+      await router.push($localePath('/cabinet/cash-give-bonus'))
     } catch (err) {
       $setResponseErrors(err)
       $setFormErrors(err)
@@ -744,5 +744,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style scoped lang="scss">
-@import '../../../../assets/styles/pages/direct-sale.scss';
+@import '../../../../assets/styles/pages/cash-direct-sale';
 </style>

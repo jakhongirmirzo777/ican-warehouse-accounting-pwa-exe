@@ -166,7 +166,7 @@
         </template>
       </VTable>
       <div class="mt-10 mb-15 direct-sale__body__payment-text">
-        {{ $t('totalPayable') }}:
+        <VText tag="span">{{ $t('totalPayable') }}: </VText>
         <VText tag="span" class="direct-sale__body__payment-text__amount">{{
           allPriceWithFormat
         }}</VText>
@@ -177,18 +177,21 @@
         :key="`payments-${i}`"
         class="mb-10 direct-sale__body__payment-text"
       >
-        <span v-if="item.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main">
+        <VText
+          v-if="item.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main"
+          tag="span"
+        >
           {{ item.name }}:
-        </span>
-        <span v-else>{{ $t('additionalAmount') }}: </span>
-        <VText tag="span" class="direct-sale__body__payment-text__amount">{{
-          $moneyFormat(item.amount)
-        }}</VText>
+        </VText>
+        <VText v-else tag="span"> {{ $t('additionalAmount') }}: </VText>
+        <VText tag="span" class="direct-sale__body__payment-text__amount">
+          {{ $moneyFormat(item.amount) }}
+        </VText>
       </div>
       <VLine class="my-20" />
       <VRow class="mt-5">
         <VCol md="10">
-          <span>{{ $t('paymentType') }}</span>
+          <VText tag="span">{{ $t('paymentType') }}</VText>
           <VBtn
             :class="[{ 'ml-16': i === 0 }, 'mr-8']"
             radius="12"
@@ -251,18 +254,18 @@
         </div>
       </VRow>
     </VCard>
-    <DirectSalePaymentModal
+    <CashDirectSalePaymentDialog
       ref="paymentTypeModalRef"
       @saved-payment-type-dialog="savedPaymentTypeDialog"
     />
-    <DirectSaleBonusModal
+    <CashDirectSaleBonusDialog
       ref="directSaleBonusRef"
       :currency="currency"
       :paymentTypeList="paymentTypeList"
       @check-bonus-product="checkBonusProduct"
       @check-bonus-with-search="checkBonusWithSearch"
     />
-    <BonusOrNotModal
+    <CashDirectSaleBonusOrNotDialog
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
@@ -286,9 +289,9 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
-import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
-import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
+import CashDirectSalePaymentDialog from '@/components/pages/cash-direct-sale/CashDirectSalePaymentDialog.vue'
+import CashDirectSaleBonusDialog from '@/components/pages/cash-direct-sale/CashDirectSaleBonusDialog.vue'
+import CashDirectSaleBonusOrNotDialog from '@/components/pages/cash-direct-sale/CashDirectSaleBonusOrNotDialog.vue'
 import Check from '@/components/pages/cash/Check.vue'
 
 import { computed, ref, onBeforeUnmount } from 'vue'
@@ -303,7 +306,7 @@ import {
   fetchDirectSale,
   getPaymentTypes,
   submitDirectSale,
-} from '@/services/cabinet/CashService'
+} from '@/services/cabinet/CashSaleService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -319,11 +322,9 @@ import type {
   DirectSaleOptionsType,
   CheckBonusType,
   PaymentsType,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import { useStorageService } from '@/plugins/storage-service'
-import { useThemeService } from '@/plugins/theme-service'
-
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
@@ -331,7 +332,6 @@ const { $addQuery, $getQuery, $clearQuery } = useQuery()
 const { $get, $set, $remove } = useStorageService('sessionStorage')
 
 const { user } = useUserService()
-const { theme, THEME } = useThemeService()
 
 //static variables
 
@@ -1029,5 +1029,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style scoped lang="scss">
-@import '../../../../assets/styles/pages/direct-sale.scss';
+@import '../../../assets/styles/pages/cash-direct-sale';
 </style>

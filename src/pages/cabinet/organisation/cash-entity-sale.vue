@@ -202,20 +202,20 @@
           </template>
         </VTable>
         <div class="mt-10 mb-15 direct-sale__body__payment-text">
-          {{ $t('totalPayable') }}:
-          <b class="direct-sale__body__payment-text__amount">{{
-            allPriceWithFormat
-          }}</b>
+          <VText tag="span">{{ $t('totalPayable') }}: </VText>
+          <VText tag="b" class="direct-sale__body__payment-text__amount">
+            {{ allPriceWithFormat }}
+          </VText>
         </div>
         <VLine v-if="additional_sum" class="mb-10" />
         <div
           v-if="additional_sum"
           class="mb-10 direct-sale__body__payment-text"
         >
-          <span>{{ $t('additionalAmount') }}: </span>
-          <b class="direct-sale__body__payment-text__amount">{{
-            $moneyFormat(additional_sum)
-          }}</b>
+          <VText tag="span">{{ $t('additionalAmount') }}: </VText>
+          <VText tag="b" class="direct-sale__body__payment-text__amount">
+            {{ $moneyFormat(additional_sum) }}
+          </VText>
         </div>
         <VLine class="my-20" />
         <div class="d-flex">
@@ -231,7 +231,7 @@
         </div>
       </VCard>
     </Form>
-    <DirectSaleBonusModal
+    <CashDirectSaleBonusDialog
       ref="directSaleBonusRef"
       :currency="params.currency_id"
       :paymentTypeList="paymentTypeList"
@@ -239,7 +239,7 @@
       @check-bonus-product="checkBonusProduct"
       @check-bonus-with-search="checkBonusWithSearch"
     />
-    <BonusOrNotModal
+    <CashDirectSaleBonusOrNotDialog
       ref="bonusOrNotRef"
       @check-bonus-product="checkBonusWithSearch"
     />
@@ -277,8 +277,8 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCardAction from '@/components/ui/VCardAction.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import DirectSaleBonusModal from '@/components/pages/direct-sale/DirectSaleBonusModal.vue'
-import BonusOrNotModal from '@/components/pages/direct-sale/BonusOrNotModal.vue'
+import CashDirectSaleBonusDialog from '@/components/pages/cash-direct-sale/CashDirectSaleBonusDialog.vue'
+import CashDirectSaleBonusOrNotDialog from '@/components/pages/cash-direct-sale/CashDirectSaleBonusOrNotDialog.vue'
 import CounterpartyCounterpartiesDialog from '@/components/pages/counterparty-organisations/CounterpartyCounterpartiesDialog.vue'
 import CounterpartyInvoicesDialog from '@/components/pages/counterparty-invoices/CounterpartyInvoicesDialog.vue'
 import CounterpartyContractsDialog from '@/components/pages/counterparty-contracts/CounterpartyContractsDialog.vue'
@@ -291,7 +291,7 @@ import {
   fetchDirectSale,
   getPaymentTypes,
   submitEntitySell,
-} from '@/services/cabinet/CashService'
+} from '@/services/cabinet/CashSaleService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -310,7 +310,7 @@ import type {
   EntitySellFormType,
   DirectSaleOptionsType,
   CheckBonusType,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import type {
   CounterpartyListWitContractType,
@@ -979,5 +979,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style scoped lang="scss">
-@import '../../../../assets/styles/pages/direct-sale.scss';
+@import '../../../assets/styles/pages/cash-direct-sale';
 </style>

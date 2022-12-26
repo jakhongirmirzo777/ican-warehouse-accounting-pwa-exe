@@ -2,7 +2,7 @@ import http from '@/plugins/http'
 import type {
   MkoOrganisationData,
   MkoOrganisationListType,
-} from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/OrganisationsTypes'
 
 export const fetchOrganisations = async (
   page: number,

@@ -86,7 +86,7 @@ import type {
   SettlementPageOptionsType,
 } from '@/types/cabinet/FinancialAccountingSettlementTypes'
 import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

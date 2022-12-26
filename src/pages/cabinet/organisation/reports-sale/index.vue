@@ -1,7 +1,7 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('sales') }}
+    {{ t('salesReport') }}
   </VText>
   <div v-if="$can(['reports.sale.sale.reports', 'reports.sale.individuals'])">
     <VTabs v-model="tab">
@@ -20,28 +20,28 @@
     </VTabs>
     <VTabsItems v-model="tab">
       <VTabItem value="consolidated">
-        <ConsolidatedReport
+        <ReportsSaleConsolidated
           :warehouses="warehouses"
           :organisations="organisations"
           :statusList="statusList"
         />
       </VTabItem>
       <VTabItem value="credit">
-        <CreditSaleReport
+        <ReportsSaleCredit
           :warehouses="warehouses"
           :organisations="organisations"
           :statusList="statusList"
         />
       </VTabItem>
       <VTabItem value="direct">
-        <DirectSaleReport
+        <ReportsSaleDirect
           :warehouses="warehouses"
           :organisations="organisations"
           :statusList="statusList"
         />
       </VTabItem>
       <VTabItem value="entity">
-        <SalesLegalEntitiesReport
+        <ReportsSaleEntities
           :warehouses="warehouses"
           :organisations="organisations"
           :statusList="statusList"
@@ -58,9 +58,10 @@ import VTabs from '@/components/ui/VTabs.vue'
 import VTab from '@/components/ui/VTab.vue'
 import VTabsItems from '@/components/ui/VTabsItems.vue'
 import VTabItem from '@/components/ui/VTabItem.vue'
-import ConsolidatedReport from '@/components/pages/report-sale/ConsolidatedReport.vue'
-import CreditSaleReport from '@/components/pages/report-sale/CreditSaleReport.vue'
-import DirectSaleReport from '@/components/pages/report-sale/DirectSaleReport.vue'
+import ReportsSaleConsolidated from '@/components/pages/reports-sale/ReportsSaleConsolidated.vue'
+import ReportsSaleCredit from '@/components/pages/reports-sale/ReportsSaleCredit.vue'
+import ReportsSaleDirect from '@/components/pages/reports-sale/ReportsSaleDirect.vue'
+import ReportsSaleEntities from '@/components/pages/reports-sale/ReportsSaleEntities.vue'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -69,7 +70,7 @@ import {
   fetchOrganisations,
   fetchCategories,
   fetchWarehouses,
-} from '@/services/cabinet/ReportsStockService'
+} from '@/services/cabinet/ReportSaleService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 const { $getQuery } = useQuery()
@@ -78,14 +79,13 @@ const queries = $getQuery(['tab'])
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 import { REPORT_SALES_STATUS } from '@/utils/constants'
-import SalesLegalEntitiesReport from '@/components/pages/report-sale/SalesLegalEntitiesReport.vue'
 
 const breadcrumbs = [
   {
     name: t('reports'),
   },
   {
-    name: t('sales'),
+    name: t('salesReport'),
   },
 ]
 

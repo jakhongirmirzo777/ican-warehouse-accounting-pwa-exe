@@ -29,7 +29,6 @@
 
 <script lang="ts" setup>
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import '@/assets/styles/layouts/the-reload-prompt.scss'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -41,3 +40,7 @@ const close = async () => {
   needRefresh.value = false
 }
 </script>
+
+<style lang="scss" scoped>
+@import '../../assets/styles/layouts/the-reload-prompt.scss';
+</style>

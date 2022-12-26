@@ -136,9 +136,7 @@
             margin-bottom: 5px;
           "
         >
-          <VText size="18" tag="div" color="black">
-            {{ $t('count') }}:</VText
-          >
+          <VText size="18" tag="div" color="black"> {{ $t('count') }}:</VText>
           <VText size="18" tag="div" color="black">{{
             $moneyFormat(product.sell_count)
           }}</VText>
@@ -242,5 +240,5 @@ defineExpose({ print })
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/pages/check.scss';
+@import '../../../assets/styles/pages/check.scss';
 </style>
