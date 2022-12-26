@@ -133,9 +133,7 @@
         </template>
         <template #item.selling_price_sum="{ item }">
           <div>
-            {{
-              $moneyFormatWithComma(+item.selling_price_sum * +item.sell_count)
-            }}
+            {{ $moneyFormat(+item.selling_price_sum * +item.sell_count) }}
           </div>
         </template>
         <template #item.bonusOnSale="{ item, iy }">
@@ -184,7 +182,7 @@
         </span>
         <span v-else>{{ $t('additionalAmount') }}: </span>
         <b class="direct-sale__body__payment-text__amount">{{
-          $moneyFormatWithComma(item.amount)
+          $moneyFormat(item.amount)
         }}</b>
       </div>
       <VLine class="my-20" />
@@ -216,7 +214,7 @@
             @click="
               $refs.paymentTypeModalRef.openDialog(
                 paymentTypeList,
-                allPriceWithFormat
+                allCellingPrice
               )
             "
           >
@@ -304,11 +302,7 @@ import { useQuery } from '@/composables/router-query'
 import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import { useUserService } from '@/plugins/user-service'
-import {
-  $clearNonDigits,
-  $debounce,
-  $moneyFormatWithComma,
-} from '@/utils/pure-functions'
+import { $debounce, $fixedNumber, $moneyFormat } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import type {
   DirectSaleDataItemType,
@@ -399,9 +393,7 @@ const bonusOrNotRef = ref()
 const checkRef = ref()
 
 const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
-const allPriceWithFormat = computed(() =>
-  $moneyFormatWithComma(allCellingPrice.value)
-)
+const allPriceWithFormat = computed(() => $moneyFormat(allCellingPrice.value))
 const isMainPaid = computed(() => {
   let count = 0
   payments.value.forEach((p) => {
@@ -457,7 +449,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    form.value.products[i].sold = fixedNumber(p.selling_price_sum)
+    form.value.products[i].sold = +$fixedNumber(p.selling_price_sum)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
@@ -469,11 +461,11 @@ const submit = async () => {
     (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.additional
   )
   if (addition_sum?.amount) {
-    const additional = $clearNonDigits(addition_sum.amount.toString())
-    form.value.additional_amount_sum = fixedNumber(additional)
+    const additional = addition_sum.amount
+    form.value.additional_amount_sum = $fixedNumber(additional)
   }
   if (allCellingPrice.value)
-    form.value.total_amount = fixedNumber(allCellingPrice.value)
+    form.value.total_amount = $fixedNumber(allCellingPrice.value)
   if (payments.value) form.value.payments = payments.value
   if (!Object.keys(validate).length) {
     $showLoading()
@@ -742,17 +734,17 @@ const bonusStartCheckRepeatCode = (
       }
     })
   }
-  allPrice = +fixedNumber(allPrice)
+  allPrice = +$fixedNumber(allPrice)
   const options: CheckBonusType = {
     all_amount: allPrice,
     selling_price_sum: recheck
       ? item.price
-      : fixedNumber(item.selling_price_sum),
+      : $fixedNumber(item.selling_price_sum),
     client_type: CLIENT_TYPES.individual,
   }
   if (additional_amount_sum) {
     options.additional_amount_sum = form.value.additional_amount_sum =
-      fixedNumber(additional_amount_sum)
+      $fixedNumber(additional_amount_sum)
   }
   const currencyItem = currencyList.value.find((p) => p.key === currency.value)
   if (currencyItem && currencyItem.id) options.currency_id = currencyItem.id
@@ -909,6 +901,7 @@ const deleteItem = (index: number) => {
         checkBonusProduct(p, i, true, amount, '', 0, true)
       }
     })
+    payments.value = []
   }
   $successMessage(t('notifications.deletedSuccessfully'))
   // payments.value = []
@@ -962,21 +955,6 @@ const GET_PAYMENTS = (): any => {
 const clearFilter = () => {
   params.value.search = ''
   $addQuery(params.value)
-}
-
-const fixedNumber = (price: number | string) => {
-  const checkNumber =
-    typeof price === 'string' ? parseInt(price).toFixed() : price.toFixed()
-  const wholePartNumberLength = checkNumber.length
-  const totalLengthPrice =
-    typeof price === 'string' ? price.length - 1 : price.toString().length - 1
-  if (totalLengthPrice - wholePartNumberLength > 2) {
-    return typeof price === 'string'
-      ? parseInt(price).toFixed(2)
-      : price.toFixed(2)
-  } else {
-    return price
-  }
 }
 
 const useFetchData = async () => {

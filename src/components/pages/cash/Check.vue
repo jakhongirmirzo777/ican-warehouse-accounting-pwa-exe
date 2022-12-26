@@ -137,7 +137,7 @@
           "
         >
           <VText size="18" tag="div" color="black">
-            {{ $t('onePrice') }}:</VText
+            {{ $t('count') }}:</VText
           >
           <VText size="18" tag="div" color="black">{{
             $moneyFormat(product.sell_count)

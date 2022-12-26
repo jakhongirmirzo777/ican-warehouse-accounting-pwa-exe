@@ -3,13 +3,13 @@
     <Form @submit="submit">
       <span v-if="bonusError && bonusError.bonus_amount">
         {{ $t('allowedAmountBonusItem') }}
-        <b>{{ bonusError.bonus_amount }}</b> {{ CURRENCIES_LIST[currency] }}.
+        <b>{{ $moneyFormat(bonusError.bonus_amount) }}</b> {{ CURRENCIES_LIST[currency] }}.
       </span>
       <br />
       <br />
       <span v-if="bonusError && bonusError.additional_amount">
         {{ $t('youTryingAddProductWithValue') }}
-        <b>{{ bonusError.additional_amount }}</b>
+        <b>{{ $moneyFormat(bonusError.additional_amount) }}</b>
         {{ CURRENCIES_LIST[currency] }}.
       </span>
       <div class="mt-30">

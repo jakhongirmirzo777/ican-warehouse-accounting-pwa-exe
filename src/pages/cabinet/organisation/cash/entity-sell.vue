@@ -171,11 +171,7 @@
           </template>
           <template #item.selling_price_sum="{ item }">
             <div>
-              {{
-                $moneyFormatWithComma(
-                  +item.selling_price_sum * +item.sell_count
-                )
-              }}
+              {{ $moneyFormat(+item.selling_price_sum * +item.sell_count) }}
             </div>
           </template>
           <template #item.bonusOnSale="{ item, iy }">
@@ -218,7 +214,7 @@
         >
           <span>{{ $t('additionalAmount') }}: </span>
           <b class="direct-sale__body__payment-text__amount">{{
-            $moneyFormatWithComma(additional_sum)
+            $moneyFormat(additional_sum)
           }}</b>
         </div>
         <VLine class="my-20" />
@@ -302,7 +298,7 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
-import { $debounce, $moneyFormatWithComma } from '@/utils/pure-functions'
+import { $debounce, $moneyFormat } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import {
   fetchCounterpartyContractList,
@@ -421,9 +417,7 @@ const directSaleBonusRef = ref()
 const bonusOrNotRef = ref()
 const checkRef = ref()
 
-const allPriceWithFormat = computed(() =>
-  $moneyFormatWithComma(allCellingPrice.value)
-)
+const allPriceWithFormat = computed(() => $moneyFormat(allCellingPrice.value))
 
 const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
 
@@ -459,7 +453,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    form.value.products[i].sold = fixedNumber(p.selling_price_sum)
+    form.value.products[i].sold = +fixedNumber(p.selling_price_sum)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
@@ -468,7 +462,7 @@ const submit = async () => {
     }
   })
   if (allCellingPrice.value)
-    form.value.total_amount = fixedNumber(allCellingPrice.value)
+    form.value.total_amount = +fixedNumber(allCellingPrice.value)
   if (additional_sum.value)
     form.value.additional_amount_sum = additional_sum.value
   if (params.value.contract_id)

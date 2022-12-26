@@ -9,7 +9,7 @@
     </div>
     <h4 class="mb-20">
       {{ $t('totalPayable') }}:
-      <b class="total-price">{{ $moneyFormatWithComma(totalPrice) }}</b>
+      <b class="total-price">{{ $moneyFormat(totalPrice) }}</b>
     </h4>
     <Form @submit="saveTypes" ref="typesRef">
       <div>
@@ -33,7 +33,7 @@
             </VCol>
             <VCol md="7">
               <VInput
-                type="money"
+                type="text"
                 label=""
                 :name="`amount_${i}`"
                 v-model="item.amount"
@@ -92,11 +92,11 @@ import { Form } from 'vee-validate'
 import { ElAlert } from 'element-plus'
 
 import { computed, ref, watch } from 'vue'
-import { $clearNonDigits, $moneyFormatWithComma } from '@/utils/pure-functions'
 import { useI18n } from 'vue-i18n'
 import type { PaymentsType } from '@/types/cabinet/CashTypes'
 import { useNotificationService } from '@/plugins/notification-service'
 import { PAYMENT_TYPE_ADDITIONAL_OR_MAIN } from '@/utils/constants'
+import { $fixedNumber } from '@/utils/pure-functions'
 
 const { $successMessage } = useNotificationService()
 
@@ -133,17 +133,14 @@ const selectedPaymentType = (e: string | boolean, val: Record<string, any>) => {
   if (e && !val.amount) {
     let count = 0
     paymentsTypes.value.forEach((p) => {
-      if (p.amount && typeof p.amount === 'number') count += +p.amount
-      if (p.amount && typeof p.amount === 'string') {
-        count += +$clearNonDigits(p.amount)
-      }
+      if (p.amount) count += +p.amount
     })
     if (!count) {
-      val.amount = +$clearNonDigits(totalPrice.value)
+      val.amount = +totalPrice.value
       typesRef.value.resetForm()
     }
     if (count > 1) {
-      val.amount = +$clearNonDigits(totalPrice.value) - count
+      val.amount = +totalPrice.value - +count
     }
   } else val.amount = ''
 }
@@ -164,7 +161,7 @@ const openDialog = (
   allPrice: string
 ) => {
   paymentsTypes.value = JSON.parse(JSON.stringify(paymentTypeList))
-  totalPrice.value = $moneyFormatWithComma(allPrice)
+  totalPrice.value = allPrice
   dialog.value = true
 }
 
@@ -174,13 +171,12 @@ const saveTypes = () => {
   paymentsTypes.value.forEach((p) => {
     if (p.amount) {
       count++
-      allPrice +=
-        typeof p.amount === 'string' ? +$clearNonDigits(p.amount) : +p.amount
+      allPrice += +p.amount
     }
   })
   if (!count) {
     errorMessageNonAmount.value = t('paymentAmountNotFilled')
-  } else if (allPrice < +$clearNonDigits(totalPrice.value)) {
+  } else if (allPrice < +totalPrice.value) {
     errorMessageNonAmount.value = t('amountEnteredLessAmountDue')
   } else {
     const resultArr: Array<PaymentsType> = []
@@ -189,8 +185,7 @@ const saveTypes = () => {
         resultArr.push({
           payment_type: p.payment_type,
           name: p.name,
-          amount:
-            typeof p.amount === 'string' ? $clearNonDigits(p.amount) : p.amount,
+          amount: +$fixedNumber(p.amount),
           type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
         })
       }
@@ -204,14 +199,10 @@ const saveTypes = () => {
 const errorMessage = computed(() => {
   let amount = 0
   paymentsTypes.value.forEach((p) => {
-    if (p && typeof p.amount === 'string') amount += +$clearNonDigits(p.amount)
-    else if (p && typeof p.amount === 'number') amount += +p.amount
+    if (p.amount) amount += +p.amount
   })
-  const total =
-    typeof totalPrice.value === 'number'
-      ? totalPrice.value
-      : +$clearNonDigits(totalPrice.value)
-  if (amount > total) return t('exceedsErrorMessage')
+  const total = totalPrice.value
+  if (amount > +total) return t('exceedsErrorMessage')
   return null
 })
 
