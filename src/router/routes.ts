@@ -359,6 +359,7 @@ const rawRoutes = [
         props: true,
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.revaluation.view'],
         },
       },
       {
@@ -379,6 +380,7 @@ const rawRoutes = [
         props: true,
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
+          permissions: ['organisation.inventory.view'],
         },
       },
       {

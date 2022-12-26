@@ -284,7 +284,7 @@ export default {
   unHeldFinRecord: 'Не проведен',
   productsInShowcase: 'Товары в витрине',
   productsInStock: 'Товары в складе',
-  incomeAvgPrice: 'Сумма по цене прихода (средняя)',
+  incomeAvgPrice: 'Цена прихода (средняя)',
   arrivalPriceInCurrency: 'Цена прихода в валютах',
   sellingPriceInCurrency: 'Цена продажи в валютах',
   from: 'От',
@@ -401,6 +401,7 @@ export default {
   currencyUz: 'сум',
   month: 'мес',
   thankYouForYourPurchase: 'Спасибо за покупку!',
+  systemCourseAdmin: 'Системный курс',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

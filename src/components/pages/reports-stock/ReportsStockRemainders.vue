@@ -235,7 +235,7 @@ const headers = [
     value: 'income_avg_price_sum',
   },
   {
-    text: t('sellPrice'),
+    text: t('sellingPrice'),
     value: 'selling_price_sum',
   },
 ]

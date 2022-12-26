@@ -95,7 +95,7 @@
       <template #item.actions="{ item }">
         <div class="d-flex">
           <VTableActions
-            view="organisation.inventory.create"
+            view="organisation.inventory.view"
             :actions="{
               view: true,
               edit: false,

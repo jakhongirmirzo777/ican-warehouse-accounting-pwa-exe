@@ -287,7 +287,7 @@ const menus = computed(() => {
             permission: 'admin.currencies.index',
           },
           {
-            name: t('systemCourse'),
+            name: t('systemCourseAdmin'),
             path: 'reference-courses',
             permission: 'admin.system.courses.index',
           },

@@ -188,6 +188,10 @@ const headers = [
     value: 'category_name',
   },
   {
+    text: t('document'),
+    value: 'document_number',
+  },
+  {
     text: t('product'),
     value: 'product_name',
   },
@@ -198,6 +202,10 @@ const headers = [
   {
     text: t('barcode'),
     value: 'barcode',
+  },
+  {
+    text: t('date'),
+    value: 'created_at',
   },
   {
     text: t('quantity'),
@@ -212,11 +220,11 @@ const headers = [
     value: 'is_showcase',
   },
   {
-    text: t('incomePrice'),
+    text: t('arrivalPrice'),
     value: 'incoming_price_sum',
   },
   {
-    text: t('sellPrice'),
+    text: t('sellingPrice'),
     value: 'selling_price_sum',
   },
 ]

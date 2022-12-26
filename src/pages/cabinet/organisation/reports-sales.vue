@@ -3,50 +3,52 @@
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
     {{ t('sales') }}
   </VText>
-  <VTabs v-model="tab">
-    <VTab v-if="$can('reports.sale.sale.reports')" href="consolidated">
-      {{ t('consolidatedReport') }}
-    </VTab>
-    <VTab href="credit">
-      {{ t('saleCredit') }}
-    </VTab>
-    <VTab v-if="$can('reports.sale.individuals')" href="direct">
-      {{ t('directSales') }}
-    </VTab>
-    <VTab href="entity">
-      {{ t('salesLegalEntities') }}
-    </VTab>
-  </VTabs>
-  <VTabsItems v-model="tab">
-    <VTabItem value="consolidated">
-      <ConsolidatedReport
-        :warehouses="warehouses"
-        :organisations="organisations"
-        :statusList="statusList"
-      />
-    </VTabItem>
-    <VTabItem value="credit">
-      <CreditSaleReport
-        :warehouses="warehouses"
-        :organisations="organisations"
-        :statusList="statusList"
-      />
-    </VTabItem>
-    <VTabItem value="direct">
-      <DirectSaleReport
-        :warehouses="warehouses"
-        :organisations="organisations"
-        :statusList="statusList"
-      />
-    </VTabItem>
-    <VTabItem value="entity">
-      <SalesLegalEntitiesReport
-        :warehouses="warehouses"
-        :organisations="organisations"
-        :statusList="statusList"
-      />
-    </VTabItem>
-  </VTabsItems>
+  <div v-if="$can(['reports.sale.sale.reports', 'reports.sale.individuals'])">
+    <VTabs v-model="tab">
+      <VTab href="consolidated">
+        {{ t('consolidatedReport') }}
+      </VTab>
+      <VTab href="credit">
+        {{ t('saleCredit') }}
+      </VTab>
+      <VTab href="direct">
+        {{ t('directSales') }}
+      </VTab>
+      <VTab href="entity">
+        {{ t('salesLegalEntities') }}
+      </VTab>
+    </VTabs>
+    <VTabsItems v-model="tab">
+      <VTabItem value="consolidated">
+        <ConsolidatedReport
+          :warehouses="warehouses"
+          :organisations="organisations"
+          :statusList="statusList"
+        />
+      </VTabItem>
+      <VTabItem value="credit">
+        <CreditSaleReport
+          :warehouses="warehouses"
+          :organisations="organisations"
+          :statusList="statusList"
+        />
+      </VTabItem>
+      <VTabItem value="direct">
+        <DirectSaleReport
+          :warehouses="warehouses"
+          :organisations="organisations"
+          :statusList="statusList"
+        />
+      </VTabItem>
+      <VTabItem value="entity">
+        <SalesLegalEntitiesReport
+          :warehouses="warehouses"
+          :organisations="organisations"
+          :statusList="statusList"
+        />
+      </VTabItem>
+    </VTabsItems>
+  </div>
 </template>
 
 <script lang="ts" setup>
