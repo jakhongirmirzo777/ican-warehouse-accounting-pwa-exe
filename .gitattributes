@@ -1,0 +1,2 @@
+database.xml merge=ours
+git config --global merge.ours.driver true
