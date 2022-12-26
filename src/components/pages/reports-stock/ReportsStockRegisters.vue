@@ -201,11 +201,11 @@ const headers = [
     value: 'course',
   },
   {
-    text: t('incomePrice'),
+    text: t('arrivalPrice'),
     value: 'incoming_price_sum',
   },
   {
-    text: t('sellPrice'),
+    text: t('sellingPrice'),
     value: 'selling_price_sum',
   },
   {

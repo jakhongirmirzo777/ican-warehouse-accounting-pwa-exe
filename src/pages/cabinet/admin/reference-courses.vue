@@ -1,12 +1,13 @@
 <template>
   <VBreadcrumb class="mb-18" :list="breadcrumbs" />
   <VText class="mb-24" tag="h2" weight="600" color="#0E1E56">
-    {{ t('systemCourse') }}
+    {{ t('systemCourseAdmin') }}
   </VText>
   <VCard>
     <VTable :headers="headers" :items="items">
       <template #item.actions="{ item }">
         <VTableActions
+          update="admin.system.courses.update"
           @edit="openDialog(item)"
           :actions="{ view: false, edit: true, delete: false }"
         />

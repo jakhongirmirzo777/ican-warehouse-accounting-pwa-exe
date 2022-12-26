@@ -105,8 +105,11 @@ const { user } = useUserService()
 const { t } = useI18n()
 const queries = $getQuery(['from', 'to', 'status'])
 $clearQuery(['from', 'to', 'status'])
+
+const userComputed = computed(() => user?.value)
+
 const tariffAmount = computed(() => {
-  return user?.value?.organisation_tariff_amount
+  return userComputed.value?.organisation_tariff_amount
 })
 const breadcrumbs = [
   {
