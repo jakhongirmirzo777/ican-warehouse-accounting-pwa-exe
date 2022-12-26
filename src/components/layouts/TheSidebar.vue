@@ -444,22 +444,22 @@ const menus = computed(() => {
         children: [
           {
             name: t('directSale'),
-            path: 'cash-register',
+            path: 'cash-direct-sale',
             permission: 'cash-box.sell',
           },
           {
             name: t('entitySell'),
-            path: 'entity-sell',
+            path: 'cash-entity-sale',
             permission: 'cash-box.entity.sell',
           },
           {
             name: t('revertProduct'),
-            path: 'reverted-checks-list',
+            path: 'cash-revert-product',
             permission: 'cash-box.reverted.checks',
           },
           {
             name: t('saleInBonus'),
-            path: 'give-bonus',
+            path: 'cash-give-bonus',
             permission: 'cash-box.give.bonus',
           },
         ],

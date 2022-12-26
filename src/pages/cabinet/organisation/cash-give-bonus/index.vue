@@ -390,7 +390,7 @@ const cancelChoseSearchResponse = () => {
 
 const nextStep = async () => {
   await SET_ITEMS()
-  await router.push($localePath('/cabinet/give-bonus-choose-product'))
+  await router.push($localePath('/cabinet/cash-give-bonus-item'))
 }
 
 const deleteItem = (index: number) => {
@@ -480,5 +480,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../assets/styles/pages/direct-sale.scss';
+@import '../../../../assets/styles/pages/cash-direct-sale';
 </style>

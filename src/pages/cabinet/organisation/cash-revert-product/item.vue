@@ -109,10 +109,10 @@
       <div class="d-flex align-center justify-between mt-10">
         <div>
           <div class="mt-10 mb-15 direct-sale__body__payment-text">
-            {{ $t('totalPayable') }}:
-            <b class="direct-sale__body__payment-text__amount">{{
-              allPriceWithFormat
-            }}</b>
+            <VText tag="span">{{ $t('totalPayable') }}: </VText>
+            <VText tag="b" class="direct-sale__body__payment-text__amount">
+              {{ allPriceWithFormat }}
+            </VText>
           </div>
           <VLine v-if="payments.length" class="mb-10" />
           <div
@@ -120,10 +120,10 @@
             :key="`payments-${i}`"
             class="mb-10 direct-sale__body__payment-text"
           >
-            <span> {{ item.name }}: </span>
-            <b class="direct-sale__body__payment-text__amount">{{
-              $moneyFormatWithComma(item.amount)
-            }}</b>
+            <VText tag="span">{{ item.name }}: </VText>
+            <VText tag="b" class="direct-sale__body__payment-text__amount">
+              {{ $moneyFormatWithComma(item.amount) }}
+            </VText>
           </div>
         </div>
         <div>
@@ -144,7 +144,9 @@
       </div>
       <VLine class="my-15" />
       <div class="d-flex justify-between align-center">
-        {{ $t('products') }}
+        <VText tag="span">
+          {{ $t('products') }}
+        </VText>
         <VBtn
           color="primary"
           type="submit"
@@ -182,7 +184,7 @@
         <span v-else> - </span>
       </template>
     </VTable>
-    <DirectSalePaymentModal
+    <CashDirectSalePaymentDialog
       ref="paymentTypeModalRef"
       @saved-payment-type-dialog="savedPaymentTypeDialog"
     />
@@ -204,7 +206,7 @@ import VArea from '@/components/ui/VArea.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
-import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
+import CashDirectSalePaymentDialog from '@/components/pages/cash-direct-sale/CashDirectSalePaymentDialog.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 import { Form } from 'vee-validate'
 

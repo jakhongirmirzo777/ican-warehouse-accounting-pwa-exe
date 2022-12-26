@@ -3,7 +3,8 @@
     <Form @submit="submit">
       <span v-if="bonusError && bonusError.bonus_amount">
         {{ $t('allowedAmountBonusItem') }}
-        <b>{{ $moneyFormat(bonusError.bonus_amount) }}</b> {{ CURRENCIES_LIST[currency] }}.
+        <b>{{ $moneyFormat(bonusError.bonus_amount) }}</b>
+        {{ CURRENCIES_LIST[currency] }}.
       </span>
       <br />
       <br />

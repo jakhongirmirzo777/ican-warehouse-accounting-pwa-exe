@@ -14,7 +14,9 @@
             width="100%"
             color="primary"
             class="mb-20"
-            @click="$router.push($localePath('/cabinet/revert-check'))"
+            @click="
+              $router.push($localePath('/cabinet/cash-revert-product-item'))
+            "
           >
             {{ $t('issueRefund') }}
           </VBtn>

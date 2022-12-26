@@ -10,7 +10,11 @@
     </button>
     <input
       :value="modelValue"
-      :class="['v-counter__input v-counter__btn mx-8', { disabled: disabled }]"
+      :class="[
+        'v-counter__input v-counter__btn mx-8',
+        { disabled: disabled },
+        { dark: theme === THEME.DARK },
+      ]"
       v-maska="maska"
       @input="changeInput"
     />
@@ -28,6 +32,9 @@
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
 import { computed } from 'vue'
+import { useThemeService } from '@/plugins/theme-service'
+
+const { theme, THEME } = useThemeService()
 
 const props = defineProps({
   modelValue: {

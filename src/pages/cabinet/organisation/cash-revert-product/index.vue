@@ -12,7 +12,9 @@
               width="100%"
               color="primary"
               class="mb-20"
-              @click="$router.push($localePath('/cabinet/revert-check'))"
+              @click="
+                $router.push($localePath('/cabinet/cash-revert-product-item'))
+              "
             >
               {{ $t('issueRefund') }}
             </VBtn>
@@ -91,7 +93,7 @@
           color="primary"
           @click="
             $router.push(
-              $localePath(`/cabinet/reverted-check-products/${item.id}`)
+              $localePath(`/cabinet/cash-revert-product-reverted/${item.id}`)
             )
           "
           >{{ $t('open') }}</VBtn
@@ -315,5 +317,3 @@ const headers = ref([
   { text: t('revertAmount'), value: 'returning_amount_sum' },
 ])
 </script>
-
-<style scoped></style>
