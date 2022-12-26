@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . ./
-RUN npm run build:stagingdfdfdf
+RUN npm run build:stag
 
 FROM nginx:alpine as production-build
 
