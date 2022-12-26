@@ -11,7 +11,6 @@ RUN npm run build:staging
 
 FROM nginx:alpine as production-build
 
-# Copy from the stahg 1
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
