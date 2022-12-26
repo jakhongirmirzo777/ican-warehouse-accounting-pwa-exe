@@ -159,10 +159,10 @@
         </template>
       </VTable>
       <div class="mt-10 mb-15 direct-sale__body__payment-text">
-        {{ $t('totalPayable') }}:
-        <b class="direct-sale__body__payment-text__amount">{{
-          allPriceWithFormat
-        }}</b>
+        <VText tag="span">{{ $t('totalPayable') }}: </VText>
+        <VText tag="b" class="direct-sale__body__payment-text__amount">
+          {{ allPriceWithFormat }}
+        </VText>
       </div>
       <VLine class="my-20" />
       <div class="d-flex">
