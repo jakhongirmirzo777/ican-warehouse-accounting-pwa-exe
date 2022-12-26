@@ -61,7 +61,7 @@ const breadcrumbs = [
     name: t('reports'),
   },
   {
-    name: t('sales'),
+    name: t('salesReport'),
   },
   {
     name: t(query.type),

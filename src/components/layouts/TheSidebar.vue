@@ -540,7 +540,7 @@ const menus = computed(() => {
           },
           {
             name: t('salesReport'),
-            path: 'reports-sales',
+            path: 'reports-sale',
             permission: [
               'reports.sale.sale.reports',
               'reports.sale.individuals',

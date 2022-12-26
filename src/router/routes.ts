@@ -440,10 +440,10 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reports-sales',
-        name: 'reports-sales',
+        path: 'reports-sale',
+        name: 'reports-sale',
         component: () =>
-          import('@/pages/cabinet/organisation/reports-sales.vue'),
+          import('@/pages/cabinet/organisation/reports-sale/index.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: [
@@ -453,10 +453,10 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reports-sales-product/:id',
-        name: 'reports-sales-product',
+        path: 'reports-sale-item/:id',
+        name: 'reports-sale-item',
         component: () =>
-          import('@/pages/cabinet/organisation/reports-sale-product.vue'),
+          import('@/pages/cabinet/organisation/reports-sale/item.vue'),
         props: true,
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],

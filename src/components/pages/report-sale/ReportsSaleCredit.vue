@@ -87,7 +87,7 @@
         @click="
           $router.push(
             $localePath(
-              `/cabinet/reports-sales-product/${item.id}?type=credit&title=itemsOnSales`
+              `/cabinet/reports-sale-item/${item.id}?type=credit&title=itemsOnSales`
             )
           )
         "
@@ -96,7 +96,7 @@
       </VBtn>
     </template>
     <template #item.payments="{ item }">
-      <ReportPaymentTypeTexts :item="item" />
+      <ReportsSalePaymentTypeText :item="item" />
     </template>
     <template #item.invoice>
       <VBtn color="primary" flat>
@@ -127,7 +127,7 @@ import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
-import ReportPaymentTypeTexts from '@/components/pages/report-sale/ReportPaymentTypeTexts.vue'
+import ReportsSalePaymentTypeText from '@/components/pages/report-sale/ReportsSalePaymentTypeText.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 
 import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
