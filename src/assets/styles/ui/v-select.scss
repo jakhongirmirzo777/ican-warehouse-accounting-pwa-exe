@@ -86,3 +86,9 @@
     color: var(--color-white);
   }
 }
+
+html.dark .el-select-dropdown__empty {
+  &:hover {
+    background-color: var(--el-fill-color-light);
+  }
+}

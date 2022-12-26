@@ -168,10 +168,10 @@
         v-if="payments.length"
         class="mt-10 mb-15 direct-sale__body__payment-text"
       >
-        {{ $t('totalPayable') }}:
-        <b class="direct-sale__body__payment-text__amount">{{
-          allPriceWithFormat
-        }}</b>
+        <VText tag="span">{{ $t('totalPayable') }}: </VText>
+        <VText tag="b" class="direct-sale__body__payment-text__amount">
+          {{ allPriceWithFormat }}
+        </VText>
       </div>
       <VLine v-if="payments.length" class="mb-10" />
       <div
@@ -179,13 +179,16 @@
         :key="`payments-${i}`"
         class="mb-10 direct-sale__body__payment-text"
       >
-        <span v-if="item.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main">
+        <VText
+          v-if="item.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main"
+          tag="span"
+        >
           {{ item.name }}:
-        </span>
-        <span v-else>{{ $t('additionalAmount') }}: </span>
-        <b class="direct-sale__body__payment-text__amount">{{
-          $moneyFormatWithComma(item.amount)
-        }}</b>
+        </VText>
+        <VText v-else tag="span">{{ $t('additionalAmount') }}: </VText>
+        <VText tag="b" class="direct-sale__body__payment-text__amount">
+          {{ $moneyFormatWithComma(item.amount) }}
+        </VText>
       </div>
       <VLine class="my-20" />
       <VRow class="mt-5">
