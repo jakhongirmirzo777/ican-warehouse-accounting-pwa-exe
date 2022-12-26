@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . ./
-RUN npm run build:staging
+RUN npm run build:test
 
 FROM nginx:alpine as production-build
 
