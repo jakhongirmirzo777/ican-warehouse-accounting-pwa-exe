@@ -42,6 +42,17 @@
       <VRow>
         <VCol md="3">
           <VSelect
+            :label="$t('clientType')"
+            :items="clientTypeList"
+            item-text="title"
+            item-value="value"
+            clearable
+            autocomplete
+            v-model="options.client_type"
+          />
+        </VCol>
+        <VCol md="3">
+          <VSelect
             :label="$t('paymentType')"
             :items="paymentTypeList"
             item-text="name"
@@ -78,16 +89,13 @@
         {{ $t(REPORT_SALES_STATUS[item.status].text) }}
       </VBtn>
     </template>
-    <template #item.sold_amount_sum="{ item }">
-      <span>{{ $moneyFormat(item.sold_amount_sum) }}</span>
-    </template>
     <template #item.products="{ item }">
       <VBtn
         color="primary"
         @click="
           $router.push(
             $localePath(
-              `/cabinet/reports-sale-item/${item.id}?type=credit&title=itemsOnSales`
+              `/cabinet/reports-sale-item/${item.id}?type=consolidatedReport`
             )
           )
         "
@@ -95,14 +103,17 @@
         {{ $t('open') }}
       </VBtn>
     </template>
-    <template #item.payments="{ item }">
+    <template #item.sold_amount_sum="{ item }">
+      <span class="text-no-wrap"
+        >{{ $moneyFormat(item.sold_amount_sum) }}
+        {{ item.currency_symbol }}</span
+      >
+    </template>
+    <template #item.payment_types="{ item }">
       <ReportsSalePaymentTypeText :item="item" />
     </template>
-    <template #item.invoice>
-      <VBtn color="primary" flat>
-        <VIcon icon="print" color="#17bdc0" size="16" class="mr-10" />
-        {{ $t('print') }}
-      </VBtn>
+    <template #item.client_type="{ item }">
+      {{ $t(item.client_type) }}
     </template>
   </VTable>
   <VPagination
@@ -126,14 +137,13 @@ import VExcel from '@/components/ui/VExcel.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
+import ReportsSalePaymentTypeText from '@/components/pages/reports-sale/ReportsSalePaymentTypeText.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
-import ReportsSalePaymentTypeText from '@/components/pages/report-sale/ReportsSalePaymentTypeText.vue'
-import VIcon from '@/components/ui/VIcon.vue'
 
 import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
-import { REPORT_SALES_STATUS } from '@/utils/constants'
+import { CLIENT_TYPES, REPORT_SALES_STATUS } from '@/utils/constants'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
 import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -175,7 +185,7 @@ const options = ref<ReportSalesTypesConsolidateParamsTypes>({
   search: queries.search || '',
   status: +queries.status || null,
   organisation_ids: $parseQueryArray(queries.organisation_ids) as number[],
-  client_type: 'credit',
+  client_type: queries.client_type || '',
   payment_type: queries.payment_type || '',
   date_from: queries.date_from || '',
   date_to: queries.date_to || '',
@@ -205,20 +215,28 @@ const headers = [
     value: 'check_number',
   },
   {
-    text: t('contractNumber'),
-    value: 'contract_number',
+    text: t('salesType'),
+    value: 'client_type',
   },
   {
-    text: t('agreementDate'),
+    text: t('paymentType'),
+    value: 'payment_types',
+  },
+  {
+    text: t('salesDate'),
     value: 'created_at',
+  },
+  {
+    text: t('buyer'),
+    value: 'buyer',
   },
   {
     text: t('sold'),
     value: 'seller_username',
   },
   {
-    text: t('buyer'),
-    value: 'buyer',
+    text: t('organisation'),
+    value: 'organisation_name',
   },
   {
     text: t('products'),
@@ -227,10 +245,6 @@ const headers = [
   {
     text: t('status'),
     value: 'status',
-  },
-  {
-    text: t('invoice'),
-    value: 'invoice',
   },
   {
     text: t('amount'),
@@ -253,6 +267,16 @@ defineProps({
   },
 })
 const items = ref([])
+const clientTypeList = computed(() => {
+  const result: Array<Record<string, string>> = []
+  Object.keys(CLIENT_TYPES).forEach((p: string) => {
+    result.push({
+      title: t(p),
+      value: p,
+    })
+  })
+  return result
+})
 
 const useFetchIncomes = async () => {
   try {
@@ -354,7 +378,7 @@ const paginate = async () => {
 }
 
 $addQuery({
-  tab: 'credit',
+  tab: 'consolidated',
   page: '1',
 })
 useFetchData()

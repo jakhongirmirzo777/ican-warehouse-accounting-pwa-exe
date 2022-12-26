@@ -42,17 +42,6 @@
       <VRow>
         <VCol md="3">
           <VSelect
-            :label="$t('clientType')"
-            :items="clientTypeList"
-            item-text="title"
-            item-value="value"
-            clearable
-            autocomplete
-            v-model="options.client_type"
-          />
-        </VCol>
-        <VCol md="3">
-          <VSelect
             :label="$t('paymentType')"
             :items="paymentTypeList"
             item-text="name"
@@ -89,13 +78,19 @@
         {{ $t(REPORT_SALES_STATUS[item.status].text) }}
       </VBtn>
     </template>
+    <template #item.sold_amount_sum="{ item }">
+      <span
+        >{{ $moneyFormat(item.sold_amount_sum) }}
+        {{ item.currency_symbol }}</span
+      >
+    </template>
     <template #item.products="{ item }">
       <VBtn
         color="primary"
         @click="
           $router.push(
             $localePath(
-              `/cabinet/reports-sale-item/${item.id}?type=consolidatedReport`
+              `/cabinet/reports-sale-item/${item.id}?type=salesLegalEntities&title=goodsForSaleLegalEntities`
             )
           )
         "
@@ -103,17 +98,8 @@
         {{ $t('open') }}
       </VBtn>
     </template>
-    <template #item.sold_amount_sum="{ item }">
-      <span class="text-no-wrap"
-        >{{ $moneyFormat(item.sold_amount_sum) }}
-        {{ item.currency_symbol }}</span
-      >
-    </template>
-    <template #item.payment_types="{ item }">
+    <template #item.payments="{ item }">
       <ReportsSalePaymentTypeText :item="item" />
-    </template>
-    <template #item.client_type="{ item }">
-      {{ $t(item.client_type) }}
     </template>
   </VTable>
   <VPagination
@@ -137,13 +123,13 @@ import VExcel from '@/components/ui/VExcel.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
-import ReportsSalePaymentTypeText from '@/components/pages/report-sale/ReportsSalePaymentTypeText.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
+import ReportsSalePaymentTypeText from '@/components/pages/reports-sale/ReportsSalePaymentTypeText.vue'
 
 import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
-import { CLIENT_TYPES, REPORT_SALES_STATUS } from '@/utils/constants'
-import { computed, ref } from 'vue'
+import { REPORT_SALES_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -185,7 +171,7 @@ const options = ref<ReportSalesTypesConsolidateParamsTypes>({
   search: queries.search || '',
   status: +queries.status || null,
   organisation_ids: $parseQueryArray(queries.organisation_ids) as number[],
-  client_type: queries.client_type || '',
+  client_type: 'individual',
   payment_type: queries.payment_type || '',
   date_from: queries.date_from || '',
   date_to: queries.date_to || '',
@@ -215,28 +201,20 @@ const headers = [
     value: 'check_number',
   },
   {
-    text: t('salesType'),
-    value: 'client_type',
-  },
-  {
-    text: t('paymentType'),
-    value: 'payment_types',
-  },
-  {
     text: t('salesDate'),
     value: 'created_at',
   },
   {
-    text: t('buyer'),
-    value: 'buyer',
+    text: t('paymentType'),
+    value: 'payments',
   },
   {
     text: t('sold'),
     value: 'seller_username',
   },
   {
-    text: t('organisation'),
-    value: 'organisation_name',
+    text: t('buyer'),
+    value: 'buyer',
   },
   {
     text: t('products'),
@@ -267,16 +245,6 @@ defineProps({
   },
 })
 const items = ref([])
-const clientTypeList = computed(() => {
-  const result: Array<Record<string, string>> = []
-  Object.keys(CLIENT_TYPES).forEach((p: string) => {
-    result.push({
-      title: t(p),
-      value: p,
-    })
-  })
-  return result
-})
 
 const useFetchIncomes = async () => {
   try {
@@ -378,7 +346,7 @@ const paginate = async () => {
 }
 
 $addQuery({
-  tab: 'consolidated',
+  tab: 'direct',
   page: '1',
 })
 useFetchData()

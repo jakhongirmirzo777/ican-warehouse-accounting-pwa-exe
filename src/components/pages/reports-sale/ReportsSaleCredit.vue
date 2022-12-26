@@ -79,10 +79,7 @@
       </VBtn>
     </template>
     <template #item.sold_amount_sum="{ item }">
-      <span
-        >{{ $moneyFormat(item.sold_amount_sum) }}
-        {{ item.currency_symbol }}</span
-      >
+      <span>{{ $moneyFormat(item.sold_amount_sum) }}</span>
     </template>
     <template #item.products="{ item }">
       <VBtn
@@ -90,7 +87,7 @@
         @click="
           $router.push(
             $localePath(
-              `/cabinet/reports-sale-item/${item.id}?type=salesLegalEntities&title=goodsForSaleLegalEntities`
+              `/cabinet/reports-sale-item/${item.id}?type=credit&title=itemsOnSales`
             )
           )
         "
@@ -100,6 +97,12 @@
     </template>
     <template #item.payments="{ item }">
       <ReportsSalePaymentTypeText :item="item" />
+    </template>
+    <template #item.invoice>
+      <VBtn color="primary" flat>
+        <VIcon icon="print" color="#17bdc0" size="16" class="mr-10" />
+        {{ $t('print') }}
+      </VBtn>
     </template>
   </VTable>
   <VPagination
@@ -124,7 +127,8 @@ import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
-import ReportsSalePaymentTypeText from '@/components/pages/report-sale/ReportsSalePaymentTypeText.vue'
+import ReportsSalePaymentTypeText from '@/components/pages/reports-sale/ReportsSalePaymentTypeText.vue'
+import VIcon from '@/components/ui/VIcon.vue'
 
 import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
 import { REPORT_SALES_STATUS } from '@/utils/constants'
@@ -171,7 +175,7 @@ const options = ref<ReportSalesTypesConsolidateParamsTypes>({
   search: queries.search || '',
   status: +queries.status || null,
   organisation_ids: $parseQueryArray(queries.organisation_ids) as number[],
-  client_type: 'individual',
+  client_type: 'credit',
   payment_type: queries.payment_type || '',
   date_from: queries.date_from || '',
   date_to: queries.date_to || '',
@@ -201,12 +205,12 @@ const headers = [
     value: 'check_number',
   },
   {
-    text: t('salesDate'),
-    value: 'created_at',
+    text: t('contractNumber'),
+    value: 'contract_number',
   },
   {
-    text: t('paymentType'),
-    value: 'payments',
+    text: t('agreementDate'),
+    value: 'created_at',
   },
   {
     text: t('sold'),
@@ -223,6 +227,10 @@ const headers = [
   {
     text: t('status'),
     value: 'status',
+  },
+  {
+    text: t('invoice'),
+    value: 'invoice',
   },
   {
     text: t('amount'),
@@ -346,7 +354,7 @@ const paginate = async () => {
 }
 
 $addQuery({
-  tab: 'direct',
+  tab: 'credit',
   page: '1',
 })
 useFetchData()
