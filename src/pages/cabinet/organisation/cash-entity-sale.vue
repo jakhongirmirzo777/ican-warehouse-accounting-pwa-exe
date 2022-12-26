@@ -291,7 +291,7 @@ import {
   fetchDirectSale,
   getPaymentTypes,
   submitEntitySell,
-} from '@/services/cabinet/CashService'
+} from '@/services/cabinet/CashSaleService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -310,7 +310,7 @@ import type {
   EntitySellFormType,
   DirectSaleOptionsType,
   CheckBonusType,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import type {
   CounterpartyListWitContractType,

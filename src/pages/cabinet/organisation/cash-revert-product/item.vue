@@ -216,21 +216,21 @@ import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
-import { getPaymentTypes } from '@/services/cabinet/CashService'
+import { getPaymentTypes } from '@/services/cabinet/CashSaleService'
 import { $moneyFormatWithComma } from '@/utils/pure-functions'
 import { useNotificationService } from '@/plugins/notification-service'
 
 import {
   revertCheck,
   searchCheckWith,
-} from '@/services/cabinet/RevertCheckServices'
+} from '@/services/cabinet/CashRevertProductServices'
 import { useUserService } from '@/plugins/user-service'
 import type {
   RevertedCheckDataItemType,
   RevertedCheckFormType,
-} from '@/types/cabinet/RevertCheckTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
-import type { PaymentsType } from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashRevertProductTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
+import type { PaymentsType } from '@/types/cabinet/CashSaleTypes'
 import { CLIENT_TYPES, ROLES } from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()

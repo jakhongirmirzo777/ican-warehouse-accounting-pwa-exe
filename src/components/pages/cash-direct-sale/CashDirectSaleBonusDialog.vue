@@ -57,7 +57,7 @@ import { Form } from 'vee-validate'
 
 import { ref, defineExpose, defineProps, watch } from 'vue'
 import { CURRENCIES_LIST } from '@/utils/constants'
-import type { DirectSaleDataItemType } from '@/types/cabinet/CashTypes'
+import type { DirectSaleDataItemType } from '@/types/cabinet/CashSaleTypes'
 
 defineProps({
   currency: {

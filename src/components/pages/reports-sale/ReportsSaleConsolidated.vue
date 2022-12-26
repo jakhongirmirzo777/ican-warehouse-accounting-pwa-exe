@@ -140,15 +140,15 @@ import VBtn from '@/components/ui/VBtn.vue'
 import ReportsSalePaymentTypeText from '@/components/pages/reports-sale/ReportsSalePaymentTypeText.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 
-import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
+import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSaleTypes'
 import { CLIENT_TYPES, REPORT_SALES_STATUS } from '@/utils/constants'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
-import { fetchReportSales } from '@/services/cabinet/ReportSaleServices'
-import { getPaymentTypes } from '@/services/cabinet/CashService'
+import { fetchReportSales } from '@/services/cabinet/ReportSaleService'
+import { getPaymentTypes } from '@/services/cabinet/CashSaleService'
 import { $parseQueryArray } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()

@@ -224,7 +224,7 @@ import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import type { FinancialSpendingFormTypes } from '@/types/cabinet/FinancialSpendingTypes'
+import type { FinancialSpendingFormTypes } from '@/types/cabinet/FinancialAccountingSpendingTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
 import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 

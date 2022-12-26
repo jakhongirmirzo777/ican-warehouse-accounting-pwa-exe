@@ -187,8 +187,8 @@ import type {
   FinancialSpendingFormTypes,
   FinancialSpendingDataItemType,
   FinancialSpendingOptionsType,
-} from '@/types/cabinet/FinancialSpendingTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/FinancialAccountingSpendingTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 import type {
   CounterpartyContractListType,
   CounterpartyListWitContractType,

@@ -229,7 +229,7 @@ import { useNotificationService } from '@/plugins/notification-service'
 import { $clearNonDigits } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
-import type { FinancialIncomeFormTypes } from '@/types/cabinet/FinancialIncomeTypes'
+import type { FinancialIncomeFormTypes } from '@/types/cabinet/FinancialAccountingIncomeTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
 
 const { $successMessage } = useNotificationService()

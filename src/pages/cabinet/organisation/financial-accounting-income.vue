@@ -187,8 +187,8 @@ import type {
   FinancialIncomeFormTypes,
   FinancialIncomeDataItemType,
   FinancialIncomeOptionsType,
-} from '@/types/cabinet/FinancialIncomeTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/FinancialAccountingIncomeTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 import type {
   CounterpartyContractListType,
   CounterpartyListWitContractType,

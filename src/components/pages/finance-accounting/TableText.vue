@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FinanceAccountDataItemType } from '@/types/cabinet/FinanceAccountingTypes'
+import type { FinanceAccountDataItemType } from '@/types/cabinet/FinancialAccountingTypes'
 import type { PropType } from 'vue'
 
 type ShowText = 'debit' | 'credit' | 'balance'

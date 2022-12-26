@@ -196,7 +196,7 @@ import VTransition from '@/components/ui/VTransition.vue'
 import { computed, ref, onBeforeUnmount, defineProps } from 'vue'
 import { CLIENT_TYPES, GIVE_BONUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import { searchCheck } from '@/services/cabinet/CashService'
+import { searchCheck } from '@/services/cabinet/CashSaleService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -208,7 +208,7 @@ import { useStorageService } from '@/plugins/storage-service'
 import type {
   GiveBonusParamsType,
   GiveBonusDataTypes,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
 import { fetchCounterpartyWithContract } from '@/services/cabinet/CounterpartyContractsServices'
 

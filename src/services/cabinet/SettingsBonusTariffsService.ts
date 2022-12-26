@@ -4,7 +4,7 @@ import type {
   SettingBonusFormTypes,
   SettingBonusPageOptionsType,
   SettingBonusDataItemType,
-} from '@/types/cabinet/SettingBonusTariffTypes'
+} from '@/types/cabinet/SettingsBonusTariffTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 
 export const fetchSettingBonuses = async (

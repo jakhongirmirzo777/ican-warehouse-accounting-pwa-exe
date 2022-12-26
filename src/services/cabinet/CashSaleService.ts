@@ -6,7 +6,7 @@ import type {
   CheckBonusType,
   EntitySellFormType,
   GiveBonusParamsType,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 

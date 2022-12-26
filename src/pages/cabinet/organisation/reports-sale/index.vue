@@ -70,7 +70,7 @@ import {
   fetchOrganisations,
   fetchCategories,
   fetchWarehouses,
-} from '@/services/cabinet/ReportsStockService'
+} from '@/services/cabinet/ReportSaleService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 const { $getQuery } = useQuery()

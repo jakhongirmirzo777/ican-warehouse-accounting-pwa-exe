@@ -3,7 +3,7 @@ import type {
   RevertedCheckOptionsType,
   RevertedCheckDataItemType,
   RevertedCheckFormType,
-} from '@/types/cabinet/RevertCheckTypes'
+} from '@/types/cabinet/CashRevertProductTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 import type { RouteParamValue } from 'vue-router'
 const BASE_URL_ADDITIONAL = 'organisation'

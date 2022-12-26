@@ -3,7 +3,7 @@ import type {
   FinancialSpendingOptionsType,
   FinancialSpendingFormTypes,
   FinancialSpendingDataItemType,
-} from '@/types/cabinet/FinancialSpendingTypes'
+} from '@/types/cabinet/FinancialAccountingSpendingTypes'
 import type { FetchDataTypes } from '@/types/globals/FetchDataTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 

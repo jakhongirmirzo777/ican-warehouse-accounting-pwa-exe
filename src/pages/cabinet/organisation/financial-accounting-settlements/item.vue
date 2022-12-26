@@ -73,8 +73,8 @@ import { fetchCounterpartyList } from '@/services/cabinet/CounterpartyCounterpar
 import type {
   FinanceAccountHistoryDataItemType,
   FinanceAccountHistoryPageOptionsType,
-} from '@/types/cabinet/FinanceAccountingTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/FinancialAccountingTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 

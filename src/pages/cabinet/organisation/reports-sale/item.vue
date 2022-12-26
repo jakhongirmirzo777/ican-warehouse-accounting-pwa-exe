@@ -36,12 +36,12 @@ import VCheckbox from '@/components/ui/VCheckbox.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getReportProducts } from '@/services/cabinet/ReportSaleServices'
+import { getReportProducts } from '@/services/cabinet/ReportSaleService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useRoute } from 'vue-router'
 
-import type { RevertedCheckDataItemType } from '@/types/cabinet/RevertCheckTypes'
+import type { RevertedCheckDataItemType } from '@/types/cabinet/CashRevertProductTypes'
 import { useQuery } from '@/composables/router-query'
 
 const { $setResponseErrors } = useErrorActions()
