@@ -167,9 +167,9 @@
       </VTable>
       <div class="mt-10 mb-15 direct-sale__body__payment-text">
         {{ $t('totalPayable') }}:
-        <b class="direct-sale__body__payment-text__amount">{{
+        <VText tag="span" class="direct-sale__body__payment-text__amount">{{
           allPriceWithFormat
-        }}</b>
+        }}</VText>
       </div>
       <VLine v-if="payments.length" class="mb-10" />
       <div
@@ -181,9 +181,9 @@
           {{ item.name }}:
         </span>
         <span v-else>{{ $t('additionalAmount') }}: </span>
-        <b class="direct-sale__body__payment-text__amount">{{
+        <VText tag="span" class="direct-sale__body__payment-text__amount">{{
           $moneyFormat(item.amount)
-        }}</b>
+        }}</VText>
       </div>
       <VLine class="my-20" />
       <VRow class="mt-5">
@@ -192,6 +192,7 @@
           <VBtn
             :class="[{ 'ml-16': i === 0 }, 'mr-8']"
             radius="12"
+            dark
             :color="
               paymentTypeErrorMessage && !isMainPaid
                 ? 'danger'
@@ -205,7 +206,15 @@
             :key="`payment-type-${i}`"
             @click="selectPaymentType(item)"
           >
-            {{ item.name }}
+            <VText
+              tag="p"
+              :style="
+                payment_type === item.type
+                  ? 'color: white !important'
+                  : 'color: black !important'
+              "
+              >{{ item.name }}</VText
+            >
           </VBtn>
           <VBtn
             :disabled="!items.length"
@@ -313,6 +322,7 @@ import type {
 } from '@/types/cabinet/CashTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import { useStorageService } from '@/plugins/storage-service'
+import { useThemeService } from '@/plugins/theme-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -321,6 +331,7 @@ const { $addQuery, $getQuery, $clearQuery } = useQuery()
 const { $get, $set, $remove } = useStorageService('sessionStorage')
 
 const { user } = useUserService()
+const { theme, THEME } = useThemeService()
 
 //static variables
 
