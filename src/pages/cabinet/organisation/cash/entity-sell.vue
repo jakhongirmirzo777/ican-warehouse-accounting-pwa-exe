@@ -298,7 +298,7 @@ import { useLoadingService } from '@/plugins/loading-service'
 import { useQuery } from '@/composables/router-query'
 import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
-import { $debounce, $moneyFormat } from '@/utils/pure-functions'
+import { $debounce, $fixedNumber, $moneyFormat } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
 import {
   fetchCounterpartyContractList,
@@ -453,7 +453,7 @@ const submit = async () => {
     }
     if (p.id) form.value.products[i].id = p.id
     if (p.product_id) form.value.products[i].product_id = p.product_id
-    form.value.products[i].sold = +fixedNumber(p.selling_price_sum)
+    form.value.products[i].sold = +$fixedNumber(p.selling_price_sum)
     if (p.sell_count) form.value.products[i].count = p.sell_count
     if (p.is_bonus) {
       form.value.products[i].is_bonus = true
@@ -462,7 +462,7 @@ const submit = async () => {
     }
   })
   if (allCellingPrice.value)
-    form.value.total_amount = +fixedNumber(allCellingPrice.value)
+    form.value.total_amount = +$fixedNumber(allCellingPrice.value)
   if (additional_sum.value)
     form.value.additional_amount_sum = additional_sum.value
   if (params.value.contract_id)
@@ -720,12 +720,12 @@ const bonusStartCheckRepeatCode = (
       }
     })
   }
-  allPrice = +fixedNumber(allPrice)
+  allPrice = +$fixedNumber(allPrice)
   const options: CheckBonusType = {
     all_amount: allPrice,
     selling_price_sum: recheck
       ? item.price
-      : fixedNumber(item.selling_price_sum) ?? fixedNumber(item.price),
+      : $fixedNumber(item.selling_price_sum) ?? $fixedNumber(item.price),
     client_type: CLIENT_TYPES.entity,
   }
   if (additional_amount_sum) {
@@ -733,7 +733,7 @@ const bonusStartCheckRepeatCode = (
       form.value.additional_amount_sum =
       params.value.additional_amount_sum =
       additional_sum.value =
-        fixedNumber(additional_amount_sum)
+        $fixedNumber(additional_amount_sum)
 
     $addQuery(params.value)
   }
@@ -901,21 +901,6 @@ const GET_ITEMS = (): any => {
 const clearFilter = () => {
   params.value.search = ''
   $addQuery(params.value)
-}
-
-const fixedNumber = (price: number | string) => {
-  const checkNumber =
-    typeof price === 'string' ? parseInt(price).toFixed() : price.toFixed()
-  const wholePartNumberLength = checkNumber.length
-  const totalLengthPrice =
-    typeof price === 'string' ? price.length - 1 : price.toString().length - 1
-  if (totalLengthPrice - wholePartNumberLength > 2) {
-    return typeof price === 'string'
-      ? parseInt(price).toFixed(2)
-      : price.toFixed(2)
-  } else {
-    return price
-  }
 }
 
 const useFetchData = async () => {

@@ -223,7 +223,7 @@
             @click="
               $refs.paymentTypeModalRef.openDialog(
                 paymentTypeList,
-                allCellingPrice
+                $fixedNumber(allCellingPrice)
               )
             "
           >
@@ -322,7 +322,6 @@ import type {
 } from '@/types/cabinet/CashTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import { useStorageService } from '@/plugins/storage-service'
-import { useThemeService } from '@/plugins/theme-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -331,7 +330,6 @@ const { $addQuery, $getQuery, $clearQuery } = useQuery()
 const { $get, $set, $remove } = useStorageService('sessionStorage')
 
 const { user } = useUserService()
-const { theme, THEME } = useThemeService()
 
 //static variables
 
@@ -930,7 +928,7 @@ const changeSellPrice = $debounce(() => {
   allCellingPrice.value = 0
   if (items.value.length) {
     items.value.forEach((p) => {
-      allCellingPrice.value += +p.selling_price_sum * p.sell_count
+      allCellingPrice.value += +p.selling_price_sum * +p.sell_count
     })
   } else {
     allCellingPrice.value = 0

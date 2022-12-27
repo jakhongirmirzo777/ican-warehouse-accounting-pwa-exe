@@ -106,12 +106,57 @@
           />
         </VCol>
       </VRow>
+      <div class="d-flex align-center justify-between mt-15">
+        <div>
+          <span>{{ $t('paymentType') }}</span>
+          <VBtn
+            :class="[{ 'ml-16': i === 0 }, 'mr-8']"
+            radius="12"
+            dark
+            :color="
+              paymentTypeErrorMessage && !isMainPaid
+                ? 'danger'
+                : payment_type === item.type
+                ? 'success'
+                : ''
+            "
+            :outlined="paymentTypeErrorMessage && !isMainPaid"
+            :disabled="!items.length"
+            v-for="(item, i) in paymentTypeList"
+            :key="`payment-type-${i}`"
+            @click="selectPaymentType(item)"
+          >
+            <VText
+              tag="p"
+              :style="
+                payment_type === item.type
+                  ? 'color: white !important'
+                  : 'color: black !important'
+              "
+              >{{ item.name }}</VText
+            >
+          </VBtn>
+        </div>
+        <VBtn
+          :disabled="!items.length"
+          class="ml-16mr-8"
+          color="warning"
+          @click="
+            $refs.paymentTypeModalRef.openDialog(
+              paymentTypeList,
+              $fixedNumber(allPriceWithFormat)
+            )
+          "
+        >
+          {{ $t('paymentDifferentWays') }}
+        </VBtn>
+      </div>
       <div class="d-flex align-center justify-between mt-10">
         <div>
           <div class="mt-10 mb-15 direct-sale__body__payment-text">
             {{ $t('totalPayable') }}:
             <b class="direct-sale__body__payment-text__amount">{{
-              allPriceWithFormat
+              $moneyFormat(allPriceWithFormat)
             }}</b>
           </div>
           <VLine v-if="payments.length" class="mb-10" />
@@ -122,24 +167,9 @@
           >
             <span> {{ item.name }}: </span>
             <b class="direct-sale__body__payment-text__amount">{{
-              $moneyFormatWithComma(item.amount)
+              $moneyFormat(item.amount)
             }}</b>
           </div>
-        </div>
-        <div>
-          <VBtn
-            :disabled="!items.length"
-            class="ml-16mr-8"
-            color="warning"
-            @click="
-              $refs.paymentTypeModalRef.openDialog(
-                paymentTypeList,
-                allPriceWithFormat
-              )
-            "
-          >
-            {{ $t('paymentDifferentWays') }}
-          </VBtn>
         </div>
       </div>
       <VLine class="my-15" />
@@ -171,13 +201,13 @@
       </template>
       <template #item.sold_sum="{ item }">
         <span v-if="item.sold_sum && item.sold_sum !== '0'">{{
-          $moneyFormatWithComma(item.sold_sum)
+          $moneyFormat(item.sold_sum)
         }}</span>
         <span v-else> - </span>
       </template>
       <template #item.all_sold_sum="{ item }">
         <span v-if="item.all_sold_sum && item.sold_sum !== '0'">{{
-          $moneyFormatWithComma(item.all_sold_sum)
+          $moneyFormat(item.all_sold_sum)
         }}</span>
         <span v-else> - </span>
       </template>
@@ -215,8 +245,8 @@ import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import { getPaymentTypes } from '@/services/cabinet/CashService'
-import { $moneyFormatWithComma } from '@/utils/pure-functions'
 import { useNotificationService } from '@/plugins/notification-service'
+import { $fixedNumber } from '@/utils/pure-functions'
 
 import {
   revertCheck,
@@ -229,7 +259,11 @@ import type {
 } from '@/types/cabinet/RevertCheckTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
 import type { PaymentsType } from '@/types/cabinet/CashTypes'
-import { CLIENT_TYPES, ROLES } from '@/utils/constants'
+import {
+  CLIENT_TYPES,
+  PAYMENT_TYPE_ADDITIONAL_OR_MAIN,
+  ROLES,
+} from '@/utils/constants'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
@@ -246,6 +280,7 @@ const FORM = {
 const items = ref<RevertedCheckDataItemType[]>([])
 const payments = ref<Array<PaymentsType>>([])
 const allPriceWithFormat = ref('')
+const payment_type = ref('')
 const { t } = useI18n()
 
 const form = ref<RevertedCheckFormType>({
@@ -281,6 +316,7 @@ const breadcrumbs = [
 
 const organisationList = ref<Array<MkoOrganisationListType>>([])
 const paymentTypeList = ref<Array<Record<string, any>>>([])
+const paymentTypeErrorMessage = ref(null) as any
 const employeeList = ref<
   Array<{
     id: number
@@ -289,6 +325,13 @@ const employeeList = ref<
 >([])
 
 const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
+const isMainPaid = computed(() => {
+  let count = 0
+  payments.value.forEach((p) => {
+    if (p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main) count++
+  })
+  return count > 0
+})
 
 //refs
 
@@ -304,7 +347,7 @@ const searchCheck = async () => {
     seller_id.value = data.seller_user_id
     if (data.additional_amount_sum)
       additional_amount_sum.value = data.additional_amount_sum
-    allPriceWithFormat.value = $moneyFormatWithComma(data.total_amount_sum)
+    allPriceWithFormat.value = data.total_amount_sum
   } catch (err) {
     $setResponseErrors(err)
   } finally {
@@ -335,6 +378,15 @@ const getPaymentTypeList = async () => {
 }
 
 const submit = async () => {
+  const isPayment = payments.value.filter(
+    (p) => p.type === PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
+  )
+  if (!payments.value.length || !isPayment.length) {
+    paymentTypeErrorMessage.value = t('validation.required', {
+      field: t('paymentType'),
+    })
+    return
+  }
   form.value.payments = payments.value.map((p) => {
     return {
       payment_type: p.payment_type,
@@ -368,7 +420,27 @@ const getOrganisationsList = async () => {
 }
 
 const savedPaymentTypeDialog = (val: Array<PaymentsType>) => {
+  clearMainPayments()
+  payment_type.value = ''
   payments.value.push(...val)
+}
+
+const selectPaymentType = (item: Record<string, any>) => {
+  paymentTypeErrorMessage.value = null
+  payment_type.value = item.type
+  clearMainPayments()
+  payments.value.push({
+    payment_type: item.type,
+    name: item.name,
+    type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
+    amount: allPriceWithFormat.value,
+  })
+}
+
+const clearMainPayments = () => {
+  payments.value = payments.value.filter(
+    (p) => p.type !== PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main
+  )
 }
 
 const useFetchData = async () => {
