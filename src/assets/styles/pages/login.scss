@@ -78,6 +78,10 @@
       background-color: var(--color-white);
     }
 
+    &__wrapper.dark {
+      background-color: var(--color-dark-blue);
+    }
+
     &__logo {
       height: 30px;
       width: 150px;
