@@ -403,6 +403,9 @@ export default {
   month: 'мес',
   thankYouForYourPurchase: 'Спасибо за покупку!',
   systemCourseAdmin: 'Системный курс',
+  icanWarehouseAccounting: 'iCAN учет склада',
+  authorization: 'Авторизация',
+  errorPage: '404 sahifa',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
