@@ -712,14 +712,13 @@ const bonusRepeatCodeBody = (
   additional_amount_sum?: number,
   payment_type?: string
 ) => {
-  items.value.forEach((p) => {
+  let index = -1
+  items.value.forEach((p, i) => {
     if (p.is_bonus) {
-      p.is_bonus = false
-      p.isBonus = 0
-      p.bonus_id = 0
-      p.selling_price_sum = p.price
+      index = i
     }
   })
+  if (index > 0) items.value.splice(index, 1)
   item.isBonus = item.product_id
   item.bonus_id = data.id
   item.is_bonus = true
