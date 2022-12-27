@@ -1,4 +1,4 @@
-.v-table {
+.v-table-desktop {
   border: none;
   border-collapse: separate;
   border-spacing: 0 12px;
@@ -7,19 +7,19 @@
   font-size: 12px;
 
   &.dark {
-    .v-table__body--row {
+    .v-table-desktop__body--row {
       background-color: var(--color-dark-blue);
     }
 
-    .v-table__th {
+    .v-table-desktop__th {
       color: var(--color-white);
     }
 
-    .v-table__td {
+    .v-table-desktop__td {
       color: var(--color-white);
     }
 
-    .v-table__body--row:not(:last-child) .v-table__td{
+    .v-table-desktop__body--row:not(:last-child) .v-table-desktop__td{
       border-bottom: 1px solid var(--color-white);
       border-radius: 0;
     }

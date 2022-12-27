@@ -14,7 +14,9 @@
             width="100%"
             color="primary"
             class="mb-20"
-            @click="$router.push($localePath('/cabinet/revert-check'))"
+            @click="
+              $router.push($localePath('/cabinet/cash-revert-product-item'))
+            "
           >
             {{ $t('issueRefund') }}
           </VBtn>
@@ -52,12 +54,12 @@ import VCheckbox from '@/components/ui/VCheckbox.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getCheckProducts } from '@/services/cabinet/RevertCheckServices'
+import { getCheckProducts } from '@/services/cabinet/CashRevertProductServices'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { useRoute } from 'vue-router'
 
-import type { RevertedCheckDataItemType } from '@/types/cabinet/RevertCheckTypes'
+import type { RevertedCheckDataItemType } from '@/types/cabinet/CashRevertProductTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

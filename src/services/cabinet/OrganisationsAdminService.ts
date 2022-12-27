@@ -1,5 +1,5 @@
 import http from '@/plugins/http'
-import type { MkoOrganisationData } from '@/types/cabinet/MkoOrganisationsAdminTypes'
+import type { MkoOrganisationData } from '@/types/cabinet/OrganisationsAdminTypes'
 
 export const fetchOrganisationsParents = async () => {
   try {

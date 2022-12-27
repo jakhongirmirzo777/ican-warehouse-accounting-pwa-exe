@@ -3,7 +3,8 @@
     <Form @submit="submit">
       <span v-if="bonusError && bonusError.bonus_amount">
         {{ $t('allowedAmountBonusItem') }}
-        <b>{{ $moneyFormat(bonusError.bonus_amount) }}</b> {{ CURRENCIES_LIST[currency] }}.
+        <b>{{ $moneyFormat(bonusError.bonus_amount) }}</b>
+        {{ CURRENCIES_LIST[currency] }}.
       </span>
       <br />
       <br />
@@ -56,7 +57,7 @@ import { Form } from 'vee-validate'
 
 import { ref, defineExpose, defineProps, watch } from 'vue'
 import { CURRENCIES_LIST } from '@/utils/constants'
-import type { DirectSaleDataItemType } from '@/types/cabinet/CashTypes'
+import type { DirectSaleDataItemType } from '@/types/cabinet/CashSaleTypes'
 
 defineProps({
   currency: {

@@ -74,7 +74,7 @@ import type {
   SettingBonusDataItemType,
   SettingBonusPageOptionsType,
   SettingBonusFormTypes,
-} from '@/types/cabinet/SettingBonusTariffTypes'
+} from '@/types/cabinet/SettingsBonusTariffTypes'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()

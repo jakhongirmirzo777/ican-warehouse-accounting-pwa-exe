@@ -5,7 +5,7 @@ import type {
   FinanceAccountPageOptionsType,
   FinanceAccountHistoryPageOptionsType,
   FinanceAccountHistoryDataItemType,
-} from '@/types/cabinet/FinanceAccountingTypes'
+} from '@/types/cabinet/FinancialAccountingTypes'
 const BASE_URL_ADDITIONAL = 'organisation'
 
 export const fetchFinanceAccounting = async (

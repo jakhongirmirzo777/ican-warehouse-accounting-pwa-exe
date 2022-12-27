@@ -159,10 +159,10 @@
         </template>
       </VTable>
       <div class="mt-10 mb-15 direct-sale__body__payment-text">
-        {{ $t('totalPayable') }}:
-        <b class="direct-sale__body__payment-text__amount">{{
-          allPriceWithFormat
-        }}</b>
+        <VText tag="span">{{ $t('totalPayable') }}: </VText>
+        <VText tag="b" class="direct-sale__body__payment-text__amount">
+          {{ allPriceWithFormat }}
+        </VText>
       </div>
       <VLine class="my-20" />
       <div class="d-flex">
@@ -196,7 +196,7 @@ import VTransition from '@/components/ui/VTransition.vue'
 import { computed, ref, onBeforeUnmount, defineProps } from 'vue'
 import { CLIENT_TYPES, GIVE_BONUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import { searchCheck } from '@/services/cabinet/CashService'
+import { searchCheck } from '@/services/cabinet/CashSaleService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import { useLoadingService } from '@/plugins/loading-service'
@@ -208,7 +208,7 @@ import { useStorageService } from '@/plugins/storage-service'
 import type {
   GiveBonusParamsType,
   GiveBonusDataTypes,
-} from '@/types/cabinet/CashTypes'
+} from '@/types/cabinet/CashSaleTypes'
 import type { CounterpartyListWitContractType } from '@/types/cabinet/CounterpertyContractsTypes'
 import { fetchCounterpartyWithContract } from '@/services/cabinet/CounterpartyContractsServices'
 
@@ -390,7 +390,7 @@ const cancelChoseSearchResponse = () => {
 
 const nextStep = async () => {
   await SET_ITEMS()
-  await router.push($localePath('/cabinet/give-bonus-choose-product'))
+  await router.push($localePath('/cabinet/cash-give-bonus-item'))
 }
 
 const deleteItem = (index: number) => {
@@ -480,5 +480,5 @@ const headersForSelectableResponse = ref([
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../assets/styles/pages/direct-sale.scss';
+@import '../../../../assets/styles/pages/cash-direct-sale';
 </style>

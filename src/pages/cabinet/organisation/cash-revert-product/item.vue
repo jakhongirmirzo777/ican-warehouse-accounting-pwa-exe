@@ -154,10 +154,10 @@
       <div class="d-flex align-center justify-between mt-10">
         <div>
           <div class="mt-10 mb-15 direct-sale__body__payment-text">
-            {{ $t('totalPayable') }}:
-            <b class="direct-sale__body__payment-text__amount">{{
+            <VText tag="span">{{ $t('totalPayable') }}: </VText>
+            <VText tag="b" class="direct-sale__body__payment-text__amount">
               $moneyFormat(allPriceWithFormat)
-            }}</b>
+            </VText>
           </div>
           <VLine v-if="payments.length" class="mb-10" />
           <div
@@ -165,16 +165,18 @@
             :key="`payments-${i}`"
             class="mb-10 direct-sale__body__payment-text"
           >
-            <span> {{ item.name }}: </span>
-            <b class="direct-sale__body__payment-text__amount">{{
+            <VText tag="span">{{ item.name }}: </VText>
+            <VText tag="b" class="direct-sale__body__payment-text__amount">
               $moneyFormat(item.amount)
-            }}</b>
+            </VText>
           </div>
         </div>
       </div>
       <VLine class="my-15" />
       <div class="d-flex justify-between align-center">
-        {{ $t('products') }}
+        <VText tag="span">
+          {{ $t('products') }}
+        </VText>
         <VBtn
           color="primary"
           type="submit"
@@ -185,7 +187,9 @@
             !payments.length
           "
         >
-          {{ $t('issueRefund') }}
+          <VText tag="span">
+            {{ $t('issueRefund') }}
+          </VText>
         </VBtn>
       </div>
     </Form>
@@ -212,7 +216,7 @@
         <span v-else> - </span>
       </template>
     </VTable>
-    <DirectSalePaymentModal
+    <CashDirectSalePaymentDialog
       ref="paymentTypeModalRef"
       @saved-payment-type-dialog="savedPaymentTypeDialog"
     />
@@ -234,7 +238,7 @@ import VArea from '@/components/ui/VArea.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
 import VIcon from '@/components/ui/VIcon.vue'
 import VCheckbox from '@/components/ui/VCheckbox.vue'
-import DirectSalePaymentModal from '@/components/pages/direct-sale/DirectSalePaymentModal.vue'
+import CashDirectSalePaymentDialog from '@/components/pages/cash-direct-sale/CashDirectSalePaymentDialog.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 import { Form } from 'vee-validate'
 
@@ -244,15 +248,24 @@ import { fetchOrganisationsList } from '@/services/cabinet/OrganisationsService'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
-import { getPaymentTypes } from '@/services/cabinet/CashService'
+import { getPaymentTypes } from '@/services/cabinet/CashSaleService'
+import { $moneyFormatWithComma } from '@/utils/pure-functions'
 import { useNotificationService } from '@/plugins/notification-service'
+import { getPaymentTypes } from '@/services/cabinet/CashService'
 import { $fixedNumber } from '@/utils/pure-functions'
 
 import {
   revertCheck,
   searchCheckWith,
-} from '@/services/cabinet/RevertCheckServices'
+} from '@/services/cabinet/CashRevertProductServices'
 import { useUserService } from '@/plugins/user-service'
+import type {
+  RevertedCheckDataItemType,
+  RevertedCheckFormType,
+} from '@/types/cabinet/CashRevertProductTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
+import type { PaymentsType } from '@/types/cabinet/CashSaleTypes'
+import { CLIENT_TYPES, ROLES } from '@/utils/constants'
 import type {
   RevertedCheckDataItemType,
   RevertedCheckFormType,

@@ -6,7 +6,7 @@
       class="header__course__box"
       :class="{ white: white || theme === THEME.DARK }"
     >
-      {{ course.symbol }} {{ course.amount }}
+      {{ course.symbol }} {{ $moneyFormat(course.amount) }}
     </div>
   </div>
 </template>
@@ -25,7 +25,19 @@ defineProps({
 const { user } = useUserService()
 const filteredCourses = computed(() => {
   const courses: CoursesInterface[] = user.value?.courses || []
-  return courses.filter((item) => item.key !== 'UZS')
+  const allCourses = courses.filter((item) => item.key !== 'UZS')
+  return allCourses.length
+    ? allCourses
+    : [
+        {
+          symbol: '$',
+          amount: 0,
+        },
+        {
+          symbol: '₽',
+          amount: 0,
+        },
+      ]
 })
 </script>
 

@@ -1,16 +1,15 @@
 <template>
   <VLoading v-if="loading" type="linear" />
   <div
-    v-if="!loading && items.length"
+    v-if="!loading && items.length && size !== 'sm'"
     v-bind="$attrs"
-    class="v-table__container"
+    class="v-table-desktop__container"
   >
-    <table class="v-table" :class="{ dark: theme === THEME.DARK }">
-      <thead class="v-table__head">
-        <slot name="head.prepend" />
-        <tr class="v-table__head--row">
+    <table class="v-table-desktop" :class="{ dark: theme === THEME.DARK }">
+      <thead class="v-table-desktop__head">
+        <tr class="v-table-desktop__head--row">
           <th
-            class="v-table__th"
+            class="v-table-desktop__th"
             v-for="(header, index) in headers"
             :key="`th-${index}`"
             :style="{ width: $clearExtension(header.width) }"
@@ -20,14 +19,13 @@
             </slot>
           </th>
         </tr>
-        <slot name="head.append" />
       </thead>
-      <tbody class="v-table__body">
+      <tbody class="v-table-desktop__body">
         <slot name="body.prepend" />
         <tr
           :class="[
-            'v-table__body--row',
-            { 'v-table__body--row-cursor-pointer': clickable },
+            'v-table-desktop__body--row',
+            { 'v-table-desktop__body--row-cursor-pointer': clickable },
           ]"
           v-for="(item, index) in items"
           :key="`body-${item.id || index}`"
@@ -35,7 +33,7 @@
         >
           <td
             v-for="(header, i) in headers"
-            class="v-table__td"
+            class="v-table-desktop__td"
             :key="`td-${i}`"
           >
             <slot
@@ -46,6 +44,52 @@
             >
               {{ item[header.value] }}
             </slot>
+          </td>
+        </tr>
+        <slot name="body.append" />
+      </tbody>
+      <tfoot v-if="$slots.footer">
+        <slot name="footer" />
+      </tfoot>
+    </table>
+  </div>
+  <div
+    v-if="!loading && items.length && size === 'sm'"
+    v-bind="$attrs"
+    class="v-table-mobile__container"
+  >
+    <table class="v-table-mobile" :class="{ dark: theme === THEME.DARK }">
+      <tbody class="v-table-mobile__body">
+        <slot name="body.prepend" />
+        <tr
+          :class="[
+            'v-table-mobile__body--row',
+            { 'v-table-mobile__body--row-cursor-pointer': clickable },
+          ]"
+          v-for="(item, index) in items"
+          :key="`body-${item.id || index}`"
+          @click="$emit('clicked', item, index)"
+        >
+          <td
+            v-for="(header, i) in headers"
+            class="v-table-mobile__td"
+            :key="`td-${i}`"
+          >
+            <div class="v-table-mobile__td--left">
+              <slot :name="`header.${header.value}`" :item="header">
+                {{ header.text }}
+              </slot>
+            </div>
+            <div class="v-table-mobile__td--right">
+              <slot
+                :name="`item.${header.value}`"
+                :item="item"
+                :ix="i"
+                :iy="index"
+              >
+                {{ item[header.value] }}
+              </slot>
+            </div>
           </td>
         </tr>
         <slot name="body.append" />
@@ -67,8 +111,10 @@ import VText from '@/components/ui/VText.vue'
 import type { PropType } from 'vue'
 import { $clearExtension } from '@/utils/pure-functions'
 import { useThemeService } from '@/plugins/theme-service'
+import { useResizeWindow } from '@/composables/resize-window'
 
 const { theme, THEME } = useThemeService()
+const { size } = useResizeWindow()
 
 interface HeadersInterface {
   text: string
@@ -97,5 +143,6 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/ui/v-table';
+@import '../../assets/styles/ui/v-table-desktop';
+@import '../../assets/styles/ui/v-table-mobile';
 </style>

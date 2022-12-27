@@ -440,10 +440,10 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reports-sales',
-        name: 'reports-sales',
+        path: 'reports-sale',
+        name: 'reports-sale',
         component: () =>
-          import('@/pages/cabinet/organisation/reports-sales.vue'),
+          import('@/pages/cabinet/organisation/reports-sale/index.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: [
@@ -453,10 +453,10 @@ const rawRoutes = [
         },
       },
       {
-        path: 'reports-sales-product/:id',
-        name: 'reports-sales-product',
+        path: 'reports-sale-item/:id',
+        name: 'reports-sale-item',
         component: () =>
-          import('@/pages/cabinet/organisation/reports-sale-product.vue'),
+          import('@/pages/cabinet/organisation/reports-sale/item.vue'),
         props: true,
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
@@ -546,41 +546,41 @@ const rawRoutes = [
         },
       },
       {
-        path: 'cash-register',
-        name: 'cash-register',
+        path: 'cash-direct-sale',
+        name: 'cash-direct-sale',
         component: () =>
-          import('@/pages/cabinet/organisation/cash/direct-sale.vue'),
+          import('@/pages/cabinet/organisation/cash-direct-sale.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.sell'],
         },
       },
       {
-        path: 'entity-sell',
-        name: 'entity-sell',
+        path: 'cash-entity-sale',
+        name: 'cash-entity-sale',
         component: () =>
-          import('@/pages/cabinet/organisation/cash/entity-sell.vue'),
+          import('@/pages/cabinet/organisation/cash-entity-sale.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.entity.sell'],
         },
       },
       {
-        path: 'reverted-checks-list',
-        name: 'reverted-checks-list',
+        path: 'cash-revert-product',
+        name: 'cash-revert-product',
         component: () =>
-          import('@/pages/cabinet/organisation/cash/reverted-checks-list.vue'),
+          import('@/pages/cabinet/organisation/cash-revert-product/index.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.reverted.checks'],
         },
       },
       {
-        path: 'reverted-check-products/:id',
-        name: 'reverted-check-products',
+        path: 'cash-revert-product-reverted/:id',
+        name: 'cash-revert-product-reverted',
         component: () =>
           import(
-            '@/pages/cabinet/organisation/cash/reverted-check-products.vue'
+            '@/pages/cabinet/organisation/cash-revert-product/reverted.vue'
           ),
         props: true,
         meta: {
@@ -589,32 +589,30 @@ const rawRoutes = [
         },
       },
       {
-        path: 'revert-check',
-        name: 'revert-check',
+        path: 'cash-revert-product-item',
+        name: 'cash-revert-product-item',
         component: () =>
-          import('@/pages/cabinet/organisation/cash/revert-check.vue'),
+          import('@/pages/cabinet/organisation/cash-revert-product/item.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.revert.sell'],
         },
       },
       {
-        path: 'give-bonus',
-        name: 'give-bonus',
+        path: 'cash-give-bonus',
+        name: 'cash-give-bonus',
         component: () =>
-          import('@/pages/cabinet/organisation/cash/give-bonus.vue'),
+          import('@/pages/cabinet/organisation/cash-give-bonus/index.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.give.bonus'],
         },
       },
       {
-        path: 'give-bonus-choose-product',
-        name: 'give-bonus-choose-product',
+        path: 'cash-give-bonus-item',
+        name: 'cash-give-bonus-item',
         component: () =>
-          import(
-            '@/pages/cabinet/organisation/cash/give-bonus-choose-product.vue'
-          ),
+          import('@/pages/cabinet/organisation/cash-give-bonus/item.vue'),
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.give.bonus'],

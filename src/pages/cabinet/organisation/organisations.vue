@@ -81,7 +81,7 @@ import { PRICE_CHANGE } from '@/utils/constants'
 import type {
   MkoOrganisation,
   MkoOrganisationEditValues,
-} from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/OrganisationsTypes'
 import { $parseQueryStatus } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()

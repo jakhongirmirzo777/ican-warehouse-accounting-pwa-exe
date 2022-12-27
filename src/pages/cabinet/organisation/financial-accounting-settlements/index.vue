@@ -135,8 +135,8 @@ import { fetchCounterpartyList } from '@/services/cabinet/CounterpartyCounterpar
 import type {
   FinanceAccountDataItemType,
   FinanceAccountPageOptionsType,
-} from '@/types/cabinet/FinanceAccountingTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
+} from '@/types/cabinet/FinancialAccountingTypes'
+import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 import type { OrganizationListType } from '@/types/cabinet/CounterpartyCounterpartiesTypes'
 
 const { $setResponseErrors } = useErrorActions()

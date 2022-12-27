@@ -92,7 +92,7 @@ import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useNotificationService } from '@/plugins/notification-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { createEditSettingBonuses } from '@/services/cabinet/SettingsBonusTariffsService'
-import type { SettingBonusFormTypes } from '@/types/cabinet/SettingBonusTariffTypes'
+import type { SettingBonusFormTypes } from '@/types/cabinet/SettingsBonusTariffTypes'
 import { $clearNonDigits } from '@/utils/pure-functions'
 
 const { $successMessage } = useNotificationService()

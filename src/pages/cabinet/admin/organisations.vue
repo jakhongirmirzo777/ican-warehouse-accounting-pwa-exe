@@ -171,7 +171,7 @@ import {
   MKO_STATUSES,
 } from '@/utils/constants'
 import { $isPageExists, $parseQueryStatus } from '@/utils/pure-functions'
-import type { MkoOrganisation } from '@/types/cabinet/MkoOrganisationsAdminTypes'
+import type { MkoOrganisation } from '@/types/cabinet/OrganisationsAdminTypes'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 
 const { $setResponseErrors } = useErrorActions()

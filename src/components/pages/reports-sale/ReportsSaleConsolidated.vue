@@ -42,6 +42,17 @@
       <VRow>
         <VCol md="3">
           <VSelect
+            :label="$t('clientType')"
+            :items="clientTypeList"
+            item-text="title"
+            item-value="value"
+            clearable
+            autocomplete
+            v-model="options.client_type"
+          />
+        </VCol>
+        <VCol md="3">
+          <VSelect
             :label="$t('paymentType')"
             :items="paymentTypeList"
             item-text="name"
@@ -84,7 +95,7 @@
         @click="
           $router.push(
             $localePath(
-              `/cabinet/reports-sales-product/${item.id}?type=salesLegalEntities&title=goodsForSaleLegalEntities`
+              `/cabinet/reports-sale-item/${item.id}?type=consolidatedReport`
             )
           )
         "
@@ -93,16 +104,16 @@
       </VBtn>
     </template>
     <template #item.sold_amount_sum="{ item }">
-      <span
+      <span class="text-no-wrap"
         >{{ $moneyFormat(item.sold_amount_sum) }}
         {{ item.currency_symbol }}</span
       >
     </template>
-    <template #item.invoice>
-      <VBtn color="primary" flat>
-        <VIcon icon="print" color="#17bdc0" size="16" class="mr-10" />
-        {{ $t('print') }}
-      </VBtn>
+    <template #item.payment_types="{ item }">
+      <ReportsSalePaymentTypeText :item="item" />
+    </template>
+    <template #item.client_type="{ item }">
+      {{ $t(item.client_type) }}
     </template>
   </VTable>
   <VPagination
@@ -126,18 +137,18 @@ import VExcel from '@/components/ui/VExcel.vue'
 import VFilterCollapse from '@/components/ui/VFilterCollapse.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBtn from '@/components/ui/VBtn.vue'
+import ReportsSalePaymentTypeText from '@/components/pages/reports-sale/ReportsSalePaymentTypeText.vue'
 import VDatepicker from '@/components/ui/VDatepicker.vue'
-import VIcon from '@/components/ui/VIcon.vue'
 
-import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSalesTypes'
-import { REPORT_SALES_STATUS } from '@/utils/constants'
+import type { ReportSalesTypesConsolidateParamsTypes } from '@/types/cabinet/ReportSaleTypes'
+import { CLIENT_TYPES, REPORT_SALES_STATUS } from '@/utils/constants'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
 import { useQuery } from '@/composables/router-query'
 import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
-import { fetchReportSales } from '@/services/cabinet/ReportSaleServices'
-import { getPaymentTypes } from '@/services/cabinet/CashService'
+import { fetchReportSales } from '@/services/cabinet/ReportSaleService'
+import { getPaymentTypes } from '@/services/cabinet/CashSaleService'
 import { $parseQueryArray } from '@/utils/pure-functions'
 
 const { $setResponseErrors } = useErrorActions()
@@ -174,7 +185,7 @@ const options = ref<ReportSalesTypesConsolidateParamsTypes>({
   search: queries.search || '',
   status: +queries.status || null,
   organisation_ids: $parseQueryArray(queries.organisation_ids) as number[],
-  client_type: 'entity',
+  client_type: queries.client_type || '',
   payment_type: queries.payment_type || '',
   date_from: queries.date_from || '',
   date_to: queries.date_to || '',
@@ -204,20 +215,28 @@ const headers = [
     value: 'check_number',
   },
   {
-    text: t('contractNumber'),
-    value: 'contract_number',
+    text: t('salesType'),
+    value: 'client_type',
   },
   {
-    text: t('invoice'),
-    value: 'invoice',
+    text: t('paymentType'),
+    value: 'payment_types',
   },
   {
-    text: t('counterpart'),
-    value: 'counterparty_name',
+    text: t('salesDate'),
+    value: 'created_at',
+  },
+  {
+    text: t('buyer'),
+    value: 'buyer',
   },
   {
     text: t('sold'),
     value: 'seller_username',
+  },
+  {
+    text: t('organisation'),
+    value: 'organisation_name',
   },
   {
     text: t('products'),
@@ -248,6 +267,16 @@ defineProps({
   },
 })
 const items = ref([])
+const clientTypeList = computed(() => {
+  const result: Array<Record<string, string>> = []
+  Object.keys(CLIENT_TYPES).forEach((p: string) => {
+    result.push({
+      title: t(p),
+      value: p,
+    })
+  })
+  return result
+})
 
 const useFetchIncomes = async () => {
   try {
@@ -349,7 +378,7 @@ const paginate = async () => {
 }
 
 $addQuery({
-  tab: 'entity',
+  tab: 'consolidated',
   page: '1',
 })
 useFetchData()
