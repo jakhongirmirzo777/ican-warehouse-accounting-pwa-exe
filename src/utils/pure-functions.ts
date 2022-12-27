@@ -185,9 +185,10 @@ export const $printScreen = async (id: string, innerHtml?: string) => {
 
 export const $fixedNumber = (price: number | string) => {
   if (Number.isInteger(+price) && +price % 1 === 0) return price
-  if (typeof price === 'number' && price % 1 !== 0) return price.toFixed(2)
+  if (typeof price === 'number' && price % 1 !== 0) return +price.toFixed(2)
   if (typeof price === 'string' && +price % 1 !== 0) {
-    return parseInt(price).toFixed(2)
+    price = +price
+    return price.toFixed(2)
   }
   return 0
 }

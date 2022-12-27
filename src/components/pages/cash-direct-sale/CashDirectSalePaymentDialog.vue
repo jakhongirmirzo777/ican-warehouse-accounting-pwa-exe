@@ -191,7 +191,6 @@ const saveTypes = () => {
           amount: +$fixedNumber(p.amount),
           type: PAYMENT_TYPE_ADDITIONAL_OR_MAIN.main,
         })
-        console.log($fixedNumber(p.amount));
       }
     })
     emits('saved-payment-type-dialog', resultArr)

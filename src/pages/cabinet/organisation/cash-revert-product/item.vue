@@ -144,7 +144,7 @@
           @click="
             $refs.paymentTypeModalRef.openDialog(
               paymentTypeList,
-              $fixedNumber(allPriceWithFormat)
+              allPriceWithFormat
             )
           "
         >
@@ -156,7 +156,7 @@
           <div class="mt-10 mb-15 direct-sale__body__payment-text">
             <VText tag="span">{{ $t('totalPayable') }}: </VText>
             <VText tag="b" class="direct-sale__body__payment-text__amount">
-              $moneyFormat(allPriceWithFormat)
+              {{ $moneyFormat(allPriceWithFormat) }}
             </VText>
           </div>
           <VLine v-if="payments.length" class="mb-10" />
@@ -167,7 +167,7 @@
           >
             <VText tag="span">{{ item.name }}: </VText>
             <VText tag="b" class="direct-sale__body__payment-text__amount">
-              $moneyFormat(item.amount)
+              {{ $moneyFormat(item.amount) }}
             </VText>
           </div>
         </div>
@@ -249,10 +249,7 @@ import { useErrorActions } from '@/composables/set-errors'
 import { useLoadingService } from '@/plugins/loading-service'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import { getPaymentTypes } from '@/services/cabinet/CashSaleService'
-import { $moneyFormatWithComma } from '@/utils/pure-functions'
 import { useNotificationService } from '@/plugins/notification-service'
-import { getPaymentTypes } from '@/services/cabinet/CashService'
-import { $fixedNumber } from '@/utils/pure-functions'
 
 import {
   revertCheck,
@@ -265,13 +262,6 @@ import type {
 } from '@/types/cabinet/CashRevertProductTypes'
 import type { MkoOrganisationListType } from '@/types/cabinet/OrganisationsTypes'
 import type { PaymentsType } from '@/types/cabinet/CashSaleTypes'
-import { CLIENT_TYPES, ROLES } from '@/utils/constants'
-import type {
-  RevertedCheckDataItemType,
-  RevertedCheckFormType,
-} from '@/types/cabinet/RevertCheckTypes'
-import type { MkoOrganisationListType } from '@/types/cabinet/MkoOrganisationsTypes'
-import type { PaymentsType } from '@/types/cabinet/CashTypes'
 import {
   CLIENT_TYPES,
   PAYMENT_TYPE_ADDITIONAL_OR_MAIN,
