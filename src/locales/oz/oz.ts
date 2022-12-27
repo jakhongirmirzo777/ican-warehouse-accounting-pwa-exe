@@ -401,6 +401,9 @@ export default {
   currencyUz: 'сум',
   month: 'мес',
   systemCourseAdmin: 'Системный курс',
+  icanWarehouseAccounting: 'iCAN бухгалтерия ҳисоби',
+  authorization: 'Авторизатсия',
+  errorPage: '404 саҳифа',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

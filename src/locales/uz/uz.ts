@@ -402,6 +402,9 @@ export default {
   month: 'мес',
   thankYouForYourPurchase: 'Спасибо за покупку!',
   systemCourseAdmin: 'Системный курс',
+  icanWarehouseAccounting: 'iCAN buxgalteriya hisobi',
+  authorization: 'Avtorizatsiya',
+  errorPage: '404 страница',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
