@@ -58,6 +58,14 @@
             {{ t('add') }}
           </p>
         </template>
+        <template v-if="canAdd" #empty>
+          <p
+            class="el-select-dropdown__empty cursor-pointer v-select__v-select-block__add"
+            @click="onClickEmpty"
+          >
+            {{ t('add') }}
+          </p>
+        </template>
       </el-select>
     </label>
     <div
@@ -79,7 +87,7 @@ import { ElSelect, ElOption } from 'element-plus'
 import VTransition from '@/components/ui/VTransition.vue'
 
 import { useThemeService } from '@/plugins/theme-service'
-import { onMounted, onUpdated, ref, watch } from 'vue'
+import { computed, onMounted, onUpdated, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { theme, THEME } = useThemeService()

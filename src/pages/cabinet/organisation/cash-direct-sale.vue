@@ -476,10 +476,8 @@ const submit = async () => {
     const additional = addition_sum.amount
     form.value.additional_amount_sum = $fixedNumber(additional)
   }
-  console.log(allCellingPrice.value);
   if (allCellingPrice.value)
     form.value.total_amount = $fixedNumber(allCellingPrice.value)
-  console.log(form.value.total_amount);
   if (payments.value) form.value.payments = payments.value
   if (!Object.keys(validate).length) {
     $showLoading()
@@ -574,8 +572,8 @@ const fetchData = async () => {
   try {
     const { data } = await fetchDirectSale(params.value)
     if (!data.length) return $errorMessage(t('dataNotFound'))
-    const value = data.map((p: DirectSaleDataItemType, i: number) => {
-      p.index = i + 1
+    const value = data.map((p: DirectSaleDataItemType) => {
+      p.index = items.value.length + 1
       p.isBonus = 0
       p.sell_count = 1
       p.is_bonus = false
@@ -714,6 +712,13 @@ const bonusRepeatCodeBody = (
   additional_amount_sum?: number,
   payment_type?: string
 ) => {
+  let index = -1
+  items.value.forEach((p, i) => {
+    if (p.is_bonus) {
+      index = i
+    }
+  })
+  if (index > 0) items.value.splice(index, 1)
   item.isBonus = item.product_id
   item.bonus_id = data.id
   item.is_bonus = true
