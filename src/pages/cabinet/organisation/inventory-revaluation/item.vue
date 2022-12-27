@@ -63,6 +63,7 @@
           <VInput
             vid="selling_price_sum_before"
             type="number"
+            disabled
             :rules="{
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
@@ -212,7 +213,7 @@ import VSelect from '@/components/ui/VSelect.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
 import VBackBtn from '@/components/ui/VBackBtn.vue'
 
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   fetchProductSearch,
@@ -352,8 +353,16 @@ const productInfo = computed(() => {
     category_name: null,
     articule: null,
     unit_name: null,
+    last_income_price_sum: null,
   }
 })
+
+watch(
+  () => productInfo.value,
+  (val) => {
+    formData.value.selling_price_sum_before = val.last_income_price_sum || null
+  }
+)
 
 const useForwardToStore = async () => {
   try {

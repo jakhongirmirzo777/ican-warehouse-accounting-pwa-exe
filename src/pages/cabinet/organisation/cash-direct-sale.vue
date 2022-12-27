@@ -325,6 +325,7 @@ import type {
 } from '@/types/cabinet/CashSaleTypes'
 import type { CurrencyKeyList } from '@/types/cabinet/ReferenceCurrenciesTypes'
 import { useStorageService } from '@/plugins/storage-service'
+
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
@@ -475,8 +476,10 @@ const submit = async () => {
     const additional = addition_sum.amount
     form.value.additional_amount_sum = $fixedNumber(additional)
   }
+  console.log(allCellingPrice.value);
   if (allCellingPrice.value)
     form.value.total_amount = $fixedNumber(allCellingPrice.value)
+  console.log(form.value.total_amount);
   if (payments.value) form.value.payments = payments.value
   if (!Object.keys(validate).length) {
     $showLoading()

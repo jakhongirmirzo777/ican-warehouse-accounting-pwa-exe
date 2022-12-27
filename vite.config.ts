@@ -24,9 +24,9 @@ export default defineConfig({
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'iCAN accounting of warehouse',
-        short_name: 'iCAN accounting',
-        description: 'iCAN Web Application for accounting of warehouse',
+        name: 'iCAN учет склада',
+        short_name: 'iCAN учет склада',
+        description: 'Веб-приложение iCAN для учета склада',
         start_url: '/',
         theme_color: '#ffffff',
         background_color: '#ffffff',

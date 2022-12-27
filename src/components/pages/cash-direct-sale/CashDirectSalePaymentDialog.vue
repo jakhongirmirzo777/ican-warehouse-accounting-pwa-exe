@@ -108,7 +108,7 @@ const { t } = useI18n()
 const emits = defineEmits(['saved-payment-type-dialog', 'closed-dialog'])
 
 const dialog = ref(false)
-const totalPrice = ref('')
+const totalPrice = ref(0)
 const paymentsTypes = ref<Array<Record<string, any>>>([])
 const errorMessageNonAmount = ref('')
 
@@ -126,7 +126,7 @@ defineProps({
 watch(dialog, (val) => {
   if (!val) {
     paymentsTypes.value = []
-    totalPrice.value = ''
+    totalPrice.value = 0
     emits('closed-dialog')
   }
 })
@@ -161,10 +161,10 @@ const changesAmount = (val: Event, item: Record<string, any>) => {
 
 const openDialog = (
   paymentTypeList: Array<Record<string, any>>,
-  allPrice: string
+  allPrice: string | number
 ) => {
   paymentsTypes.value = JSON.parse(JSON.stringify(paymentTypeList))
-  totalPrice.value = allPrice
+  totalPrice.value = +allPrice
   dialog.value = true
 }
 

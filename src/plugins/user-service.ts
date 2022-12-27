@@ -4,6 +4,7 @@ import router from '@/router'
 import { $localePath } from '@/plugins/i18n'
 import { useTokenService } from '@/plugins/token-service'
 import { redirectToPages } from '@/middlewares/role-check'
+import { useStorageService } from '@/plugins/storage-service'
 import type { LoginFormDataInterface } from '@/types/auth/LoginTypes'
 
 export type UserType = 'superAdmin' | 'organisation' | 'employer'
@@ -36,6 +37,7 @@ export interface UserDataInterface {
 
 const { $removeToken } = useTokenService()
 const userData = ref<UserDataInterface | null>(null)
+const { $clear } = useStorageService('sessionStorage')
 
 export function useUserService() {
   const user = computed<UserDataInterface | null>(() => userData.value)
@@ -45,6 +47,7 @@ export function useUserService() {
   const $clearUser = async () => {
     try {
       await $removeToken()
+      await $clear()
       userData.value = null
       await router.replace({ path: $localePath('/auth') })
       return Promise.resolve('Successfully cleared user data')

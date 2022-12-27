@@ -216,7 +216,7 @@ const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $successMessage, $errorMessage } = useNotificationService()
 const { $addQuery, $getQuery, $clearQuery } = useQuery()
-const { $set, $get } = useStorageService()
+const { $set, $get } = useStorageService('sessionStorage')
 const router = useRouter()
 
 const { t } = useI18n()

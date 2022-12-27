@@ -16,6 +16,7 @@ const rawRoutes = [
         component: () => import('@/pages/auth/login.vue'),
         meta: {
           public: true,
+          title: 'authorization',
         },
       },
     ],
@@ -31,6 +32,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           public: true,
+          title: 'main',
         },
       },
       {
@@ -40,6 +42,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.unites.index'],
+          title: 'units',
         },
       },
       {
@@ -49,6 +52,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.locations.index'],
+          title: 'placeList',
         },
       },
       {
@@ -58,6 +62,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.system.courses.index'],
+          title: 'systemCourseAdmin',
         },
       },
       {
@@ -67,6 +72,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.organisation.index'],
+          title: 'organisations',
         },
       },
       {
@@ -77,6 +83,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.currencies.index'],
+          title: 'currencies',
         },
       },
       {
@@ -86,6 +93,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.tariffs.index'],
+          title: 'tariffs',
         },
       },
       {
@@ -95,6 +103,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.roles.index'],
+          title: 'roles',
         },
       },
       {
@@ -105,6 +114,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.roles.view'],
+          title: 'roles',
         },
       },
       {
@@ -114,6 +124,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.organisation.transactions.index'],
+          title: 'payments',
         },
       },
       {
@@ -123,6 +134,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.SUPER_ADMIN],
           permissions: ['admin.employee.index'],
+          title: 'users',
         },
       },
       {
@@ -132,6 +144,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           public: true,
+          title: 'main',
         },
       },
       {
@@ -142,6 +155,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['reference.income.index', 'reference.expenses.index'],
+          title: 'incomeAndOutcome',
         },
       },
       {
@@ -154,6 +168,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.categories.index'],
+          title: 'categoryProducts',
         },
       },
       // {
@@ -187,6 +202,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.products.index'],
+          title: 'productName',
         },
       },
       {
@@ -196,6 +212,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['reference.department.index'],
+          title: 'departments',
         },
       },
       {
@@ -205,6 +222,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['reference.position.index'],
+          title: 'positions',
         },
       },
       {
@@ -217,6 +235,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['counterparty.index'],
+          title: 'counterparties',
         },
       },
       {
@@ -227,6 +246,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.invoices.index'],
+          title: 'invoices',
         },
       },
       {
@@ -237,6 +257,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.index'],
+          title: 'organisations',
         },
       },
       {
@@ -247,6 +268,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.contracts.index'],
+          title: 'agreements',
         },
       },
       {
@@ -256,6 +278,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.stores.index'],
+          title: 'warehouses',
         },
       },
       {
@@ -266,6 +289,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['bonuses.index'],
+          title: 'bonusTariff',
         },
       },
       {
@@ -276,6 +300,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.transactions.index'],
+          title: 'balance',
         },
       },
       {
@@ -286,6 +311,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.courses.index'],
+          title: 'systemCourse',
         },
       },
       {
@@ -295,6 +321,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.employee.index'],
+          title: 'employees',
         },
       },
       {
@@ -305,6 +332,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.documents.index'],
+          title: 'incoming',
         },
       },
       {
@@ -316,6 +344,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.documents.view'],
+          title: 'incoming',
         },
       },
       {
@@ -326,6 +355,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.entering-products.index'],
+          title: 'enteringBalances',
         },
       },
       {
@@ -337,6 +367,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.entering-products.view'],
+          title: 'enteringBalances',
         },
       },
       {
@@ -349,6 +380,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.revaluation.index'],
+          title: 'rePricing',
         },
       },
       {
@@ -360,6 +392,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.revaluation.view'],
+          title: 'rePricing',
         },
       },
       {
@@ -370,6 +403,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.inventory.index'],
+          title: 'inventory',
         },
       },
       {
@@ -381,6 +415,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.inventory.view'],
+          title: 'inventory',
         },
       },
       {
@@ -391,6 +426,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.returns.index'],
+          title: 'returnToSupplier',
         },
       },
       {
@@ -402,6 +438,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.returns.view'],
+          title: 'returnToSupplier',
         },
       },
       {
@@ -412,6 +449,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.write.off.index'],
+          title: 'writeOff',
         },
       },
       {
@@ -423,6 +461,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.write.off.view'],
+          title: 'writeOff',
         },
       },
       {
@@ -437,6 +476,7 @@ const rawRoutes = [
             'reports.stock.available.products',
             'reports.stock.document.register',
           ],
+          title: 'reportsByStock',
         },
       },
       {
@@ -450,6 +490,7 @@ const rawRoutes = [
             'reports.sale.sale.reports',
             'reports.sale.individuals',
           ],
+          title: 'salesReport',
         },
       },
       {
@@ -464,6 +505,7 @@ const rawRoutes = [
             'reports.sale.sale.reports',
             'reports.sale.individuals',
           ],
+          title: 'salesReport',
         },
       },
       {
@@ -473,6 +515,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.roles.index'],
+          title: 'roles',
         },
       },
       {
@@ -483,6 +526,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.roles.view'],
+          title: 'roles',
         },
       },
       {
@@ -495,6 +539,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['account.index'],
+          title: 'counterpartyAccounts',
         },
       },
       {
@@ -507,6 +552,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.income.index'],
+          title: 'income',
         },
       },
       {
@@ -519,6 +565,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['organisation.spending.index'],
+          title: 'outcome',
         },
       },
       {
@@ -531,6 +578,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['finance.accounting.index'],
+          title: 'mutualSettlements',
         },
       },
       {
@@ -543,6 +591,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['finance.accounting.index'],
+          title: 'mutualSettlements',
         },
       },
       {
@@ -553,6 +602,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.sell'],
+          title: 'directSale',
         },
       },
       {
@@ -563,6 +613,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.entity.sell'],
+          title: 'entitySell',
         },
       },
       {
@@ -573,6 +624,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.reverted.checks'],
+          title: 'revertProduct',
         },
       },
       {
@@ -586,6 +638,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.reverted.checks'],
+          title: 'revertProduct',
         },
       },
       {
@@ -596,6 +649,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.revert.sell'],
+          title: 'revertProduct',
         },
       },
       {
@@ -606,6 +660,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.give.bonus'],
+          title: 'saleInBonus',
         },
       },
       {
@@ -616,6 +671,7 @@ const rawRoutes = [
         meta: {
           roles: [ROLES.ORGANISATION, ROLES.EMPLOYER],
           permissions: ['cash-box.give.bonus'],
+          title: 'saleInBonus',
         },
       },
     ],
@@ -626,6 +682,7 @@ const rawRoutes = [
     component: () => import('@/layouts/error.vue'),
     meta: {
       public: true,
+      title: 'errorPage',
     },
   },
   {
