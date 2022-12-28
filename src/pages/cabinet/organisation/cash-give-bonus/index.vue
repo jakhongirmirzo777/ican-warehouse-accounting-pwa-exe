@@ -155,13 +155,13 @@
           <span>{{ $t(`${item.client_type}`) }}</span>
         </template>
         <template #item.amount_sum="{ item }">
-          {{ $moneyFormatWithComma(item.amount_sum) }}
+          {{ $moneyFormat(item.amount_sum) }}
         </template>
       </VTable>
       <div class="mt-10 mb-15 direct-sale__body__payment-text">
         <VText tag="span">{{ $t('totalPayable') }}: </VText>
         <VText tag="b" class="direct-sale__body__payment-text__amount">
-          {{ allPriceWithFormat }}
+          {{ $moneyFormat(allPriceWithFormat) }}
         </VText>
       </div>
       <VLine class="my-20" />
@@ -299,7 +299,7 @@ const allPriceWithFormat = computed(() => {
   items.value.forEach((p) => {
     amount += p.amount_sum
   })
-  return $moneyFormatWithComma(amount)
+  return amount
 })
 
 const isDisabled = computed(() => {

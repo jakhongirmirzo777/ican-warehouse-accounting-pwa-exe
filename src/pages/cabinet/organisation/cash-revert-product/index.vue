@@ -100,7 +100,7 @@
         >
       </template>
       <template #item.returning_amount_sum="{ item }">
-        {{ $moneyFormatWithComma(item.returning_amount_sum) }}
+        {{ $moneyFormat(item.returning_amount_sum) }}
       </template>
       <template #item.client_type="{ item }">
         {{ $t(`${item.client_type}`) }}

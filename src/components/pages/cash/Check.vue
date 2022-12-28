@@ -48,10 +48,10 @@
           style="margin-bottom: 3px; text-align: center"
           color="black"
         >
-          {{ $t('companyNameForCheck') }}</VText
+          {{ data.organisation_name }}</VText
         >
         <VText tag="div" style="text-align: center" size="16" color="black">
-          {{ $t('addressForCheck') }}</VText
+          {{ data.organisation_address }}</VText
         >
       </div>
       <div

@@ -131,16 +131,14 @@
               :name="$t('price')"
               @update:modelValue="changeSellPrice"
               type="number"
+              disabled
               class="mt-18"
-              :disabled="item.is_bonus"
             />
           </div>
         </template>
         <template #item.selling_price_sum="{ item }">
           <div>
-            {{
-              $moneyFormatWithComma(+item.selling_price_sum * +item.sell_count)
-            }}
+            {{ $moneyFormat(+item.selling_price_sum * +item.sell_count) }}
           </div>
         </template>
         <template #item.bonusOnSale="{ item, iy }">
@@ -153,11 +151,14 @@
               :false-value="0"
               :class="{ disabled: availableBonus && !item.is_bonus }"
               hide-details
+              class="disabled"
             />
           </div>
         </template>
         <template #item.count="{ item }">
           <VCounter
+            disabled-minus
+            disabled-plus
             :class="{ disabled: item.is_bonus }"
             v-model="item.sell_count"
             @update:modelValue="changeSellPrice"
@@ -187,7 +188,7 @@
         </VText>
         <VText v-else tag="span">{{ $t('additionalAmount') }}: </VText>
         <VText tag="b" class="direct-sale__body__payment-text__amount">
-          {{ $moneyFormatWithComma(item.amount) }}
+          {{ $moneyFormat(item.amount) }}
         </VText>
       </div>
       <VLine class="my-20" />
@@ -264,9 +265,7 @@ import { fetchWarehouseList } from '@/services/cabinet/WarehousesService'
 import { fetchEmployeeList } from '@/services/cabinet/EmployeesService'
 import { useUserService } from '@/plugins/user-service'
 import {
-  $clearNonDigits,
   $debounce,
-  $moneyFormatWithComma,
   $fixedNumber,
 } from '@/utils/pure-functions'
 import { getCurrencyList } from '@/services/cabinet/ResourcesServices'
@@ -363,11 +362,10 @@ const isOrganisation = computed(() => user.value?.type === ROLES.ORGANISATION)
 const allPriceWithFormat = computed(() => {
   let price = 0
   payments.value.forEach((p) => {
-    const amount =
-      typeof p.amount === 'string' ? +$clearNonDigits(p.amount) : p.amount
+    const amount = +p.amount
     price += amount
   })
-  return $moneyFormatWithComma(price)
+  return price
 })
 
 const availableBonus = computed(() => {
@@ -417,7 +415,7 @@ const submit = async () => {
     }
   })
   if (allPriceWithFormat.value) {
-    const additional = $clearNonDigits(allPriceWithFormat.value.toString())
+    const additional = allPriceWithFormat.value
     form.value.additional_amount_sum = $fixedNumber(additional)
   }
   if (allCellingPrice.value)
@@ -437,9 +435,7 @@ const submit = async () => {
     form.value.counterparty_id = STORAGE_ITEMS.value.counterparty_id
   if (STORAGE_ITEMS.value?.pnfl) form.value.pnfl = STORAGE_ITEMS.value.pnfl
   if (STORAGE_ITEMS.value?.total_amount)
-    form.value.total_amount = $fixedNumber(
-      $clearNonDigits(STORAGE_ITEMS.value.total_amount)
-    )
+    form.value.total_amount = $fixedNumber(STORAGE_ITEMS.value.total_amount)
   if (form.value.payments && !form.value.payments.length) {
     delete form.value.payments
   }
@@ -584,7 +580,7 @@ const fetchStoreList = async () => {
 const checkBonusProduct = async (item: DirectSaleDataItemType) => {
   $showLoading()
   const options: CheckBonusType = {
-    all_amount: +$clearNonDigits(STORAGE_ITEMS.value.total_amount),
+    all_amount: +STORAGE_ITEMS.value.total_amount,
     selling_price_sum: item.selling_price_sum,
     client_type: STORAGE_ITEMS.value.client_type,
   }
@@ -614,6 +610,8 @@ const checkBonusProduct = async (item: DirectSaleDataItemType) => {
         paymentTypeList.value,
         errors.additional_amount
       )
+    } else {
+      items.value = []
     }
     if (items.value.length) {
       items.value = items.value.map((p) => {
