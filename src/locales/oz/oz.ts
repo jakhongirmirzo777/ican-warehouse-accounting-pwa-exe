@@ -334,7 +334,7 @@ export default {
   save: 'Сохранить',
   attention: 'Внимание',
   allowedAmountBonusItem: 'Допустимая сумма бонусного товара',
-  youTryingAddProductWithValue: 'Вы пытаетесь добавить товар стоимостью',
+  youTryingAddProductWithValue: 'Требуется доплатить',
   payExtra: 'Доплатить',
   exceedsErrorMessage: 'Введенная сумма превышает общую сумму',
   paymentAmountNotFilled: 'сумма платежа не заполнена',
