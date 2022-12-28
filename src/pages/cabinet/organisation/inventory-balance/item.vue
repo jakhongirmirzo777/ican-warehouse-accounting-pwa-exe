@@ -117,7 +117,7 @@
             :rules="{
               required:
                 INVENTORY_DOCUMENTS_STATUS_VALUE.NEW === document.status,
-              min_value: 0,
+              min_value: minMargin,
             }"
             :label="t('priceMargin')"
             v-model="formData.margin"
@@ -312,11 +312,13 @@ import { $debounce, $isPageExists } from '@/utils/pure-functions'
 import { INVENTORY_DOCUMENTS_STATUS_VALUE } from '@/utils/constants'
 import { useRoute } from 'vue-router'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
+import { useUserService } from '@/plugins/user-service'
 
 const { $setResponseErrors } = useErrorActions()
 const { $showLoading, $clearLoading } = useLoadingService()
 const { $getQuery, $addQuery, $clearQuery } = useQuery()
 const { $successMessage } = useNotificationService()
+const { user } = useUserService()
 const route = useRoute()
 const { t } = useI18n()
 const queries = $getQuery(['page'])
@@ -405,6 +407,9 @@ const headers = [
   },
 ]
 
+const minMargin = computed(() => {
+  return user.value?.min_margin_percent ? +user.value?.min_margin_percent : 0
+})
 const id = computed(() => route.params.id || null)
 const formObj = ref<any>(null)
 const productRef = ref()
