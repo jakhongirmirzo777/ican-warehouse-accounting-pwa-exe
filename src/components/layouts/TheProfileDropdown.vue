@@ -43,9 +43,6 @@ import VImg from '@/components/ui/VImg.vue'
 import { computed } from 'vue'
 import { useUserService } from '@/plugins/user-service'
 import { useI18n } from 'vue-i18n'
-import { useResizeWindow } from '@/composables/resize-window'
-
-const { size } = useResizeWindow()
 const { $logoutUser, user } = useUserService()
 const { t } = useI18n()
 
@@ -57,26 +54,12 @@ defineProps({
 })
 
 const options = computed(() => {
-  if (size.value === 'md') {
-    return [
-      { title: t('logout'), value: 'logout' },
-      { title: t('goToCreditSystem'), value: 'go-to-credit' },
-    ]
-  } else {
-    return [{ title: t('logout'), value: 'logout' }]
-  }
+  return [{ title: t('logout'), value: 'logout' }]
 })
 
 const onMenuClick = (fn: () => unknown, item: { value: string }) => {
   fn()
   if (item.value === 'logout') $logoutUser()
-  if (item.value === 'go-to-credit') {
-    const a = document.createElement('a')
-    a.target = '_blank'
-    a.style.display = 'none'
-    a.href = import.meta.env.VITE_BASE_CREDIT_PATH
-    a.click()
-  }
 }
 </script>
 
