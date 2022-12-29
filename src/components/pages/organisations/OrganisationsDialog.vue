@@ -124,39 +124,45 @@
         </VCol>
       </VRow>
       <VLine class="mb-24" />
-      <div class="d-flex justify-end align-center">
-        <VBtn
-          type="button"
-          class="mr-16"
-          outlined
-          width="130px"
-          color="primary"
-          radius="12px"
-          @click="$emit('update:modelValue', false)"
-        >
-          {{ t('cancel') }}
-        </VBtn>
-        <VBtn
-          class="mr-16"
-          type="submit"
-          color="primary"
-          width="130px"
-          :loading="loading"
-          radius="12px"
-        >
-          {{ t('edit') }}
-        </VBtn>
-        <VBtn
-          v-if="$can('organisation.change.password')"
-          type="button"
-          color="primary"
-          width="160px"
-          radius="12px"
-          @click="changePasswordDialog = true"
-        >
-          {{ t('changePassword') }}
-        </VBtn>
-      </div>
+      <VRow>
+        <VCol md="4">
+          <VBtn
+            type="button"
+            class="mr-16"
+            outlined
+            width="100%"
+            color="primary"
+            radius="12px"
+            @click="$emit('update:modelValue', false)"
+          >
+            {{ t('cancel') }}
+          </VBtn>
+        </VCol>
+        <VCol md="4">
+          <VBtn
+            class="mr-16"
+            type="submit"
+            color="primary"
+            width="100%"
+            :loading="loading"
+            radius="12px"
+          >
+            {{ t('edit') }}
+          </VBtn>
+        </VCol>
+        <VCol md="4">
+          <VBtn
+            v-if="$can('organisation.change.password')"
+            type="button"
+            color="primary"
+            width="100%"
+            radius="12px"
+            @click="changePasswordDialog = true"
+          >
+            {{ t('changePassword') }}
+          </VBtn>
+        </VCol>
+      </VRow>
     </Form>
   </VModal>
   <VModal :title="t('changePassword')" v-model="changePasswordDialog">

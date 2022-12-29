@@ -31,8 +31,10 @@
     padding: 24px;
     background-color: var(--color-white);
     width: 100%;
+    max-height: 90%;
     z-index: 1001;
     margin: 0 10px;
+    overflow-y: auto;
   }
 
   &__top {
