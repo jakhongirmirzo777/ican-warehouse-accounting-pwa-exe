@@ -11,6 +11,7 @@
       <VIcon v-show="theme === THEME.LIGHT" size="100%" icon="logo" />
       <VIcon v-show="theme === THEME.DARK" size="100%" icon="logo-dark" />
     </div>
+    <TheHeaderSystem v-if="size === 'lg' || size === 'xl'" />
     <VSpacer class="header__spacer" />
     <TheHeaderCourse v-if="role !== ROLES.SUPER_ADMIN" class="mr-10" />
     <div v-if="role === ROLES.SUPER_ADMIN" class="header__setting-icons mr-10">
@@ -62,14 +63,17 @@
 <script lang="ts" setup>
 import VIcon from '@/components/ui/VIcon.vue'
 import VSpacer from '@/components/ui/VSpacer.vue'
-import TheProfileDropdown from '@/components/layouts/TheProfileDropdown.vue'
 import TheHeaderLang from '@/components/layouts/TheHeaderLang.vue'
 import TheHeaderCourse from '@/components/layouts/TheHeaderCourse.vue'
+import TheHeaderSystem from '@/components/layouts/TheHeaderSystem.vue'
+import TheProfileDropdown from '@/components/layouts/TheProfileDropdown.vue'
 
 import { useThemeService } from '@/plugins/theme-service'
 import { useUserService } from '@/plugins/user-service'
 import { ROLES } from '@/utils/constants'
+import { useResizeWindow } from '@/composables/resize-window'
 
+const { size } = useResizeWindow()
 const { theme, THEME, $toggleTheme } = useThemeService()
 const { role } = useUserService()
 </script>

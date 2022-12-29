@@ -404,6 +404,7 @@ export default {
   icanWarehouseAccounting: 'iCAN бухгалтерия ҳисоби',
   authorization: 'Авторизатсия',
   errorPage: '404 саҳифа',
+  goToCreditSystem: 'Кредит тизимига ўтиш',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

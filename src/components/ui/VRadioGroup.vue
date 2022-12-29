@@ -58,5 +58,5 @@ provide('radioValue', {
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/styles/ui/v-radio.scss';
+@import '../../assets/styles/ui/v-radio';
 </style>

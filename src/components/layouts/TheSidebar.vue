@@ -30,6 +30,9 @@
           @click="$toggleTheme"
         />
       </div>
+      <div class="mb-20 ml-20 mr-20 sidebar__list__system">
+        <TheHeaderSystem white />
+      </div>
       <div
         v-for="(list, i) in listFrom"
         :key="`list-${i}`"
@@ -140,6 +143,7 @@ import {
 import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
 import { useThemeService } from '@/plugins/theme-service'
+import TheHeaderSystem from '@/components/layouts/TheHeaderSystem.vue'
 
 const { theme, THEME, $toggleTheme } = useThemeService()
 const { t, locale } = useI18n()

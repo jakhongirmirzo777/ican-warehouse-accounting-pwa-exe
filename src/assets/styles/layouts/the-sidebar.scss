@@ -62,8 +62,12 @@ $active-bg: #324071;
       display: none;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       padding: 0 20px;
+    }
+
+    &__system {
+      display: none;
     }
 
     //&:hover {
@@ -276,11 +280,17 @@ $active-bg: #324071;
     &__list {
       width: 100% !important;
       border-radius: unset !important;
+
       &--mini {
         transform: translateX(-100%);
       }
+
       &__header, &__subheader {
         display: flex !important;
+      }
+
+      &__system {
+        display: block;
       }
     }
   }
