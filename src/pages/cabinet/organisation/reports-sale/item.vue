@@ -10,6 +10,7 @@
     <VTable :headers="headers" :items="items">
       <template #item.is_bonus="{ item }">
         <VCheckbox
+          hide-details
           class="disabled"
           v-model="item.is_bonus"
           :true-value="true"
