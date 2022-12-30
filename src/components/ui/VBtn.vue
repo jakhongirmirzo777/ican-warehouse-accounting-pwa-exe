@@ -116,5 +116,5 @@ const onClick = () => {
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/styles/ui/v-btn.scss';
+@import '../../assets/styles/ui/v-btn';
 </style>

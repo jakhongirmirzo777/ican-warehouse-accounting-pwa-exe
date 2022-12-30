@@ -404,7 +404,8 @@ export default {
   systemCourseAdmin: 'Системный курс',
   icanWarehouseAccounting: 'iCAN buxgalteriya hisobi',
   authorization: 'Avtorizatsiya',
-  errorPage: '404 страница',
+  errorPage: '404 sahifa',
+  goToCreditSystem: "Kredit tizimiga o'tish",
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

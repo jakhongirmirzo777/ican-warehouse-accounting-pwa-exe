@@ -28,7 +28,7 @@
         v-for="(body, i) in options"
         :key="`body-${i}`"
         class="block-hover"
-        @click="onMenuClick(on)"
+        @click="onMenuClick(on, body)"
       >
         {{ body.title }}
       </div>
@@ -40,10 +40,9 @@
 import VMenu from '@/components/ui/VMenu.vue'
 import VImg from '@/components/ui/VImg.vue'
 
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useUserService } from '@/plugins/user-service'
 import { useI18n } from 'vue-i18n'
-
 const { $logoutUser, user } = useUserService()
 const { t } = useI18n()
 
@@ -54,14 +53,16 @@ defineProps({
   },
 })
 
-const options = ref([{ title: t('logout'), value: 'logout' }])
+const options = computed(() => {
+  return [{ title: t('logout'), value: 'logout' }]
+})
 
-const onMenuClick = (fn: () => unknown) => {
+const onMenuClick = (fn: () => unknown, item: { value: string }) => {
   fn()
-  $logoutUser()
+  if (item.value === 'logout') $logoutUser()
 }
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/styles/layouts/the-profile-dropdown.scss';
+@import '../../assets/styles/layouts/the-profile-dropdown';
 </style>

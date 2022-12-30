@@ -36,6 +36,13 @@ $active-bg: #324071;
   display: flex;
   align-items: center;
 
+  &__navigation {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+  }
+
   &__list {
     width: $sidebar-width;
     background: var(--color-dark-blue);
@@ -64,6 +71,10 @@ $active-bg: #324071;
       align-items: center;
       margin-bottom: 20px;
       padding: 0 20px;
+    }
+
+    &__system {
+      display: none;
     }
 
     //&:hover {
@@ -273,14 +284,24 @@ $active-bg: #324071;
 
 @media screen and (max-width: 750px) {
   .sidebar {
+    &__navigation {
+      height: unset;
+    }
+
     &__list {
       width: 100% !important;
       border-radius: unset !important;
+
       &--mini {
         transform: translateX(-100%);
       }
+
       &__header, &__subheader {
         display: flex !important;
+      }
+
+      &__system {
+        display: block;
       }
     }
   }
