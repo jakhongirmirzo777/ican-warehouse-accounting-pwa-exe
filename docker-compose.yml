@@ -1,8 +1,28 @@
 version: "3.5"
 services:
-  ican:
-    build: ./
-    container_name: ican_c
+  local:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: istock_local
+    ports:
+      - '4000:80'
+    stdin_open: true
+    tty: true
+  staging:
+    build:
+      context: .
+      dockerfile: Dockerfile.staging
+    container_name: istock_staging
+    ports:
+      - '4000:80'
+    stdin_open: true
+    tty: true
+  production:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    container_name: istock_production
     ports:
       - '4000:80'
     stdin_open: true
