@@ -240,5 +240,5 @@ defineExpose({ print })
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/pages/check.scss';
+@import '../../../assets/styles/pages/check';
 </style>

@@ -30,85 +30,97 @@
           @click="$toggleTheme"
         />
       </div>
-      <div
-        v-for="(list, i) in listFrom"
-        :key="`list-${i}`"
-        class="sidebar__list__block"
-      >
-        <component
-          v-if="
-            list.hasOwnProperty('permission') ? $can(list.permission) : true
-          "
-          :is="
-            list.path && (!list.children || !list.children.length)
-              ? 'router-link'
-              : 'div'
-          "
-          :class="[
-            'sidebar__list__item',
-            { 'sidebar__list__item--is-open': list.isOpen },
-          ]"
-          :to="{ name: list.path, params: { locale } }"
-          active-class="sidebar__list__item__link--active"
-          @click="childToggleMenu(list, $refs[`menuItemRef${i}`], i)"
-        >
-          <span class="sidebar__list__item__icon">
-            <VIcon :icon="list.icon" size="24" />
-          </span>
+      <div class="sidebar__navigation">
+        <div>
           <div
-            v-if="!miniIsMini"
-            class="sidebar__list__item__wrapper"
-            :class="{ sidebar__list__item__hover: miniIsMini }"
+            v-for="(list, i) in listFrom"
+            :key="`list-${i}`"
+            class="sidebar__list__block"
           >
-            <span class="sidebar__list__item__name">{{ list.name }}</span>
-            <VSpacer />
-          </div>
-          <VIcon
-            v-if="list.children && list.children.length && !isMini"
-            :class="[
-              'sidebar__list__item__open-icon',
-              { 'sidebar__list__item__open-icon--is-open': list.isOpen },
-              { 'sidebar__list__item__open-icon--yes-is-open': !miniIsMini },
-            ]"
-            icon="chevron_bottom"
-          />
-        </component>
-        <div
-          v-if="!miniIsMini"
-          :class="[
-            'sidebar__list__block__children',
-            { 'sidebar__list__block__children--is-open': list.isOpen },
-            { 'sidebar__list__block__children--yes-is-open': miniIsMini },
-          ]"
-          :ref="`menuItemRef${i}`"
-        >
-          <template v-for="(child, childIndex) in list.children">
-            <router-link
+            <component
               v-if="
-                child.hasOwnProperty('permission')
-                  ? $can(child.permission)
-                  : true
+                list.hasOwnProperty('permission') ? $can(list.permission) : true
               "
-              class="sidebar__list__block__children__link"
-              :key="`child-${childIndex}`"
-              :to="{ name: child.path, params: { locale } }"
-              active-class="sidebar__list__block__children__link--active"
+              :is="
+                list.path && (!list.children || !list.children.length)
+                  ? 'router-link'
+                  : 'div'
+              "
+              :class="[
+                'sidebar__list__item',
+                { 'sidebar__list__item--is-open': list.isOpen },
+              ]"
+              :to="{ name: list.path, params: { locale } }"
+              active-class="sidebar__list__item__link--active"
+              @click="childToggleMenu(list, $refs[`menuItemRef${i}`], i)"
             >
-              <img
-                class="mr-7"
-                width="10"
-                height="10"
-                src="../../assets/icons/circle.svg"
-                alt=""
-              />
-              <span
-                v-if="nameIsVisible"
-                class="sidebar__list__block__children__link__text"
-              >
-                {{ child.name }}
+              <span class="sidebar__list__item__icon">
+                <VIcon :icon="list.icon" size="24" />
               </span>
-            </router-link>
-          </template>
+              <div
+                v-if="!miniIsMini"
+                class="sidebar__list__item__wrapper"
+                :class="{ sidebar__list__item__hover: miniIsMini }"
+              >
+                <span class="sidebar__list__item__name">{{ list.name }}</span>
+                <VSpacer />
+              </div>
+              <VIcon
+                v-if="list.children && list.children.length && !isMini"
+                :class="[
+                  'sidebar__list__item__open-icon',
+                  { 'sidebar__list__item__open-icon--is-open': list.isOpen },
+                  {
+                    'sidebar__list__item__open-icon--yes-is-open': !miniIsMini,
+                  },
+                ]"
+                icon="chevron_bottom"
+              />
+            </component>
+            <div
+              v-if="!miniIsMini"
+              :class="[
+                'sidebar__list__block__children',
+                { 'sidebar__list__block__children--is-open': list.isOpen },
+                { 'sidebar__list__block__children--yes-is-open': miniIsMini },
+              ]"
+              :ref="`menuItemRef${i}`"
+            >
+              <template v-for="(child, childIndex) in list.children">
+                <router-link
+                  v-if="
+                    child.hasOwnProperty('permission')
+                      ? $can(child.permission)
+                      : true
+                  "
+                  class="sidebar__list__block__children__link"
+                  :key="`child-${childIndex}`"
+                  :to="{ name: child.path, params: { locale } }"
+                  active-class="sidebar__list__block__children__link--active"
+                >
+                  <img
+                    class="mr-7"
+                    width="10"
+                    height="10"
+                    src="../../assets/icons/circle.svg"
+                    alt=""
+                  />
+                  <span
+                    v-if="nameIsVisible"
+                    class="sidebar__list__block__children__link__text"
+                  >
+                    {{ child.name }}
+                  </span>
+                </router-link>
+              </template>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="size === 'md' || size === 'sm'"
+          class="ml-11 mr-11 mt-20 mb-20"
+        >
+          <TheHeaderSystem white />
         </div>
       </div>
     </div>
@@ -140,11 +152,14 @@ import {
 import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
 import { useThemeService } from '@/plugins/theme-service'
+import TheHeaderSystem from '@/components/layouts/TheHeaderSystem.vue'
+import { useResizeWindow } from '@/composables/resize-window'
 
 const { theme, THEME, $toggleTheme } = useThemeService()
 const { t, locale } = useI18n()
 const { user, role } = useUserService()
 const route = useRoute()
+const { size } = useResizeWindow()
 
 const props = defineProps({
   isMini: { type: Boolean, default: true },

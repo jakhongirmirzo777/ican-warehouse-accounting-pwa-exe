@@ -42,5 +42,5 @@ const close = async () => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/layouts/the-reload-prompt.scss';
+@import '../../assets/styles/layouts/the-reload-prompt';
 </style>
