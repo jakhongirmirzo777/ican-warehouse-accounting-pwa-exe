@@ -1,8 +1,12 @@
 {
   "name": "vue-project",
   "version": "0.0.0",
+  "engines": {
+    "node" : ">=16.0.0 <18.0.0",
+    "npm": ">=7.10.0 <8.6.0"
+  },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "vite build",
     "build:staging": "vite build --mode staging",
     "build:production": "vite build --mode production",
