@@ -14,9 +14,9 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "lint-staged",
     "prepare": "husky install",
-    "docker:up:local": "docker-compose up local",
-    "docker:up:staging": "docker-compose up staging",
-    "docker:up:production": "docker-compose up production",
+    "docker:up:local": "docker-compose up -d local",
+    "docker:up:staging": "docker-compose up -d staging",
+    "docker:up:production": "docker-compose up -d production",
     "docker:down:local": "docker-compose rm -f -s -v local",
     "docker:down:staging": "docker-compose rm -f -s -v staging",
     "docker:down:production": "docker-compose rm -f -s -v production"
