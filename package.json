@@ -2,7 +2,7 @@
   "name": "vue-project",
   "version": "0.0.0",
   "engines": {
-    "node" : ">=16.0.0 <18.0.0",
+    "node": ">=16.0.0 <18.0.0",
     "npm": ">=7.10.0 <8.6.0"
   },
   "scripts": {
@@ -49,9 +49,10 @@
     "vue-tsc": "^0.38.8"
   },
   "lint-staged": {
-    "*.js": ["eslint --quiet", "git add"],
-    "*.ts": ["eslint --quiet", "git add"],
-    "*.vue": ["eslint --quiet", "git add"]
+    "*.{js,jsx,ts,tsx,vue}": [
+      "eslint --quiet",
+      "git add"
+    ]
   },
   "validate-branch-name": {
     "pattern": "^(master|dev){1}$|^(feature|fix|bug)\\/.+",
