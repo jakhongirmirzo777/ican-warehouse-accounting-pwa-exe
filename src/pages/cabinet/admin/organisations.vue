@@ -228,6 +228,10 @@ const headers = [
     value: 'name',
   },
   {
+    text: t('organisationType'),
+    value: 'organisation_type_name',
+  },
+  {
     text: t('tin'),
     value: 'inn',
   },

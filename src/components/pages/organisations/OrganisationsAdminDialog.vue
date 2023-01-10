@@ -43,6 +43,16 @@
             v-model="formData.tariff_id"
           />
         </VCol>
+        <VCol md="4">
+          <VSelect
+            autocomplete
+            vid="organisation_type_id"
+            :label="t('organisationType')"
+            :items="organisationTypes"
+            rules="required"
+            v-model="formData.organisation_type_id"
+          />
+        </VCol>
         <VCol v-if="!formData.id" md="4">
           <VInput
             vid="username"
@@ -324,6 +334,7 @@ import {
   fetchOrganisation,
   editOrganisation,
   changePassword,
+  fetchOrganisationTypes,
 } from '@/services/cabinet/OrganisationsAdminService'
 import { useErrorActions, useFormActions } from '@/composables/set-errors'
 import { PRICE_CHANGE_INDEXED } from '@/utils/constants'
@@ -335,6 +346,7 @@ const { t } = useI18n()
 
 const FORM_DATA = {
   id: null,
+  organisation_type_id: null,
   parent_id: null,
   tariff_id: null,
   name: null,
@@ -388,6 +400,7 @@ const phones = ref<{ phone: string; phones: string[] }>({
 })
 const parents = ref([])
 const tariffs = ref([])
+const organisationTypes = ref([])
 
 watch(
   () => props.modelValue,
@@ -456,10 +469,24 @@ const useFetchTariffs = async () => {
   }
 }
 
+const useFetchOrganisationTypes = async () => {
+  try {
+    const {
+      data: { data },
+    } = await fetchOrganisationTypes()
+    organisationTypes.value = data
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 const useFetchData = async () => {
   try {
-    await useFetchOrganisationsParents()
-    await useFetchTariffs()
+    await Promise.all([
+      useFetchOrganisationsParents(),
+      useFetchTariffs(),
+      useFetchOrganisationTypes(),
+    ])
   } catch (err) {
     $setResponseErrors(err)
   }

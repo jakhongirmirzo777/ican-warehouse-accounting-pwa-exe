@@ -405,6 +405,9 @@ export default {
   authorization: 'Авторизатсия',
   errorPage: '404 саҳифа',
   goToCreditSystem: 'Кредит тизимига ўтиш',
+  organisationType: 'Организация турлари',
+  addOrganisationType: 'Ташкилот турларини қўшиш',
+  editOrganisationType: 'Ташкилот турларини таҳрирлаш',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',

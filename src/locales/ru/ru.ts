@@ -407,6 +407,9 @@ export default {
   authorization: 'Авторизация',
   errorPage: '404 страница',
   goToCreditSystem: 'Перейти в кредитную систему',
+  organisationType: 'Типы организаций',
+  addOrganisationType: 'Добавление типы организации',
+  editOrganisationType: 'Редактирование типы организации',
   notifications: {
     addedSuccessfully: 'Успешно добавлено',
     deletedSuccessfully: 'Успешно удалено',
