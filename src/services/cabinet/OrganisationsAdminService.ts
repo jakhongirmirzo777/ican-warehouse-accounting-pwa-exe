@@ -19,6 +19,15 @@ export const fetchTariffs = async () => {
   }
 }
 
+export const fetchOrganisationTypes = async () => {
+  try {
+    const data = await http.get('/admin/types/list')
+    return Promise.resolve(data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
 export const fetchOrganisations = async (
   page: number,
   search: string | null,

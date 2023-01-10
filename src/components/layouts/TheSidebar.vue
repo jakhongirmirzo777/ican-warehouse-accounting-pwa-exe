@@ -297,6 +297,11 @@ const menus = computed(() => {
         ],
         children: [
           {
+            name: t('organisationType'),
+            path: 'reference-organisation-types',
+            permission: 'admin.type.index',
+          },
+          {
             name: t('currencies'),
             path: 'reference-currencies',
             permission: 'admin.currencies.index',

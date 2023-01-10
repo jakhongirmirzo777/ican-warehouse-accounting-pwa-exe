@@ -56,6 +56,17 @@ const rawRoutes = [
         },
       },
       {
+        path: 'reference-organisation-types',
+        name: 'reference-organisation-types',
+        component: () =>
+          import('@/pages/cabinet/admin/reference-organisation-types.vue'),
+        meta: {
+          roles: [ROLES.SUPER_ADMIN],
+          permissions: ['admin.type.index'],
+          title: 'organisationType',
+        },
+      },
+      {
         path: 'reference-courses',
         name: 'reference-courses',
         component: () => import('@/pages/cabinet/admin/reference-courses.vue'),
