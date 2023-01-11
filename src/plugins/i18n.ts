@@ -6,9 +6,9 @@ import { APP_LANG_KEY } from '@/utils/constants'
 
 const { $get, $set } = useStorageService()
 export const SUPPORTED_LOCALES = ['ru', 'oz', 'uz']
-export const APP_LOCALE = getAppLocale()
+export const APP_LOCALE = $getAppLocale()
 
-export function getAppLocale() {
+export function $getAppLocale() {
   const FALLBACK_LOCALE = 'ru'
   const DEFAULT_LOCALE = $get(APP_LANG_KEY) || FALLBACK_LOCALE
   return SUPPORTED_LOCALES.includes(DEFAULT_LOCALE)
