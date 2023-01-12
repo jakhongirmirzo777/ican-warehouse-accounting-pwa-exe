@@ -50,6 +50,7 @@ export function useTokenService() {
 
   const $checkExpire = (): void => {
     const expire = $get(EXPIRE_KEY)
+    if (!expire) return
     const currentTime = new Date().getTime()
     const expireTime = (expire && new Date(+expire).getTime()) || 0
     if (expireTime <= currentTime) $removeToken()

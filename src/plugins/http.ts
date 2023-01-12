@@ -31,6 +31,7 @@ http.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error?.response?.status === 401) {
+      console.warn('Has 401 error')
       $clearUser().then()
     }
     return Promise.reject(error)
