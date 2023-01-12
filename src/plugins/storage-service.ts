@@ -6,8 +6,10 @@ export function useStorageService(
     console.warn(value, 'Localstorage')
     if (value) {
       try {
+        console.warn(value, 'Localstorage 2')
         return JSON.parse(value)
       } catch (_e) {
+        console.warn(value, 'Localstorage 3')
         return value
       }
     }
