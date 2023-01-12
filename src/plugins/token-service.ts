@@ -1,7 +1,8 @@
 import http from '@/plugins/http'
 import { useStorageService } from '@/plugins/storage-service'
 import { useUserService } from '@/plugins/user-service'
-import { EXPIRE_KEY, TOKEN_KEY } from '@/utils/constants'
+import { $encrypt, $decrypt } from '@/plugins/crypto-credentials-service'
+import { EXPIRE_KEY, TOKEN_KEY, CREDENTIALS_KEY } from '@/utils/constants'
 
 interface CredentialsInterface {
   access_token: string
@@ -29,9 +30,22 @@ export function useTokenService() {
     }
   }
 
+  const $setCredentials = (data: Record<string, any>) => {
+    if (typeof data !== 'object') return console.error('Only object is allowed')
+    const encryptedData = $encrypt(data)
+    $set(CREDENTIALS_KEY, encryptedData)
+  }
+
+  const $getCredentials = (): Record<string, string> | void => {
+    const encryptedData = $get(CREDENTIALS_KEY)
+    if (!encryptedData) return console.error('Credentials are empty')
+    return $decrypt(encryptedData)
+  }
+
   const $removeToken = () => {
     $remove(TOKEN_KEY)
     $remove(EXPIRE_KEY)
+    $remove(CREDENTIALS_KEY)
   }
 
   const $checkExpire = (): void => {
@@ -79,5 +93,7 @@ export function useTokenService() {
     $checkExpire,
     $setTimeOutRefreshToken,
     $clearTimeOutRefreshToken,
+    $setCredentials,
+    $getCredentials,
   }
 }

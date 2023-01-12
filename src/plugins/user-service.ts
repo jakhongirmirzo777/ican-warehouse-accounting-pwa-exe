@@ -32,6 +32,7 @@ export interface UserDataInterface {
   organisation_tariff: string
   organisation_tariff_amount: number
   min_margin_percent: string
+  same_with_credit: boolean
   permissions: Record<string, boolean>
   courses: CoursesInterface[]
 }

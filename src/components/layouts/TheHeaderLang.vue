@@ -31,7 +31,7 @@
 import VMenu from '@/components/ui/VMenu.vue'
 
 import { ref } from 'vue'
-import { getAppLocale, $changeLocale } from '@/plugins/i18n'
+import { $getAppLocale, $changeLocale } from '@/plugins/i18n'
 import { $removeLocaleFromPath } from '@/utils/pure-functions'
 import { useRoute, useRouter } from 'vue-router'
 import { useThemeService } from '@/plugins/theme-service'
@@ -65,7 +65,7 @@ const currentLang = ref<LangType>({ title: 'RU', value: 'ru' })
 const options = ref<Array<LangType>>([])
 
 const getLanguage = () => {
-  const lang = getAppLocale()
+  const lang = $getAppLocale()
   currentLang.value = LANG[lang]
   Object.keys(LANG).forEach((p: string) => {
     if (LANG[p].value !== currentLang.value.value) {

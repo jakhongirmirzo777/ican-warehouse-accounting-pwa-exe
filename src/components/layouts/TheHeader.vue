@@ -11,7 +11,9 @@
       <VIcon v-show="theme === THEME.LIGHT" size="100%" icon="logo" />
       <VIcon v-show="theme === THEME.DARK" size="100%" icon="logo-dark" />
     </div>
-    <TheHeaderSystem v-if="size === 'lg' || size === 'xl'" />
+    <TheHeaderSystem
+      v-if="IS_SHARED_SYSTEM && (size === 'lg' || size === 'xl')"
+    />
     <VSpacer class="header__spacer" />
     <TheHeaderCourse v-if="role !== ROLES.SUPER_ADMIN" class="mr-10" />
     <div v-if="role === ROLES.SUPER_ADMIN" class="header__setting-icons mr-10">
@@ -70,7 +72,7 @@ import TheProfileDropdown from '@/components/layouts/TheProfileDropdown.vue'
 
 import { useThemeService } from '@/plugins/theme-service'
 import { useUserService } from '@/plugins/user-service'
-import { ROLES } from '@/utils/constants'
+import { ROLES, IS_SHARED_SYSTEM } from '@/utils/constants'
 import { useResizeWindow } from '@/composables/resize-window'
 
 const { size } = useResizeWindow()

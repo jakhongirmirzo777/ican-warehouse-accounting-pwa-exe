@@ -80,7 +80,8 @@ import { useFormActions, useErrorActions } from '@/composables/set-errors'
 const { theme, THEME } = useThemeService()
 const loading = ref(false)
 const { $loginUser, $fetchUser, $redirectToCabinet } = useUserService()
-const { $setToken, $setTimeOutRefreshToken } = useTokenService()
+const { $setToken, $setTimeOutRefreshToken, $setCredentials } =
+  useTokenService()
 const { $setResponseErrors } = useErrorActions()
 
 const formData = reactive<LoginFormDataInterface>({
@@ -95,6 +96,7 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     const {
       data: { data },
     } = await $loginUser(formData)
+    await $setCredentials(formData)
     await $setToken(data)
     await $fetchUser()
     await $setTimeOutRefreshToken()

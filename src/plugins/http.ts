@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useUserService } from '@/plugins/user-service'
 import { useTokenService } from '@/plugins/token-service'
-import { getAppLocale } from '@/plugins/i18n'
+import { $getAppLocale } from '@/plugins/i18n'
 import { BASE_URL } from '@/utils/urls'
 
 const { $getToken } = useTokenService()
@@ -17,7 +17,7 @@ const http = axios.create({
 
 http.interceptors.request.use(
   (config) => {
-    const APP_LOCALE = getAppLocale()
+    const APP_LOCALE = $getAppLocale()
     const token = $getToken()
     if (!config.headers) return config
     if (token) config.headers['Authorization'] = `Bearer ${token}`

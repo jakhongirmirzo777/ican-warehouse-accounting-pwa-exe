@@ -47,7 +47,7 @@
       @update:modelValue="paginate"
     />
   </VCard>
-  <ReferenceProductNameDialog
+  <ReferenceOrganisationTypesDialog
     v-model="dialog"
     :data="editValue"
     :is-update="isUpdate"
@@ -69,7 +69,7 @@ import VTable from '@/components/ui/VTable.vue'
 import VTableActions from '@/components/ui/VTableActions.vue'
 import VPagination from '@/components/ui/VPagination.vue'
 import VBreadcrumb from '@/components/ui/VBreadcrumb.vue'
-import ReferenceProductNameDialog from '@/components/pages/reference-product-name/ReferenceProductNameDialog.vue'
+import ReferenceOrganisationTypesDialog from '@/components/pages/reference-organisation-types/ReferenceOrganisationTypesDialog.vue'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
