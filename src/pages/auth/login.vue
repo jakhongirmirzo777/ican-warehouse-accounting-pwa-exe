@@ -54,7 +54,7 @@
       <div class="login__box--bottom">
         <div class="d-flex align-center flex-column">
           <p>{{ $t('supportService') }}</p>
-          <a href="tel:+998939825001">+998 93 982 5001 Test</a>
+          <a href="tel:+998939825001">+998 93 982 5001</a>
         </div>
       </div>
     </div>
@@ -109,8 +109,9 @@ const handleUserCredentials = async () => {
       await $setTimeOutRefreshToken()
       await $redirectToCabinet()
     } else {
-      await $clearQuery([])
-      await $clearUser()
+      console.warn('Block is working')
+      // await $clearQuery([])
+      // await $clearUser()
     }
   } catch (err) {
     $setResponseErrors(err)

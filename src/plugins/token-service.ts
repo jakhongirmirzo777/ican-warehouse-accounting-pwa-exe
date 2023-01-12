@@ -37,7 +37,9 @@ export function useTokenService() {
   }
 
   const $getCredentials = (): Record<string, string> | void => {
+    console.warn(CREDENTIALS_KEY, '1111111111111')
     const encryptedData = $get(CREDENTIALS_KEY)
+    console.warn(encryptedData, '2222222222222')
     if (!encryptedData) return console.error('Credentials are empty')
     return $decrypt(encryptedData)
   }
