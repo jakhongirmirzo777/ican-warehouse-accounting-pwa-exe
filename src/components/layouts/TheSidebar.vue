@@ -120,7 +120,7 @@
           v-if="size === 'md' || size === 'sm'"
           class="ml-11 mr-11 mt-20 mb-20"
         >
-          <TheHeaderSystem white />
+          <TheHeaderSystem v-if="IS_SHARED_SYSTEM" white />
         </div>
       </div>
     </div>
@@ -148,6 +148,7 @@ import {
   MINI_MENU_MEDIA_WIDTH,
   MEDIUM_MENU_MEDIA_WIDTH,
   ROLES,
+  IS_SHARED_SYSTEM,
 } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useUserService } from '@/plugins/user-service'
