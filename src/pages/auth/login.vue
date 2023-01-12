@@ -76,11 +76,15 @@ import { useUserService } from '@/plugins/user-service'
 import { useTokenService } from '@/plugins/token-service'
 import type { ActionInterface } from '@/types/globals/SetErrorsTypes'
 import { useFormActions, useErrorActions } from '@/composables/set-errors'
+import { useQuery } from '@/composables/router-query'
+import { FROM_ANOTHER_SERVICE, IS_SHARED_SYSTEM } from '@/utils/constants'
 
+const { $getQuery, $clearQuery } = useQuery()
 const { theme, THEME } = useThemeService()
 const loading = ref(false)
-const { $loginUser, $fetchUser, $redirectToCabinet } = useUserService()
-const { $setToken, $setTimeOutRefreshToken, $setCredentials } =
+const { $loginUser, $fetchUser, $redirectToCabinet, $clearUser } =
+  useUserService()
+const { $setToken, $setTimeOutRefreshToken, $setCredentials, $getCredentials } =
   useTokenService()
 const { $setResponseErrors } = useErrorActions()
 
@@ -88,6 +92,32 @@ const formData = reactive<LoginFormDataInterface>({
   username: '',
   password: '',
 })
+const queries = $getQuery([FROM_ANOTHER_SERVICE])
+$clearQuery([FROM_ANOTHER_SERVICE])
+
+const handleUserCredentials = async () => {
+  try {
+    const fromAnotherService = queries[FROM_ANOTHER_SERVICE] === 'true'
+    if (!fromAnotherService || !IS_SHARED_SYSTEM) return
+    const credentials = await $getCredentials()
+    if (credentials) {
+      const {
+        data: { data },
+      } = await $loginUser(credentials as any)
+      await $setToken(data)
+      await $fetchUser()
+      await $setTimeOutRefreshToken()
+      await $redirectToCabinet()
+    } else {
+      await $clearQuery([])
+      await $clearUser()
+    }
+  } catch (err) {
+    $setResponseErrors(err)
+    await $clearQuery([])
+    await $clearUser()
+  }
+}
 
 const onSubmit = async (_: never, actions: ActionInterface) => {
   const { $setFormErrors } = useFormActions(actions)
@@ -96,7 +126,11 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     const {
       data: { data },
     } = await $loginUser(formData)
-    await $setCredentials(formData)
+    await $setCredentials({
+      email: formData.username,
+      username: formData.username,
+      password: formData.password,
+    })
     await $setToken(data)
     await $fetchUser()
     await $setTimeOutRefreshToken()
@@ -108,6 +142,8 @@ const onSubmit = async (_: never, actions: ActionInterface) => {
     loading.value = false
   }
 }
+
+handleUserCredentials()
 </script>
 
 <style lang="scss" scoped>
