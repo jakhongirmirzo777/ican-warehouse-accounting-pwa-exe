@@ -79,13 +79,18 @@ import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useQuery } from '@/composables/router-query'
 import { FROM_ANOTHER_SERVICE, IS_SHARED_SYSTEM } from '@/utils/constants'
 
-const { $getQuery, $clearQuery } = useQuery()
+const { $getQuery } = useQuery()
 const { theme, THEME } = useThemeService()
 const loading = ref(false)
 const { $loginUser, $fetchUser, $redirectToCabinet, $clearUser } =
   useUserService()
-const { $setToken, $setTimeOutRefreshToken, $setCredentials, $getCredentials } =
-  useTokenService()
+const {
+  $getToken,
+  $setToken,
+  $setTimeOutRefreshToken,
+  $setCredentials,
+  $getCredentials,
+} = useTokenService()
 const { $setResponseErrors } = useErrorActions()
 
 const formData = reactive<LoginFormDataInterface>({
@@ -93,7 +98,7 @@ const formData = reactive<LoginFormDataInterface>({
   password: '',
 })
 const queries = $getQuery([FROM_ANOTHER_SERVICE])
-$clearQuery([FROM_ANOTHER_SERVICE])
+// $clearQuery([FROM_ANOTHER_SERVICE])
 
 const handleUserCredentials = async () => {
   try {
@@ -101,20 +106,24 @@ const handleUserCredentials = async () => {
     if (!fromAnotherService || !IS_SHARED_SYSTEM) return
     const credentials = await $getCredentials()
     if (credentials) {
-      const {
-        data: { data },
-      } = await $loginUser(credentials as any)
-      await $setToken(data)
+      if (!$getToken()) {
+        console.warn('No token')
+        const {
+          data: { data },
+        } = await $loginUser(credentials as any)
+        await $setToken(data)
+      }
+      console.warn('Has token')
       await $fetchUser()
       await $setTimeOutRefreshToken()
       await $redirectToCabinet()
     } else {
-      await $clearQuery([])
+      // await $clearQuery([])
       await $clearUser()
     }
   } catch (err) {
     $setResponseErrors(err)
-    await $clearQuery([])
+    // await $clearQuery([])
     await $clearUser()
   }
 }
