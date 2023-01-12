@@ -37,9 +37,7 @@ export function useTokenService() {
   }
 
   const $getCredentials = (): Record<string, string> | void => {
-    console.warn(CREDENTIALS_KEY, '1111111111111')
     const encryptedData = $get(CREDENTIALS_KEY)
-    console.warn(encryptedData, '2222222222222')
     if (!encryptedData) return console.error('Credentials are empty')
     return $decrypt(encryptedData)
   }
@@ -52,6 +50,7 @@ export function useTokenService() {
 
   const $checkExpire = (): void => {
     const expire = $get(EXPIRE_KEY)
+    if (!expire) return
     const currentTime = new Date().getTime()
     const expireTime = (expire && new Date(+expire).getTime()) || 0
     if (expireTime <= currentTime) $removeToken()

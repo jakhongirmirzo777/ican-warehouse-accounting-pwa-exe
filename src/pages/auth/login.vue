@@ -109,9 +109,8 @@ const handleUserCredentials = async () => {
       await $setTimeOutRefreshToken()
       await $redirectToCabinet()
     } else {
-      console.warn('Block is working')
-      // await $clearQuery([])
-      // await $clearUser()
+      await $clearQuery([])
+      await $clearUser()
     }
   } catch (err) {
     $setResponseErrors(err)

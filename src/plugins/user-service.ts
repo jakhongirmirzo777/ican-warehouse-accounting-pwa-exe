@@ -48,7 +48,6 @@ export function useUserService() {
 
   const $clearUser = async () => {
     try {
-      console.warn('Cleared user')
       await $removeToken()
       await $clear()
       userData.value = null
@@ -91,7 +90,6 @@ export function useUserService() {
 
   const $logoutUser = async () => {
     try {
-      console.warn('Menu clicked')
       await http.post('/admin/auth/logout')
       await $clearUser()
       return Promise.resolve('Successfully logged out')
