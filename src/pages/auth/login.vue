@@ -54,7 +54,7 @@
       <div class="login__box--bottom">
         <div class="d-flex align-center flex-column">
           <p>{{ $t('supportService') }}</p>
-          <a href="tel:+998939825001">+998 93 982 5001</a>
+          <a href="tel:+998939825001">+998 93 982 5001 Test</a>
         </div>
       </div>
     </div>
@@ -79,18 +79,13 @@ import { useFormActions, useErrorActions } from '@/composables/set-errors'
 import { useQuery } from '@/composables/router-query'
 import { FROM_ANOTHER_SERVICE, IS_SHARED_SYSTEM } from '@/utils/constants'
 
-const { $getQuery } = useQuery()
+const { $getQuery, $clearQuery } = useQuery()
 const { theme, THEME } = useThemeService()
 const loading = ref(false)
 const { $loginUser, $fetchUser, $redirectToCabinet, $clearUser } =
   useUserService()
-const {
-  $getToken,
-  $setToken,
-  $setTimeOutRefreshToken,
-  $setCredentials,
-  $getCredentials,
-} = useTokenService()
+const { $setToken, $setTimeOutRefreshToken, $setCredentials, $getCredentials } =
+  useTokenService()
 const { $setResponseErrors } = useErrorActions()
 
 const formData = reactive<LoginFormDataInterface>({
@@ -98,7 +93,7 @@ const formData = reactive<LoginFormDataInterface>({
   password: '',
 })
 const queries = $getQuery([FROM_ANOTHER_SERVICE])
-// $clearQuery([FROM_ANOTHER_SERVICE])
+$clearQuery([FROM_ANOTHER_SERVICE])
 
 const handleUserCredentials = async () => {
   try {
@@ -106,24 +101,20 @@ const handleUserCredentials = async () => {
     if (!fromAnotherService || !IS_SHARED_SYSTEM) return
     const credentials = await $getCredentials()
     if (credentials) {
-      if (!$getToken()) {
-        console.warn('No token')
-        const {
-          data: { data },
-        } = await $loginUser(credentials as any)
-        await $setToken(data)
-      }
-      console.warn('Has token')
+      const {
+        data: { data },
+      } = await $loginUser(credentials as any)
+      await $setToken(data)
       await $fetchUser()
       await $setTimeOutRefreshToken()
       await $redirectToCabinet()
     } else {
-      // await $clearQuery([])
+      await $clearQuery([])
       await $clearUser()
     }
   } catch (err) {
     $setResponseErrors(err)
-    // await $clearQuery([])
+    await $clearQuery([])
     await $clearUser()
   }
 }
