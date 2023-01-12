@@ -30,6 +30,7 @@ import { useI18n } from 'vue-i18n'
 import VIcon from '@/components/ui/VIcon.vue'
 import VText from '@/components/ui/VText.vue'
 import { useThemeService } from '@/plugins/theme-service'
+import { FROM_ANOTHER_SERVICE } from '@/utils/constants'
 
 const { theme, THEME } = useThemeService()
 const { t } = useI18n()
@@ -41,7 +42,9 @@ defineProps({
   },
 })
 
-const creditPath = import.meta.env.VITE_BASE_CREDIT_PATH
+const creditPath = `${
+  import.meta.env.VITE_BASE_CREDIT_PATH
+}/auth?${FROM_ANOTHER_SERVICE}=true`
 </script>
 
 <style lang="scss" scoped>

@@ -6,6 +6,7 @@ export const GIVE_BONUS = 'GIVE_BONUS'
 export const NOTIFICATION_DEFAULT_DELAY = 2000
 export const MINI_MENU_MEDIA_WIDTH = 750
 export const MEDIUM_MENU_MEDIA_WIDTH = 1265
+export const FROM_ANOTHER_SERVICE = 'from-another-service'
 
 export const IS_SHARED_SYSTEM = !!import.meta.env.VITE_IS_SHARED_SYSTEM
 
