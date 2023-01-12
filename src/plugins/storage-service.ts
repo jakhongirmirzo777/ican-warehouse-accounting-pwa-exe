@@ -3,6 +3,7 @@ export function useStorageService(
 ) {
   const getFromLocalStorage = (key: string, fallback?: any): any => {
     const value = localStorage.getItem(key)
+    console.warn(value, 'Localstorage')
     if (value) {
       try {
         return JSON.parse(value)
