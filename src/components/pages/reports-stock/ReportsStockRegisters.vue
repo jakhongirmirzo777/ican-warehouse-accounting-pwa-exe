@@ -28,7 +28,10 @@
               @clear="clearFilter"
               @collapse="toggle"
             />
-            <VExcel url="" :filters="options" />
+            <VExcel
+              url="/organisation/reports/stock/documents-register"
+              :filters="options"
+            />
           </div>
         </VCol>
       </VRow>
@@ -58,7 +61,6 @@
       </VRow>
     </template>
   </VFilterCollapse>
-
   <VLine class="mb-20" />
   <VTable :headers="headers" :items="items">
     <template #item.number="{ item }">

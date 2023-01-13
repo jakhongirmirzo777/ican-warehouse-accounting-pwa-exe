@@ -33,7 +33,10 @@
               @clear="clearFilter"
               @collapse="toggle"
             />
-            <VExcel url="" :filters="options" />
+            <VExcel
+              url="/organisation/reports/stock/available-products"
+              :filters="options"
+            />
           </div>
         </VCol>
       </VRow>

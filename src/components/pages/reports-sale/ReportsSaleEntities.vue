@@ -33,7 +33,10 @@
               @clear="clearFilter"
               @collapse="toggle"
             />
-            <VExcel url="" :filters="options" />
+            <VExcel
+              url="/organisation/reports/sale/sale-reports"
+              :filters="{ ...options, client_type: 'entity' }"
+            />
           </div>
         </VCol>
       </VRow>

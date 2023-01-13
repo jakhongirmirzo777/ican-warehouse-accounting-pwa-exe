@@ -40,9 +40,19 @@ const loading = ref(false)
 const handleDownload = async () => {
   try {
     if (!props.url) return console.error('The url is not provided')
+    const allFilters = Object.entries(props.filters).reduce(
+      (acc: Record<string, any>, [key, val]) => {
+        if (val) acc[key] = val
+        return acc
+      },
+      {}
+    )
+    delete allFilters.lastPage
+    delete allFilters.perPage
+    delete allFilters.total
     loading.value = true
     const { data } = await http.get(props.url, {
-      params: { ...props.filters, excel: 1 },
+      params: { ...allFilters, excel: 1 },
       responseType: 'blob',
     })
     await $downloadBlobFile(data)
