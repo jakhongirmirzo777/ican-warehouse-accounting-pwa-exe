@@ -55,6 +55,7 @@ defineProps({
 })
 
 const LANG: Record<string, LangType> = {
+  en: { title: 'EN', value: 'en' },
   uz: { title: 'UZ', value: 'uz' },
   oz: { title: 'УЗ', value: 'oz' },
   ru: { title: 'РУ', value: 'ru' },

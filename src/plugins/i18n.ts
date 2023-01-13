@@ -5,7 +5,7 @@ import { useStorageService } from '@/plugins/storage-service'
 import { APP_LANG_KEY } from '@/utils/constants'
 
 const { $get, $set } = useStorageService()
-export const SUPPORTED_LOCALES = ['ru', 'oz', 'uz']
+export const SUPPORTED_LOCALES = ['en', 'ru', 'oz', 'uz']
 export const APP_LOCALE = $getAppLocale()
 
 export function $getAppLocale() {

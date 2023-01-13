@@ -1,0 +1,16 @@
+{
+  "code": "ru",
+  "messages": {
+    "min": "Field '{field}' must be at least {params} characters",
+    "length": "Field '{field}' must be {params} characters",
+    "max": "this {field} must contain no more than {max} characters",
+    "required": "Field '{field}' is required",
+    "email": "Field '{field}' must be a valid email address",
+    "phone": "{field} was entered incorrectly",
+    "inn": "{field} not valid",
+    "pnfl": "{field} not valid",
+    "confirmed": "Passwords do not match",
+    "min_value": "Field {field} must be {params} or greater",
+    "max_value": "Field {field} must be {params} or less"
+  }
+}
