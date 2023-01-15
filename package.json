@@ -57,7 +57,7 @@
     ]
   },
   "validate-branch-name": {
-    "pattern": "^(master|dev){1}$|^(feature|fix|bug)\\/.+",
+    "pattern": "^(master|dev|production){1}$|^(feature|fix|bug)\\/.+",
     "errorMsg": "The branch name should be master|dev or it should start with feature|fix|bug. For example, feature/{branch-name}"
   }
 }
