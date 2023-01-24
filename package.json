@@ -1,5 +1,5 @@
 {
-  "name": "vue-project",
+  "name": "ican-warehouse-accounting",
   "authors": "Jakhongirmirzo Tursunaliev",
   "description": "ICan warehouse system",
   "version": "0.0.0",
@@ -15,9 +15,9 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "lint-staged",
     "prepare": "husky install",
-    "electron:start": "electron .",
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
+    "electron:start": "electron .",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"

@@ -73,7 +73,7 @@
 @media screen and (max-width: $offset-mobile) {
   .login {
     &__wrapper {
-      background-image: none;
+      background-image: none !important;
       background-color: var(--color-white);
     }
 
