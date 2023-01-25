@@ -2,7 +2,7 @@
 const { app, BrowserWindow, autoUpdater, dialog } = require('electron')
 const path = require('path')
 
-const server = 'https://gitlab.com/jakhongir777/ican-pwa-exe'
+const server = 'https://ican-warehouse-accounting-pwa-exe.vercel.app/'
 const url = `${server}/update/${process.platform}/${app.getVersion()}`
 
 autoUpdater.setFeedURL({ url })
