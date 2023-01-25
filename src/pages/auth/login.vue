@@ -1,5 +1,9 @@
 <template>
-  <div class="login__wrapper" :class="{ dark: theme === THEME.DARK }">
+  <div
+    class="login__wrapper"
+    :class="{ dark: theme === THEME.DARK }"
+    :style="{ backgroundImage: `url(${backgroundImage})` }"
+  >
     <div class="login__box">
       <div class="login__box--top">
         <Form @submit="onSubmit">
@@ -68,6 +72,10 @@ import VBtn from '@/components/ui/VBtn.vue'
 import VRow from '@/components/ui/VRow.vue'
 import VCol from '@/components/ui/VCol.vue'
 import VImg from '@/components/ui/VImg.vue'
+const backgroundImage = new URL(
+  `../../assets/images/login-background.png`,
+  import.meta.url
+).href
 
 import { reactive, ref } from 'vue'
 import type { LoginFormDataInterface } from '@/types/auth/LoginTypes'
