@@ -1,11 +1,7 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, autoUpdater, dialog } = require('electron')
+const { app, BrowserWindow } = require('electron')
 const path = require('path')
-
-const server = 'https://ican-warehouse-accounting-pwa-exe.vercel.app/'
-const url = `${server}/update/${process.platform}/${app.getVersion()}`
-
-autoUpdater.setFeedURL({ url })
+require('update-electron-app')()
 
 const createWindow = () => {
   // Create the browser window.
@@ -18,7 +14,7 @@ const createWindow = () => {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('dist/index.html')
+  mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -46,27 +42,3 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-  const dialogOpts = {
-    type: 'info',
-    buttons: ['Restart', 'Later'],
-    title: 'Application Update',
-    message: process.platform === 'win32' ? releaseNotes : releaseName,
-    detail:
-      'A new version has been downloaded. Restart the application to apply the updates.',
-  }
-
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
-    if (returnValue.response === 0) autoUpdater.quitAndInstall()
-  })
-})
-
-autoUpdater.on('error', (message) => {
-  console.error('There was a problem updating the application')
-  console.error(message)
-})
-
-setInterval(() => {
-  autoUpdater.checkForUpdates()
-}, 60000)

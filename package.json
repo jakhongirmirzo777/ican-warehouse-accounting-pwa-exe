@@ -1,9 +1,11 @@
 {
   "name": "ican-warehouse-accounting",
-  "author": "Jakhongirmirzo Tursunaliev",
+  "version": "1.0.1",
   "description": "ICan warehouse system",
-  "version": "0.0.0",
   "main": "main.js",
+  "author": "Jakhongirmirzo Tursunaliev",
+  "license": "MIT",
+  "repository": "https://github.com/jakhongirmirzo777/ican-warehouse-accounting-pwa-exe",
   "engines": {
     "node": ">=16.0.0 <18.0.0",
     "npm": ">=7.10.0 <8.6.0"
@@ -17,17 +19,19 @@
     "prepare": "husky install",
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
-    "electron:start": "electron .",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "set GITHUB_TOKEN=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 && electron-forge publish"
   },
   "dependencies": {
     "@vee-validate/rules": "^4.5.11",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
+    "electron-squirrel-startup": "^1.0.0",
     "element-plus": "^2.2.16",
     "maska": "^1.5.0",
+    "update-electron-app": "^2.0.1",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.36",
     "vue-i18n": "^9.1.10",
@@ -39,6 +43,7 @@
     "@electron-forge/maker-rpm": "^6.0.4",
     "@electron-forge/maker-squirrel": "^6.0.4",
     "@electron-forge/maker-zip": "^6.0.4",
+    "@electron-forge/publisher-github": "^6.0.4",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "^16.11.45",
@@ -46,8 +51,7 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
     "@vue/tsconfig": "^0.1.3",
-    "electron": "^22.0.3",
-    "electron-squirrel-startup": "^1.0.0",
+    "electron": "^22.1.0",
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
     "husky": "^8.0.1",
