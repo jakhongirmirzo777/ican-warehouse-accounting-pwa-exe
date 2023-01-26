@@ -1,0 +1,11 @@
+name: ABC
+on:
+  push:
+    branches:
+      - pwa-exe
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+     - run: npm run electron:publish
+     
