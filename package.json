@@ -1,6 +1,6 @@
 {
   "name": "ican-warehouse-accounting",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "ICan warehouse system",
   "main": "main.js",
   "author": "Jakhongirmirzo Tursunaliev",
@@ -19,10 +19,10 @@
     "prepare": "husky install",
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "set GITHUB_TOKEN=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 && electron-forge publish"
+    "electron:start": "npm run build && electron-forge start",
+    "electron:package": "npm run build && electron-forge package",
+    "electron:make": "npm run build && electron-forge make",
+    "electron:publish": "set GITHUB_TOKEN=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 && npm run build && electron-forge publish"
   },
   "dependencies": {
     "@vee-validate/rules": "^4.5.11",
