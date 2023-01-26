@@ -21,7 +21,7 @@
     "docker:down": "docker-compose down",
     "update:version": "npm version patch",
     "electron:start": "npm run build && electron-forge start",
-    "electron:publish": "npm run update:version && electron-forge publish"
+    "electron:publish": "npm run update:version && npm run build && electron-forge publish"
   },
   "dependencies": {
     "@vee-validate/rules": "^4.5.11",
