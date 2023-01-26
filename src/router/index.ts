@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from '@/router/routes'
 import roleCheck from '@/middlewares/role-check'
 import i18nCheck from '@/middlewares/i18n-check'
 import titleCheck from '@/middlewares/title-check'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_PATH),
+  history: createWebHashHistory(),
   routes,
 })
 
