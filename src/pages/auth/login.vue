@@ -4,6 +4,7 @@
     :class="{ dark: theme === THEME.DARK }"
     :style="{ backgroundImage: `url(${backgroundImage})` }"
   >
+    <div style="background-color: white">Release 1.0.4</div>
     <div class="login__box">
       <div class="login__box--top">
         <Form @submit="onSubmit">
