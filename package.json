@@ -24,7 +24,7 @@
     "docker:down": "docker-compose down",
     "update:version": "npm version patch",
     "electron:build": "npm run build && electron-builder --win",
-    "electron:publish": "set GH_TOKEN=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 && npm run update:version && npm run build && electron-builder --win --publish always"
+    "electron:publish": "set GH_TOKEN=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 && npm run update:version && npm run build && electron-builder --win --publish always"
   },
   "dependencies": {
     "@vee-validate/rules": "^4.5.11",
