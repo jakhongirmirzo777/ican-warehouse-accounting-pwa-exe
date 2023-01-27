@@ -9,6 +9,10 @@
     "node": ">=16.0.0 <18.0.0",
     "npm": ">=7.10.0 <8.6.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakhongirmirzo777/ican-warehouse-accounting-pwa-exe"
+  },
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
@@ -64,8 +68,9 @@
     "appId": "com.ican.warehouse-accounting.app",
     "productName": "iCAN warehouse accounting",
     "target": "NSIS",
-    "directory": {
-      "output": "build"
+    "directories": {
+      "output": "electron-build",
+      "buildResources": "build-assets"
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
