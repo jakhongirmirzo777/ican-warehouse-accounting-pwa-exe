@@ -5,7 +5,6 @@
   "main": "main.js",
   "author": "Jakhongirmirzo Tursunaliev",
   "license": "MIT",
-  "repository": "https://github.com/jakhongirmirzo777/ican-warehouse-accounting-pwa-exe",
   "engines": {
     "node": ">=16.0.0 <18.0.0",
     "npm": ">=7.10.0 <8.6.0"
@@ -20,29 +19,22 @@
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
     "update:version": "npm version patch",
-    "electron:start": "npm run build && electron-forge start",
-    "electron:publish": "set GITHUB_TOKEN=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 && npm run update:version && npm run build && electron-forge publish"
+    "electron:publish": "set GH_TOKEN=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 && npm run update:version && npm run build && electron-builder --win --publish always"
   },
   "dependencies": {
     "@vee-validate/rules": "^4.5.11",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
-    "electron-squirrel-startup": "^1.0.0",
+    "electron-is-dev": "^2.0.0",
+    "electron-updater": "^5.3.0",
     "element-plus": "^2.2.16",
     "maska": "^1.5.0",
-    "update-electron-app": "^2.0.1",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.36",
     "vue-i18n": "^9.1.10",
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.4",
-    "@electron-forge/maker-deb": "^6.0.4",
-    "@electron-forge/maker-rpm": "^6.0.4",
-    "@electron-forge/maker-squirrel": "^6.0.4",
-    "@electron-forge/maker-zip": "^6.0.4",
-    "@electron-forge/publisher-github": "^6.0.4",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "^16.11.45",
@@ -51,6 +43,7 @@
     "@vue/eslint-config-typescript": "^11.0.0",
     "@vue/tsconfig": "^0.1.3",
     "electron": "^22.1.0",
+    "electron-builder": "^23.6.0",
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
     "husky": "^8.0.1",
@@ -66,6 +59,23 @@
     "vite-plugin-pwa": "^0.12.0",
     "vite-svg-loader": "^3.4.0",
     "vue-tsc": "^0.38.8"
+  },
+  "build": {
+    "appId": "com.ican.warehouse-accounting.app",
+    "productName": "iCAN warehouse accounting",
+    "target": "NSIS",
+    "directory": {
+      "output": "build"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    },
+    "win": {
+      "publish": [
+        "github"
+      ]
+    }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,vue}": [
