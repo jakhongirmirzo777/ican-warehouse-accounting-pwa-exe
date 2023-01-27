@@ -17,13 +17,12 @@ const createWindow = () => {
   win.loadURL(
     isDev
       ? 'http://localhost:4000'
-      : `file://${path.join(__dirname, '../dist/index.html')}`
+      : `file://${path.join(__dirname, 'dist/index.html')}`
   )
 
   // Open the DevTools.
   if (isDev) {
     win.webContents.openDevTools({ mode: 'detach' })
-    require('react-devtools-electron')
   }
 
   if (!isDev) {

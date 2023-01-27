@@ -23,6 +23,7 @@
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
     "update:version": "npm version patch",
+    "electron:build": "npm run build && electron-builder --win",
     "electron:publish": "set GH_TOKEN=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 && npm run update:version && npm run build && electron-builder --win --publish always"
   },
   "dependencies": {
@@ -65,8 +66,8 @@
     "vue-tsc": "^0.38.8"
   },
   "build": {
-    "appId": "com.ican.warehouse-accounting.app",
-    "productName": "iCAN warehouse accounting",
+    "appId": "com.ican-warehouse-accounting.app",
+    "productName": "iCAN-warehouse-accounting",
     "target": "NSIS",
     "directories": {
       "output": "electron-build",
